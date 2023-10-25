@@ -4,32 +4,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Permissionless',
+    Svg: require('@site/static/img/hyp_prms_landing.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        <b>Hyperlane was created for a modular world.</b> Anyone, anywhere can pass messages, bridge tokens, and perform queries.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Many Ecosystems',
+    Svg: require('@site/static/img/hyp_ecosystem_landing.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Works seamlessly across many VMs and chains, including EVM, Solana, Cosmos, Move and more.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Modular Security',
+    Svg: require('@site/static/img/hyp_security_landing.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Customize your interchain security model, including leveraging economic security and ZK light clients.
       </>
     ),
   },
