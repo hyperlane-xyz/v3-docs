@@ -4,11 +4,7 @@ description: Pay for message delivery on the origin chain
 
 # Interchain gas paymaster API
 
-&#x20;Hyperlane provides an on-chain API on the origin chain that allows message senders to pay one or more [relayers](../operators/relayers/ "mention") to deliver a message on the destination chain.
-
-{% hint style="info" %}
-Learn more about [interchain-gas-payments.md](../protocol/interchain-gas-payments.md "mention") protocol [here](../protocol/interchain-gas-payments.md)
-{% endhint %}
+&#x20;Hyperlane provides an on-chain API on the origin chain that allows message senders to pay one or more [relayers](../../operate/run-relayer.mdx "mention") to deliver a message on the destination chain.
 
 ## Interface
 
@@ -18,8 +14,6 @@ The interchain gas paymaster (IGP) interface exposes two functions that can be u
 2. `payGasFor` is a payable function that pays a relayer to deliver a specific message to the destination chain
 
 These functions do not necessarily need to be called in the same transaction as the message dispatch.
-
-You can find deployed IGPs on [addresses](../resources/addresses/ "mention")
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0

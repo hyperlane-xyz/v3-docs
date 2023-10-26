@@ -9,7 +9,7 @@ Developers can send interchain messages by calling `Mailbox.dispatch()`.
 ### Interface
 
 {% hint style="warning" %}
-Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [receive.md](receive.md "mention") documentation for more information.
+Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Receive](./receive.mdx "mention") documentation for more information.
 {% endhint %}
 
 ```solidity
@@ -27,7 +27,6 @@ Hyperlane can only deliver messages to smart contracts that implement the `IMess
     ) external returns (bytes32) {
 ```
 
-See [addresses](../../resources/addresses/ "mention")and [domains](../../resources/domains/ "mention") for `Mailbox` contract addresses, and chain domain IDs, respectively.
 
 ### Encoding
 
@@ -46,9 +45,9 @@ function addressToBytes32(address _addr) internal pure returns (bytes32) {
 
 ### Paying for Interchain Gas
 
-Delivering a message to its destination requires submitting a transaction on the destination chain. If you want to have [relayer.md](../../protocol/agents/relayer.md "mention") deliver the message on your behalf, you can pay for the gas for this transaction on the origin chain.
+Delivering a message to its destination requires submitting a transaction on the destination chain. 
 
-Learn more about [paying-for-interchain-gas.md](../../build-with-hyperlane/guides/paying-for-interchain-gas.md "mention").
+If you want to have relayers deliver the message on your behalf, you can pay for the gas for this transaction on the origin chain.
 
 ### Example Usage
 
