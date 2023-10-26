@@ -2,22 +2,22 @@
 description: The easiest way to integrate with Hyperlane
 ---
 
-# HyperlaneConnectionClient
+# MailboxClient
 
-Inheriting from [`HyperlaneConnectionClient`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/HyperlaneConnectionClient.sol) is a simple way to ensure your contract knows where to send or receive interchain messages to or from.
+Inheriting from [`MailboxClient`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/solidity/contracts/MailboxClient.sol) is a simple way to ensure your contract knows where to send or receive interchain messages to or from.
 
 This mix-in contract maintains a pointers to the three contracts Hyperlane developers may need to interact with:
 
-1. [`Mailbox`](../../../protocol/messaging.md) (required)
-2. [`InterchainGasPaymaster`](broken-reference) (optional)
+1. [`Mailbox`](../messaging/README.md) (required)
+2. [`Hook`](../messaging/interchaingas.md) (optional)
 3. [`InterchainSecurityModule`](../../../protocol/sovereign-consensus/) (optional)
 
-`HyperlaneConnectionClient` exposes functions that allow subclasses to easily send messages to the `Mailbox` via the `mailbox` storage variable, and permission message delivery via the `onlyMailbox` modifier.
+`MailboxClient` exposes functions that allow subclasses to easily send messages to the `Mailbox` via the `mailbox` storage variable, and permission message delivery via the `onlyMailbox` modifier.
 
 ```solidity
-import {HyperlaneConnectionClient} from "@hyperlane-xyz/core/contracts/HyperlaneConnectionClient.sol";
+import {MailboxClient} from "@hyperlane-xyz/core/contracts/MailboxClient.sol";
 
-contract HelloWorld is HyperlaneConnectionClient {
+contract HelloWorld is MailboxClient {
   
   /**
    * @notice Sends a "hello world" message to an address on a remote chain.
@@ -46,5 +46,3 @@ contract HelloWorld is HyperlaneConnectionClient {
   }
 }
 ```
-
-\_\_

@@ -9,16 +9,6 @@ Application developers looking to write their contracts once and deploy them on 
 In this pattern, an instance of the application's contracts is deployed on each application-supported chain. Each instance is made aware of the addresses of instances on other chains. These instances use Hyperlane to communicate information and state to and from instances on remote chains.
 
 ```mermaid
-%%{ init: {
-  "theme": "neutral",
-  "themeVariables": {
-    "mainBkg": "#025AA1",
-    "textColor": "white",
-    "clusterBkg": "white"
-  },
-  "themeCSS": ".edgeLabel { color: black }"
-}}%%
-
 graph BT
     subgraph "Ethereum"
         R_E[Router]
@@ -40,26 +30,22 @@ graph BT
 
     R_E -. "routers()" .- R_P -. "routers()" .- R_G
     R_G -. "routers()" .- R_E
-
-    style R_E fill:#efab17
-    style R_P fill:#efab17
-    style R_G fill:#efab17
 ```
 
-Developers using this pattern can inherit from the `Router` mix-in contract. `Router` is a [`HyperlaneConnectionClient`](abacusconnectionclient.md) that tracks the addresses of other `Router` contract addresses on remote chains. This allows `Routers` to send messages directly to others without having to specify addresses. It also allows `Routers` to reject messages sent from other untrusted senders.
+Developers using this pattern can inherit from the `Router` mix-in contract. `Router` is a [`MailboxClient`](./mailboxclient.mdx) that tracks the addresses of other `Router` contract addresses on remote chains. This allows `Routers` to send messages directly to others without having to specify addresses. It also allows `Routers` to reject messages sent from other untrusted senders.
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
 pragma solidity >=0.6.11;
 
 // ============ Internal Imports ============
-import {HyperlaneConnectionClient} from "./HyperlaneConnectionClient.sol";
+import {MailboxClient} from "./MailboxClient.sol";
 import {IInterchainGasPaymaster} from "./interfaces/IInterchainGasPaymaster.sol";
 import {IMessageRecipient} from "./interfaces/IMessageRecipient.sol";
 import {IMailbox} from "./interfaces/IMailbox.sol";
 import {EnumerableMapExtended} from "./libs/EnumerableMapExtended.sol";
 
-abstract contract Router is HyperlaneConnectionClient, IMessageRecipient {
+abstract contract Router is MailboxClient, IMessageRecipient {
     using EnumerableMapExtended for EnumerableMapExtended.UintToBytes32Map;
 
     string private constant NO_ROUTER_ENROLLED_REVERT_MESSAGE =
@@ -94,14 +80,14 @@ abstract contract Router is HyperlaneConnectionClient, IMessageRecipient {
 
     // ======== Initializer =========
     function __Router_initialize(address _mailbox) internal onlyInitializing {
-        __HyperlaneConnectionClient_initialize(_mailbox);
+        __MailboxClient_initialize(_mailbox);
     }
 
     function __Router_initialize(
         address _mailbox,
         address _interchainGasPaymaster
     ) internal onlyInitializing {
-        __HyperlaneConnectionClient_initialize(
+        __MailboxClient_initialize(
             _mailbox,
             _interchainGasPaymaster
         );
@@ -112,7 +98,7 @@ abstract contract Router is HyperlaneConnectionClient, IMessageRecipient {
         address _interchainGasPaymaster,
         address _interchainSecurityModule
     ) internal onlyInitializing {
-        __HyperlaneConnectionClient_initialize(
+        __MailboxClient_initialize(
             _mailbox,
             _interchainGasPaymaster,
             _interchainSecurityModule

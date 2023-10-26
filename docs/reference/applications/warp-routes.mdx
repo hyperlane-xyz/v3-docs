@@ -6,13 +6,13 @@ description: Move your token between chains
 
 Developers can use Hyperlane's Warp API to permissionlessly deploy "Warp Routes", contracts that allow ERC20 tokens to move effortlessly between chains.
 
-Unlike other token wrapping protocols, Warp Routes are secured by Hyperlane's modular [sovereign-consensus](../protocol/sovereign-consensus/ "mention") protocol, allowing developers to specify the security model that governs the minting, burning, and unwrapping of their interchain token.
+Unlike other token wrapping protocols, Warp Routes are secured by Hyperlane's modular [security](../protocol/sovereign-consensus/ "mention") protocol, allowing developers to specify the security model that governs the minting, burning, and unwrapping of their interchain token.
 
 ### Overview
 
 A Hyperlane Warp Route allows a particular token to be moved between chains according to a  security model specified by the deployer.
 
-Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [messaging-api](../apis/messaging-api/ "mention") to send interchain messages to one another.&#x20;
+Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [Mailbox](../apis/messaging-api/ "mention") to send interchain messages to one another.&#x20;
 
 When a user transfers from the _canonical_ origin chain to a _non-canonical_ destination chain, their tokens are locked in a `HypERC20Collateral` contract, which sends a message to the destination chain to mint wrapped tokens.
 
@@ -40,8 +40,6 @@ interface IHypERC20 is IERC20 {
   ) external payable;
 }
 ```
-
-
 
 ### Security considerations
 
