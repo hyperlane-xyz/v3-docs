@@ -81,6 +81,10 @@ const sidebars = {
     {
       type: 'category',
       label: 'Interchain Security Modules',
+      link: {
+        type: 'generated-index',
+        description: 'ISMs 💪🔒',
+      },
       collapsible: true,
       collapsed: true,
       items: [
@@ -143,6 +147,97 @@ const sidebars = {
       type: 'doc',
       id: 'protocol/components',
       label: 'Components',
+    },
+  ],
+
+  guidesSidebar: [
+    {
+      type: 'category',
+      label: 'Ecosystems',
+      link: {
+        type: 'generated-index', 
+        description: 'Hyperlane can be deployed to virtually any chain, with implementations for major ecosystems and execution environments live.',
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'guides/ecosystems/celestia',
+          label: 'Celestia', 
+        },    
+        {
+          type: 'doc',
+          id: 'guides/ecosystems/cosmos',
+          label: 'Cosmos', 
+        },
+        {
+          type: 'doc',
+          id: 'guides/ecosystems/evm',
+          label: 'EVM',
+        },
+        {
+          type: 'doc',
+          id: 'guides/ecosystems/solana',
+          label: 'Solana',
+        },
+        {
+          type: 'doc',
+          id: 'guides/ecosystems/move',
+          label: 'Move',
+        },
+        {
+          type: 'doc',
+          id: 'guides/ecosystems/fuel',
+          label: 'Fuel',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Interchain Gas',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'guides/IGP/manually-paying-interchain-gas',
+          label: 'Pay manually', 
+        },
+        {
+          type: 'doc',
+          id: 'guides/IGP/automatically-paying-interchain-gas',
+          label: 'Auto pay gas', 
+        },
+        {
+          type: 'doc',
+          id: 'guides/IGP/choosing-IGP-contract',
+          label: 'Choose contract', 
+        },
+      ],
+    },
+    {
+      type: 'doc',
+      id: 'guides/v2-to-v3-migration',
+      label: 'v2 to v3 Migration',
+    },
+    {
+      type: 'category',
+      label: 'Developer Tips',
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'guides/developer-tips/unit-testing',
+          label: 'Unit Testing', 
+        },    
+        {
+          type: 'doc',
+          id: 'guides/developer-tips/explorer-debugging',
+          label: 'Explorer Debugging', 
+        },
+      ],
     },
   ],
 };
