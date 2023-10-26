@@ -117,6 +117,53 @@ const sidebars = {
       ]
     },
   ],
+
+  // referenceSidebar: [
+  //   {
+  //     type: 'category',
+  //     label: 'Contract Interfaces',
+  //     collapsible: true,
+  //     collapsed: false,
+  //     items: [
+  //       {
+  //         type: 'doc',
+  //         id: 'reference/contract-interfaces/messaging-interface',
+  //         label: 'Messaging Interface', // Dispatch (send) & Handle (receive), Post-Dispatch Hooks: IGP, OP Stack, EIP-5164
+  //       },
+  //       {
+  //         type: 'doc',
+  //         id: 'reference/contract-interfaces/warp-route-interface',
+  //         label: 'Warp Route Interface', // is a router application
+  //       },
+  //       {
+  //         type: 'doc',
+  //         id: 'reference/contract-interfaces/abstracts',
+  //         label: 'Abstracts', // MailboxClient & Router sections
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     type: 'doc',
+  //     id: 'reference/typescript-sdk/typescript-sdk-overview',
+  //     label: 'Typescript SDK', 
+  //   },
+  //   {
+  //     type: 'doc',
+  //     id: 'reference/glossary',
+  //     label: 'Glossary',
+  //   },
+  //   {
+  //     type: 'doc',
+  //     id: 'reference/latencies',
+  //     label: 'Latencies', 
+  //   },
+  //   {
+  //     type: 'doc',
+  //     id: 'reference/token-faucets',
+  //     label: 'Token Faucets',
+  //   },
+  // ],
+
   protocolSidebar: [
     {
       type: 'doc',
@@ -323,53 +370,6 @@ const sidebars = {
       label: 'Run Docker Compose', 
     },
   ],
-
-  referenceSidebar: [
-    {
-      type: 'category',
-      label: 'Contract Interfaces',
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: 'doc',
-          id: 'reference/contract-interfaces/messaging-interface',
-          label: 'Messaging Interface', // Dispatch (send) & Handle (receive), Post-Dispatch Hooks: IGP, OP Stack, EIP-5164
-        },
-        {
-          type: 'doc',
-          id: 'reference/contract-interfaces/warp-route-interface',
-          label: 'Warp Route Interface', // is a router application
-        },
-        {
-          type: 'doc',
-          id: 'reference/contract-interfaces/abstracts',
-          label: 'Abstracts', // MailboxClient & Router sections
-        },
-      ],
-    },
-    {
-      type: 'doc',
-      id: 'reference/typescript-sdk/typescript-sdk-overview',
-      label: 'Typescript SDK', 
-    },
-    {
-      type: 'doc',
-      id: 'reference/glossary',
-      label: 'Glossary',
-    },
-    {
-      type: 'doc',
-      id: 'reference/latencies',
-      label: 'Latencies', 
-    },
-    {
-      type: 'doc',
-      id: 'reference/token-faucets',
-      label: 'Token Faucets',
-    },
-  ],
-
 };
 
 module.exports = sidebars;
