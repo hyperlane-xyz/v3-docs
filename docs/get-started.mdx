@@ -10,3 +10,21 @@ There are five steps in this guide:
 3. [<b>Run validators</b>](#3-run-validators) on your local chain, to provide the signatures needed for the sovereign consensus you deployed in step 2.
 4. [<b>Run relayer</b>](#4-run-relayer) to send and receive messages between chains you deployed contracts to in step 2.
 5. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages from and to each pair of chains
+
+## Getting Started
+
+## 1. Set up keys
+
+There are three keys to set up and fund. To get started, you can simplify by using the same hexadecimal key for all three roles.
+
+<table><thead><tr><th>Key Type</th><th>Description</th><th>Funding Needs</th></tr></thead><tbody><tr><td>Contract Deployer</td><td>32 byte hexadecimal private key</td><td>Funded on all the chains on which we need to deploy contracts.</td></tr><tr><td>Validator Accounts</td><td>A list of validator addresses to configure a Multisig ISM, or just one to get started quickly</td><td>A small amount to do announce the location of the validator signatures</td></tr><tr><td>Relayer Accounts</td><td>The relayer client(s) use one account on the local chain and an additional account for each of the remote chains</td><td>Each relayer instance must be configured with a key that has a balance on all the other chains.</td></tr></tbody></table>
+
+For instructions on how to generate keys, see the agent keys section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
+
+If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_PUBLIC_KEY` variable.
+
+```
+cast send $YOUR_PUBLIC_KEY \
+--private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+--value $(cast tw 1)
+```
