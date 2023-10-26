@@ -82,13 +82,13 @@ const config = {
           },
           {
             type: 'docSidebar',
-            sidebarId: 'getstartedSidebar',
+            sidebarId: 'operateSidebar',
             position: 'left',
             label: '⚙️ Operate',
           },
           {
             type: 'docSidebar',
-            sidebarId: 'getstartedSidebar',
+            sidebarId: 'referenceSidebar',
             position: 'left',
             label: '📖 Reference',
           },

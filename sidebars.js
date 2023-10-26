@@ -212,7 +212,7 @@ const sidebars = {
         {
           type: 'doc',
           id: 'guides/IGP/choosing-IGP-contract',
-          label: 'Choose contract', 
+          label: 'Choose IGP contract', 
         },
       ],
     },
@@ -240,6 +240,81 @@ const sidebars = {
       ],
     },
   ],
+
+  operateSidebar: [
+    {
+      type: 'doc',
+      id: 'operate/run-validators',
+      label: 'Run Validators', 
+    },
+    {
+      type: 'doc',
+      id: 'operate/run-relayer',
+      label: 'Run Relayers', 
+    },
+    {
+      type: 'doc',
+      id: 'operate/set-up-agent-keys',
+      label: 'Agent Keys', 
+    },
+    {
+      type: 'doc',
+      id: 'operate/agent-config',
+      label: 'Agent Config',
+    },
+    {
+      type: 'doc',
+      id: 'operate/run-docker-compose',
+      label: 'Run Docker Compose', 
+    },
+  ],
+
+  referenceSidebar: [
+    {
+      type: 'category',
+      label: 'Contract Interfaces',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'reference/contract-interfaces/messaging-interface',
+          label: 'Messaging Interface', // Dispatch (send) & Handle (receive), Post-Dispatch Hooks: IGP, OP Stack, EIP-5164
+        },
+        {
+          type: 'doc',
+          id: 'reference/contract-interfaces/warp-route-interface',
+          label: 'Warp Route Interface', // is a router application
+        },
+        {
+          type: 'doc',
+          id: 'reference/contract-interfaces/abstracts',
+          label: 'Abstracts', // MailboxClient & Router sections
+        },
+      ],
+    },
+    {
+      type: 'doc',
+      id: 'reference/typescript-sdk/typescript-sdk-overview',
+      label: 'Typescript SDK', 
+    },
+    {
+      type: 'doc',
+      id: 'reference/glossary',
+      label: 'Glossary',
+    },
+    {
+      type: 'doc',
+      id: 'reference/latencies',
+      label: 'Latencies', 
+    },
+    {
+      type: 'doc',
+      id: 'reference/token-faucets',
+      label: 'Token Faucets',
+    },
+  ],
+
 };
 
 module.exports = sidebars;
