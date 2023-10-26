@@ -61,7 +61,62 @@ const sidebars = {
       label: 'FAQ',
     },
   ],
-
+  referenceSidebar: [
+    {
+      type: 'category',
+      label: 'Messaging',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'reference/messaging/README',
+          label: 'Mailbox'
+        },
+        {
+          type: 'doc',
+          id: 'reference/messaging/send',
+          label: 'Dispatch'
+        },
+        {
+          type: 'doc',
+          id: 'reference/messaging/receive',
+          label: 'Handle'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Libraries',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'reference/libraries/mailboxclient',
+          label: 'Mailbox Client'
+        },
+        {
+          type: 'doc',
+          id: 'reference/libraries/router',
+          label: 'Router'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Applications',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'reference/applications/warp-routes',
+          label: 'Warp Routes'
+        },
+      ]
+    },
+  ],
   protocolSidebar: [
     {
       type: 'doc',
