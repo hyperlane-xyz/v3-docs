@@ -43,27 +43,13 @@ function addressToBytes32(address _addr) internal pure returns (bytes32) {
 }
 ```
 
-### Paying for Interchain Gas
+### Paying for Interchain Gas and Protocol Fees.
 
-Delivering a message to its destination requires submitting a transaction on the destination chain. 
+Delivering a message to its destination requires submitting a transaction on the destination chain. For that reason, there is an Interchain Gas Payment system in place to support the payment of a relayer to do that for you. You can read more about it at [https://docs.hyperlane.xyz/docs/protocol/interchain-gas-payments](https://docs.hyperlane.xyz/docs/protocol/interchain-gas-payments). Additionally, Mailboxes may choose to charge a protocol fee.
 
-If you want to have relayers deliver the message on your behalf, you can pay for the gas for this transaction on the origin chain.
-
-### Example Usage
-
-The code snippet below shows an example of sending a message from Ethereum to Avalanche.
-
-{% hint style="warning" %}
-Note this example does not pay for interchain gas, and therefore would not be delivered automatically by a relayer.
-{% endhint %}
+Both the IGP payments and protocol fees are implemented as hooks and enabled as the default hook (See more under [Hooks](../hooks/overview)). Not passing enough msg.value to the `dispatch` function will cause it to revert. Thus you should generally call `quoteDispatch` on the `Mailbox` and pass that to the dispatch as so:
 
 ```solidity
-uint32 constant avalancheDomain = 43114;
-address constant avalancheRecipient = 0x36FdA966CfffF8a9Cdc814f546db0e6378bFef35;
-address constant ethereumMailbox = 0x2f9db5616fa3fad1ab06cb2c906830ba63d135e3;
-IMailbox(ethereumMailbox).dispatch(
-    avalancheDomain,
-    addressToBytes32(avalancheRecipient),
-    bytes("hello avalanche from ethereum")
-);
+uint256 quote = mailbox.quoteDispatch(destination, recipient, body);
+mailbox.dispatch{value: quote}(destination, recipient, body);
 ```
