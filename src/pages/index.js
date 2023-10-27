@@ -35,6 +35,11 @@ export default function Home() {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <p>Pardon the appearance right now as we are migrating the docs over here. For the existing docs,
+           visit <Link href="https://docs.hyperlane.xyz">docs.hyperlane.xyz</Link>.</p>
+
+        <p>To learn more about V3 and the interfaces to leverage modular security and hooks, go to the <Link to="/docs/reference/messaging">Reference.</Link></p>
+
       </main>
     </Layout>
   );
