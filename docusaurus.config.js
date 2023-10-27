@@ -1,40 +1,44 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Hyperlane v3 Docs',
-  tagline: 'Permissionless Interoperability, Modular Security',
-  favicon: 'img/favicon.ico',
+  title: "Hyperlane v3 Docs",
+  tagline: "Permissionless Interoperability, Modular Security",
+  favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-test-site.com',
+  url: "https://your-docusaurus-test-site.com",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: "facebook", // Usually your GitHub org/user name.
+  projectName: "docusaurus", // Usually your repo name.
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
@@ -45,34 +49,34 @@ const config = {
             */ 
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
-      }),
+    }),
     ],
   ],
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: 'img/docusaurus-social-card.jpg',
+      image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: 'Hyperlane',
+        title: "Hyperlane",
         logo: {
-          alt: 'Hyperlane logo',
-          src: 'img/logo.svg',
+          alt: "Hyperlane logo",
+          src: "img/logo.svg",
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'getstartedSidebar',
-            position: 'left',
-            label: '⏩ Get Started',
+            type: "docSidebar",
+            sidebarId: "getstartedSidebar",
+            position: "left",
+            label: "⏩ Get Started",
           },
           {
-            type: 'docSidebar',
-            sidebarId: 'protocolSidebar',
-            position: 'left',
-            label: '🧠 Protocol',
+            type: "docSidebar",
+            sidebarId: "protocolSidebar",
+            position: "left",
+            label: "🧠 Protocol",
           },
           {
             type: 'docSidebar',
@@ -93,60 +97,60 @@ const config = {
             label: '📖 Reference',
           },
           {
-            href: 'https://github.com/hyperlane-xyz',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/hyperlane-xyz",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Docs',
+            title: "Docs",
             items: [
               {
-                label: 'Get Started',
-                to: '/docs/intro',
+                label: "Get Started",
+                to: "/docs/intro",
               },
             ],
           },
           {
-            title: 'Read',
+            title: "Read",
             items: [
               {
-                label: 'Blog',
-                to: 'https://medium.com/hyperlane',
+                label: "Blog",
+                to: "https://medium.com/hyperlane",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/hyperlane-xyz',
+                label: "GitHub",
+                href: "https://github.com/hyperlane-xyz",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'Discord',
-                href: 'https://discord.com/invite/hyperlane',
+                label: "Discord",
+                href: "https://discord.com/invite/hyperlane",
               },
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/Hyperlane_xyz',
+                label: "Twitter",
+                href: "https://twitter.com/Hyperlane_xyz",
               },
             ],
           },
           {
-            title: 'Contribute',
+            title: "Contribute",
             items: [
               {
-                label: 'Bounties',
-                to: 'https://www.hyperlane.xyz/bounty',
+                label: "Bounties",
+                to: "https://www.hyperlane.xyz/bounty",
               },
               {
-                label: 'Jobs',
-                href: 'https://www.hyperlane.xyz/crew',
+                label: "Jobs",
+                href: "https://www.hyperlane.xyz/crew",
               },
             ],
           },
@@ -156,8 +160,20 @@ const config = {
         Built IRL in New York 🗽 and London 💂🏼‍♂️`,
       },
       prism: {
+        additionalLanguages: ['solidity'],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      mermaid: {
+        options: {
+          theme: "neutral",
+          themeVariables: {
+            mainBkg: "#025AA1",
+            textColor: "white",
+            clusterBkg: "white",
+          },
+          themeCSS: ".edgeLabel { color: black }",
+        },
       },
     }),
 };

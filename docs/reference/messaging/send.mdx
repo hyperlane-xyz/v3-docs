@@ -1,0 +1,55 @@
+---
+description: Send a message to any Hyperlane supported network
+---
+
+# Send
+
+Developers can send interchain messages by calling `Mailbox.dispatch()`.
+
+### Interface
+
+{% hint style="warning" %}
+Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Receive](./receive.mdx "mention") documentation for more information.
+{% endhint %}
+
+```solidity
+    /**
+     * @notice Dispatches a message to the destination domain & recipient.
+     * @param _destinationDomain Domain of destination chain
+     * @param _recipientAddress Address of recipient on destination chain as bytes32
+     * @param _body Raw bytes content of message body
+     * @return The message ID inserted into the Mailbox's merkle tree
+     */
+    function dispatch(
+        uint32 _destination,
+        bytes32 _recipient,
+        bytes calldata _body
+    ) external returns (bytes32) {
+```
+
+
+### Encoding
+
+{% hint style="info" %}
+Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
+{% endhint %}
+
+The following utility is provided in the [`TypeCasts` library](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/TypeCasts.sol) for convenience.
+
+```solidity
+// alignment preserving cast
+function addressToBytes32(address _addr) internal pure returns (bytes32) {
+    return bytes32(uint256(uint160(_addr)));
+}
+```
+
+### Paying for Interchain Gas and Protocol Fees.
+
+Delivering a message to its destination requires submitting a transaction on the destination chain. For that reason, there is an Interchain Gas Payment system in place to support the payment of a relayer to do that for you. You can read more about it at [https://docs.hyperlane.xyz/docs/protocol/interchain-gas-payments](https://docs.hyperlane.xyz/docs/protocol/interchain-gas-payments). Additionally, Mailboxes may choose to charge a protocol fee.
+
+Both the IGP payments and protocol fees are implemented as hooks and enabled as the default hook (See more under [Hooks](../hooks/overview)). Not passing enough msg.value to the `dispatch` function will cause it to revert. Thus you should generally call `quoteDispatch` on the `Mailbox` and pass that to the dispatch as so:
+
+```solidity
+uint256 quote = mailbox.quoteDispatch(destination, recipient, body);
+mailbox.dispatch{value: quote}(destination, recipient, body);
+```

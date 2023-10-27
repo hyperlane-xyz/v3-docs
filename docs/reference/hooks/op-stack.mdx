@@ -1,0 +1,61 @@
+# OPStackHook
+
+Optimism and all the OP Stack chains use the `CrossDomainMessenger` interface for general message passing, `L1CrossDomainMessenger` to send messages from the L1 and the precompile `L2CrossDomainMessenger` to relay the messages onto L2. The canonical rollup bridge is the most trust-minimized bridge because Ethereum is able to verify the rollup state of OP stack deployed on it.
+
+The OPStackHook sends the messageId to the L1CrossDomainMessenger which registers it as an Optimism `TransactionDeposited` event with ETH deposit and message data which gets picked up by the rollup node.
+The rollup node calls the precompiled contract `L2CrossDomainMessenger`'s relayMessage function which in turn makes calls configured OptimismISM contract, setting the messageId in the verifiedMessageId's mapping to the original L1 sender (ie. the user). The relayer carries just the message with no metadata, waiting for the Optimism node to pick and make a storage write to Optimism and the message delivery is then verified.
+
+This is currently deployed between Goerli -> Optimism Goerli and Goerli -> Base Goerli. See contract deployments [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/sdk/src/consts/environments/testnet.json)
+
+```mermaid
+%%{ init: {
+  "theme": "neutral",
+  "themeVariables": {
+    "mainBkg": "#2362c0",
+    "textColor": "white",
+    "clusterBkg": "white"
+  },
+  "themeCSS": ".edgeLabel { color: black }",
+  "flowchart": {"useMaxWidth": "true" }
+}}%%
+
+flowchart TB
+    Relayer((Relayer))
+
+    subgraph Origin L1
+      Sender
+      M_O[(Mailbox)]
+      Hook[(OPStackHook)]
+      L_1[[L1CrossDomainMessenger]]
+
+      Sender -- "messageId = dispatch(message)" --> M_O
+      Sender -- "postDispatch(destination, messageId)" --> Hook
+      Hook -- "sendMessage(messageId)" --> L_1
+    end
+
+
+    M_O -. "indexing" .-> Relayer
+    L_1 -. "rollup node" .-> L_2
+
+
+    subgraph Destination L2
+      Recipient
+      M_D[(Mailbox)]
+      ISM[(OPStackISM)]
+      L_2[[L2CrossDomainMessenger]]
+
+      M_D -- "verify( , [origin, sender, body])" --> ISM
+      M_D -- "handle(origin, sender, body)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+
+      L_2 -- "verifyMessageId(metadata, messageId)" --> ISM
+    end
+
+    Relayer -- "process()" --> M_D
+
+
+    style Sender fill: #cf2fb3
+    style Recipient fill:#cf2fb3
+    style L_1 fill: #ff0402
+    style L_2 fill: #ff0402
+```
