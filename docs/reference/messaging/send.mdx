@@ -8,8 +8,9 @@ Developers can send interchain messages by calling `Mailbox.dispatch()`.
 
 ### Interface
 
-//admonition
+{% hint style="warning" %}
 Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Receive](./receive.mdx "mention") documentation for more information.
+{% endhint %}
 
 ```solidity
     /**
@@ -29,8 +30,9 @@ Hyperlane can only deliver messages to smart contracts that implement the `IMess
 
 ### Encoding
 
-//admonition
+{% hint style="info" %}
 Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
+{% endhint %}
 
 The following utility is provided in the [`TypeCasts` library](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/TypeCasts.sol) for convenience.
 
