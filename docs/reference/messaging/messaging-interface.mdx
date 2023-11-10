@@ -1,12 +1,10 @@
-# Messaging Interface
+# Mailbox
 
-Hyperlane provides an onchain API for sending and receiving interchain messages.
+Hyperlane's generalized message passing (GMP) interface is implemented as a smart contract called the Mailbox. This contract allows other smart contracts to send and receive information (messages) between chains.
 
-## Interface
+To [**send**](./send.mdx) interchain messages, call the `dispatch` function.
 
-To [**send**](./send.mdx) interchain messages, reference the `Mailbox.dispatch()` interface.
-
-To [**receive**](./receive.mdx) interchain messages, implement the `IMessageRecipient` interface.
+To [**receive**](./receive.mdx) interchain messages, implement the `handle` function.
 
 ```mermaid
 flowchart LR
@@ -25,10 +23,3 @@ flowchart LR
 
     M_O -. "relay" .-> M_D
 ```
-
-
-## Interchain gas
-
-Delivering an interchain message requires submitting a transaction on the destination chain. Optionally, you can pay for the gas for this transaction on the origin chain, and let Hyperlane [relayers](../../operate/run-relayer.mdx "mention") deliver your message for you.
-
-Learn more about [paying for interchain gas](../hooks/interchain-gas.mdx).
