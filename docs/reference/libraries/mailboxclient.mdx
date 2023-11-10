@@ -9,7 +9,7 @@ Inheriting from [`MailboxClient`](https://github.com/hyperlane-xyz/hyperlane-mon
 This mix-in contract maintains a pointers to the three contracts Hyperlane developers may need to interact with:
 
 1. [`Mailbox`](../messaging/messaging-interface.mdx) (required)
-2. [`Hook`](../messaging/interchaingas.mdx) (optional)
+2. [`Hook`](../hooks/interchain-gas.mdx) (optional)
 3. `InterchainSecurityModule`
 
 `MailboxClient` exposes functions that allow subclasses to easily send messages to the `Mailbox` via the `mailbox` storage variable, and permission message delivery via the `onlyMailbox` modifier.
