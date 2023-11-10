@@ -1,6 +1,10 @@
 # Website
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+This website is built using [Docusaurus 3](https://docusaurus.io/), a modern static website generator.
+
+## Generated Content
+
+The `static` directory includes generated content. Please ask @yorhodes for assistance if you need to update this content.
 
 ### Installation
 
@@ -26,16 +30,5 @@ This command generates static content into the `build` directory and can be serv
 
 ### Deployment
 
-Using SSH:
+Vercel Github Action is used to deploy the website. The action is triggered on every push to the `main` branch.
 
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
