@@ -24,36 +24,18 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "get-started",
-      label: "Get Started",
+      id: "your-first-message",
+      label: "Send your first message",
     },
     {
       type: "doc",
-      id: "deploy-warp-route",
-      label: "Deploy Warp Route",
+      id: "deploy-hyperlane",
+      label: "Deploy Hyperlane to a new chain",
     },
     {
-      type: "category",
-      label: "Quick Starts",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "quick-start/messaging-quick-start",
-          label: "Messaging",
-        },
-        {
-          type: "doc",
-          id: "quick-start/warp-route-quick-start",
-          label: "Warp Route",
-        },
-        {
-          type: "doc",
-          id: "quick-start/explorer",
-          label: "Explorer",
-        },
-      ],
+      type: "doc",
+      id: "explorer",
+      label: "Using the explorer",
     },
     {
       type: "doc",
@@ -64,15 +46,14 @@ const sidebars = {
   referenceSidebar: [
     {
       type: "category",
-      label: "Messaging",
+      label: "Messaging Interface",
+      link: {
+        type: 'doc',
+        id: 'reference/messaging/messaging-interface',
+      },
       collapsible: true,
       collapsed: false,
       items: [
-        {
-          type: "doc",
-          id: "reference/messaging/README",
-          label: "Mailbox",
-        },
         {
           type: "doc",
           id: "reference/messaging/send",
@@ -87,9 +68,63 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Hooks",
+      link: {
+        type: 'doc',
+        id: 'reference/hooks/overview',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/hooks/interchain-gas",
+          label: "Interchain Gas",
+        },
+        {
+          type: "doc",
+          id: "reference/hooks/op-stack",
+          label: "OP Stack",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "ISM Interface",
+      link: {
+        type: 'doc',
+        id: 'reference/ISM/specify-your-ISM',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/ISM/ISM-interface",
+          label: "ISM Interface",
+        },
+        {
+          type: "doc",
+          id: "reference/ISM/multisig-ISM-interface",
+          label: "Multisig ISM Interface",
+        },
+        {
+          type: "doc",
+          id: "reference/ISM/routing-ISM-interface",
+          label: "Routing ISM Interface",
+        },
+        {
+          type: "doc",
+          id: "reference/ISM/aggregation-ISM-interface",
+          label: "Aggregation ISM Interface",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Libraries",
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -117,59 +152,20 @@ const sidebars = {
       ],
     },
     {
-      type: "category",
-      label: "Hooks",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "reference/hooks/overview",
-          label: "Overview",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/op-stack",
-          label: "OP Stack",
-        },
-      ],
+      type: "doc",
+      id: "reference/typescript-sdk/typescript-sdk-overview",
+      label: "Typescript SDK",
     },
-  ],
-
-  // referenceSidebar: [
-  //   {
-  //     type: 'category',
-  //     label: 'Contract Interfaces',
-  //     collapsible: true,
-  //     collapsed: false,
-  //     items: [
-  //       {
-  //         type: 'doc',
-  //         id: 'reference/contract-interfaces/messaging-interface',
-  //         label: 'Messaging Interface', // Dispatch (send) & Handle (receive), Post-Dispatch Hooks: IGP, OP Stack, EIP-5164
-  //       },
-  //       {
-  //         type: 'doc',
-  //         id: 'reference/contract-interfaces/warp-route-interface',
-  //         label: 'Warp Route Interface', // is a router application
-  //       },
-  //       {
-  //         type: 'doc',
-  //         id: 'reference/contract-interfaces/abstracts',
-  //         label: 'Abstracts', // MailboxClient & Router sections
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     type: 'doc',
-  //     id: 'reference/typescript-sdk/typescript-sdk-overview',
-  //     label: 'Typescript SDK',
-  //   },
-  //   {
-  //     type: 'doc',
-  //     id: 'reference/glossary',
-  //     label: 'Glossary',
-  //   },
+    {
+      type: "doc",
+      id: "reference/contract-addresses",
+      label: "Contract Addresses",
+    },
+    {
+      type: "doc",
+      id: "reference/glossary",
+      label: "Glossary",
+    },
   //   {
   //     type: 'doc',
   //     id: 'reference/latencies',
@@ -180,7 +176,7 @@ const sidebars = {
   //     id: 'reference/token-faucets',
   //     label: 'Token Faucets',
   //   },
-  // ],
+  ],
 
   protocolSidebar: [
     {
@@ -223,16 +219,6 @@ const sidebars = {
           id: "protocol/ISM/aggregation-ISM",
           label: "Aggregation",
         },
-        {
-          type: "doc",
-          id: "protocol/ISM/specify-your-ISM",
-          label: "Specifying your ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/create-your-own",
-          label: "Create your own ISM",
-        },
       ],
     },
     {
@@ -272,6 +258,62 @@ const sidebars = {
 
   guidesSidebar: [
     {
+      type: "doc",
+      id: "guides/v2-to-v3-migration",
+      label: "v2 to v3 Migration",
+    },
+    {
+      type: "category",
+      label: "Interchain Gas",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/IGP/manually-paying-interchain-gas",
+          label: "Pay manually",
+        },
+        {
+          type: "doc",
+          id: "guides/IGP/automatically-paying-interchain-gas",
+          label: "Auto pay gas",
+        },
+        {
+          type: "doc",
+          id: "guides/IGP/choosing-IGP-contract",
+          label: "Choose IGP contract",
+        },
+      ],
+    },
+    {
+      type: "doc",
+      id: "guides/deploy-warp-route",
+      label: "Deploy Warp Route",
+    },
+    {
+      type: "doc",
+      id: "guides/create-your-own-ISM",
+      label: "Create your own ISM",
+    },
+    {
+      type: "category",
+      label: "Developer Tips",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/developer-tips/unit-testing",
+          label: "Unit Testing",
+        },
+        {
+          type: "doc",
+          id: "guides/developer-tips/explorer-debugging",
+          label: "Explorer Debugging",
+        },
+      ],
+    },
+    {
       type: "category",
       label: "Ecosystems",
       link: {
@@ -280,7 +322,7 @@ const sidebars = {
           "Hyperlane can be deployed to virtually any chain, with implementations for major ecosystems and execution environments live.",
       },
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -311,52 +353,6 @@ const sidebars = {
           type: "doc",
           id: "guides/ecosystems/fuel",
           label: "Fuel",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Interchain Gas",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/IGP/manually-paying-interchain-gas",
-          label: "Pay manually",
-        },
-        {
-          type: "doc",
-          id: "guides/IGP/automatically-paying-interchain-gas",
-          label: "Auto pay gas",
-        },
-        {
-          type: "doc",
-          id: "guides/IGP/choosing-IGP-contract",
-          label: "Choose IGP contract",
-        },
-      ],
-    },
-    {
-      type: "doc",
-      id: "guides/v2-to-v3-migration",
-      label: "v2 to v3 Migration",
-    },
-    {
-      type: "category",
-      label: "Developer Tips",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/developer-tips/unit-testing",
-          label: "Unit Testing",
-        },
-        {
-          type: "doc",
-          id: "guides/developer-tips/explorer-debugging",
-          label: "Explorer Debugging",
         },
       ],
     },

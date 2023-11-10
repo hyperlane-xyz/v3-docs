@@ -35,10 +35,10 @@ interface IMessageRecipient {
 ### Access control
 
 {/* hint style="danger" */}
-To ensure only valid interchain messages are accepted, it is important to require that `msg.sender` is a known Hyperlane [Mailbox](./README.mdx "mention").
+To ensure only valid interchain messages are accepted, it is important to require that `msg.sender` is a known Hyperlane [Mailbox](./messaging-interface.mdx).
 {/* endhint */}
 
-Developers must implement access control on `handle()` in order to ensure the security of interchain messages. Only a Hyperlane [Mailbox](./README.mdx "mention") contract should have permission to call this function. An example of this access control is shown below.
+Developers must implement access control on `handle()` in order to ensure the security of interchain messages. Only a Hyperlane [Mailbox](./messaging-interface.mdx) contract should have permission to call this function. An example of this access control is shown below.
 
 ```solidity
 address constant mailbox = 0x0E3239277501d215e17a4d31c487F86a425E110B;
