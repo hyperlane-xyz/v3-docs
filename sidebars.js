@@ -166,16 +166,6 @@ const sidebars = {
       id: "reference/glossary",
       label: "Glossary",
     },
-  //   {
-  //     type: 'doc',
-  //     id: 'reference/latencies',
-  //     label: 'Latencies',
-  //   },
-  //   {
-  //     type: 'doc',
-  //     id: 'reference/token-faucets',
-  //     label: 'Token Faucets',
-  //   },
   ],
 
   protocolSidebar: [
@@ -310,6 +300,16 @@ const sidebars = {
           type: "doc",
           id: "guides/developer-tips/explorer-debugging",
           label: "Explorer Debugging",
+        },
+        {
+          type: 'doc',
+          id: 'guides/latencies',
+          label: 'Latencies',
+        },
+        {
+          type: 'doc',
+          id: 'guides/token-faucets',
+          label: 'Token Faucets',
         },
       ],
     },
