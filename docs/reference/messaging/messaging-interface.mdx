@@ -1,16 +1,12 @@
----
-description: Send and receive interchain messages using Hyperlane
----
+# Messaging Interface
 
-# Messaging API
+Hyperlane provides an onchain API for sending and receiving interchain messages.
 
-Hyperlane provides an on-chain API for sending and receiving interchain messages.
+## Interface
 
-#### Interface
+To [**send**](./send.mdx) interchain messages, reference the `Mailbox.dispatch()` interface.
 
-To [send](./send.mdx "mention") interchain messages, reference the `Mailbox.dispatch()` API.
-
-To [receive](./receive.mdx "mention") interchain messages, implement the `IMessageRecipient` interface.
+To [**receive**](./receive.mdx) interchain messages, implement the `IMessageRecipient` interface.
 
 ```mermaid
 flowchart LR
@@ -30,8 +26,9 @@ flowchart LR
     M_O -. "relay" .-> M_D
 ```
 
-#### Interchain gas
+
+## Interchain gas
 
 Delivering an interchain message requires submitting a transaction on the destination chain. Optionally, you can pay for the gas for this transaction on the origin chain, and let Hyperlane [relayers](../../operate/run-relayer.mdx "mention") deliver your message for you.
 
-Learn more about [paying for interchain gas](./interchaingas.mdx "mention").
+Learn more about [paying for interchain gas](../hooks/interchain-gas.mdx).

@@ -12,7 +12,7 @@ Unlike other token wrapping protocols, Warp Routes are secured by Hyperlane's mo
 
 A Hyperlane Warp Route allows a particular token to be moved between chains according to a  security model specified by the deployer.
 
-Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [Mailbox](../messaging/README.mdx "mention") to send interchain messages to one another.&#x20;
+Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [Mailbox](../messaging/messaging-interface.mdx) to send interchain messages to one another.&#x20;
 
 When a user transfers from the _canonical_ origin chain to a _non-canonical_ destination chain, their tokens are locked in a `HypERC20Collateral` contract, which sends a message to the destination chain to mint wrapped tokens.
 
