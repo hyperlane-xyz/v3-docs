@@ -4,9 +4,9 @@ description: Receive an inbound message from any Hyperlane supported network
 
 # Receive
 
-{% hint style="warning" %}
+{/* hint style="warning" */}
 Developers **must** implement the `IMessageRecipient` interface in order to be able to receive interchain messages.
-{% endhint %}
+{/* endhint */}
 
 ### Interface
 
@@ -34,9 +34,9 @@ interface IMessageRecipient {
 
 ### Access control
 
-{% hint style="danger" %}
+{/* hint style="danger" */}
 To ensure only valid interchain messages are accepted, it is important to require that `msg.sender` is a known Hyperlane [Mailbox](./README.mdx "mention").
-{% endhint %}
+{/* endhint */}
 
 Developers must implement access control on `handle()` in order to ensure the security of interchain messages. Only a Hyperlane [Mailbox](./README.mdx "mention") contract should have permission to call this function. An example of this access control is shown below.
 
@@ -63,9 +63,9 @@ See the modular security documentation for more info on how to set the ISM used 
 
 ### Encoding
 
-{% hint style="info" %}
+{/* hint style="info" */}
 Hyperlane message senders are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
-{% endhint %}
+{/* endhint */}
 
 The following utility is provided in the [`TypeCasts` library](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/TypeCasts.sol) for convenience.
 
