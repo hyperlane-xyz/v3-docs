@@ -127,10 +127,29 @@ To query the default hook configuration, you can call the `defaultHook` function
 </TabItem>
 </Tabs>
 
+### Overriding default hook metadata
+
+To override the default hook metadata, there is a `dispatch` overload that accepts a `metadata` parameter to be used in the configured `defaultHook`.
+
+:::tip
+Overriding the default hook metadata is an advanced feature. See the [Hooks](../hooks/overview.mdx "mention") documentation for more information.
+:::
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/Mailbox.sol#L125-L130
+```
+
+</TabItem>
+</Tabs>
+
+### Overriding the default hook and metadata
+
 To override the default hook configuration, there is a `dispatch` overload that accepts a `hook` and hook `metadata` parameters.
 
 :::tip
-Overriding the default hook and metadata is an advanced feature. See the [Hooks](../hooks/overview.mdx "mention") documentation for more information.
+Overriding the default hook is an advanced feature. See the [Hooks](../hooks/overview.mdx "mention") documentation for more information.
 :::
 
 <Tabs groupId="lang">
