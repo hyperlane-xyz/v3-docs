@@ -1,7 +1,8 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
+import codeImport from "remark-code-import";
 
-import { themes } from 'prism-react-renderer';
+import { themes } from "prism-react-renderer";
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 
@@ -39,20 +40,21 @@ const config = {
   themes: ["@docusaurus/theme-mermaid"],
   presets: [
     [
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          remarkPlugins: [[codeImport, { removeRedundantIndentations: true }]],
+          sidebarPath: require.resolve("./sidebars.js"),
           /** 
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-            */ 
+            */
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
-    }),
+      }),
     ],
   ],
 
@@ -92,10 +94,10 @@ const config = {
             label: '🧭 Guides',
           },
           {
-            type: 'docSidebar',
-            sidebarId: 'operateSidebar',
-            position: 'left',
-            label: '⚙️ Operate',
+            type: "docSidebar",
+            sidebarId: "operateSidebar",
+            position: "left",
+            label: "⚙️ Operate",
           },
           {
             href: "https://github.com/hyperlane-xyz",
@@ -161,7 +163,7 @@ const config = {
         Built IRL in New York 🗽 and London 💂🏼‍♂️`,
       },
       prism: {
-        additionalLanguages: ['solidity'],
+        additionalLanguages: ["solidity"],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },

@@ -1,51 +1,64 @@
----
-description: Receive an inbound message from any Hyperlane supported network
----
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-# Receive
+# Receive a message
 
-{/* hint style="warning" */}
-Developers **must** implement the `IMessageRecipient` interface in order to be able to receive interchain messages.
-{/* endhint */}
+Contracts can receive interchain messages by implementing the `handle` function.
 
-### Interface
+## Handle
 
-```solidity
-// SPDX-License-Identifier: MIT OR Apache-2.0
-pragma solidity >=0.6.11;
+This function is called by the `Mailbox` contract when a message is received.
 
-interface IMessageRecipient {
-    /**
-     * @notice Handle an interchain message
-     * @param _origin Domain ID of the chain from which the message came
-     * @param _sender Address of the message sender on the origin chain as bytes32
-     * @param _body Raw bytes content of message body
-     */
-    function handle(
-        uint32 _origin,
-        bytes32 _sender,
-        bytes calldata _body
-    ) external;
-}
+:::danger
+To ensure only valid interchain messages are accepted, it is important to restrict [access control](#access-control) to the Mailbox address.
+:::
 
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IMessageRecipient.sol#L5-L9
 ```
 
-## Security
+**Parameters**
 
-### Access control
+|Name|Type|Description|
+|----|----|-----------|
+|`_origin`|`uint32`|Domain of origin chain|
+|`_sender`|`bytes32`|Address of sender on origin chain as bytes32|
+|`_messageBody`|`bytes`|Raw bytes content of message body|
 
-{/* hint style="danger" */}
-To ensure only valid interchain messages are accepted, it is important to require that `msg.sender` is a known Hyperlane [Mailbox](./messaging-interface.mdx).
-{/* endhint */}
+:::tip
+Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
+:::
 
-Developers must implement access control on `handle()` in order to ensure the security of interchain messages. Only a Hyperlane [Mailbox](./messaging-interface.mdx) contract should have permission to call this function. An example of this access control is shown below.
+The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
+```solidity file=<rootDir>/static/contracts/libs/TypeCasts.sol#L10-L13
+```
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+Docs coming soon!
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+Docs coming soon!
+
+</TabItem>
+</Tabs>
+
+## Access Control
+
+Examples of valid Mailbox access control are included below.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
 
 ```solidity
-address constant mailbox = 0x0E3239277501d215e17a4d31c487F86a425E110B;
-// for access control on handle implementations
 modifier onlyMailbox() {
     require(msg.sender == mailbox);
-    _;    
+    _;
 }
 
 function handle(
@@ -55,39 +68,62 @@ function handle(
 ) external onlyMailbox {};
 ```
 
-### Interchain security modules
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
 
-Developers can override Hyperlane's default multisig-based security model by specifying their own ISM.
+Docs coming soon!
 
-See the modular security documentation for more info on how to set the ISM used by your application.
+</TabItem>
+<TabItem value="sl" label="Sealevel">
 
-### Encoding
+Docs coming soon!
 
-{/* hint style="info" */}
-Hyperlane message senders are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
-{/* endhint */}
+</TabItem>
+</Tabs>
 
-The following utility is provided in the [`TypeCasts` library](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/TypeCasts.sol) for convenience.
+## Modular Security
 
-```solidity
-// alignment preserving cast
-function bytes32ToAddress(bytes32 _buf) internal pure returns (address) {
-    return address(uint160(uint256(_buf)));
-}
+{/* TODO: links */}
+To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IInterchainSecurityModule.sol#L37-L40
 ```
 
-### Example usage
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
 
-An example `handle()` implementation for receiving messages is provided below.
+Docs coming soon!
 
-```solidity
-event Received(uint32 origin, address sender, bytes body);
-function handle(
-    uint32 _origin,
-    bytes32 _sender,
-    bytes memory _body
-) external onlyMailbox() {
-    address sender = bytes32ToAddress(_sender);
-    emit Received(_origin, sender, _body);
-}
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+Docs coming soon!
+
+</TabItem>
+</Tabs>
+
+### Examples
+
+Example `handle` implementations are included below for reference.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/test/TestRecipient.sol#L30-L38
 ```
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+Docs coming soon!
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+Docs coming soon!
+
+</TabItem>
+</Tabs>

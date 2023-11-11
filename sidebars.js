@@ -46,7 +46,7 @@ const sidebars = {
   referenceSidebar: [
     {
       type: "category",
-      label: "Messaging Interface",
+      label: "General Message Passing",
       link: {
         type: 'doc',
         id: 'reference/messaging/messaging-interface',
@@ -68,7 +68,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Hooks",
+      label: "Post-Dispatch Hooks",
       link: {
         type: 'doc',
         id: 'reference/hooks/overview',
@@ -90,7 +90,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "ISM Interface",
+      label: "Interchain Security Modules",
       link: {
         type: 'doc',
         id: 'reference/ISM/specify-your-ISM',
@@ -153,13 +153,8 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "reference/typescript-sdk/typescript-sdk-overview",
-      label: "Typescript SDK",
-    },
-    {
-      type: "doc",
       id: "reference/contract-addresses",
-      label: "Contract Addresses",
+      label: "Addresses",
     },
     {
       type: "doc",

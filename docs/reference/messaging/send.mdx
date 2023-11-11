@@ -1,55 +1,162 @@
----
-description: Send a message to any Hyperlane supported network
----
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-# Send
+# Send a message
 
-Developers can send interchain messages by calling `Mailbox.dispatch()`.
+Contracts can send interchain messages by calling the `dispatch` function on the Mailbox.
 
-### Interface
+:::warning
+Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Handle](./receive.mdx) documentation for more information.
+:::
 
-{/* hint style="warning" */}
-Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Receive](./receive.mdx) documentation for more information.
-{/* endhint */}
+## Dispatch
 
-```solidity
-    /**
-     * @notice Dispatches a message to the destination domain & recipient.
-     * @param _destinationDomain Domain of destination chain
-     * @param _recipientAddress Address of recipient on destination chain as bytes32
-     * @param _body Raw bytes content of message body
-     * @return The message ID inserted into the Mailbox's merkle tree
-     */
-    function dispatch(
-        uint32 _destination,
-        bytes32 _recipient,
-        bytes calldata _body
-    ) external returns (bytes32) {
+Calling this function dispatches a message to the destination domain and recipient. Depending on the post-`dispatch` [hook configuration](../hooks/overview.mdx), some payment may be required. See the [`quoteDispatch`](#Quote-Dispatch) section for more information.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/Mailbox.sol#L102-L106
 ```
 
+**Parameters**
 
-### Encoding
+|Name|Type|Description|
+|----|----|-----------|
+|`_destinationDomain`|`uint32`|Domain of destination chain|
+|`_recipientAddress`|`bytes32`|Address of recipient on destination chain as bytes32|
+|`_messageBody`|`bytes`|Raw bytes content of message body|
 
-{/* hint style="info" */}
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`bytes32`|The unique message identifier|
+
+:::tip
 Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
-{/* endhint */}
+:::
 
-The following utility is provided in the [`TypeCasts` library](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/TypeCasts.sol) for convenience.
-
-```solidity
-// alignment preserving cast
-function addressToBytes32(address _addr) internal pure returns (bytes32) {
-    return bytes32(uint256(uint160(_addr)));
-}
+The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
+```solidity file=<rootDir>/static/contracts/libs/TypeCasts.sol#L5-L8
 ```
 
-### Paying for Interchain Gas and Protocol Fees.
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
 
-Delivering a message to its destination requires submitting a transaction on the destination chain. For that reason, there is an Interchain Gas Payment system in place to support the payment of a relayer to do that for you. You can read more about it at [https://docs.hyperlane.xyz/docs/protocol/interchain-gas-payments](https://docs.hyperlane.xyz/docs/protocol/interchain-gas-payments). Additionally, Mailboxes may choose to charge a protocol fee.
+Docs coming soon!
 
-Both the IGP payments and protocol fees are implemented as hooks and enabled as the default hook (See more under [Hooks](../hooks/overview)). Not passing enough msg.value to the `dispatch` function will cause it to revert. Thus you should generally call `quoteDispatch` on the `Mailbox` and pass that to the dispatch as so:
+</TabItem>
+<TabItem value="sl" label="Sealevel">
 
-```solidity
-uint256 quote = mailbox.quoteDispatch(destination, recipient, body);
-mailbox.dispatch{value: quote}(destination, recipient, body);
+Docs coming soon!
+
+</TabItem>
+</Tabs>
+
+## Quote Dispatch
+
+To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function. 
+
+:::info
+Fees are often configured to cover extra-protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance.
+:::
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/Mailbox.sol#L149-L153
 ```
+
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`destinationDomain`|`uint32`|Domain of destination chain|
+|`recipientAddress`|`bytes32`|Address of recipient on destination chain as bytes32|
+|`messageBody`|`bytes`|Raw bytes content of message body|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`fee`|`uint256`|The payment required to dispatch the message|
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+Docs coming soon!
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+Docs coming soon!
+
+</TabItem>
+</Tabs>
+
+## Post-Dispatch Hook Config
+
+There are two Mailbox hooks that are configured by the `owner`: required and default. The required hook will be invoked for all `dispatch` calls and the default hook will be invoked unless overriden. See the [Hooks](../hooks/overview.mdx) documentation for more information.
+
+{/* TODO: add diagram */}
+
+### Required
+
+To query the required hook configuration, you can call the `requiredHook` function.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L55
+```
+
+</TabItem>
+</Tabs>
+
+### Default
+
+To query the default hook configuration, you can call the `defaultHook` function.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L53
+```
+
+</TabItem>
+</Tabs>
+
+### Overriding default hook metadata
+
+To override the default hook metadata, there is a `dispatch` overload that accepts a `metadata` parameter to be used in the configured `defaultHook`.
+
+:::tip
+Overriding the default hook metadata is an advanced feature. See the [Hooks](../hooks/overview.mdx) documentation for more information.
+:::
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/Mailbox.sol#L125-L130
+```
+
+</TabItem>
+</Tabs>
+
+### Overriding the default hook and metadata
+
+To override the default hook configuration, there is a `dispatch` overload that accepts a `hook` and hook `metadata` parameters.
+
+:::tip
+Overriding the default hook is an advanced feature. See the [Hooks](../hooks/overview.mdx) documentation for more information.
+:::
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/Mailbox.sol#L270-L276
+```
+
+</TabItem>
+</Tabs>
