@@ -6,12 +6,12 @@ import TabItem from '@theme/TabItem';
 Contracts can send interchain messages by calling the `dispatch` function on the Mailbox.
 
 :::warning
-Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Handle](./receive.mdx "mention") documentation for more information.
+Hyperlane can only deliver messages to smart contracts that implement the `IMessageRecipient` interface. See the [Handle](./receive.mdx) documentation for more information.
 :::
 
 ## Dispatch
 
-Calling this function dispatches a message to the destination domain and recipient. Depending on the post-`dispatch` [hook configuration](../hooks/overview.mdx), some payment may be required. See the [`quoteDispatch`](##quote-dispatch) section for more information.
+Calling this function dispatches a message to the destination domain and recipient. Depending on the post-`dispatch` [hook configuration](../hooks/overview.mdx), some payment may be required. See the [`quoteDispatch`](#Quote-Dispatch) section for more information.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -37,7 +37,7 @@ Calling this function dispatches a message to the destination domain and recipie
 Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
 :::
 
-The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx "mention") for convenience.
+The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
 ```solidity file=<rootDir>/static/contracts/libs/TypeCasts.sol#L5-L8
 ```
 
@@ -97,7 +97,7 @@ Docs coming soon!
 
 ## Post-Dispatch Hook Config
 
-There are two Mailbox hooks that are configured by the `owner`: required and default. The required hook will be invoked for all `dispatch` calls and the default hook will be invoked unless overriden. See the [Hooks](../hooks/overview.mdx "mention") documentation for more information.
+There are two Mailbox hooks that are configured by the `owner`: required and default. The required hook will be invoked for all `dispatch` calls and the default hook will be invoked unless overriden. See the [Hooks](../hooks/overview.mdx) documentation for more information.
 
 {/* TODO: add diagram */}
 
@@ -132,7 +132,7 @@ To query the default hook configuration, you can call the `defaultHook` function
 To override the default hook metadata, there is a `dispatch` overload that accepts a `metadata` parameter to be used in the configured `defaultHook`.
 
 :::tip
-Overriding the default hook metadata is an advanced feature. See the [Hooks](../hooks/overview.mdx "mention") documentation for more information.
+Overriding the default hook metadata is an advanced feature. See the [Hooks](../hooks/overview.mdx) documentation for more information.
 :::
 
 <Tabs groupId="lang">
@@ -149,7 +149,7 @@ Overriding the default hook metadata is an advanced feature. See the [Hooks](../
 To override the default hook configuration, there is a `dispatch` overload that accepts a `hook` and hook `metadata` parameters.
 
 :::tip
-Overriding the default hook is an advanced feature. See the [Hooks](../hooks/overview.mdx "mention") documentation for more information.
+Overriding the default hook is an advanced feature. See the [Hooks](../hooks/overview.mdx) documentation for more information.
 :::
 
 <Tabs groupId="lang">

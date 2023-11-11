@@ -10,7 +10,7 @@ Contracts can receive interchain messages by implementing the `handle` function.
 This function is called by the `Mailbox` contract when a message is received.
 
 :::danger
-To ensure only valid interchain messages are accepted, it is important to restrict [access control](##access-control) to the Mailbox address.
+To ensure only valid interchain messages are accepted, it is important to restrict [access control](#access-control) to the Mailbox address.
 :::
 
 <Tabs groupId="lang">
@@ -31,7 +31,7 @@ To ensure only valid interchain messages are accepted, it is important to restri
 Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
 :::
 
-The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx "mention") for convenience.
+The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
 ```solidity file=<rootDir>/static/contracts/libs/TypeCasts.sol#L10-L13
 ```
 
