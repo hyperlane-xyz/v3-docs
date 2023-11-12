@@ -116,6 +116,10 @@ const config = {
                 label: "Get Started",
                 to: "/docs/intro",
               },
+                            {
+                label: "Contract Interfaces",
+                to: "/docs/reference/messaging/messaging-interface",
+              },
             ],
           },
           {
