@@ -46,10 +46,7 @@ const config = {
         docs: {
           remarkPlugins: [[codeImport, { removeRedundantIndentations: true }]],
           sidebarPath: require.resolve("./sidebars.js"),
-          /** 
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-            */
+          editUrl: 'https://github.com/hyperlane-xyz/v3-docs/tree/main/'
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
