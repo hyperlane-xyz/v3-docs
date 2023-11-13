@@ -292,9 +292,31 @@ const sidebars = {
           label: "Unit Testing",
         },
         {
-          type: "doc",
-          id: "guides/developer-tips/explorer-debugging",
+          type: "category",
           label: "Explorer Debugging",
+          link: {
+            type: 'doc',
+            id: 'guides/developer-tips/explorer-debugging',
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/developer-tips/configuring-pi-chains",
+              label: "Configuring PI Chains",
+            },
+            {
+              type: "doc",
+              id: "guides/developer-tips/rest-api",
+              label: "REST API",
+            },
+            {
+              type: "doc",
+              id: "guides/developer-tips/graphql-api",
+              label: "GraphQL API",
+            },
+          ],
         },
         {
           type: 'doc',
