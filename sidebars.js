@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "doc",
       id: "intro",
-      label: "Why Hyperlane",
+      label: "Choosing Hyperlane",
     },
     {
       type: "doc",
