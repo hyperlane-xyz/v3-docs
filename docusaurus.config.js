@@ -46,10 +46,7 @@ const config = {
         docs: {
           remarkPlugins: [[codeImport, { removeRedundantIndentations: true }]],
           sidebarPath: require.resolve("./sidebars.js"),
-          /** 
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-            */
+          editUrl: 'https://github.com/hyperlane-xyz/v3-docs/tree/main/'
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -172,12 +169,17 @@ const config = {
         darkTheme: darkCodeTheme,
       },
       mermaid: {
+        theme: {
+          light: "base",
+          dark: "base",
+        },
         options: {
-          theme: "neutral",
+          // see https://github.com/mermaid-js/mermaid/blob/aa5d586bd64c3aa8e42f6ea60bcd22109b8b4083/packages/mermaid/src/themes/theme-base.js#L55
           themeVariables: {
-            mainBkg: "#025AA1",
-            textColor: "white",
-            clusterBkg: "white",
+            mainBkg: "#205AB0",
+            nodeTextColor: "white",
+            edgeLabelBackground: "#FFFFFF",
+            clusterBkg: "white"
           },
           themeCSS: ".edgeLabel { color: black }",
         },
