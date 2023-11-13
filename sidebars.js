@@ -158,6 +158,11 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "reference/domains",
+      label: "Domains",
+    },
+    {
+      type: "doc",
       id: "reference/glossary",
       label: "Glossary",
     },
