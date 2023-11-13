@@ -11,11 +11,11 @@ flowchart LR
     subgraph Origin Chain
       Sender
       M_O[(Mailbox)]
-      Sender -- "dispatch(destination, recipient, body)" --> M_O
+      Sender -- dispatch(destination, recipient, body) --> M_O
     end
 
     subgraph Destination Chain
-      Recipient[IMessageRecipient]
+      Recipient[Recipient]
       M_D[(Mailbox)]
 
       M_D -- "handle(origin, sender, body)" --> Recipient

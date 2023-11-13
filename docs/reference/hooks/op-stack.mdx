@@ -8,17 +8,6 @@ The rollup node calls the precompiled contract `L2CrossDomainMessenger`'s relayM
 This is currently deployed between Goerli -> Optimism Goerli and Goerli -> Base Goerli. See contract deployments [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/sdk/src/consts/environments/testnet.json)
 
 ```mermaid
-%%{ init: {
-  "theme": "neutral",
-  "themeVariables": {
-    "mainBkg": "#2362c0",
-    "textColor": "white",
-    "clusterBkg": "white"
-  },
-  "themeCSS": ".edgeLabel { color: black }",
-  "flowchart": {"useMaxWidth": "true" }
-}}%%
-
 flowchart TB
     Relayer((Relayer))
 
