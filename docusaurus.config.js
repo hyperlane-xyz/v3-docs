@@ -77,27 +77,27 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "protocolSidebar",
-            position: "left",
-            label: "🧠 Protocol",
-          },
-          {
-            type: "docSidebar",
             sidebarId: "referenceSidebar",
             position: "left",
             label: "📖 Reference",
           },
           {
             type: "docSidebar",
-            sidebarId: "guidesSidebar",
-            position: "left",
-            label: "🧭 Guides",
-          },
-          {
-            type: "docSidebar",
             sidebarId: "operateSidebar",
             position: "left",
             label: "⚙️ Operate",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "protocolSidebar",
+            position: "left",
+            label: "🧠 Protocol",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "guidesSidebar",
+            position: "left",
+            label: "🧭 Guides",
           },
           {
             href: "https://github.com/hyperlane-xyz",

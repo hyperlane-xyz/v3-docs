@@ -201,7 +201,7 @@ const sidebars = {
       label: "Interchain Security Modules",
       link: {
         type: "generated-index",
-        description: "Hyperlane is secured by Interchain Security Modules (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were actually sent on the origin chain. Hyperlane developers can optionally override the Mailbox's default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.",
+        description: "Hyperlane is secured by Interchain Security Modules (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were actually sent on the origin chain. Hyperlane developers can optionally override the Mailbox's default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application. ISMs act as security building blocks - developers can mix and match different ISMs together to encode a security model that best fits their needs. Lastly, ISMs are fully customizable: devs can write their own ISMs, tailoring them to the needs of their application.",
       },
       collapsible: true,
       collapsed: true,
