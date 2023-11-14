@@ -371,12 +371,12 @@ const sidebars = {
         {
           type: "doc",
           id: "operate/validators/validator-guide",
-          label: "Validator Guide",
+          label: "Local Environment",
         },
         {
           type: "doc",
           id: "operate/validators/validator-aws",
-          label: "AWS Setup",
+          label: "AWS Production Setup",
         },
         {
           type: "doc",
