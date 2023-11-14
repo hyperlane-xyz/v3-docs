@@ -1,3 +1,28 @@
 # Economic Security
 
-## Staking & Slashing
+:::info
+
+Hyperlane is committed to making fraud costly. Staking and slashing are coming soon and are not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
+
+:::
+
+Staking and slashing allow economic security to be added to ISMs that rely on validator signatures, including [Multisig ISM](./ISM/multisig-ISM.mdx) and Optimistic ISM.
+
+Hyperlane validators can optionally participate in Hyperlane's staking protocol. Later, if these validators attempt to falsify or censor interchain messages, their stake, and any stake delegated to them, can be slashed.
+
+[Interchain Security Modules](../category/interchain-security-modules) that depend on signatures from these validators benefit from the additional economic security provided by staking and slashing.
+
+### Verifiable fraud proofs
+
+Unlike many other interchain communication protocols, Hyperlane's slashing protocol uses **verifiable fraud proofs**.
+
+This means that the Hyperlane protocol is able to verify whether or not a validator signed a fraudulent checkpoint without any participation from trusted parties.
+
+This is possible because the stake put up by validators lives on the **same chain** as the state (i.e. the Mailbox merkle root) that they're attesting to. The slashing smart contract can compare the validator signature with the latest root, and do some complicated merkle tree manipulation to confirm whether or not the checkpoint signed by the validator was fraudulent.
+
+In many other interchain communication protocols, it is common for a validator's stake to live on a **different chain** than the chain from which an interchain message originated.
+
+What this means is that in order for a fraudulent validator to have their stake slashed, the same message passing protocol must relay a message to the chain where the stake lives. You can see the problem with this right? The same validator set where fraud occurred is the mechanism by which evidence of that fraud is delivered, what could go wrong?
+
+Hyperlane doesn't want to allow for that possibility, thus in Hyperlane validators must keep their bonded stake on the origin chain for which they are validating. This means fraud proofs are trustlessly verifiable. The record of fraud that is examined for slashing exists in the same environment as the stake to be slashed, leaving no room for error with the process of fraud proofs.
+
