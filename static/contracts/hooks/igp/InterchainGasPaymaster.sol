@@ -159,10 +159,10 @@ contract InterchainGasPaymaster is
      * @param _refundAddress The address to refund any overpayment to.
      */
     function payForGas(
-        bytes32 _messageId,
-        uint32 _destinationDomain,
-        uint256 _gasLimit,
-        address _refundAddress
+        bytes32 messageId,
+        uint32 destinationDomain,
+        uint256 gasLimit,
+        address refundAddress
     ) public payable override {
         uint256 _requiredPayment = quoteGasPayment(
             _destinationDomain,
@@ -192,12 +192,12 @@ contract InterchainGasPaymaster is
      * @param _gasLimit The amount of destination gas to pay for.
      * @return The amount of native tokens required to pay for interchain gas.
      */
-    function quoteGasPayment(uint32 _destinationDomain, uint256 _gasLimit)
+    function quoteGasPayment(uint32 destinationDomain, uint256 gasLimit)
         public
         view
         virtual
         override
-        returns (uint256)
+        returns (uint256 fee)
     {
         // Get the gas data for the destination domain.
         (
@@ -221,7 +221,7 @@ contract InterchainGasPaymaster is
      * @return tokenExchangeRate The exchange rate of the remote native token quoted in the local native token.
      * @return gasPrice The gas price on the remote chain.
      */
-    function getExchangeRateAndGasPrice(uint32 _destinationDomain)
+    function getExchangeRateAndGasPrice(uint32 destinationDomain)
         public
         view
         override

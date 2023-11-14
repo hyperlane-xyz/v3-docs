@@ -31,7 +31,7 @@ Exchange rates and gas prices are up to the relayer to decide. A spread may be c
 
 **Parameters**
 
-- `_destinationDomain`: The message's destination domain
+- `destinationDomain`: The message's destination domain
 
 **Returns**
 - `tokenExchangeRate`: The exchange rate between the origin and destination chain's gas tokens
@@ -49,8 +49,8 @@ Because messages can trigger arbitrary code execution, the relayer must meter th
 ```
 
 **Parameters**
-- `_destinationDomain`: The message's destination domain
-- `_gasLimit`: The gas limit to meter the `handle` call with
+- `destinationDomain`: The message's destination domain
+- `gasLimit`: The gas limit to meter the `handle` call with
 
 **Returns**
 - `fee`: The payment required for the `postDispatch` to succeed
@@ -95,8 +95,8 @@ This hook expects metadata from the Mailbox to be formatted with the [`StandardH
 ```
 
 **Parameters**
-- `_gasLimit`: The gas limit to meter the `handle` call with
-- `_refundAddress`: The address to refund excess payment to
+- `gasLimit`: The gas limit to meter the `handle` call with
+- `refundAddress`: The address to refund excess payment to
 
 **Returns**
 - `metadata`: The metadata to be passed to the `dispatch` call
@@ -116,10 +116,10 @@ If the `handle` call consumes more gas than quoted, the relayer will not submit 
 ```
 
 **Parameters**
-- `_messageId`: The message identifier returned from `dispatch` call
-- `_destinationDomain`: The message's destination domain
-- `_gasAmount`: The additional gas amount to pay for
-- `_refundAddress`: The address to refund excess payment to
+- `messageId`: The message identifier returned from `dispatch` call
+- `destinationDomain`: The message's destination domain
+- `gasAmount`: The additional gas amount to pay for
+- `refundAddress`: The address to refund excess payment to
 
 </TabItem>
 </Tabs>
