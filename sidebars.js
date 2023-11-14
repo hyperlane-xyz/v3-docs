@@ -175,9 +175,21 @@ const sidebars = {
       label: "Overview",
     },
     {
-      type: "doc",
-      id: "protocol/mailbox",
+      type: "category",
       label: "Mailbox",
+      link: {
+        type: "doc",
+        id: "protocol/mailbox",
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "protocol/interchain-gas-payment",
+          label: "Interchain Gas Payment",
+        },
+      ],
     },
     {
       type: "doc",
