@@ -22,13 +22,13 @@ interface IInterchainGasPaymaster {
     );
 
     function payForGas(
-        bytes32 _messageId,
-        uint32 _destinationDomain,
-        uint256 _gasAmount,
-        address _refundAddress
+        bytes32 messageId,
+        uint32 destinationDomain,
+        uint256 gasAmount,
+        address refundAddress
     ) external payable;
 
-    function quoteGasPayment(uint32 _destinationDomain, uint256 _gasAmount)
+    function quoteGasPayment(uint32 destinationDomain, uint256 gasAmount)
         external
         view
         returns (uint256);
