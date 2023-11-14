@@ -46,6 +46,8 @@ interface IMailbox {
 
     function localDomain() external view returns (uint32);
 
+    function nonce() external view returns (uint32);
+
     function delivered(bytes32 messageId) external view returns (bool);
 
     function defaultIsm() external view returns (IInterchainSecurityModule);

@@ -59,6 +59,9 @@ const config = {
     /** @type {import("@docusaurus/types").ThemeConfig} */
     ({
       image: "img/docusaurus-social-card.jpg",
+      colorMode: {
+        respectPrefersColorScheme: true,
+      },
       navbar: {
         title: "Hyperlane",
         logo: {
@@ -79,16 +82,16 @@ const config = {
             label: "🧠 Protocol",
           },
           {
-            type: 'docSidebar',
-            sidebarId: 'referenceSidebar',
-            position: 'left',
-            label: '📖 Reference',
+            type: "docSidebar",
+            sidebarId: "referenceSidebar",
+            position: "left",
+            label: "📖 Reference",
           },
           {
-            type: 'docSidebar',
-            sidebarId: 'guidesSidebar',
-            position: 'left',
-            label: '🧭 Guides',
+            type: "docSidebar",
+            sidebarId: "guidesSidebar",
+            position: "left",
+            label: "🧭 Guides",
           },
           {
             type: "docSidebar",
@@ -104,7 +107,6 @@ const config = {
         ],
       },
       footer: {
-        style: "dark",
         links: [
           {
             title: "Docs",
