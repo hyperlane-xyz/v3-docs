@@ -359,14 +359,53 @@ const sidebars = {
 
   operateSidebar: [
     {
-      type: "doc",
-      id: "operate/run-validators",
+      type: "category",
       label: "Run Validators",
+      link: {
+        type: 'doc',
+        id: 'operate/validators/run-validators',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "operate/validators/validator-guide",
+          label: "Validator Guide",
+        },
+        {
+          type: "doc",
+          id: "operate/validators/validator-aws",
+          label: "AWS Setup",
+        },
+        {
+          type: "doc",
+          id: "operate/validators/monitoring-alerting",
+          label: "Monitoring & Alerting",
+        },
+      ],
     },
     {
-      type: "doc",
-      id: "operate/run-relayer",
-      label: "Run Relayers",
+      type: "category",
+      label: "Run Relayer",
+      link: {
+        type: 'doc',
+        id: 'operate/relayer/run-relayer',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "operate/relayer/relayer-guide",
+          label: "Relayer Guide",
+        },
+        {
+          type: "doc",
+          id: "operate/relayer/message-filtering",
+          label: "Message Filtering",
+        },
+      ],
     },
     {
       type: "doc",
@@ -374,9 +413,21 @@ const sidebars = {
       label: "Agent Keys",
     },
     {
-      type: "doc",
-      id: "operate/agent-config",
+      type: "category",
       label: "Agent Config",
+      link: {
+        type: 'doc',
+        id: 'operate/agent-config',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "operate/config-reference",
+          label: "Config Reference",
+        },
+      ]
     },
     {
       type: "doc",

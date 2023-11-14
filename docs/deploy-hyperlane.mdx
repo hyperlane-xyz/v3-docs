@@ -95,11 +95,11 @@ The `agent-config` file contains the data needed to run Hyperlane agents for the
 
 ## 3. Run validators 
 
-Follow the [Validators](./operate/run-validators.mdx) guide to run validators for the Mailbox on your local chain. These validators will provide the security for messages sent _from_ your chain to remote chains.
+Follow the [Validators](./operate/validators/run-validators.mdx) guide to run validators for the Mailbox on your local chain. These validators will provide the security for messages sent _from_ your chain to remote chains.
 
 Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
 
-You should have already set up your validator keys in [step 1](#1-set-up-keys), so you can skip that part of the [Validators](./operate/run-validators.mdx) guide.
+You should have already set up your validator keys in [step 1](#1-set-up-keys), so you can skip that part of the [Validators](./operate/validators/run-validators.mdx) guide.
 
 :::info
 
@@ -109,13 +109,13 @@ Make sure these validators match the addresses you provided when in your Multisi
 
 ## 4. Run relayers
 
-Follow the [Relayer](./operate/run-relayer.mdx) guide to run a relayer that will deliver interchain messages sent between the local and remote chains.
+Follow the [Relayer](./operate/relayer/run-relayer.mdx) guide to run a relayer that will deliver interchain messages sent between the local and remote chains.
 
 Remember to set `--relayChains` or `HYP_BASE_RELAYCHAINS` appropriately.
 
 
 Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
-You should have already set up your relayer keys in [step 1](#1-set-up-keys), so you can skip that part of the [Relayer](./operate/run-relayer.mdx) guide.
+You should have already set up your relayer keys in [step 1](#1-set-up-keys), so you can skip that part of the [Relayer](./operate/relayer/run-relayer.mdx) guide.
 
 ## 5. Send test messages
 
