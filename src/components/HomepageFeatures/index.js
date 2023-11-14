@@ -17,7 +17,7 @@ const FeatureList = [
     Svg: require('@site/static/img/hyp_ecosystem_landing.svg').default,
     description: (
       <>
-        Works seamlessly across many VMs and chains, including EVM, Solana, Cosmos, Move and more. 
+        Works seamlessly across many VMs and chains, including EVM, Solana, Cosmos, Move and more. Hyperlane can be implemented in <b>any environment</b>.
       </>
     ),
   },
@@ -26,7 +26,7 @@ const FeatureList = [
     Svg: require('@site/static/img/hyp_security_landing.svg').default,
     description: (
       <>
-        Customize your interchain security; from authority based security, to economic security and even ZK light clients. Leverage the context of users' actions in your protocol's security.
+        Customize your interchain security; from authority based security, to economic security and ZK light clients, or even rollup bridges and external providers.
       </>
     ),
   },
