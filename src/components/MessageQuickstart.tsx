@@ -68,7 +68,7 @@ export default function MessageQuickstart() {
             </li>
             <li>
               Click on the <code>Connect to Web3</code> button to connect your
-              Wallet. Make sure you are on {origin}.
+              Wallet. Make sure you are on {originChain}.
             </li>
             <li>
               Fill in destination: <code>{destinationDomain}</code>, recipient: <code>
