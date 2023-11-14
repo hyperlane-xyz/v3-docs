@@ -57,12 +57,12 @@ const sidebars = {
         {
           type: "doc",
           id: "reference/messaging/send",
-          label: "Dispatch",
+          label: "Send a message",
         },
         {
           type: "doc",
           id: "reference/messaging/receive",
-          label: "Handle",
+          label: "Receive a message",
         },
       ],
     },

@@ -1,9 +1,15 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
+
+import MessagingIsmDiagram from '@site/src/diagrams/messaging-isms.md';
+
 # Receive a message
 
 Contracts can receive interchain messages by implementing the `handle` function.
+
+<SimpleMessagingDiagram/>
 
 ## Handle
 
@@ -21,70 +27,76 @@ To ensure only valid interchain messages are accepted, it is important to restri
 
 **Parameters**
 
-|Name|Type|Description|
-|----|----|-----------|
-|`_origin`|`uint32`|Domain of origin chain|
-|`_sender`|`bytes32`|Address of sender on origin chain as bytes32|
-|`_messageBody`|`bytes`|Raw bytes content of message body|
+- `origin`: Domain of origin chain
+- `sender`: Address of sender on origin chain as bytes32
+- `messageBody`: Raw bytes content of message body
 
 :::tip
 Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
-:::
 
 The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
 ```solidity file=<rootDir>/static/contracts/libs/TypeCasts.sol#L10-L13
 ```
+:::
 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-Docs coming soon!
+🚧 Coming soon! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-Docs coming soon!
+🚧 Coming soon! 🚧
 
 </TabItem>
 </Tabs>
 
-## Access Control
+### Access Control
 
-Examples of valid Mailbox access control are included below.
+The following utility is provided in the [`MailboxClient` library](../libraries/mailboxclient.mdx) for convenience.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
 
-```solidity
-modifier onlyMailbox() {
-    require(msg.sender == mailbox);
-    _;
-}
-
-function handle(
-    uint32 _origin,
-    bytes32 _sender,
-    bytes calldata _body
-) external onlyMailbox {};
+```solidity file=<rootDir>/static/contracts/client/MailboxClient.sol#L45-L51
 ```
 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-Docs coming soon!
+🚧 Coming soon! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-Docs coming soon!
+🚧 Coming soon! 🚧
 
 </TabItem>
 </Tabs>
 
-## Modular Security
+## Verify
 
-{/* TODO: links */}
-To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages.
+When a message is received, the Mailbox will verify security with an [Interchain Security Module](../ISM/ISM-interface.mdx) before calling the message recipient's `handle`.
+
+<MessagingIsmDiagram/>
+
+### Default Security
+
+To query the default ISM configuration, you can call the `defaultIsm` function.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L53
+```
+
+</TabItem>
+</Tabs>
+
+### Modular Security
+
+To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages. The Mailbox will defer to this ISM when specified.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -95,35 +107,12 @@ To leverage Hyperlane's modular security, message recipients can specify a custo
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-Docs coming soon!
+🚧 Coming soon! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-Docs coming soon!
-
-</TabItem>
-</Tabs>
-
-### Examples
-
-Example `handle` implementations are included below for reference.
-
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity file=<rootDir>/static/contracts/test/TestRecipient.sol#L30-L38
-```
-
-</TabItem>
-<TabItem value="cw" label="CosmWasm">
-
-Docs coming soon!
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-Docs coming soon!
+🚧 Coming soon! 🚧
 
 </TabItem>
 </Tabs>

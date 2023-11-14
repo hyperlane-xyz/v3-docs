@@ -1,25 +1,75 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
+
 # Mailbox
 
-Hyperlane's generalized message passing (GMP) interface is implemented as a smart contract called the Mailbox. This contract allows other smart contracts to send and receive information (messages) between chains.
+Hyperlane's generalized message passing (GMP) interface is implemented as a smart contract called the Mailbox. This contract encodes and decodes [message headers](#message-headers), ensures global message [uniqueness](#uniqueness), and prevents [replay attacks](#replay-protection).
+
+<SimpleMessagingDiagram/>
 
 To [**send**](./send.mdx) interchain messages, call the `dispatch` function.
 
 To [**receive**](./receive.mdx) interchain messages, implement the `handle` function.
 
-```mermaid
-flowchart LR
-    subgraph Origin Chain
-      Sender
-      M_O[(Mailbox)]
-      Sender -- dispatch(destination, recipient, body) --> M_O
-    end
+## Message Headers
 
-    subgraph Destination Chain
-      Recipient[Recipient]
-      M_D[(Mailbox)]
+The Mailbox prepends message bodies with a header containing the following fields:
 
-      M_D -- "handle(origin, sender, body)" --> Recipient
-    end
+- `version`: The version of the Mailbox contract
+- `nonce`: A unique identifier for each message sent from a given Mailbox
+- `origin`: The domain of the origin chain
+- `sender`: The address of the sender on the origin chain
+- `destination`: The address of the destination chain
+- `recipient`: The address of the recipient on the destination chain
 
-    M_O -. "relay" .-> M_D
+See the [`Message` library](../libraries/message.mdx) for more information on the message encoding.
+
+## Uniqueness
+
+The `nonce` is monotonically increasing integer for each message sent from a given Mailbox. It is incremented each time a message is dispatched to serve as a separator for otherwise identical messages.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L49
 ```
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+</Tabs>
+
+The `messageId` is a globally unique message identifier, returned from the `dispatch` call, computed as the `keccak256` hash of the message (with headers).
+
+## Replay Protection
+
+The Mailbox maintains a mapping of already delivered `messageId` values to prevent replay attacks. If a message is received with a `messageId` that has already been delivered, the message is rejected.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L51
+```
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+</Tabs>
