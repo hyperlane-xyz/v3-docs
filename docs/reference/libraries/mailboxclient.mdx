@@ -6,7 +6,7 @@ This mix-in contract maintains a pointers to the three contracts Hyperlane devel
 
 1. [`Mailbox`](../messaging/messaging-interface.mdx) (required)
 2. [`IPostDispatchHook`](../hooks/interchain-gas.mdx) (optional)
-3. [`IInterchainSecurityModule`](../security/interchain-security-module.mdx) (optional)
+3. [`IInterchainSecurityModule`](../ISM/ISM-interface.mdx) (optional)
 
 `MailboxClient` exposes functions that allow subclasses to easily send messages to the `Mailbox` via the `mailbox` storage variable, and permission message delivery via the `onlyMailbox` modifier.
 
