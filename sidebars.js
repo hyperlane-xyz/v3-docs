@@ -253,29 +253,6 @@ const sidebars = {
       label: "v2 to v3 Migration",
     },
     {
-      type: "category",
-      label: "Interchain Gas",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/IGP/manually-paying-interchain-gas",
-          label: "Pay manually",
-        },
-        {
-          type: "doc",
-          id: "guides/IGP/automatically-paying-interchain-gas",
-          label: "Auto pay gas",
-        },
-        {
-          type: "doc",
-          id: "guides/IGP/choosing-IGP-contract",
-          label: "Choose IGP contract",
-        },
-      ],
-    },
-    {
       type: "doc",
       id: "guides/deploy-warp-route",
       label: "Deploy Warp Route",
