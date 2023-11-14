@@ -1,0 +1,1964 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Configuration Reference
+
+
+## CONFIG_FILES
+
+**Description:** (Env only) List of additional configuration file paths to load in order (such as those in `hyperlane-monorepo/rust/config`). They will be merged first to last, so if both the first one and the last one specify a specific config path, the value set in the last file listed will be used.
+
+These files must be accessible within the filesystem your agent has access to. If you're running in Docker, see [#config-files-with-docker](./#config-files-with-docker "mention") for tips on mounting your config files into your Docker container.
+
+**Optional:** Yes
+
+**Agents:** All
+
+**Type:** `string` (Comma separated list of file paths)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+Not supported as an argument
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export CONFIG_FILES='./config/ethereum/my-config.json,./config/ethereum/my-validator-config.json'
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+Not supported in configuration files
+</TabItem>
+</Tabs>
+
+## chains
+
+**Description:** Configuration for each of the chains that must be used by an agent.
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `Map<string, ChainSetup (Object)>` (See `chains.*` for `ChainSetup` values)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.*
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+HYP_BASE_CHAINS_${CHAIN_NAME}_*
+HYP_BASE_CHAINS_ETHEREUM_*
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {},
+        "ethereum": {}
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.name
+
+**Description:** Name of the domain. Allows specifying a different name for the domain than the chain's true name. This should _almost always_ be the same as `chain_name`.
+
+**Requires:** Alignment with domain id if it is a known domain name.
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```sh
+--chains.${CHAIN_NAME}.name $DOMAIN_NAME
+--chains.ethereum.name ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+HYP_BASE_CHAINS_${CHAIN_NAME}_NAME="$DOMAIN_NAME"
+HYP_BASE_CHAINS_ETHEREUM_NAME="ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "name": "<domain_name>"
+        },
+        "ethereum": {
+            "name": "ethereum"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.domain
+
+**Description:** Hyperplane domain id to uniquely identify the domain. See also: [Domain Identifiers](../reference/domains.mdx).
+
+**Requires:** Alignment with domain name if it is a known domain.
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.domain $DOMAIN_ID
+--chains.ethereum.domain 1
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_DOMAIN="$DOMAIN_NAME"
+export HYP_BASE_CHAINS_ETHEREUM_DOMAIN=1
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "domain": "<domain_id>"
+        },
+        "ethereum": {
+            "domain": 1
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.finalityBlocks
+
+**Description:** Number of blocks to wait before considering the blockchain state to be final. See also [latencies](../guides/latencies.mdx) for help choosing an appropriate finality.
+
+**Optional:** Defaults to `0`
+
+**Agents:** All
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.finalityBlocks $FINALITY_BLOCKS
+--chains.ethereum.finalityBlcoks 20
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_FINALITY_BLOCKS="$FINALITY_BLOCKS"
+export HYP_BASE_CHAINS_ETHEREUM_FINALITY_BLOCKS=20
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "finalityBlocks": "<finality_blocks>"
+        },
+        "ethereum": {
+            "finalityBlocks": 20
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.addresses.mailbox
+
+**Description:** Address of the mailbox contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.addresses.mailbox "$MAILBOX_ADDRESS"
+--chains.ethereum.addresses.mailbox "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_ADDRESSES_MAILBOX="$MAILBOX_ADDRESS"
+export HYP_BASE_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "mailbox": "<mailbox_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "mailbox": "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.addresses.interchainGasPaymaster
+
+**Description:** Address of the interchain gas paymaster contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.addresses.interchainGasPaymaster "$IGP_ADDRESS"
+--chains.ethereum.addresses.interchainGasPaymaster "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="$IGP_ADDRESS"
+export HYP_BASE_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "interchainGasPaymaster": "<igp_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "interchainGasPaymaster": "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.addresses.validatorAnnounce
+
+**Description:** Address of the validator announce contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.addresses.validatorAnnounce "$VALIDATOR_ANNOUNCE_ADDRESS"
+--chains.ethereum.addresses.validatorAnnounce "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_ADDRESSES_VALIDATOR_ANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
+export HYP_BASE_CHAINS_ETHEREUM_ADDRESSES_VALIDATOR_ANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "validatorAnnounce": "<validator_announce_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "validatorAnnounce": "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer
+
+**Description:** The signer that should be used this chain
+
+**Optional:** Yes (Will use `defaultsigner` if not specified)
+
+**Agents:** All
+
+**Type:** `SignerConf (Object)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.signer.*
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+HYP_BASE_CHAINS_${CHAIN_NAME}_SIGNER_*
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {}
+        },
+        "ethereum": {
+            "signer": {}
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.type
+
+**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+
+**Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
+
+**Agents:** All
+
+**Type:** `Enum ("hexKey" | "aws" | "node")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.signer.type hexKey
+--chains.ethereum.signer.type node
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {
+                "type": "hexKey"
+            }
+        },
+        "ethereum": {
+            "signer": {
+                "type": "node"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.key
+
+**Description:** A local hex key. The hex string of a private key.
+
+**Requires:** `chains.<chain_name>.signer.type = "hexKey" | undefined`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.signer.key "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {
+                "key": "<key_in_hex>"
+            }
+        },
+        "ethereum": {
+            "signer": {
+                "key": "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.id
+
+**Description:** The UUID identifying the AWS KMS key
+
+**Requires:** `chains.<chain_name>.signer.type = "aws"`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.ethereum.signer.type "alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "ethereum": {
+            "signer": {
+                "type": "aws",
+                "id": "alias/validator-signer-ethereum"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.region
+
+**Description:** The AWS region
+
+**Requires:** `chains.<chain_name>.signer.type = "aws"`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.signer.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_CHAINS_${CHAIN_NAME}_SIGNER_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {
+                "type": "aws",
+                "region": "us-east-1"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.protocol
+
+**Description:** Connection protocol to use.
+
+**Optional:** Defaults to `"ethereum"`
+
+**Agents:** All
+
+**Type:** `Enum ("ethereum" | "fuel")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.protocol ethereum
+--chains.ethereum.protocol ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_PROTOCOL="ethereum"
+export HYP_BASE_CHAINS_ARBITRUM_PROTOCOL="ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "protocol": "<protocol>"
+        },
+        "arbitrum": {
+            "protocol": "ethereum"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.connection.type
+
+**Description:** How to communicate with the provider
+
+* `"http"` uses a basic http connection
+* `"ws"` uses a basic websocket connection
+* `"httpFallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
+* `"httpQuorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+
+**Requires:** `chains.<chain_name>.protocol = "ethereum" | undefined`
+
+**Optional:** Defaults to `"http"`
+
+**Agents:** All
+
+**Type:** `Enum ("http", "ws", "httpFallback", "httpQuorum")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.connection.type http
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_CONNECTION_TYPE="url"
+export HYP_BASE_CHAINS_ETHEREUM_CONNECTION_TYPE="httpFallback"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "connection": {
+                "type": "http"
+            }
+        },
+        "ethereum": {
+            "connection": {
+                "type": "httpFallback"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.connection.url
+
+**Description:** Url to connect to
+
+**Requires:**
+
+```
+((chains.`<chain_name>`.protocol = "ethereum" | undefined)
+    AND (chains.`<chain_name>`.connection.type = "http" | "ws" | undefined)
+) OR chains.`<chain_name>`.protocol = "fuel"
+```
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.connection.url "$CONNECTION_URL"
+--chains.ethereum.connection.url "http://127.0.0.1:8545"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_CONNECTION_URL="$CONNECTION_URL"
+export HYP_BASE_CHAINS_ETHEREUM_CONNECTION_URL="http://127.0.0.1:8545"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "connection": {
+                "url": "<connection_url>"
+            }
+        },
+        "ethereum": {
+            "connection": {
+                "url": "http://127.0.0.1:8545"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.connection.urls
+
+**Description:**
+
+**Requires:**
+
+```
+(chains.`<chain_name>`.protocol = "ethereum" | undefined)
+    AND (chains.`<chain_name>`.connection.type = "httpFallback" | "httpQuorum")
+```
+
+**Optional:** No (iff requirements are met)
+
+**Agents:**
+
+**Type:** `string` (comma separated list of urls without spaces)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.connection.urls "$CONNECTION_URLS"
+--chains.ethereum.connection.urls "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_CONNECTION_URLS="$CONNECTION_URLS"
+export HYP_BASE_CHAINS_ETHEREUM_CONNECTION_URLS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "connection": {
+                "urls": "<connection_urls>"
+            }
+        },
+        "ethereum": {
+            "connection": {
+                "urls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.index.from
+
+**Description:** Height at which to start indexing contracts.
+
+**Optional:** Defaults to `0`
+
+**Agents:** Relayer & Scraper
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.index.from 0
+--chains.ethereum.index.from 16271503
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_INDEX_FROM=0
+export HYP_BASE_CHAINS_ETHEREUM_INDEX_FROM=16271503
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "index": {
+                "from": 0
+            }
+        },
+        "ethereum": {
+            "index": {
+                "from": 16271503
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.index.chunk
+
+**Description:** Number of blocks to query at once when indexing contracts. Note that the configured providers must support whatever value is set. The default should work with nearly all providers.
+
+**Optional:** Defaults to `1999`
+
+**Agents:** Relayer & Scraper
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.index.chunk 1999
+--chains.ethereum.index.chunk 1999
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHAINS_${CHAIN_NAME}_INDEX_CHUNK=1999
+export HYP_BASE_CHAINS_ETHEREUM_INDEX_CHUNK=1999
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "index": {
+                "chunk": 1999
+            }
+        },
+        "ethereum": {
+            "index": {
+                "chunk": 1999
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner
+
+**Description:** The default signer that should be used for all chains which did not specify their own.
+
+**Optional:** Yes
+
+**Agents:** All
+
+**Type:** `SignerConf (Object)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```
+--defaultSigner.*
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+HYP_BASE_DEFAULTSIGNER_*
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "defaultsigner": {}
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.type
+
+**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+
+**Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
+
+**Agents:** All
+
+**Type:** `Enum ("hexKey" | "aws" | "node")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```
+--defaultSigner.type hexKey
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_DEFAULTSIGNER_TYPE="hexKey"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "defaultsigner": {
+        "type": "hexKey"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.key
+
+**Description:** A local hex key. The hex string of a private key.
+
+**Requires:** `defaultsigner.type = "hexKey" | undefined`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--defaultSigner.key "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "defaultsigner": {
+        "type": "hexKey",
+        "key": "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.id
+
+**Description:** The UUID identifying the AWS KMS key
+
+**Requires:** `defaultsigner.type = "aws"`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--defaultSigner.id "alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_DEFAULTSIGNER_ID="alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "defaultsigner": {
+        "type": "aws",
+        "id": "alias/validator-signer-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.region
+
+**Description:** The AWS region
+
+**Requires:** `defaultsigner.type = "aws"`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--defaultSigner.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_DEFAULTSIGNER_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "defaultsigner": {
+        "type": "aws",
+        "region": "us-east-1"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## metrics
+
+**Description:** Port to expose prometheus metrics on
+
+**Optional:** Defaults to `9090`
+
+**Agents:** All
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--metrics 9090
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_METRICS=9090
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "metrics": 9090
+}
+```
+</TabItem>
+</Tabs>
+
+## tracing.fmt
+
+**Description:** Configuration for the tracing module. This controls logging.
+
+**Optional:** Defaults to `pretty`
+
+**Agents:** All
+
+**Type:** `Enum ("pretty" | "json" | "full" | "compact")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--tracing.fmt pretty
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_TRACING_FMT="pretty"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "tracing": {
+        "fmt": "pretty"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## tracing.level
+
+**Description:** Configuration for the tracing module. This controls logging.
+
+**Optional:** Defaults to `info`
+
+**Agents:** All
+
+**Type:** `Enum ("trace" | "debug" | "info" | "warn" | "error" | "off")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--tracing.level info
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+HYP_BASE_TRACING_LEVEL="info"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "tracing": {
+        "level": "info"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## originchainname
+
+**Description:** Name of the chain a validator should validate for and name of the chain a relayer should relayer messages from. **Deprecated for Relayers, use** [#relaychains](#relaychains) **instead.**
+
+**Optional:** No - Validators; Yes - Relayers
+
+**Agents:** Validator & Relayer&#x20;
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--originChainName ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_ORIGINCHAINNAME="ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "originchainname": "ethereum"
+}
+```
+</TabItem>
+</Tabs>
+
+## validator
+
+**Description:** The signer that should be used by the validator.
+
+**Optional:** Yes
+
+**Agents:** All
+
+**Type:** `SignerConf (Object)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--validator.*
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+HYP_BASE_VALIDATOR_*
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "validator": {}
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.type
+
+**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+
+**Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
+
+**Agents:** All
+
+**Type:** `Enum ("hexKey" | "aws" | "node")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--validator.type hexKey
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_VALIDATOR_TYPE="hexKey"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "validator": {
+        "type": "hexKey"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.key
+
+**Description:** A local hex key. The hex string of a private key.
+
+**Requires:** `validator.type = "hexKey" | undefined`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--validator.key 8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "validator": {
+        "type": "hexKey",
+        "key": "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.id
+
+**Description:** The UUID identifying the AWS KMS key
+
+**Requires:** `validator.type = "aws"`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--validator.id "alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_VALIDATOR_ID="alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "validator": {
+        "type": "aws",
+        "id": "alias/validator-signer-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.region
+
+**Description:** The AWS region
+
+**Requires:** `validator.type = "aws"`
+
+**Optional:** No (iff requirements are met)
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--validator.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export HYP_BASE_VALIDATOR_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "validator": {
+        "type": "aws",
+        "region": "us-east-1"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.type
+
+**Description:** Defines the method of syncing checkpoints
+
+**Optional:** No
+
+**Agents:** Validator
+
+**Type:** `Enum ("localStorage" | "s3")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--checkpointSyncer.type localStorage
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHECKPOINTSYNCER_TYPE="localStorage"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "checkpointsyncer": {
+        "type": "localStorage"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.path
+
+**Description:** Path on the local disk of a local storage type checkpoint syncer configuration.
+
+**Requires:** `checkpointsyncer.type = "localStorage"`
+
+**Optional:** No (iff conditions are met)
+
+**Agents:** Validator
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--checkpointSyncer.path "/tmp/syncer"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHECKPOINTSYNCER_PATH="/tmp/syncer"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "checkpointsyncer": {
+        "type": "localStorage",
+        "path": "/tmp/syncer"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.bucket
+
+**Description:** S3 bucket name
+
+**Requires:** `checkpointsyncer.type = "s3"`
+
+**Optional:** No (iff conditions are met)
+
+**Agents:** Validator
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--checkpointSyncer.bucket signatures-ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "checkpointsyncer": {
+        "type": "s3",
+        "bucket": "signatures-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.region
+
+**Description:** S3 bucket region
+
+**Requires:** `checkpointsyncer.type = "s3"`
+
+**Optional:** No (iff conditions are met)
+
+**Agents:** Validator
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--checkpointSyncer.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_CHECKPOINTSYNCER_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "checkpointsyncer": {
+        "type": "s3",
+        "region": "us-east-1"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## interval
+
+**Description:** How frequently to check for new checkpoints in seconds. See also [latencies](../guides/latencies.mdx).
+
+**Optional:** No
+
+**Agents:** Validator
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--interval 30
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_INTERVAL=30
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "interval": 30
+}
+```
+</TabItem>
+</Tabs>
+
+## db
+
+**Description:** This is a local filesystem path to where the agents store relevant data on disk. **This must be unique per agent!** Multiple agents must have different paths. The path is relative to the current working directory if it does not start with a system defined root path such as `/` on unix. When using docker images, ensure that this folder gets persisted across runs.
+
+For the scraper, this is the connection string to a postgresql database.
+
+**Optional:** For validators and relayers it is optional and defaults to a path in the current working directory which includes the `originchainname`. For the scraper it is required.
+
+**Agents:** All
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+# Validator
+--db "/tmp/hyp/validator/ethereum-cache"
+
+# Relayer
+--db "/tmp/hyp/relayer/ethereum-cache"
+
+# Scraper
+--db "postgresql://postgres:password@localhost:5432/dbname"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+# Validator
+export HYP_BASE_DB="/tmp/hyp/validator/ethereum-cache"
+
+# Relayer
+export HYP_BASE_DB="/tmp/hyp/relayer/ethereum-cache"
+
+# Scraper
+export HYP_BASE_DB="postgresql://postgres:password@localhost:5432/dbname"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+For the validator:
+
+```json
+{
+    "db": "/tmp/hyp/validator/ethereum-cache"
+}
+```
+
+For the relayer:
+
+```json
+{
+    "db": "/tmp/hyp/relayer/ethereum-cache"
+}
+```
+
+For the scraper:
+
+```json
+{
+    "db": "postgresql://postgres:password@localhost:5432/dbname"
+}
+```
+</TabItem>
+</Tabs>
+
+## relaychains
+
+**Description:** List of chains to deliver messages between.
+
+**Optional:** No
+
+**Agents:** Relayer
+
+**Type:** `string` (comma separated list)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--relayChains "arbitrum,ethereum,bsc"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_RELAYCHAINS="arbitrum,ethereum,bsc"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "relaychains": "arbitrum,ethereum,bsc"
+}
+```
+</TabItem>
+</Tabs>
+
+## destinationchainnames
+
+**Description:** List of chains to deliver messages to. **Deprecated, use** [#relaychains](#relaychains) **instead.**
+
+**Optional:** Yes
+
+**Agents:** Relayer
+
+**Type:** `string` (comma separated list)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--destinationChainNames "arbitrum,ethereum,bsc"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_DESTINATIONCHAINNAMES="arbitrum,ethereum,bsc"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "destinationchainnames": "arbitrum,ethereum,bsc"
+}
+```
+</TabItem>
+</Tabs>
+
+## gaspaymentenforcement
+
+**Description:** JSON stringified array of gas payment enforcement configurations sorted by highest priority first. The last policy should be a catch-all and handle any messages that did not match a previous policy.
+
+**Optional:** Defaults to no enforcement (`[{"type": "none"}]`)
+
+**Agents:** Relayer
+
+**Type:** `JSON (string)`
+
+```typescript
+type gaspaymentenforcement = Array<GasPaymentEnforcementPolicy>;
+
+type GasPaymentEnforcementPolicy =
+( // fields specific to each type...
+    // No requirements - all messages are processed regardless of gas payment
+    { type: "none" }
+    // Messages that have paid a minimum amount will be processed
+  & { type: "minimum", payment: U256 }
+    // Required amount of gas on the foreign chain has been paid according
+    // to on-chain fee quoting. `gasfraction` defaults to "1 / 2".
+  & { type: "onChainFeeQuoting", gasfraction?: GasFraction }
+) | { // all types have the following fields...
+    // If a message matches, this policy will be used.
+    // If no matching list is specified, all messages will match.
+    matchingList?: MatchingList
+};
+
+// A list of matching rules. A message matches if any of the list
+// elements matches the message.
+type MatchingList = Array<MatchingListElement>;
+
+// Matches a message if any of the provided values matches.
+interface MatchingListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array<U32>;
+type HashFilter = Wildcard | H256 | Array<H256>;
+
+// 32-bit unsigned integer
+type U32 = number | string;
+// 256-bit unsigned integer; Note: `number` type has limited precision.
+type U256 = string | number;
+// 256-bit hash (can also be less) encoded as hex
+type H256 = string;
+// Matches anything
+type Wildcard = "*";
+// A numeric string in the form `{numerator} / {denominator}`, e.g. "1 / 2"
+type GasFraction = string;
+```
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--gasPaymentEnforcement '[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]'
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_GASPAYMENTENFORCEMENT='[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]'
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "gaspaymentenforcement": "[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]"
+}
+```
+</TabItem>
+</Tabs>
+
+## whitelist
+
+**Description:** A matching list to define what messages should be allowed. Any messages which do not match this list will not be relayed. If no whitelist is supplied all messages will be allowed.
+
+See also [message filtering](./relayer/message-filtering.mdx)
+
+**Optional:** Yes
+
+**Agents:** Relayer
+
+**Type:** `JSON (string)`
+
+```typescript
+// A list of matching rules. A message matches if any of the list
+// elements matches the message.
+type MatchingList = Array&#x3C;MatchingListElement>;
+
+// Matches a message if any of the provided values matches.
+interface MatchingListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array&#x3C;U32>;
+type HashFilter = Wildcard | H256 | Array&#x3C;H256>;
+
+// 32-bit unsigned integer
+type U32 = number | string;
+// 256-bit hash (can also be less) encoded as hex
+type H256 = string;
+// Matches anything
+type Wildcard = "*";
+```
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--whitelist '[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_WHITELIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "whitelist": "[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]"
+}
+```
+</TabItem>
+</Tabs>
+
+## blacklist
+
+**Description:** A matching list to define what messages should be ignored. Any messages which match this list will not be relayed. If no blacklist is supplied all messages will be allowed.
+
+See also [message filtering](./relayer/message-filtering.mdx)
+
+**Optional:** Yes
+
+**Agents:** Relayer
+
+**Type:** `JSON (string)`
+
+```typescript
+type blacklist = MatchingList | undefined;
+
+// A list of matching rules. A message matches if any of the list
+// elements matches the message.
+type MatchingList = Array<MatchingListElement>;
+
+// Matches a message if any of the provided values matches.
+interface MatchingListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array<U32>;
+type HashFilter = Wildcard | H256 | Array<H256>;
+
+// 32-bit unsigned integer
+type U32 = number | string;
+// 256-bit hash (can also be less) encoded as hex
+type H256 = string;
+// Matches anything
+type Wildcard = "*";
+```
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--blacklist '[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "blacklist": "[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]"
+}
+```
+</TabItem>
+</Tabs>
+
+## transactiongaslimit
+
+**Description:** The max allowable gas to relay a transaction.
+
+**Optional:** Defaults to no limit
+
+**Agents:** Relayer
+
+**Type:** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--transactionGasLimit 250000000
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_TRANSACTIONGASLIMIT="250000000"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "transactiongaslimit": "250000000"
+}
+```
+</TabItem>
+</Tabs>
+
+## skiptransactiongaslimitfor
+
+**Description:** List of domain ids to skip applying the `transactiongaslimit` for.
+
+**Optional:** Defaults to using the `transactiongaslimit` for all domains
+
+**Agents:** Relayer
+
+**Type:** `string` (comma separated list of domain ids)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--skipTransactionGasLimitFor "43114,10,42220"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "skiptransactiongaslimitfor": "43114,10,42220"
+}
+```
+</TabItem>
+</Tabs>
+
+## allowlocalcheckpointsyncers
+
+**Description:** Whether to allow local `checkpointsyncer` types, if `false` it will ignore them.
+
+**Optional:** Defaults to `false`
+
+**Agents:** Relayer
+
+**Type:** `boolean`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--allowLocalCheckpointSyncers false
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_BASE_ALLOWLOCALCHECKPOINTSYNCERS=false
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "allowlocalcheckpointsyncers": false
+}
+```
+</TabItem>
+</Tabs>
+
+## AWS_ACCESS_KEY_ID
+
+**Description:** (Env only) The access key ID of your validator's AWS IAM user.
+
+**Optional**: Required if any signer configuration uses `aws`
+
+**Agents:** Relayer & Validator
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+Not supported as an argument
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+Not supported in configuration files
+</TabItem>
+</Tabs>
+
+## AWS_SECRET_ACCESS_KEY
+
+**Description:** (Env only) The secret access key of your validator's AWS IAM user.
+
+**Optional:** Required if any signer configuration uses `aws`
+
+**Agents:** Relayer & Validator
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+Not supported as an argument
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```bash
+export AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+Not supported in configuration files
+</TabItem>
+</Tabs>
