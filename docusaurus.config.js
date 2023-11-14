@@ -59,6 +59,9 @@ const config = {
     /** @type {import("@docusaurus/types").ThemeConfig} */
     ({
       image: "img/docusaurus-social-card.jpg",
+      colorMode: {
+        respectPrefersColorScheme: true,
+      },
       navbar: {
         title: "Hyperlane",
         logo: {
@@ -104,7 +107,6 @@ const config = {
         ],
       },
       footer: {
-        style: "dark",
         links: [
           {
             title: "Docs",
