@@ -35,30 +35,34 @@ export default function MessageQuickstart() {
 
   const value = "0.01 ether";
 
+  // see https://infima.dev/docs/layout/grid
   return (
     <div>
-      <form>
-        <ul>
-          <li>
-            <TestnetChainDropdown label="origin" onChange={setOriginChain} defaultChain={originChain}/>
-          </li>
-          <li>
-            <TestnetChainDropdown
-              label="destination"
-              defaultChain={destinationChain}
-              onChange={setDestinationChain}
-            />
-          </li>
-          <li>
-            <label>Enter your message: </label>
-            <input
-              name="message"
-              defaultValue={body}
-              onChange={(e) => setBody(e.target.value)}
-            />
-          </li>
-        </ul>
-      </form>
+      <div className="container row">
+        <div className="col">
+        <TestnetChainDropdown
+          label="origin"
+          chain={originChain}
+          onChange={setOriginChain}
+        />
+        </div>
+        <div className="col">
+        <TestnetChainDropdown
+          label="destination"
+          chain={destinationChain}
+          onChange={setDestinationChain}
+        />
+        </div>
+        <div className="col">
+        body:{"\t"}
+        <input
+          className=""
+          defaultValue={body}
+          onChange={(e) => setBody(e.target.value)}
+        />
+        </div>
+      </div>
+      <br />
       <Tabs>
         <TabItem value="cast" label="Cast" default>
           <CodeBlock language="shell">
@@ -81,7 +85,8 @@ export default function MessageQuickstart() {
             </li>
             <li>
               Fill in destination: <code>{destinationDomain}</code>, recipient:{" "}
-              <code>{recipient}</code>, message: <code>{body}</code>, and value: <code>{value}</code>
+              <code>{recipient}</code>, message: <code>{body}</code>, and value:{" "}
+              <code>{value}</code>
             </li>
             <li>
               Click the <code>Write</code> button to submit the transaction!
