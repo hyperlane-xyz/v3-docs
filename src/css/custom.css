@@ -25,3 +25,10 @@
   --ifm-color-primary-lighter: #A7C2EC;
   --ifm-color-primary-lightest: #CDDCF4;
 }
+
+/* override details to use info styling */
+.details {
+  background-color: var(--ifm-secondary-background-color);
+  --ifm-code-background: var(--ifm-info-secondary-color-highlight);
+  --ifm-alert-border-color: var(--ifm-color-secondary-dark);
+}
