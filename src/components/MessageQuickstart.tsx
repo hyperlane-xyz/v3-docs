@@ -21,10 +21,14 @@ export default function MessageQuickstart() {
   const [body, setBody] = useState("Hello, world");
 
   const mailbox = TestnetAddresses[originChain]?.mailbox ?? "$MAILBOX";
-  const rpc = testnetChainMetadata[originChain]?.rpcUrls[0].http ?? "$RPC_URL";
+  const originRpc =
+    testnetChainMetadata[originChain]?.rpcUrls[0].http ?? "$ORIGIN_RPC_URL";
   const destinationDomain =
     testnetChainMetadata[destinationChain]?.domainId ?? "$DESTINATION_DOMAIN";
-  const recipient = hexLeftPad(TestRecipientAddresses[destinationChain]?.TestRecipient ?? "$RECIPIENT");
+  const recipient =
+    TestRecipientAddresses[destinationChain]?.TestRecipient ?? "$RECIPIENT";
+
+  const paddedRecipient = hexLeftPad(recipient);
 
   const explorer =
     testnetChainMetadata[originChain]?.blockExplorers[0].url ??
@@ -59,15 +63,9 @@ export default function MessageQuickstart() {
       <Tabs>
         <TabItem value="cast" label="Cast" default>
           <CodeBlock language="shell">
-            cast send {mailbox} "dispatch(uint32,bytes32,bytes)"{" \\\n"}
-            {"\t"}
-            {destinationDomain}
-            {" \\\n"}
-            {"\t"}
-            {recipient}
-            {" \\\n"}
-            {"\t"}$(cast --from-utf8 "{body}"){" \\\n"}
-            {"\t"}--rpc-url {rpc}
+            cast send {mailbox} "dispatch(uint32,bytes32,bytes)"{" "}
+            {destinationDomain} {paddedRecipient} $(cast --from-utf8 "{body}"){" "}
+            --rpc-url {originRpc} --value 0.01ether
           </CodeBlock>
         </TabItem>
         <TabItem value="explorer" label="Explorer">
@@ -84,7 +82,7 @@ export default function MessageQuickstart() {
             </li>
             <li>
               Fill in destination: <code>{destinationDomain}</code>, recipient:{" "}
-              <code>{recipient}</code>, and message: <code>{body}</code>
+              <code>{recipient}</code>, message: <code>{body}</code>, and value: <code>0.001 ether</code>
             </li>
             <li>
               Click the <code>Write</code> button to submit the transaction!
