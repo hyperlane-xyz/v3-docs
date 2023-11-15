@@ -29,8 +29,10 @@
     "@docusaurus/module-type-aliases": "^3.0.0",
     "@docusaurus/tsconfig": "^3.0.0",
     "@docusaurus/types": "^3.0.0",
-    "@hyperlane-xyz/core": "^3.0.0-beta0",
+    "@hyperlane-xyz/core": "^3.1.1",
+    "@hyperlane-xyz/sdk": "^3.1.1",
     "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "remark-code-import": "^1.2.0",
     "typescript": "^5.2.2",
     "webpack": "^5.89.0"
