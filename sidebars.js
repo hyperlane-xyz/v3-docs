@@ -147,6 +147,43 @@ const sidebars = {
       ],
     },
     {
+      type: "category",
+      label: "Typescript SDK",
+      link: {
+        type: 'doc',
+        id: 'reference/typescript-sdk/sdk-overview',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/multiprovider",
+          label: "RPC Providers",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/deploying-contracts",
+          label: "Deployment",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/testing-contracts",
+          label: "Interchain Testing",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/quoting-gas",
+          label: "Quoting Gas Payments",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/app-abstraction",
+          label: "App Abstraction",
+        },
+      ],
+    },
+    {
       type: "doc",
       id: "reference/contract-addresses",
       label: "Addresses",
@@ -265,9 +302,21 @@ const sidebars = {
       label: "v2 to v3 Migration",
     },
     {
-      type: "doc",
-      id: "guides/deploy-warp-route",
+      type: "category",
       label: "Deploy Warp Route",
+      link: {
+        type: 'doc',
+        id: 'guides/deploy-warp-route',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Warp Route UI",
+        },
+      ],
     },
     {
       type: "doc",
