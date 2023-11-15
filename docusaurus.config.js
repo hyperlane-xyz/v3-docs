@@ -79,7 +79,7 @@ const config = {
             type: "docSidebar",
             sidebarId: "referenceSidebar",
             position: "left",
-            label: "💬 Interfaces",
+            label: "📖 Reference",
           },
           {
             type: "docSidebar",
