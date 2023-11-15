@@ -7,7 +7,14 @@ import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
 
 Contracts can send interchain messages by calling the `dispatch` function on the Mailbox.
 
-<SimpleMessagingDiagram/>
+```mermaid
+flowchart TB
+    subgraph Origin Chain
+      Sender
+      M_O[(Mailbox)]
+      Sender -- "dispatch(destination, recipient, body)" --> M_O
+    end
+```
 
 ## Dispatch
 
