@@ -181,9 +181,11 @@ const config = {
             mainBkg: "#205AB0",
             nodeTextColor: "white",
             edgeLabelBackground: "#FFFFFF",
-            clusterBkg: "white"
+            clusterBkg: "white",
+            // transitionLabelColor: "white", attempts at creating white text for the sequence diagram
+            // stateLabelColor: "white"
           },
-          themeCSS: ".edgeLabel { color: black }",
+          themeCSS: ".edgeLabel { color: black }"
         },
       },
     }),

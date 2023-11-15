@@ -203,6 +203,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "protocol/ISM/modular-security",
+          label: "Modular Security",
+        },
+        {
+          type: "doc",
           id: "protocol/ISM/multisig-ISM",
           label: "Multisig",
         },
