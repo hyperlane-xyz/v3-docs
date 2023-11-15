@@ -8,10 +8,7 @@ This is an example `docker-compose` file for running a validator that should get
 {
   "chains": {
     "ethereum": {
-      "connection": {
-        "type": "httpQuorum",
-        "urls": "https://node1.com,https://node2.com,https://node3.com"
-      }
+      "customRpcUrls": "https://node1.com,https://node2.com,https://node3.com"
     }
   },
   "originchainname": "ethereum",
