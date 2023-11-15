@@ -16,37 +16,36 @@ function hexLeftPad(s: string, bytes = 32) {
 }
 
 export default function MessageQuickstart() {
-  const [originChain, setOriginChain] = useState("$ORIGIN");
-  const [destinationChain, setDestinationChain] = useState("$DESTINATION");
+  const testnetChains = Object.keys(testnetChainMetadata);
+  const [originChain, setOriginChain] = useState(testnetChains[0]);
+  const [destinationChain, setDestinationChain] = useState(testnetChains[1]);
   const [body, setBody] = useState("Hello, world");
 
-  const mailbox = TestnetAddresses[originChain]?.mailbox ?? "$MAILBOX";
-  const originRpc =
-    testnetChainMetadata[originChain]?.rpcUrls[0].http ?? "$ORIGIN_RPC_URL";
-  const destinationDomain =
-    testnetChainMetadata[destinationChain]?.domainId ?? "$DESTINATION_DOMAIN";
-  const recipient =
-    TestRecipientAddresses[destinationChain]?.TestRecipient ?? "$RECIPIENT";
+  const mailbox = TestnetAddresses[originChain]?.mailbox;
+  const originRpc = testnetChainMetadata[originChain].rpcUrls[0].http;
+  const destinationDomain = testnetChainMetadata[destinationChain].domainId;
+  const recipient = TestRecipientAddresses[destinationChain]?.TestRecipient;
 
   const paddedRecipient = hexLeftPad(recipient);
 
-  const explorer =
-    testnetChainMetadata[originChain]?.blockExplorers[0].url ??
-    "https://goerli.etherscan.io/";
+  const explorer = testnetChainMetadata[originChain]?.blockExplorers[0].url;
 
   const url = new URL(explorer);
   const contract = `${explorer}/address/${mailbox}#writeContract`;
+
+  const value = "0.01 ether";
 
   return (
     <div>
       <form>
         <ul>
           <li>
-            <TestnetChainDropdown label="origin" onChange={setOriginChain} />
+            <TestnetChainDropdown label="origin" onChange={setOriginChain} defaultChain={originChain}/>
           </li>
           <li>
             <TestnetChainDropdown
               label="destination"
+              defaultChain={destinationChain}
               onChange={setDestinationChain}
             />
           </li>
@@ -65,7 +64,7 @@ export default function MessageQuickstart() {
           <CodeBlock language="shell">
             cast send {mailbox} "dispatch(uint32,bytes32,bytes)"{" "}
             {destinationDomain} {paddedRecipient} $(cast --from-utf8 "{body}"){" "}
-            --rpc-url {originRpc} --value 0.01ether
+            --rpc-url {originRpc} --value {value}
           </CodeBlock>
         </TabItem>
         <TabItem value="explorer" label="Explorer">
@@ -82,7 +81,7 @@ export default function MessageQuickstart() {
             </li>
             <li>
               Fill in destination: <code>{destinationDomain}</code>, recipient:{" "}
-              <code>{recipient}</code>, message: <code>{body}</code>, and value: <code>0.001 ether</code>
+              <code>{recipient}</code>, message: <code>{body}</code>, and value: <code>{value}</code>
             </li>
             <li>
               Click the <code>Write</code> button to submit the transaction!

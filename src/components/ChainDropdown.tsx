@@ -1,4 +1,3 @@
-import { capitalize } from "./AddressTable";
 import TestnetAddresses from "@site/static/addresses/testnet.json";
 import MainnetAddresses from "@site/static/addresses/mainnet.json";
 
@@ -9,12 +8,16 @@ type Props = {
   defaultChain?: string;
 };
 
+function startsWithVowel(s: string) {
+  return ["a", "e", "i", "o", "u"].includes(s[0].toLowerCase());
+}
+
 export default function ChainDropdown({ chains, label, onChange, defaultChain }: Props) {
   const id = `${label}-chain`;
   return (
     <div>
       <label htmlFor={id}>
-        Choose a{label.startsWith("o") ? "n" : ""} {label} chain:{" "}
+        Choose a{startsWithVowel(label) ? "n" : ""} {label} chain:{" "}
       </label>
       <select name="chain" id={id} onChange={(e) => onChange(e.target.value)} defaultValue={defaultChain}>
         {chains.map((chain) => (
