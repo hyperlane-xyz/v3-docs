@@ -4,75 +4,75 @@ description: A list of common terms in the Hyperlane protocol
 
 # Glossary
 
-<details>
 
-<summary>Agent</summary>
+
+## Agent
 
 Hyperlane [agents](../protocol/agents/relayer.mdx) are off-chain actors that read and write Hyperlane smart contract state.
 
 Example agents include [validators](../protocol/agents/validators.mdx) and [relayer](../protocol/agents/relayer.mdx).
 
-</details>
 
-<details>
 
-<summary>Aggregation ISM</summary>
+
+
+## Aggregation ISM
 
 The [Aggregation ISM](../reference/ISM/aggregation-ISM-interface.mdx) is a type of interchain security module that aggregates security from many [ISMs](../reference/ISM/specify-your-ISM.mdx) by requiring that `m` of `n` ISMs verify a particular interchain message.
 
-</details>
 
-<details>
 
-<summary>Checkpoint</summary>
+
+
+## Checkpoint
 
 A checkpoint is a (merkle root, index) tuple, corresponding to the state of the [mailbox](glossary.mdx#mailbox)incremental merkle tree at a particular point in time.
 
 Checkpoints signatures by [Validators](glossary.mdx#validator) are used in [Multisig ISMs](glossary.mdx#multisig-ism).
 
-</details>
 
-<details>
 
-<summary>Collateral chain</summary>
+
+
+## Collateral chain
 
 For a [Warp Route](glossary.mdx#warp-route), the chain on which the [collateral token](glossary.mdx#collateral-token) is deposited into the warp route.
 
 Read more about [deploy warp route](../guides/deploy-warp-route.mdx)
 
-</details>
 
-<details>
 
-<summary>Collateral token</summary>
+
+
+## Collateral token
 
 For a [Warp Route](glossary.mdx#warp-route), the token which is deposited on the [collateral chain](glossary.mdx#collateral-chain) to create a wrapped token on a remote [synthetic chain](glossary.mdx#synthetic-chain).
 
 Read more about [deploy warp route](../guides/deploy-warp-route.mdx)
 
-</details>
 
-<details>
 
-<summary>Default ISM</summary>
+
+
+## Default ISM
 
 The [interchain security module](glossary.mdx#interchain-security-module) that will be used to verify inbound messages if the message recipient has not specified their own ISM.
 
-</details>
 
-<details>
 
-<summary>Domain</summary>
+
+
+## Domain
 
 A unique identifier for a particular chain, used by the Hyperlane protocol to determine message origin and destination.
 
 May be the same as the EVM chain ID, but isn't always. See [domains](domains/) for a list of known Hyperlane domain IDs.
 
-</details>
 
-<details>
 
-<summary>Interchain accounts (ICA)</summary>
+
+
+## Interchain accounts (ICA)
 
 A [middleware](glossary.mdx#middleware) smart contract that allows users to make interchain smart contract calls.
 
@@ -80,21 +80,21 @@ For example, DAOs can use interchain accounts to own contracts on remote chains.
 
 See Interchain Accounts for more information.
 
-</details>
 
-<details>
 
-<summary>Interchain gas paymaster</summary>
+
+
+## Interchain gas paymaster
 
 A smart contract deployed by a [relayer](glossary.mdx#relayer) that accepts payments on an origin chain for message delivery on destination chains.
 
 See [interchain gas payments](../protocol/interchain-gas-payment.mdx) for more information
 
-</details>
 
-<details>
 
-<summary>Interchain queries (IQS)</summary>
+
+
+## Interchain queries (IQS)
 
 A [middleware](glossary.mdx#middleware) smart contract that allows users to make interchain view calls.
 
@@ -102,88 +102,88 @@ For example, smart contracts can use interchain queries to look up oracle exchan
 
 See Interchain Queries (IQS) for more information.
 
-</details>
 
-<details>
 
-<summary>Interchain security module</summary>
+
+
+## Interchain security module
 
 [Interchain Security Module](./ISM/specify-your-ISM.mdx) (ISMs) are smart contracts that provide security to Hyperlane's interchain [mailbox](./messaging/messaging-interface.mdx).
 
 ISMs are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
 
-</details>
 
-<details>
 
-<summary>Mailbox</summary>
+
+
+## Mailbox
 
 Arguably the most important Hyperlane smart contract, the [mailbox](./messaging/messaging-interface.mdx) exposes an interface that developers can use to [send](./messaging/send.mdx) and [receive](./messaging/receive.mdx) interchain messages.
 
-</details>
 
-<details>
 
-<summary>Middleware</summary>
+
+
+## Middleware
 
 A smart contract that sends and receives messages, and exposes a developer facing API. Developers are expected use this API instead of interacting directly with the [mailbox](glossary.mdx#mailbox). 
 
 Example middlewares include [interchain-accounts-ica](glossary.mdx#interchain-accounts-ica) and [interchain-queries-iqs](glossary.mdx#interchain-queries-iqs)
 
-</details>
 
-<details>
 
-<summary>Multisig ISM</summary>
+
+
+## Multisig ISM
 
 The [multisig ISM](./ISM/multisig-ISM-interface.mdx) is a type of [interchain security module](glossary.mdx#interchain-security-module) that uses `m` of `n` [validator](glossary.mdx#validator) signatures in order to verify a particular interchain message.
 
-</details>
 
-<details>
 
-<summary>Relayer</summary>
+
+
+## Relayer
 
 The [relayer](../operate/relayer/run-relayer.mdx) are Hyperlane [agents](glossary.mdx#agent) responsible for delivering messages from their origin chain(s) to their destination chain(s).
 
 Relayers are untrusted, and anyone can operate a relayer.
 
-</details>
 
-<details>
 
-<summary>Routing ISM</summary>
+
+
+## Routing ISM
 
 The Routing ISM is a type of [interchain security module](glossary.mdx#interchain-security-module) that defers to a different ISM depending on the message being delivered.
 
 For example, a Routing ISM could use a different ISM depending on the origin chain from which the message was sent.
 
-</details>
 
-<details>
 
-<summary>Synthetic chain</summary>
+
+
+## Synthetic chain
 
 For a [Warp Route](glossary.mdx#warp-route), a chain on which wrapped tokens are minted. These wrapped tokens are backed by [collateral tokens](glossary.mdx#collateral-token) that have been locked on the [collateral chain](glossary.mdx#collateral-chain).
 
 Read more about [deploy warp route](../guides/deploy-warp-route.mdx)
 
-</details>
 
-<details>
 
-<summary>Validator</summary>
+
+
+## Validator
 
 [Validators](../operate/validators/run-validators.mdx) are a Hyperlane [agents](glossary.mdx#agent) responsible for attesting to messages sent from an origin chain.
 
 [Multisig ISMs](glossary.mdx#multisig-ism) use validator signatures to provide security for inbound messages.
 
-</details>
 
-<details>
 
-<summary>Warp route</summary>
+
+
+## Warp route
 
 [deploy warp route](../guides/deploy-warp-route.mdx) are Hyperlane's take on the concept of token bridging, allowing you to permissionlessly transfer any ERC20-like asset to any chain via Hyperlane.
 
-</details>
+
