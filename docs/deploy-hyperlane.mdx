@@ -7,9 +7,8 @@ This guide covers sending your first interchain message from a new EVM chain. By
 There are five steps in this guide:
 1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-3. [<b>Run validators</b>](#3-run-validators) on your local chain, to provide the signatures needed for the interchain Security Modules you deployed in step 2.
-4. [<b>Run relayer</b>](#4-run-relayer) to send and receive messages between chains you deployed contracts to in step 2.
-5. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages from and to each pair of chains
+3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators to provide the signatures needed for the interchain Security Modules you deployed in step 2 and relayers to send and receive messages between chains you deployed contracts to in step 2.
+4. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages from and to each pair of chains
 
 ## Getting Started
 
@@ -93,31 +92,55 @@ Deployment contract artifacts will be written to to the `artifacts/` folder by d
 The `core-deployment` file contains the addresses of core contracts, organized by chain.
 The `agent-config` file contains the data needed to run Hyperlane agents for the next step.
 
-## 3. Run validators 
+## 3. Run validators and relayers 
 
-Follow the [Validators](./operate/validators/run-validators.mdx) guide to run validators for the Mailbox on your local chain. These validators will provide the security for messages sent _from_ your chain to remote chains.
+We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a smooth validator and relayer deployment experience using [Kurtosis Cloud](https://cloud.kurtosis.com/).
 
-Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
+Visit the [Kurtosis Cloud website](https://cloud.kurtosis.com/) (direct link: https://cloud.kurtosis.com/) and sign in with Google. 
 
-You should have already set up your validator keys in [step 1](#1-set-up-keys), so you can skip that part of the [Validators](./operate/validators/run-validators.mdx) guide.
+If this is your first time using Kurtosis Cloud, Kurtosis will provision a remote cloud instance for your validator and relayer. Provisioning only take a few minutes.
 
-:::info
+![Get excited](../static/img/kurtosis-get-excited.png)
 
-Make sure these validators match the addresses you provided when in your MultisigIsmConfig. Otherwise, the Multisig ISM you deployed in the previous step will not be able to verify messages sent from your chain.
+Once completed, click `Launch in Enclave Manager`.
+
+![Launch Enclave Manager](../static/img/kurtosis-launch-em.png)
+
+Next, click on `New Enclave` and enter `github.com/kurtosis-tech/hyperlane-package` in the Create Enclave pop up. The [Kurtosis Hyperlane package](https://github.com/kurtosis-tech/hyperlane-package/tree/main) defines the configuration for your validator and relayer deployment based on the provided parameters. Click `Configure` to start configuring your deployment.
+
+![New Enclave](../static/img/kurtosis-new-enclave.png)
+
+A configuration screen will pop up where you'll enter your relayer and validator information created in Steps 1 and 2. Fields with a red asterik are required such as the `Origin Chain Name`, `Validator Key`, `Agent Config Json` and `Relay Chains`. The screenshot below shows an example configuration. Click `Run` to deploy your relayer and validator!
+
+:::warn
+
+Kurtosis Cloud is currently in beta and does not yet support secrets management! Thus, only use Kurtosis Cloud for testing purposes and do not enter any production secrets!
 
 :::
 
-## 4. Run relayers
+![Example Configuration One](../static/img/kurtosis-example-configuration-one.png)
 
-Follow the [Relayer](./operate/relayer/run-relayer.mdx) guide to run a relayer that will deliver interchain messages sent between the local and remote chains.
+![Example Configuration Two](../static/img/kurtosis-example-configuration-two.png)
 
-Remember to set `--relayChains` or `HYP_BASE_RELAYCHAINS` appropriately.
+Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis! 
 
+![Success](../static/img/kurtosis-success.png)
 
-Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
-You should have already set up your relayer keys in [step 1](#1-set-up-keys), so you can skip that part of the [Relayer](./operate/relayer/run-relayer.mdx) guide.
+You can now see information about your relayer and validator deployment by navigating to `Overview`. You can also view the relayer and validators logs along with other information about the services (see screenshots below).
 
-## 5. Send test messages
+![Enclave Overview](../static/img/kurtosis-enclave-overview.png)
+
+![Validator Logs](../static/img/kurtosis-validator-logs.png)
+
+For feedback or questions about using Kurtosis in this section, please file a [Github Issue](https://github.com/kurtosis-tech/kurtosis/issues/new/choose) or start a [Github Discussion](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a). Additionally, the Kurtosis team is available for technical support on their [Discord server](https://discord.com/invite/jJFG7XBqcY).
+
+:::info
+
+Kurtosis Cloud is available for a one month free trial. To continue using Kurtosis for deploying your setup beyond the trial, you can provide your payment information [https://cloud.kurtosis.com/payment].
+
+:::
+
+## 4. Send test messages
 
 You can check everything is working correctly by sending a test message between each pair of chains.
 Use the Hyperlane CLI again to send the message:
