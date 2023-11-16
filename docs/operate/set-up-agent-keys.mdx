@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Agent keys
 
-Hyperlane agents - validators and the relayer - must be configured with private keys in order to operate. Validators use private keys to sign messages, and the relayer uses private keys to sign transactions that deliver messages.
+Hyperlane agents - validators and the relayer - must be configured with private keys in order to operate. Validators use private keys to sign [message checkpoints](../reference/glossary.mdx#checkpoint), and the relayer uses private keys to sign transactions that deliver messages.
 
 Hyperlane agents currently support being configured with private keys in one of two ways.
 
@@ -98,4 +98,17 @@ This key will be used by your agent for signing.
 
 In some cases you may need to know the address associated with the KMS key you generated.
 
+<Tabs>
+<TabItem value="cast" label="With `cast`">
+
+```
+AWS_ACCESS_KEY_ID=<redacted> AWS_SECRET_ACCESS_KEY=<redacted> AWS_KMS_KEY_ID=alias/your-key-alias cast wallet address --aws
+```
+
+</TabItem>
+<TabItem value="script" label="Using a script">
+
 The script at the following repo will allow you to query this address: [https://github.com/tkporter/get-aws-kms-address](https://github.com/tkporter/get-aws-kms-address)
+
+</TabItem>
+</Tabs>
