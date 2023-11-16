@@ -7,8 +7,8 @@ This guide covers sending your first interchain message from a new EVM chain. By
 There are five steps in this guide:
 1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators to provide the signatures needed for the interchain Security Modules you deployed in step 2 and relayers to send and receive messages between chains you deployed contracts to in step 2.
-4. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages from and to each pair of chains
+3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
+4. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
 
 ## Getting Started
 
@@ -106,11 +106,11 @@ Once completed, click `Launch in Enclave Manager`.
 
 ![Launch Enclave Manager](../static/img/kurtosis-launch-em.png)
 
-Next, click on `New Enclave` and enter `github.com/kurtosis-tech/hyperlane-package` in the Create Enclave pop up. The [Kurtosis Hyperlane package](https://github.com/kurtosis-tech/hyperlane-package/tree/main) defines the configuration for your validator and relayer deployment based on the provided parameters. Click `Configure` to start configuring your deployment.
+Next, click on `New Enclave` and enter ```github.com/kurtosis-tech/hyperlane-package``` in the Create Enclave pop up. The [Kurtosis Hyperlane package](https://github.com/kurtosis-tech/hyperlane-package/tree/main) defines the configuration for your validator and relayer deployment based on the provided parameters. Click `Configure` to start configuring your deployment.
 
 ![New Enclave](../static/img/kurtosis-new-enclave.png)
 
-A configuration screen will pop up where you'll enter your relayer and validator information created in Steps 1 and 2. Fields with a red asterik are required such as the `Origin Chain Name`, `Validator Key`, `Agent Config Json` and `Relay Chains`. The screenshot below shows an example configuration. Click `Run` to deploy your relayer and validator!
+A configuration screen will pop up where you'll enter your relayer and validator information created in Steps 1 and 2. Fields with a red asterik are required such as the `Origin Chain Name`, `Validator Key`, `Agent Config Json` and `Relay Chains`. The screenshot below shows an example configuration. 
 
 :::warn
 
@@ -118,9 +118,12 @@ Kurtosis Cloud is currently in beta and does not yet support secrets management!
 
 :::
 
+
 ![Example Configuration One](../static/img/kurtosis-example-configuration-one.png)
 
 ![Example Configuration Two](../static/img/kurtosis-example-configuration-two.png)
+
+Click `Run` to deploy your relayer and validator!
 
 Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis! 
 
