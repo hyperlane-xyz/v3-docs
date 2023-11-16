@@ -94,11 +94,11 @@ The `agent-config` file contains the data needed to run Hyperlane agents for the
 
 ## 3. Run validators and relayers 
 
-We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a smooth validator and relayer deployment experience using [Kurtosis Cloud](https://cloud.kurtosis.com/).
+We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription. 
 
-Visit the [Kurtosis Cloud website](https://cloud.kurtosis.com/) (direct link: https://cloud.kurtosis.com/) and sign in with Google. 
+To get started, visit the [Kurtosis Cloud website](https://cloud.kurtosis.com/) (direct link: https://cloud.kurtosis.com/) and sign in with Google. 
 
-If this is your first time using Kurtosis Cloud, Kurtosis will provision a remote cloud instance for your validator and relayer. Provisioning only take a few minutes.
+If this is your first time using Kurtosis Cloud, Kurtosis will provision a remote cloud instance for your validator and relayer in roughly 2 minutes.
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
@@ -114,7 +114,7 @@ A configuration screen will pop up where you'll enter your relayer and validator
 
 :::warn
 
-Kurtosis Cloud is currently in beta and does not yet support secrets management! Thus, only use Kurtosis Cloud for testing purposes and do not enter any production secrets!
+The Kurtosis team is still building the secrets functionality of Kurtosis Cloud, so for now do not enter any sensitive information (e.g. your private keys) into Kurtosis! Only testing and non-sensitive values should be used.
 
 :::
 
@@ -129,17 +129,17 @@ Once the configuration finishes executing successfully, you'll see a green check
 
 ![Success](../static/img/kurtosis-success.png)
 
-You can now see information about your relayer and validator deployment by navigating to `Overview`. You can also view the relayer and validators logs along with other information about the services (see screenshots below).
+You can see information about your relayer and validator deployment, including logs, by navigating to the `Overview` tab.
 
 ![Enclave Overview](../static/img/kurtosis-enclave-overview.png)
 
 ![Validator Logs](../static/img/kurtosis-validator-logs.png)
 
-For feedback or questions about using Kurtosis in this section, please file a [Github Issue](https://github.com/kurtosis-tech/kurtosis/issues/new/choose) or start a [Github Discussion](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a). Additionally, the Kurtosis team is available for technical support on their [Discord server](https://discord.com/invite/jJFG7XBqcY).
+For issues with Kurtosis, please file an [issue on the Kurtosis Github repository](https://github.com/kurtosis-tech/kurtosis/issues/new/choose). For questions or discussion, use the [Github Discussions section of the Kurtosis repository](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a) or visit [the Kurtosis Discord server](https://discord.com/invite/jJFG7XBqcY).
 
 :::info
 
-Kurtosis Cloud is available for a one month free trial. To continue using Kurtosis for deploying your setup beyond the trial, you can provide your payment information [https://cloud.kurtosis.com/payment].
+Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. Subscription prices and payment method information can be accessed [here](https://cloud.kurtosis.com/payment-method).
 
 :::
 
