@@ -1,4 +1,3 @@
-import { capitalize } from "./AddressTable";
 import TestnetAddresses from "@site/static/addresses/testnet.json";
 import MainnetAddresses from "@site/static/addresses/mainnet.json";
 
@@ -6,21 +5,37 @@ type Props = {
   chains: string[];
   label: string;
   onChange: (chain: string) => void;
-  defaultChain?: string;
+  chain?: string;
 };
 
-export default function ChainDropdown({ chains, label, onChange, defaultChain }: Props) {
-  const id = `${label}-chain`;
+// see https://infima.dev/docs/components/dropdown
+export default function ChainDropdown({
+  chains,
+  label,
+  onChange,
+  chain,
+}: Props) {
   return (
     <div>
-      <label htmlFor={id}>
-        Choose a{label.startsWith("o") ? "n" : ""} {label} chain:{" "}
-      </label>
-      <select name="chain" id={id} onChange={(e) => onChange(e.target.value)} defaultValue={defaultChain}>
-        {chains.map((chain) => (
-          <option value={chain}>{chain}</option>
-        ))}
-      </select>
+      {label}{":\t"}
+      <div className="dropdown dropdown--hoverable magin--">
+        <button className="button button--secondary navbar__link">
+          {chain}
+        </button>
+        <ul className="dropdown__menu">
+          {chains.map((chain) => (
+            <li>
+              <a
+                className="dropdown__link"
+                href={`#${label}=${chain}`}
+                onClick={() => onChange(chain)}
+              >
+                {chain}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
