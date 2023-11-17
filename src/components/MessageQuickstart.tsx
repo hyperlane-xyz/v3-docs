@@ -87,7 +87,7 @@ export default function MessageQuickstart() {
             </li>
             <li>
               Fill in value: <code>{value}</code>, destination: <code>{destinationDomain}</code>, recipient:{" "}
-              <code>{recipient}</code>, and message: <code>{body}</code>
+              <code>{paddedRecipient}</code>, and message: <code>{body}</code>
             </li>
             <li>
               Click the <code>Write</code> button to submit the transaction!
