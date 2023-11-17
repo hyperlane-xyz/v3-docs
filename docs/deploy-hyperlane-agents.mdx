@@ -73,7 +73,7 @@ Once you have set up deployer, validator, and relayer keys it's time to use the 
 
 On the local chain, we will deploy:
 
-- The core contracts, including a that can be used to send and receive messages
+- The core contracts, including a Mailbox, that can be used to send and receive messages
 
 On all chains, we will deploy:
 
@@ -174,4 +174,4 @@ hyperlane send message \
 ```
 
 The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
-To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
+To troubleshoot start by looking at the relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
