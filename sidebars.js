@@ -301,6 +301,7 @@ const sidebars = {
       id: "guides/v2-to-v3-migration",
       label: "v2 to v3 Migration",
     },
+    /*
     {
       type: "category",
       label: "Deploy Warp Route",
@@ -318,6 +319,7 @@ const sidebars = {
         },
       ],
     },
+    */
     {
       type: "doc",
       id: "guides/create-your-own-ISM",
