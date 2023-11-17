@@ -1,6 +1,6 @@
 # Get Started
 
-Hyperlane can be deployed by anyone to any chain. 
+Hyperlane can be deployed by anyone to any chain.
 This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
 
 ## Terminology
@@ -11,7 +11,8 @@ A "**remote chain**" is a chain with an existing Hyperlane deployment that you w
 
 ## Overview
 
-There are five steps in this guide:
+There are four steps in this guide:
+
 1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers.
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
 3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
@@ -24,10 +25,41 @@ There are five steps in this guide:
 There are three keys you must set up and fund. To get started, you can simplify by using the same hexadecimal key for all three roles.
 
 <table>
-<thead><tr><th>Key Role</th><th>Description</th><th>Funding Needs</th></tr></thead>
-<tbody><tr><td>Contract Deployer</td><td>32 byte hexadecimal private key</td><td>Funded on all the chains on which we need to deploy contracts.</td></tr>
-<tr><td>Validator Accounts</td><td>A list of validator addresses that will sign outbound messages from your local chain. Just one validator works to get started quickly.</td><td>A small amount so validators can announce the location of their signatures onchain with a one-time transaction</td></tr>
-<tr><td>Relayer Accounts</td><td>The single relayer you will operate requires an account on each chain it will deliver messages to & from</td><td>The relayer must have a balance on all chains it's relaying between.</td></tr></tbody>
+  <thead>
+    <tr>
+      <th>Key Role</th>
+      <th>Description</th>
+      <th>Funding Needs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Contract Deployer</td>
+      <td>32 byte hexadecimal private key</td>
+      <td>Funded on all the chains on which we need to deploy contracts.</td>
+    </tr>
+    <tr>
+      <td>Validator Accounts</td>
+      <td>
+        A list of validator addresses that will sign outbound messages from your
+        local chain. Just one validator works to get started quickly.
+      </td>
+      <td>
+        A small amount so validators can announce the location of their
+        signatures onchain with a one-time transaction
+      </td>
+    </tr>
+    <tr>
+      <td>Relayer Accounts</td>
+      <td>
+        The single relayer you will operate requires an account on each chain it
+        will deliver messages to & from
+      </td>
+      <td>
+        The relayer must have a balance on all chains it's relaying between.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 For instructions on how to generate keys, see the [agent keys](./operate/set-up-agent-keys.mdx) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
@@ -45,9 +77,11 @@ cast send $YOUR_TARGET_ADDRESS \
 Once you have set up deployer, validator, and relayer keys it's time to use the Hyperlane CLI to deploy smart contracts to the local and remote chains.
 
 On the local chain, we will deploy:
+
 - The core contracts, including a [Mailbox](./reference/messaging/messaging-interface.mdx) that can be used to send and receive messages
 
 On all chains, we will deploy:
+
 - A Multisig ISM that can be used to verify inbound messages from the other local & remote chains
 - An `InterchainGasPaymaster`, which can be used to pay our relayer for delivering interchain messages
 - A `TestRecipient`, which we will send messages to, in order to test that everything is working correctly
@@ -66,13 +100,14 @@ Run the following to see the default SDK chains:
 ```bash
 hyperlane chains list
 ```
+
 For any chains that need custom configs, you can define them manually using JSON or YAML (see [example config](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)), or create them with the following command:
 
 ```bash
 hyperlane config create chain
 ```
 
-Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM). 
+Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM).
 
 :::info
 
@@ -89,10 +124,17 @@ hyperlane config create multisig
 When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
 
 ### Deploy
+
 We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
 
 ```bash
-hyperlane deploy core --key $HYP_KEY
+hyperlane deploy core \
+    --targets chain1,chain2,... \ # all the chains you want to bridge between
+    --chains $CHAIN_CONFIG_FILE \  # chain configuration
+    --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # in case, you already have predeployed some of the contracts and want to reuse them
+    --ism $MULTISIG_CONFIG_FILE \ #
+    --out $OUT_DIR \
+    --key $YOUR_DEPLOYER_PRIVATE_KEY
 ```
 
 ### Verify
@@ -101,9 +143,9 @@ Deployment contract artifacts will be written to to the `artifacts/` folder by d
 The `core-deployment` file contains the addresses of core contracts, organized by chain.
 The `agent-config` file contains the data needed to run Hyperlane agents for the next step.
 
-## 3. Run validators and relayers 
+## 3. Run validators and relayers
 
-We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription. 
+We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
 
 To get started, use the `deploy kurtosis-agents` command to generate a link for configuring your Kurtosis deployment.
 
@@ -117,7 +159,7 @@ If this is your first time using Kurtosis Cloud, you'll need to sign in with Goo
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
-A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration. 
+A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration.
 
 :::warning
 
@@ -125,14 +167,13 @@ The Kurtosis team is still building the secrets functionality of Kurtosis Cloud,
 
 :::
 
-
 ![Example Configuration One](../static/img/kurtosis-example-config-one.png)
 
 ![Example Configuration Two](../static/img/kurtosis-example-config-two.png)
 
 Click `Run` to deploy your relayer and validator!
 
-Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis! 
+Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis!
 
 ![Success](../static/img/kurtosis-success.png)
 
@@ -157,8 +198,8 @@ Use the Hyperlane CLI again to send the message:
 
 ```
 hyperlane send message \
-   --origin YOUR_ORIGIN 
-   --destination YOUR_DEST 
+   --origin YOUR_ORIGIN
+   --destination YOUR_DEST
    --core PATH_TO_STEP2_ARTIFACTS
    --key $PRIVATE_KEY
 ```
