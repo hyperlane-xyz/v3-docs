@@ -189,6 +189,8 @@ For issues with Kurtosis, please file an [issue on the Kurtosis Github repositor
 
 Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/pricing) and payment method information [here](https://cloud.kurtosis.com/payment-method).
 
+You can also [run the validators](./operate/validators/run-validators.mdx) and [relayer](./operate/relayer/run-relayer.mdx) yourself by following the Operate section of the docs.
+
 :::
 
 ## 4. Send test messages
@@ -207,7 +209,7 @@ hyperlane send message \
 The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
 To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
 
-## 6. Deploy a warp route
+## 5. Deploy a warp route
 
 Warp routes are a way to send tokens between chains. You can create a simple configuration file such as:
 
@@ -232,6 +234,6 @@ hyperlane deploy warp --key $PRIVATE_KEY --chains ./configs/chain-config.yaml --
 
 This command will output a warp-ui config file that you need to use in the next step.
 
-## 7. Deploy the warp UI
+## 6. Deploy the warp UI
 
 You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.
