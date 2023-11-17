@@ -10,12 +10,10 @@ flowchart TB
     subgraph Origin
       Sender
       M_O[(Mailbox)]
-      Hook[CustomHook]
-      RequiredHook[RequiredHook]
+      Hook[IPostDispatchHook]
 
       Sender -- "dispatch(..., metadata, hook)\n{value}" --> M_O
-      M_O -- "postDispatch(message, metadata)\n{required}" --> RequiredHook
-      M_O -- "hook.postDispatch(message, metadata)\n{value - required}" --> Hook
+      M_O -- "postDispatch(message, metadata)\n{value}" --> Hook
     end
 ``` 
 
