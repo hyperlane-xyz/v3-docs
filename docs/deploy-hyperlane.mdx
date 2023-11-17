@@ -1,13 +1,20 @@
 # Get Started
 
 Hyperlane can be deployed by anyone to any chain. 
-This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your mailbox and Hyperlane Messaging (./), allowing developers to send interchain messages to and from your chain.
+This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
+
+## Terminology
+
+The "**local chain**" is your new chain that you want to deploy Hyperlane onto.
+
+A "**remote chain**" is a chain with an existing Hyperlane deployment that you want your local chain to send & receive messages to & from.
 
 ## Overview
+
 There are five steps in this guide:
-1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers
+1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers.
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
+3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
 4. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
 
 ## Getting Started
@@ -17,18 +24,18 @@ There are five steps in this guide:
 There are three keys you must set up and fund. To get started, you can simplify by using the same hexadecimal key for all three roles.
 
 <table>
-<thead><tr><th>Key Type</th><th>Description</th><th>Funding Needs</th></tr></thead>
+<thead><tr><th>Key Role</th><th>Description</th><th>Funding Needs</th></tr></thead>
 <tbody><tr><td>Contract Deployer</td><td>32 byte hexadecimal private key</td><td>Funded on all the chains on which we need to deploy contracts.</td></tr>
-<tr><td>Validator Accounts</td><td>A list of validator addresses to configure a Multisig ISM, or just one to get started quickly</td><td>A small amount to do announce the location of the validator signatures</td></tr>
-<tr><td>Relayer Accounts</td><td>The relayer client(s) use one account on the local chain and an additional account for each of the remote chains</td><td>Each relayer instance must be configured with a key that has a balance on all the other chains.</td></tr></tbody>
+<tr><td>Validator Accounts</td><td>A list of validator addresses that will sign outbound messages from your local chain. Just one validator works to get started quickly.</td><td>A small amount so validators can announce the location of their signatures onchain with a one-time transaction</td></tr>
+<tr><td>Relayer Accounts</td><td>The single relayer you will operate requires an account on each chain it will deliver messages to & from</td><td>The relayer must have a balance on all chains it's relaying between.</td></tr></tbody>
 </table>
 
 For instructions on how to generate keys, see the [agent keys](./operate/set-up-agent-keys.mdx) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
 
-If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_PUBLIC_KEY` variable.
+If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_TARGET_ADDRESS` environment variable.
 
 ```
-cast send $YOUR_PUBLIC_KEY \
+cast send $YOUR_TARGET_ADDRESS \
 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
 --value $(cast tw 1)
 ```
@@ -38,10 +45,10 @@ cast send $YOUR_PUBLIC_KEY \
 Once you have set up deployer, validator, and relayer keys it's time to use the Hyperlane CLI to deploy smart contracts to the local and remote chains.
 
 On the local chain, we will deploy:
-- The core contracts, including a  that can be used to send and receive messages
+- The core contracts, including a [Mailbox](./reference/messaging/messaging-interface.mdx) that can be used to send and receive messages
 
 On all chains, we will deploy:
-- A Multisig ISM that can be used to verify inbound messages
+- A Multisig ISM that can be used to verify inbound messages from the other local & remote chains
 - An `InterchainGasPaymaster`, which can be used to pay our relayer for delivering interchain messages
 - A `TestRecipient`, which we will send messages to, in order to test that everything is working correctly
 
