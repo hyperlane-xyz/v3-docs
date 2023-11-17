@@ -1,8 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
-
 import MessagingIsmDiagram from '@site/src/diagrams/messaging-isms.md';
 
 # Receive a message
@@ -62,6 +60,8 @@ The following utility is provided in the [`TypeCasts` library](../libraries/type
 
 ### Access Control
 
+The `handle` function should be restricted to the Mailbox address if the contract should only accept calls from interchain messages.
+
 The following utility is provided in the [`MailboxClient` library](../libraries/mailboxclient.mdx) for convenience.
 
 <Tabs groupId="lang">
@@ -83,15 +83,34 @@ The following utility is provided in the [`MailboxClient` library](../libraries/
 </TabItem>
 </Tabs>
 
+### Examples
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/test/TestRecipient.sol#L30-L38
+```
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+</Tabs>
+
 ## Verify
 
 When a message is received, the Mailbox will verify security with an [Interchain Security Module](../ISM/specify-your-ISM.mdx) before calling the message recipient's `handle`.
 
-<MessagingIsmDiagram/>
-
 ### Default Security
 
-To query the default ISM configuration, you can call the `defaultIsm` function.
+To query the default ISM address, you can call the `defaultIsm` function.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -105,6 +124,8 @@ To query the default ISM configuration, you can call the `defaultIsm` function.
 ### Modular Security
 
 To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages. The Mailbox will defer to this ISM when specified.
+
+<MessagingIsmDiagram/>
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
