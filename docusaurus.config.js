@@ -191,17 +191,15 @@ const config = {
       mermaid: {
         theme: {
           light: "base",
-          dark: "base",
+          dark: "dark"
         },
         options: {
           // see https://github.com/mermaid-js/mermaid/blob/aa5d586bd64c3aa8e42f6ea60bcd22109b8b4083/packages/mermaid/src/themes/theme-base.js#L55
           themeVariables: {
-            mainBkg: "#205AB0",
+            primaryColor: "#205AB0",
+            secondaryColor: "white",
+            tertiaryColor: "white",
             nodeTextColor: "white",
-            edgeLabelBackground: "#FFFFFF",
-            clusterBkg: "white",
-            // transitionLabelColor: "white", attempts at creating white text for the sequence diagram
-            // stateLabelColor: "white"
           },
           themeCSS: ".edgeLabel { color: black }",
         },
