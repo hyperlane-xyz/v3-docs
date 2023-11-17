@@ -90,10 +90,10 @@ struct HookMetadata {
 ```solidity
 bytes memory metadata = abi.encodePacked(
   StandardHookMetadata({
-    variant: 1,
-    msgValue: 0, // unused by this hook
-    gasLimit: 100000,
-    refundAddress: msg.sender
+    variant: 1,               // only variant supported by this hook
+    msgValue: 0,              // unused by this hook
+    gasLimit: 100000,         // override default gas limit
+    refundAddress: msg.sender // override default refund address
   })
 );
 ```
