@@ -2,6 +2,9 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 import codeImport from "remark-code-import";
 
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+
 import { themes } from "prism-react-renderer";
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
@@ -44,7 +47,13 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          remarkPlugins: [[codeImport, { removeRedundantIndentations: true }]],
+          remarkPlugins: [
+            [codeImport, { removeRedundantIndentations: true }],
+            [remarkMath, {}]
+          ],
+          rehypePlugins: [
+            [rehypeKatex, { strict: false }]
+          ],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/hyperlane-xyz/v3-docs/tree/main/",
         },
@@ -53,6 +62,15 @@ const config = {
         },
       }),
     ],
+  ],
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
+      integrity:
+        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+      crossorigin: 'anonymous',
+    },
   ],
 
   themeConfig:

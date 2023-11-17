@@ -1,23 +1,109 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import IgpDiagram from '@site/src/diagrams/interchain-gas.md';
-
 # Interchain Gas Payment
 
 To [deliver a message](../messaging/receive.mdx), a transaction must be included on the destination chain that calls the Mailbox `process` function with the encoded message and ISM metadata. 
 
-## Relaying
+```mermaid
+flowchart LR
+    subgraph Origin Chain
+      Sender
+      M_O[(Mailbox)]
+      IGP[InterchainGasPaymaster]
+      Sender -- "dispatch(...)\n{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
+    end
 
-For convenience, [relayers](../../operate/relayer/run-relayer.mdx) watch for dispatched messages and will submit process transactions on behalf of the message sender if they receive sufficient payment on the origin chain. We refer to this as *interchain gas payment*.
+    Relayer((Relayer))
 
-<IgpDiagram/>
+    M_O -. "indexing" .-> Relayer
+    IGP -. "value" .- Relayer
+```
 
-A relayer's costs for submitting process transactions are subject to the destination chain's blockspace market. These fees are denominated in a different asset than the origin payment.
+For convenience, [relayers](../../operate/relayer/run-relayer.mdx) watch for dispatched messages and will submit process transactions on behalf of the message sender if they receive sufficient payment on the origin chain. We refer to this as *interchain gas payment*. 
 
-### Gas Oracles
+```mermaid
+flowchart LR
+    Relayer((Relayer))
 
-For convenience, relayers oraclize their gas price and exchange rates between supported origin and destination chains.
+    subgraph Destination Chain
+      M_D[(Mailbox)]
+      M_D -- "handle(...)" --> Recipient
+    end
+
+    Relayer -- "process{gasLimit}(...)" --> M_D
+```
+
+Because messages can trigger arbitrary code execution, the relayer must meter the [`handle` call](../messaging/receive.mdx#handle) with a `gasLimit` to charge appropriately at message dispatch time.
+
+$$
+txCost = gasPrice * gasLimit
+\\[5pt]
+exchangeRate = \frac{originGasTokenPrice}{destinationGasTokenPrice}
+\\[5pt]
+originFee = exchangeRate * txCost
+$$
+
+## Post Dispatch
+
+During the post-dispatch hook, the `InterchainGasPaymaster` contract will revert if payment is insufficient to cover the relayer's *anticipated* costs. The relayer will honor quotes from `dispatch` time.
+
+### Gas Limit
+
+When none is specified, the `gasLimit` for metering the `handle` call uses a static default of `50_000`.
+
+:::tip
+We recommend developers benchmark their [`handle` implementations](../messaging/receive.mdx#handle) in unit tests to determine a reasonable `gasLimit` to use.
+:::
+
+If you expect the `handle` function to consume more than this default, you should override the [default `gasLimit` in metadata](#metadata). 
+
+### Refunds
+
+If the message sender pays more than the hook quotes, the contract will refund the difference. If none is specified, the refund address will default to the message sender. This allows senders to skip explicit `quoteDispatch` calls. 
+
+:::warning
+Refunds can present a risk of [reentrancy](https://www.certik.com/resources/blog/3K7ZUAKpOr1GW75J2i0VHh-what-is-a-reentracy-attack). Special care should be taken to ensure safety against reentrancy exploits.
+:::
+
+Refunds are only made if payment is greater than the quote. Refunds **are not** made if delivery requires less gas than what was paid. If a refund is unsuccessful, the `payForGas` call will revert. To specify a different refund address, override the [default `refundAddress` in metadata](#metadata).
+
+### Metadata
+
+This hook expects metadata in a **packed encoding** of `StandardHookMetadata`. See the Mailbox [dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) for how to pass metadata overrides.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+struct HookMetadata {
+    uint16 variant;
+    uint256 msgValue;
+    uint256 gasLimit;
+    address refundAddress;
+}
+```
+
+#### Examples
+
+```solidity
+bytes memory metadata = abi.encodePacked(
+  StandardHookMetadata({
+    variant: 1,               // only variant supported by this hook
+    msgValue: 0,              // unused by this hook
+    gasLimit: 100000,         // override default gas limit
+    refundAddress: msg.sender // override default refund address
+  })
+);
+```
+
+</TabItem>
+</Tabs>
+
+## Gas Oracles
+
+The interchain gas payment requirement is calculated using oraclized gas price and exchange rates between supported origin and destination chains.
 
 :::info
 Exchange rates and gas prices are up to the relayer to decide. A spread may be charged to account for drift and operating costs.
@@ -40,7 +126,7 @@ Exchange rates and gas prices are up to the relayer to decide. A spread may be c
 </TabItem>
 </Tabs>
 
-Because messages can trigger arbitrary code execution, the relayer must meter the `handle` call to estimate the gas for processing the message. The `quoteGasPayment` function calculates fees for the relayer's anticipated costs.
+ The `quoteGasPayment` function calculates fees for the relayer's anticipated costs.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -57,53 +143,6 @@ Because messages can trigger arbitrary code execution, the relayer must meter th
 
 </TabItem>
 </Tabs>
-
-## Post Dispatch
-
-During the post-dispatch hook, the contract will revert if payment is insufficient to cover the relayer's anticipated costs. 
-
-### Gas Limit
-
-By default, the `gasLimit` for metering the `handle` call used in this calculation is `50_000`. 
-
-:::tip
-If you expect the `handle` function to consume more than this default, you should [override the default `gasLimit`](###default-overrides) in the `postDispatch` call. We recommend developers to benchmark their `handle` functions to determine a reasonable `gasLimit` to use.
-:::
-
-### Refunds
-
-Message senders may pay more than the relayer quotes. When this happens, the contract refunds the difference to the sender [by default](###default-overrides). This allows senders to skip explicit `quoteDispatch` calls.
-
-:::info
-Refunds are only made if payment is greater than the quote. Refunds **are not** made if delivery requires less gas than what was paid.
-:::
-
-If a refund is unsuccessful, the `payForGas` call will revert. 
-
-:::danger
-Refunds can present a risk of [reentrancy](https://www.certik.com/resources/blog/3K7ZUAKpOr1GW75J2i0VHh-what-is-a-reentracy-attack). Special care should be made by callers to ensure they are not vulnerable to reentrancy exploits.
-:::
-
-### Default Overrides
-
-This hook expects metadata from the Mailbox to be formatted with the [`StandardHookMetadata` library](../libraries/hookmetadata.mdx). See the [dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) to pass this metadata through the Mailbox.
-
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity file=<rootDir>/static/contracts/hooks/libs/StandardHookMetadata.sol#L153-L156
-```
-
-**Parameters**
-- `gasLimit`: The gas limit to meter the `handle` call with
-- `refundAddress`: The address to refund excess payment to
-
-**Returns**
-- `metadata`: The metadata to be passed to the `dispatch` call
-
-</TabItem>
-</Tabs>
-
 
 ## Retrying
 

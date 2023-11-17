@@ -1,8 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
-
 # Send a message
 
 Contracts can send interchain messages by calling the `dispatch` function on the Mailbox.
@@ -63,6 +61,33 @@ The following utility is provided in the [`TypeCasts` library](../libraries/type
 </TabItem>
 </Tabs>
 
+### Examples
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+// send message to goerli TestRecipient
+mailbox.dispatch(
+  5,
+  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
+  bytes("hello, world")
+);
+```
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+</Tabs>
+
 ## Quote Dispatch
 
 Fees are often configured to cover IGP payments as well as protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function. 
@@ -93,6 +118,33 @@ flowchart TB
 **Returns**
 
 - `fee`: The payment required to dispatch the message
+
+</TabItem>
+<TabItem value="cw" label="CosmWasm">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+<TabItem value="sl" label="Sealevel">
+
+🚧 Coming soon! 🚧
+
+</TabItem>
+</Tabs>
+
+### Examples
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+// quote sending message to goerli TestRecipient
+uint256 fee = mailbox.quoteDispatch(
+  5,
+  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
+  bytes("hello, world")
+);
+```
 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
@@ -186,6 +238,20 @@ Overriding the default hook metadata is an advanced feature. See the [Hooks](../
 ```solidity file=<rootDir>/static/contracts/Mailbox.sol#L125-L130
 ```
 
+#### Examples
+
+```solidity
+// override hook metadata when sending message to goerli TestRecipient
+uint256 handleGasLimit = 500000;
+address refundAddress = msg.sender;
+mailbox.dispatch(
+  5,
+  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
+  bytes("hello, world"),
+  StandardHookMetadata.formatMetadata(handleGasLimit, refundAddress)
+);
+```
+
 </TabItem>
 </Tabs>
 
@@ -218,6 +284,20 @@ Overriding the default hook is an advanced feature. See the [Hooks](../hooks/ove
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/static/contracts/Mailbox.sol#L270-L276
+```
+
+#### Examples
+
+```solidity
+// override hook when sending message to goerli TestRecipient
+IPostDispatchHook merkleTreeHook = 0x4917a9746A7B6E0A57159cCb7F5a6744247f2d0d;
+mailbox.dispatch(
+  5,
+  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
+  bytes("hello, world"),
+  "0x", // empty metadata
+  merkleTreeHook
+);
 ```
 
 </TabItem>
