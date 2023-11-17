@@ -28,7 +28,6 @@ export default function AddressTable<K extends string>({
   contract,
   environment,
 }: Props<K>) {
-  console.log({ environment, contract });
   return (
     <table>
       <thead>
