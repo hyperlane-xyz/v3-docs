@@ -31,7 +31,9 @@ export default function MessageQuickstart() {
   const explorer = testnetChainMetadata[originChain]?.blockExplorers[0].url;
 
   const url = new URL(explorer);
-  const contract = `${explorer}/address/${mailbox}#writeContract`;
+
+  // F3 is the third function in the contract
+  const contract = `${explorer}/address/${mailbox}#writeProxyContract#F3`;
 
   const value = "0.01 ether";
 
@@ -75,7 +77,7 @@ export default function MessageQuickstart() {
           <ol>
             <li>
               Navigate to the{" "}
-              <a href={contract}>
+              <a href={contract} target="_blank">
                 {url.hostname} <code>dispatch</code> interface
               </a>
             </li>
@@ -84,9 +86,8 @@ export default function MessageQuickstart() {
               Wallet. Make sure you are on <code>{originChain}</code>.
             </li>
             <li>
-              Fill in destination: <code>{destinationDomain}</code>, recipient:{" "}
-              <code>{recipient}</code>, message: <code>{body}</code>, and value:{" "}
-              <code>{value}</code>
+              Fill in value: <code>{value}</code>, destination: <code>{destinationDomain}</code>, recipient:{" "}
+              <code>{paddedRecipient}</code>, and message: <code>{body}</code>
             </li>
             <li>
               Click the <code>Write</code> button to submit the transaction!
