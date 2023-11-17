@@ -6,13 +6,13 @@ import TabItem from '@theme/TabItem';
 To [deliver a message](../messaging/receive.mdx), a transaction must be included on the destination chain that calls the Mailbox `process` function with the encoded message and ISM metadata. 
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Origin Chain
       Sender
       M_O[(Mailbox)]
       IGP[InterchainGasPaymaster]
-      Sender -- "dispatch(...){value}" --> M_O
-      M_O -- "postDispatch(..., gasLimit){value}" --> IGP
+      Sender -- "dispatch(...)\n{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
     end
 
     Relayer((Relayer))
