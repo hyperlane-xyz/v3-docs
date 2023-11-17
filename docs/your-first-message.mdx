@@ -3,8 +3,8 @@ import TabItem from "@theme/TabItem";
 
 import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
 import {
+  CoreAddressesTable,
   TestRecipientAddressesTable,
-  TestnetMailboxAddressesTable,
 } from "@site/src/components/AddressTable";
 import MessageQuickstart from "@site/src/components/MessageQuickstart";
 
@@ -16,7 +16,7 @@ This tutorial demonstrates how to [send](./reference/messaging/send.mdx) an inte
 
 Sending a message is a simple matter of calling `Mailbox.dispatch`. Make sure you have an account with funds on the origin chain.
 
-<MessageQuickstart/>
+<MessageQuickstart />
 
 :::tip
 You can watch the progress of your message on [explorer.hyperlane.xyz](https://explorer.hyperlane.xyz/) by searching for the **transaction hash** of your `Mailbox.dispatch` call.
@@ -49,5 +49,5 @@ Check the logs to see your message delivery!
 
 <details>
   <summary>Testnet `Mailbox` Addresses</summary>
-  <TestnetMailboxAddressesTable />
+  <CoreAddressesTable environment="testnet" contract="mailbox" />
 </details>
