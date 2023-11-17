@@ -1,15 +1,21 @@
 # Get Started
 
 Hyperlane can be deployed by anyone to any chain. 
-This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your mailbox and Hyperlane Messaging (./), allowing developers to send interchain messages to and from your chain.
+This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
+
+## Terminology
+
+The "**local chain**" is your new chain that you want to deploy Hyperlane onto.
+
+A "**remote chain**" is a chain with an existing Hyperlane deployment that you want your local chain to send & receive messages to & from.
 
 ## Overview
+
 There are five steps in this guide:
-1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers
+1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers.
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-3. [<b>Run validators</b>](#3-run-validators) on your local chain, to provide the signatures needed for the interchain Security Modules you deployed in step 2.
-4. [<b>Run relayer</b>](#4-run-relayer) to send and receive messages between chains you deployed contracts to in step 2.
-5. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages from and to each pair of chains
+3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
+4. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
 
 ## Getting Started
 
@@ -18,18 +24,18 @@ There are five steps in this guide:
 There are three keys you must set up and fund. To get started, you can simplify by using the same hexadecimal key for all three roles.
 
 <table>
-<thead><tr><th>Key Type</th><th>Description</th><th>Funding Needs</th></tr></thead>
+<thead><tr><th>Key Role</th><th>Description</th><th>Funding Needs</th></tr></thead>
 <tbody><tr><td>Contract Deployer</td><td>32 byte hexadecimal private key</td><td>Funded on all the chains on which we need to deploy contracts.</td></tr>
-<tr><td>Validator Accounts</td><td>A list of validator addresses to configure a Multisig ISM, or just one to get started quickly</td><td>A small amount to do announce the location of the validator signatures</td></tr>
-<tr><td>Relayer Accounts</td><td>The relayer client(s) use one account on the local chain and an additional account for each of the remote chains</td><td>Each relayer instance must be configured with a key that has a balance on all the other chains.</td></tr></tbody>
+<tr><td>Validator Accounts</td><td>A list of validator addresses that will sign outbound messages from your local chain. Just one validator works to get started quickly.</td><td>A small amount so validators can announce the location of their signatures onchain with a one-time transaction</td></tr>
+<tr><td>Relayer Accounts</td><td>The single relayer you will operate requires an account on each chain it will deliver messages to & from</td><td>The relayer must have a balance on all chains it's relaying between.</td></tr></tbody>
 </table>
 
 For instructions on how to generate keys, see the [agent keys](./operate/set-up-agent-keys.mdx) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
 
-If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_PUBLIC_KEY` variable.
+If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_TARGET_ADDRESS` environment variable.
 
 ```
-cast send $YOUR_PUBLIC_KEY \
+cast send $YOUR_TARGET_ADDRESS \
 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
 --value $(cast tw 1)
 ```
@@ -39,10 +45,10 @@ cast send $YOUR_PUBLIC_KEY \
 Once you have set up deployer, validator, and relayer keys it's time to use the Hyperlane CLI to deploy smart contracts to the local and remote chains.
 
 On the local chain, we will deploy:
-- The core contracts, including a  that can be used to send and receive messages
+- The core contracts, including a [Mailbox](./reference/messaging/messaging-interface.mdx) that can be used to send and receive messages
 
 On all chains, we will deploy:
-- A Multisig ISM that can be used to verify inbound messages
+- A Multisig ISM that can be used to verify inbound messages from the other local & remote chains
 - An `InterchainGasPaymaster`, which can be used to pay our relayer for delivering interchain messages
 - A `TestRecipient`, which we will send messages to, in order to test that everything is working correctly
 
@@ -86,7 +92,7 @@ When asked about the multisig type, choose `message id ism`. In the context of t
 We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
 
 ```bash
-hyperlane deploy core
+hyperlane deploy core --key $HYP_KEY
 ```
 
 ### Verify
@@ -95,31 +101,56 @@ Deployment contract artifacts will be written to to the `artifacts/` folder by d
 The `core-deployment` file contains the addresses of core contracts, organized by chain.
 The `agent-config` file contains the data needed to run Hyperlane agents for the next step.
 
-## 3. Run validators 
+## 3. Run validators and relayers 
 
-Follow the [Validators](./operate/validators/run-validators.mdx) guide to run validators for the Mailbox on your local chain. These validators will provide the security for messages sent _from_ your chain to remote chains.
+We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription. 
 
-Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
+To get started, use the `deploy kurtosis-agents` command to generate a link for configuring your Kurtosis deployment.
 
-You should have already set up your validator keys in [step 1](#1-set-up-keys), so you can skip that part of the [Validators](./operate/validators/run-validators.mdx) guide.
+```bash
+hyperlane deploy kurtosis-agents
+```
 
-:::info
+Follow the prompts and then click on the Kurtosis Cloud link output by the command.
 
-Make sure these validators match the addresses you provided when in your MultisigIsmConfig. Otherwise, the Multisig ISM you deployed in the previous step will not be able to verify messages sent from your chain.
+If this is your first time using Kurtosis Cloud, you'll need to sign in with Google and Kurtosis will provision a remote cloud instance for your validator and relayer in roughly 2 minutes.
+
+![Get excited](../static/img/kurtosis-get-excited.png)
+
+A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration. 
+
+:::warning
+
+The Kurtosis team is still building the secrets functionality of Kurtosis Cloud, so for now do not enter any sensitive information (e.g. your private keys) into Kurtosis! Only testing and non-sensitive values should be used.
 
 :::
 
-## 4. Run relayers
 
-Follow the [Relayer](./operate/relayer/run-relayer.mdx) guide to run a relayer that will deliver interchain messages sent between the local and remote chains.
+![Example Configuration One](../static/img/kurtosis-example-config-one.png)
 
-Remember to set `--relayChains` or `HYP_BASE_RELAYCHAINS` appropriately.
+![Example Configuration Two](../static/img/kurtosis-example-config-two.png)
 
+Click `Run` to deploy your relayer and validator!
 
-Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
-You should have already set up your relayer keys in [step 1](#1-set-up-keys), so you can skip that part of the [Relayer](./operate/relayer/run-relayer.mdx) guide.
+Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis! 
 
-## 5. Send test messages
+![Success](../static/img/kurtosis-success.png)
+
+You can see information about your relayer and validator deployment, including logs, by navigating to the `Overview` tab.
+
+![Enclave Overview](../static/img/kurtosis-enclave-overview.png)
+
+![Validator Logs](../static/img/kurtosis-validator-logs.png)
+
+For issues with Kurtosis, please file an [issue on the Kurtosis Github repository](https://github.com/kurtosis-tech/kurtosis/issues/new/choose). For questions or discussion, use the [Github Discussions section of the Kurtosis repository](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a) or visit [the Kurtosis Discord server](https://discord.com/invite/jJFG7XBqcY).
+
+:::info
+
+Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/pricing) and payment method information [here](https://cloud.kurtosis.com/payment-method).
+
+:::
+
+## 4. Send test messages
 
 You can check everything is working correctly by sending a test message between each pair of chains.
 Use the Hyperlane CLI again to send the message:
@@ -129,7 +160,37 @@ hyperlane send message \
    --origin YOUR_ORIGIN 
    --destination YOUR_DEST 
    --core PATH_TO_STEP2_ARTIFACTS
+   --key $PRIVATE_KEY
 ```
 
 The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
 To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
+
+## 6. Deploy a warp route
+
+Warp routes are a way to send tokens between chains. You can create a simple configuration file such as:
+
+```yaml
+base:
+  chainName: goerli
+  type: native
+  # address: 0x123... # Required for collateral types
+synthetics:
+  - chainName: ancient8test
+  # You can optionally set the token metadata, otherwise the base token's will be used
+  # name: "MySyntheticToken"
+  # symbol: "MST"
+  # totalSupply: 10000000
+```
+
+Then all you have to do is deploy the warp route by referencing the existing chain and core artifacts with:
+
+```bash
+hyperlane deploy warp --key $PRIVATE_KEY --chains ./configs/chain-config.yaml --config ../cli/examples/warp-tokens.yaml --core ./artifacts/core-deployment-2023-11-17-9-36-53.json
+```
+
+This command will output a warp-ui config file that you need to use in the next step.
+
+## 7. Deploy the warp UI
+
+You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.

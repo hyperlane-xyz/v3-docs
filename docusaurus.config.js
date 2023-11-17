@@ -37,7 +37,7 @@ const config = {
   markdown: {
     mermaid: true,
   },
-  themes: ["@docusaurus/theme-mermaid"],
+  themes: ["@docusaurus/theme-mermaid", "@easyops-cn/docusaurus-search-local"],
   presets: [
     [
       "@docusaurus/preset-classic",
@@ -46,7 +46,7 @@ const config = {
         docs: {
           remarkPlugins: [[codeImport, { removeRedundantIndentations: true }]],
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: 'https://github.com/hyperlane-xyz/v3-docs/tree/main/'
+          editUrl: "https://github.com/hyperlane-xyz/v3-docs/tree/main/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -115,7 +115,7 @@ const config = {
                 label: "Get Started",
                 to: "/docs/intro",
               },
-                            {
+              {
                 label: "Contract Interfaces",
                 to: "/docs/reference/messaging/messaging-interface",
               },
@@ -185,7 +185,7 @@ const config = {
             // transitionLabelColor: "white", attempts at creating white text for the sequence diagram
             // stateLabelColor: "white"
           },
-          themeCSS: ".edgeLabel { color: black }"
+          themeCSS: ".edgeLabel { color: black }",
         },
       },
     }),

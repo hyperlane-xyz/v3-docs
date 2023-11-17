@@ -10,7 +10,7 @@ import MessageQuickstart from "@site/src/components/MessageQuickstart";
 
 # Send your first interchain message
 
-This tutorial demonstrates how to [send](./reference/messaging/send.mdx) a simple interchain message to a pre-deployed `TestRecipient` contract.
+This tutorial demonstrates how to [send](./reference/messaging/send.mdx) an interchain message to a pre-deployed `TestRecipient` contract.
 
 <SimpleMessagingDiagram />
 
@@ -18,15 +18,9 @@ Sending a message is a simple matter of calling `Mailbox.dispatch`. Make sure yo
 
 <MessageQuickstart />
 
-<details>
-  <summary>Testnet `Mailbox` Addresses</summary>
-  <CoreAddressesTable environment="testnet" contract="mailbox" />
-</details>
-
-<details>
-  <summary>Testnet `TestRecipient` Addresses</summary>
-  <TestRecipientAddressesTable />
-</details>
+:::tip
+You can watch the progress of your message on [explorer.hyperlane.xyz](https://explorer.hyperlane.xyz/) by searching for the **transaction hash** of your `Mailbox.dispatch` call.
+:::
 
 ## Check the result
 
@@ -45,3 +39,15 @@ The `TestRecipient` has the following [handle](./reference/messaging/receive.mdx
 
 </TabItem>
 </Tabs>
+
+Check the logs to see your message delivery!
+
+<details>
+  <summary>Testnet `TestRecipient` Addresses</summary>
+  <TestRecipientAddressesTable />
+</details>
+
+<details>
+  <summary>Testnet `Mailbox` Addresses</summary>
+  <CoreAddressesTable environment="testnet" contract="mailbox" />
+</details>
