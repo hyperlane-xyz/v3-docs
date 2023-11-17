@@ -1,10 +1,12 @@
 # Get Started
 
-Hyperlane can be deployed by anyone to any chain. 
+Hyperlane can be deployed by anyone to any chain.
 This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your mailbox and Hyperlane Messaging (./), allowing developers to send interchain messages to and from your chain.
 
 ## Overview
+
 There are five steps in this guide:
+
 1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
 3. [<b>Run validators</b>](#3-run-validators) on your local chain, to provide the signatures needed for the interchain Security Modules you deployed in step 2.
@@ -18,10 +20,41 @@ There are five steps in this guide:
 There are three keys you must set up and fund. To get started, you can simplify by using the same hexadecimal key for all three roles.
 
 <table>
-<thead><tr><th>Key Type</th><th>Description</th><th>Funding Needs</th></tr></thead>
-<tbody><tr><td>Contract Deployer</td><td>32 byte hexadecimal private key</td><td>Funded on all the chains on which we need to deploy contracts.</td></tr>
-<tr><td>Validator Accounts</td><td>A list of validator addresses to configure a Multisig ISM, or just one to get started quickly</td><td>A small amount to do announce the location of the validator signatures</td></tr>
-<tr><td>Relayer Accounts</td><td>The relayer client(s) use one account on the local chain and an additional account for each of the remote chains</td><td>Each relayer instance must be configured with a key that has a balance on all the other chains.</td></tr></tbody>
+  <thead>
+    <tr>
+      <th>Key Type</th>
+      <th>Description</th>
+      <th>Funding Needs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Contract Deployer</td>
+      <td>32 byte hexadecimal private key</td>
+      <td>Funded on all the chains on which we need to deploy contracts.</td>
+    </tr>
+    <tr>
+      <td>Validator Accounts</td>
+      <td>
+        A list of validator addresses to configure a Multisig ISM, or just one
+        to get started quickly
+      </td>
+      <td>
+        A small amount to do announce the location of the validator signatures
+      </td>
+    </tr>
+    <tr>
+      <td>Relayer Accounts</td>
+      <td>
+        The relayer client(s) use one account on the local chain and an
+        additional account for each of the remote chains
+      </td>
+      <td>
+        Each relayer instance must be configured with a key that has a balance
+        on all the other chains.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 For instructions on how to generate keys, see the [agent keys](./operate/set-up-agent-keys.mdx) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
@@ -39,9 +72,11 @@ cast send $YOUR_PUBLIC_KEY \
 Once you have set up deployer, validator, and relayer keys it's time to use the Hyperlane CLI to deploy smart contracts to the local and remote chains.
 
 On the local chain, we will deploy:
-- The core contracts, including a  that can be used to send and receive messages
+
+- The core contracts, including a that can be used to send and receive messages
 
 On all chains, we will deploy:
+
 - A Multisig ISM that can be used to verify inbound messages
 - An `InterchainGasPaymaster`, which can be used to pay our relayer for delivering interchain messages
 - A `TestRecipient`, which we will send messages to, in order to test that everything is working correctly
@@ -60,13 +95,14 @@ Run the following to see the default SDK chains:
 ```bash
 hyperlane chains list
 ```
+
 For any chains that need custom configs, you can define them manually using JSON or YAML (see [example config](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)), or create them with the following command:
 
 ```bash
 hyperlane config create chain
 ```
 
-Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM). 
+Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM).
 
 :::info
 
@@ -83,10 +119,17 @@ hyperlane config create multisig
 When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
 
 ### Deploy
+
 We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
 
 ```bash
-hyperlane deploy core
+hyperlane deploy core \
+    --targets chain1,chain2,... \ # all the chains you want to bridge between
+    --chains $CHAIN_CONFIG_FILE \  # chain configuration
+    --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # in case, you already have predeployed some of the contracts and want to reuse them
+    --ism $MULTISIG_CONFIG_FILE \ #
+    --out $OUT_DIR \
+    --key $YOUR_DEPLOYER_PRIVATE_KEY
 ```
 
 ### Verify
@@ -95,7 +138,7 @@ Deployment contract artifacts will be written to to the `artifacts/` folder by d
 The `core-deployment` file contains the addresses of core contracts, organized by chain.
 The `agent-config` file contains the data needed to run Hyperlane agents for the next step.
 
-## 3. Run validators 
+## 3. Run validators
 
 Follow the [Validators](./operate/validators/run-validators.mdx) guide to run validators for the Mailbox on your local chain. These validators will provide the security for messages sent _from_ your chain to remote chains.
 
@@ -115,7 +158,6 @@ Follow the [Relayer](./operate/relayer/run-relayer.mdx) guide to run a relayer t
 
 Remember to set `--relayChains` or `HYP_BASE_RELAYCHAINS` appropriately.
 
-
 Include the agent config from the [deploy contracts](#2-deploy-contracts) step in `CONFIG_FILES`. If you are using Docker, you will need to mount the file into the container.
 You should have already set up your relayer keys in [step 1](#1-set-up-keys), so you can skip that part of the [Relayer](./operate/relayer/run-relayer.mdx) guide.
 
@@ -126,8 +168,8 @@ Use the Hyperlane CLI again to send the message:
 
 ```
 hyperlane send message \
-   --origin YOUR_ORIGIN 
-   --destination YOUR_DEST 
+   --origin YOUR_ORIGIN
+   --destination YOUR_DEST
    --core PATH_TO_STEP2_ARTIFACTS
 ```
 
