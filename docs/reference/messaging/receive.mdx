@@ -9,7 +9,15 @@ import MessagingIsmDiagram from '@site/src/diagrams/messaging-isms.md';
 
 Contracts can receive interchain messages by implementing the `handle` function.
 
-<SimpleMessagingDiagram/>
+```mermaid
+flowchart TB
+    subgraph Destination Chain
+      Recipient[Recipient]
+      M_D[(Mailbox)]
+
+      M_D -- "handle(origin, sender, body)" --> Recipient
+    end
+```
 
 ## Handle
 
