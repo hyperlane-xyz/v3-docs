@@ -100,11 +100,6 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "reference/ISM/ISM-interface",
-          label: "ISM Interface",
-        },
-        {
-          type: "doc",
           id: "reference/ISM/multisig-ISM-interface",
           label: "Multisig ISM Interface",
         },
@@ -148,6 +143,43 @@ const sidebars = {
           type: "doc",
           id: "reference/applications/warp-routes",
           label: "Warp Routes",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Typescript SDK",
+      link: {
+        type: 'doc',
+        id: 'reference/typescript-sdk/sdk-overview',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/multiprovider",
+          label: "RPC Providers",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/deploying-contracts",
+          label: "Deployment",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/testing-contracts",
+          label: "Interchain Testing",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/quoting-gas",
+          label: "Quoting Gas Payments",
+        },
+        {
+          type: "doc",
+          id: "reference/typescript-sdk/app-abstraction",
+          label: "App Abstraction",
         },
       ],
     },
@@ -201,11 +233,16 @@ const sidebars = {
       label: "Interchain Security Modules",
       link: {
         type: "generated-index",
-        description: "Hyperlane is secured by Interchain Security Modules (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were actually sent on the origin chain. Hyperlane developers can optionally override the Mailbox's default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application. ISMs act as security building blocks - developers can mix and match different ISMs together to encode a security model that best fits their needs. Lastly, ISMs are fully customizable: devs can write their own ISMs, tailoring them to the needs of their application.",
+        description: "Hyperlane is secured by Interchain Security Modules (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were actually sent on the origin chain. Hyperlane developers can optionally override the Mailbox's default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.",
       },
       collapsible: true,
       collapsed: true,
       items: [
+        {
+          type: "doc",
+          id: "protocol/ISM/modular-security",
+          label: "Modular Security",
+        },
         {
           type: "doc",
           id: "protocol/ISM/multisig-ISM",
@@ -265,9 +302,21 @@ const sidebars = {
       label: "v2 to v3 Migration",
     },
     {
-      type: "doc",
-      id: "guides/deploy-warp-route",
+      type: "category",
       label: "Deploy Warp Route",
+      link: {
+        type: 'doc',
+        id: 'guides/deploy-warp-route',
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Warp Route UI",
+        },
+      ],
     },
     {
       type: "doc",
