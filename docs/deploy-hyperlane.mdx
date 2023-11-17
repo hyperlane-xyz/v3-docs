@@ -96,21 +96,19 @@ The `agent-config` file contains the data needed to run Hyperlane agents for the
 
 We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription. 
 
-To get started, visit the [Kurtosis Cloud website](https://cloud.kurtosis.com/) (direct link: https://cloud.kurtosis.com/) and sign in with Google. 
+To get started, use the `deploy kurtosis-agents` command to generate a link for configuring your Kurtosis deployment.
 
-If this is your first time using Kurtosis Cloud, Kurtosis will provision a remote cloud instance for your validator and relayer in roughly 2 minutes.
+```bash
+hyperlane deploy kurtosis-agents
+```
+
+Follow the prompts and then click on the Kurtosis Cloud link output by the command.
+
+If this is your first time using Kurtosis Cloud, you'll need to sign in with Google and Kurtosis will provision a remote cloud instance for your validator and relayer in roughly 2 minutes.
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
-Once completed, click `Launch in Enclave Manager`.
-
-![Launch Enclave Manager](../static/img/kurtosis-launch-em.png)
-
-Next, click on `New Enclave` and enter ```github.com/kurtosis-tech/hyperlane-package``` in the Create Enclave pop up. The [Kurtosis Hyperlane package](https://github.com/kurtosis-tech/hyperlane-package/tree/main) defines the configuration for your validator and relayer deployment based on the provided parameters. Click `Configure` to start configuring your deployment.
-
-![New Enclave](../static/img/kurtosis-new-enclave.png)
-
-A configuration screen will pop up where you'll enter your relayer and validator information created in Steps 1 and 2. Fields with a red asterik are required such as the `Origin Chain Name`, `Validator Key`, `Agent Config Json` and `Relay Chains`. The screenshot below shows an example configuration. 
+A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration. 
 
 :::warn
 
@@ -139,7 +137,7 @@ For issues with Kurtosis, please file an [issue on the Kurtosis Github repositor
 
 :::info
 
-Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. Subscription prices and payment method information can be accessed [here](https://cloud.kurtosis.com/payment-method).
+Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/payment-method) and payment method information [here](https://cloud.kurtosis.com/payment-method).
 
 :::
 
