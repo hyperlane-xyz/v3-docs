@@ -86,7 +86,7 @@ When asked about the multisig type, choose `message id ism`. In the context of t
 We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
 
 ```bash
-hyperlane deploy core
+hyperlane deploy core --key $HYP_KEY
 ```
 
 ### Verify
@@ -129,7 +129,37 @@ hyperlane send message \
    --origin YOUR_ORIGIN 
    --destination YOUR_DEST 
    --core PATH_TO_STEP2_ARTIFACTS
+   --key $PRIVATE_KEY
 ```
 
 The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
 To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
+
+## 6. Deploy a warp route
+
+Warp routes are a way to send tokens between chains. You can create a simple configuration file such as:
+
+```yaml
+base:
+  chainName: goerli
+  type: native
+  # address: 0x123... # Required for collateral types
+synthetics:
+  - chainName: ancient8test
+  # You can optionally set the token metadata, otherwise the base token's will be used
+  # name: "MySyntheticToken"
+  # symbol: "MST"
+  # totalSupply: 10000000
+```
+
+Then all you have to do is deploy the warp route by referencing the existing chain and core artifacts with:
+
+```bash
+hyperlane deploy warp --key $PRIVATE_KEY --chains ./configs/chain-config.yaml --config ../cli/examples/warp-tokens.yaml --core ./artifacts/core-deployment-2023-11-17-9-36-53.json
+```
+
+This command will output a warp-ui config file that you need to use in the next step.
+
+## 7. Deploy the warp UI
+
+You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.
