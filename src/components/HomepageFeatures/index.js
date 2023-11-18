@@ -8,7 +8,7 @@ const FeatureList = [
     Svg: require('@site/static/img/hyp_prms_landing.svg').default,
     description: (
       <>
-        <b>Hyperlane was created for a modular world.</b> Anyone, anywhere can pass messages, bridge tokens, and perform queries.
+        <b>Hyperlane was created for a modular world.</b> Anyone, anywhere can connect any chain and pass messages, move tokens, and perform queries.
       </>
     ),
   },
@@ -17,7 +17,7 @@ const FeatureList = [
     Svg: require('@site/static/img/hyp_ecosystem_landing.svg').default,
     description: (
       <>
-        Works seamlessly across many VMs and chains, including EVM, Solana, Cosmos, Move and more.
+        Works seamlessly across many VMs and chains, including EVM, Solana, Cosmos, Move and more. Hyperlane can be implemented in <b>any environment</b>.
       </>
     ),
   },
@@ -26,7 +26,7 @@ const FeatureList = [
     Svg: require('@site/static/img/hyp_security_landing.svg').default,
     description: (
       <>
-        Customize your interchain security model, including leveraging economic security and ZK light clients.
+        Customize your interchain security; from authority based security, to economic security and ZK light clients, or even rollup bridges and external providers.
       </>
     ),
   },
