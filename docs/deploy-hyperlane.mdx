@@ -11,12 +11,13 @@ A "**remote chain**" is a chain with an existing Hyperlane deployment that you w
 
 ## Overview
 
-There are four steps in this guide:
+There are five steps in this guide:
 
 1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers.
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
 3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
-4. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
+4. [<b>Send a test message</b>](#4-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
+5. [<b>Deploy a warp route</b>](#5-deploy-a-warp-route) to send token value, not just messages, across chains
 
 ## Getting Started
 
@@ -209,7 +210,7 @@ hyperlane send message \
 The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
 To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
 
-## 5. Deploy a warp route
+## Deploy a warp route
 
 Warp routes are a way to send tokens between chains. You can create a simple configuration file such as:
 
@@ -234,6 +235,6 @@ hyperlane deploy warp --key $PRIVATE_KEY --chains ./configs/chain-config.yaml --
 
 This command will output a warp-ui config file that you need to use in the next step.
 
-## 6. Deploy the warp UI
+### Deploy the warp UI
 
-You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.
+We have a template UI for interacting with your warp routes. You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.

@@ -181,7 +181,7 @@ const config = {
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
         <br>
-        Built IRL in the United States 🗽 and the United Kingdom 💂🏼‍♂️`,
+        Built IRL in New York 🗽 and London 💂🏼‍♂️`,
       },
       prism: {
         additionalLanguages: ["solidity"],
