@@ -17,14 +17,14 @@ export default function ChainDropdown({
 }: Props) {
   return (
     <div>
-      {label}{":\t"}
-      <div className="dropdown dropdown--hoverable magin--">
+      {label}:
+      <div className="dropdown dropdown--hoverable margin-left--xs">
         <button className="button button--secondary navbar__link">
           {chain}
         </button>
         <ul className="dropdown__menu">
           {chains.map((chain) => (
-            <li>
+            <li key={chain}>
               <a
                 className="dropdown__link"
                 href={`#${label}=${chain}`}

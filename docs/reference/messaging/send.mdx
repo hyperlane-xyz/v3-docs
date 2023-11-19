@@ -1,5 +1,7 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import { MultiLanguageExample } from "@site/src/components/InteractiveExample";
 
 # Send a message
 
@@ -16,7 +18,7 @@ flowchart TB
 
 ## Dispatch
 
-Calling this function dispatches a message to the destination domain and recipient. 
+Calling this function dispatches a message to the destination domain and recipient.
 
 :::warning
 Hyperlane can only deliver messages to smart contracts that implement the `handle` function. See the [receive a message](./receive.mdx) documentation for more information.
@@ -28,24 +30,16 @@ Depending on the [post-`dispatch` hook configuration](##post-dispatch-hook-confi
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L61-L65
+
 ```
-
-**Parameters**
-
-- `destinationDomain`: Domain of destination chain
-- `recipientAddress`: Address of recipient on destination chain as bytes32
-- `messageBody`: Raw bytes content of message body
-
-**Returns**
-
-- `messageId`: The unique message identifier
 
 :::tip
-Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
+Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently. The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
 
-The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
 ```solidity file=<rootDir>/static/contracts/libs/TypeCasts.sol#L5-L8
+
 ```
+
 :::
 
 </TabItem>
@@ -63,35 +57,27 @@ The following utility is provided in the [`TypeCasts` library](../libraries/type
 
 ### Examples
 
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity
-// send message to goerli TestRecipient
-mailbox.dispatch(
-  5,
-  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
-  bytes("hello, world")
-);
-```
-
-</TabItem>
-<TabItem value="cw" label="CosmWasm">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-</Tabs>
+<MultiLanguageExample
+  solidity={({
+    mailbox,
+    originChain,
+    destinationDomain,
+    destinationChain,
+    paddedRecipient,
+    body,
+  }) => `\
+// send message from ${originChain} to ${destinationChain} TestRecipient
+IMailbox mailbox = IMailbox("${mailbox}");
+bytes32 messageId = mailbox.dispatch{value: msg.value}(
+  ${destinationDomain},
+  "${paddedRecipient}",
+  bytes(\"${body}\")
+);`}
+/>
 
 ## Quote Dispatch
 
-Fees are often configured to cover IGP payments as well as protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function. 
-
+Fees are often configured to cover IGP payments as well as protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function.
 
 ```mermaid
 flowchart TB
@@ -109,15 +95,7 @@ flowchart TB
 ```solidity file=<rootDir>/static/contracts/Mailbox.sol#L149-L153
 ```
 
-**Parameters**
-
-- `destinationDomain`: Domain of destination chain
-- `recipientAddress`: Address of recipient on destination chain as bytes32|
-- `messageBody`: Raw bytes content of message body
-
-**Returns**
-
-- `fee`: The payment required to dispatch the message
+The quoted `fee` must be passed as value to the `dispatch` call to ensure it does not revert.
 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
@@ -134,30 +112,23 @@ flowchart TB
 
 ### Examples
 
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity
-// quote sending message to goerli TestRecipient
+<MultiLanguageExample
+  solidity={({
+    mailbox,
+    originChain,
+    destinationDomain,
+    destinationChain,
+    paddedRecipient,
+    body,
+  }) => `\
+// quote sending message from ${originChain} to ${destinationChain} TestRecipient
+IMailbox mailbox = IMailbox("${mailbox}");
 uint256 fee = mailbox.quoteDispatch(
-  5,
-  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
-  bytes("hello, world")
-);
-```
-
-</TabItem>
-<TabItem value="cw" label="CosmWasm">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-</Tabs>
+  ${destinationDomain},
+  "${paddedRecipient}",
+  bytes("${body}")
+);`}
+/>
 
 ## Post-Dispatch Hook Config
 
@@ -189,6 +160,7 @@ To query the required hook configuration, you can call the `requiredHook` functi
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L57
+
 ```
 
 </TabItem>
@@ -202,6 +174,7 @@ To query the default hook configuration, you can call the `defaultHook` function
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/static/contracts/interfaces/IMailbox.sol#L55
+
 ```
 
 </TabItem>
@@ -236,24 +209,39 @@ Overriding the default hook metadata is an advanced feature. See the [Hooks](../
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/static/contracts/Mailbox.sol#L125-L130
-```
 
-#### Examples
-
-```solidity
-// override hook metadata when sending message to goerli TestRecipient
-uint256 handleGasLimit = 500000;
-address refundAddress = msg.sender;
-mailbox.dispatch(
-  5,
-  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
-  bytes("hello, world"),
-  StandardHookMetadata.formatMetadata(handleGasLimit, refundAddress)
-);
 ```
 
 </TabItem>
 </Tabs>
+
+#### Examples
+
+<MultiLanguageExample
+  solidity={({
+    mailbox,
+    originChain,
+    destinationDomain,
+    destinationChain,
+    paddedRecipient,
+    body,
+  }) => `\
+// send message from ${originChain} to ${destinationChain} TestRecipient
+IMailbox mailbox = IMailbox("${mailbox}");
+bytes memory metadata = abi.encodePacked(StandardHookMetadata({
+  variant: 1,
+  msgValue: 0,
+  gasLimit: 123456,         // override default gas limit
+  refundAddress: msg.sender // override default refund address
+});
+mailbox.dispatch(
+  ${destinationDomain},
+  "${paddedRecipient}",
+  bytes("${body}"),
+  metadata
+);
+`}
+/>
 
 ### Overriding the default hook and metadata
 
@@ -284,21 +272,33 @@ Overriding the default hook is an advanced feature. See the [Hooks](../hooks/ove
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/static/contracts/Mailbox.sol#L270-L276
+
 ```
 
 #### Examples
 
-```solidity
-// override hook when sending message to goerli TestRecipient
-IPostDispatchHook merkleTreeHook = 0x4917a9746A7B6E0A57159cCb7F5a6744247f2d0d;
+<MultiLanguageExample
+  solidity={({
+    mailbox,
+    merkleTreeHook,
+    originChain,
+    destinationDomain,
+    destinationChain,
+    paddedRecipient,
+    body,
+  }) => `\
+// send message from ${originChain} to ${destinationChain} TestRecipient
+IMailbox mailbox = IMailbox("${mailbox}");
+IPostDispatchHook merkleTree = IPostDispatchHook("${merkleTreeHook}");
 mailbox.dispatch(
-  5,
-  0x4fC0Ac163eFFEb7890937cB89275B2C231880F22.addressToBytes32(),
-  bytes("hello, world"),
+  ${destinationDomain},
+  "${paddedRecipient}",
+  bytes("${body}"),
   "0x", // empty metadata
-  merkleTreeHook
+  merkleTree
 );
-```
+`}
+/>
 
 </TabItem>
 </Tabs>
