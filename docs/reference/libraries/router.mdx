@@ -10,5 +10,5 @@ In this pattern, an instance of the application's contracts is deployed on each 
 
 Developers using this pattern can inherit from the `Router` mix-in contract. `Router` is a [`MailboxClient`](./mailboxclient.mdx) that tracks the addresses of other `Router` contract addresses on remote chains. This allows `Routers` to send messages directly to others without having to specify addresses. It also allows `Routers` to reject messages sent from other untrusted senders.
 
-```solidity file=<rootDir>/static/contracts/client/Router.sol
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/Router.sol
 ```
