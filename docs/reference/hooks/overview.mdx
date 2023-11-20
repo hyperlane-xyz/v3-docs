@@ -15,9 +15,22 @@ flowchart TB
       Sender -- "dispatch(..., metadata, hook)\n{value}" --> M_O
       M_O -- "postDispatch(message, metadata)\n{value}" --> Hook
     end
-``` 
+```
 
 This allows developers to integrate third party/native bridges, make additional chain commitments, or require custom fees all while maintaining a consistent single-call Mailbox interface.
+
+<details>
+<summary>`IPostDispatchHook` Interface</summary>
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/hooks/IPostDispatchHook.sol
+```
+
+</TabItem>
+</Tabs>
+</details>
 
 ## Post Dispatch
 

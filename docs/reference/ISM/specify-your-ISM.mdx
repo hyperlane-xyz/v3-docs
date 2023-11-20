@@ -1,48 +1,49 @@
-# ISM Interface
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Hyperlane is secured by Interchain Security Modules (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were actually sent on the origin chain. Hyperlane developers can optionally override the Mailbox's default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
+import IsmDiagram from '@site/src/diagrams/messaging-isms.md';
 
-ISMs must implement the IInterchainSecurityModel() interface. This interface consists of two functions.
+# Interchain Security Module Interface
 
-```solidity
-// SPDX-License-Identifier: MIT OR Apache-2.0
-pragma solidity >=0.6.11;
+Hyperlane modularizes interchain message security through a generic smart contract interface. Implementations are responsible for verifying that messages being delivered on the destination chain were actually sent on the origin chain using some proof metadata.
 
-interface IInterchainSecurityModule {
-    /**
-     * @notice Returns an enum that represents the type of security model
-     * encoded by this ISM.
-     * @dev Relayers infer how to fetch and format metadata.
-     */
-    function moduleType() external view returns (uint8);
+<IsmDiagram/>
 
-    /**
-     * @notice Defines a security model responsible for verifying interchain
-     * messages based on the provided metadata.
-     * @param _metadata Off-chain metadata provided by a relayer, specific to
-     * the security model encoded by the module (e.g. validator signatures)
-     * @param _message Hyperlane encoded interchain message
-     * @return True if the message was verified
-     */
-    function verify(bytes calldata _metadata, bytes calldata _message)
-        external
-        returns (bool);
-}
+Message recipients can specify custom security constraints by specifying an `InterchainSecurityModule` address. This implementation can be configured, composed, and customized according to the needs of their application.
+
+<details>
+<summary>`IInterchainSecurityModule` Interface</summary>
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/static/contracts/interfaces/IInterchainSecurityModule.sol
 ```
+
+</TabItem>
+</Tabs>
+</details>
 
 ## Verify
 
-The primary function that ISMs must implement is `verify()`. The Mailbox will call `IInterchainSecurityModule.verify()` before delivering a message to its recipient. If `verify()` reverts or returns `false`, the message will not be delivered.
+```solidity file=<rootDir>/static/contracts/interfaces/IInterchainSecurityModule.sol#L31-L33
+```
 
-The `verify()` function takes two parameters.
+The Mailbox will call `verify` before delivering a message to its recipient. If `verify` reverts or returns `false`, the message will not be delivered.
 
-The first, `_metadata`, consists of arbitrary bytes provided by the Relayer. Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](./multisig-ISM-interface.mdx), `_metadata` must include validator signatures.
+- `_metadata` consists of arbitrary bytes provided by the Relayer. Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](./multisig-ISM-interface.mdx), `_metadata` must include validator signatures.
 
-The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](./multisig-ISM-interface.mdx) could change validator sets based on the origin chain of the message.
+- `_message` consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](./multisig-ISM-interface.mdx) could change validator sets based on the origin chain of the message.
 
-### Module type
+### Module Type
 
-The secondary function that ISMs must implement is `moduleType()`. This is used to signal to the Relayer what to include in `_metadata`. ISMs **must** return one of the supported module types.
+```solidity file=<rootDir>/static/contracts/interfaces/IInterchainSecurityModule.sol#L21
+```
+
+This is used to signal to the Relayer how to encode `_metadata`. ISMs **must** return one of the supported module types.
+
+```solidity file=<rootDir>/static/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
+```
 
 ## Specifying an ISM
 
@@ -58,21 +59,13 @@ interface ISpecifiesInterchainSecurityModule {
 ```
 If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
 
-:::tip
-
-See [Message.sol](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) for more details on Hyperlane message encoding.
-
-:::
-
 ## Sequence Diagram
 
-Here is a simplified sequence diagram of an interchain message being verified and delivered on the destination chain.
+Here is a detailed sequence diagram of an interchain message being verified and delivered on the destination chain.
 
 :::info
 
 If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the Mailbox will be used to verify the message.
-
-This is omitted from the sequence diagram for clarity.
 
 :::
 
