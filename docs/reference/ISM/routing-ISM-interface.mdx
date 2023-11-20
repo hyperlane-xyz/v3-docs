@@ -2,7 +2,7 @@
 description: Smarter interchain security models
 ---
 
-# Routing ISM
+# Routing Module
 
 Developers can use a `RoutingISM` to delegate message verification to a different ISM. This allows developers to change security models based on message content or application context.&#x20;
 
@@ -10,19 +10,7 @@ Developers can use a `RoutingISM` to delegate message verification to a differen
 
 `RoutingISMs` must implement the `IRoutingIsm` interface.
 
-```solidity
-interface IRoutingIsm is IInterchainSecurityModule {
-    /**
-     * @notice Returns the ISM responsible for verifying _message
-     * @dev Can change based on the content of _message
-     * @param _message Formatted Hyperlane message (see Message.sol).
-     * @return module The ISM to use to verify _message
-     */
-    function route(bytes calldata _message)
-        external
-        view
-        returns (IInterchainSecurityModule);
-}
+```solidity file=<rootDir>/static/contracts/interfaces/isms/IRoutingIsm.sol
 ```
 
 ## Configure

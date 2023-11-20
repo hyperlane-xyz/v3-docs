@@ -101,17 +101,17 @@ const sidebars = {
         {
           type: "doc",
           id: "reference/ISM/multisig-ISM-interface",
-          label: "Multisig ISM Interface",
+          label: "Multisig",
         },
         {
           type: "doc",
           id: "reference/ISM/routing-ISM-interface",
-          label: "Routing ISM Interface",
+          label: "Routing",
         },
         {
           type: "doc",
           id: "reference/ISM/aggregation-ISM-interface",
-          label: "Aggregation ISM Interface",
+          label: "Aggregation",
         },
       ],
     },
