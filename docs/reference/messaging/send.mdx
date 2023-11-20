@@ -234,7 +234,7 @@ bytes memory metadata = abi.encodePacked(StandardHookMetadata({
   gasLimit: 123456,         // override default gas limit
   refundAddress: msg.sender // override default refund address
 });
-mailbox.dispatch(
+mailbox.dispatch{value: msg.value}(
   ${destinationDomain},
   "${paddedRecipient}",
   bytes("${body}"),
