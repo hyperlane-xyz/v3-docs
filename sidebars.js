@@ -131,6 +131,21 @@ const sidebars = {
           id: "reference/libraries/router",
           label: "Router",
         },
+        {
+          type: "doc",
+          id: "reference/libraries/typecasts",
+          label: "TypeCasts",
+        },
+        {
+          type: "doc",
+          id: "reference/libraries/message",
+          label: "Message",
+        },
+        {
+          type: "doc",
+          id: "reference/libraries/hookmetadata",
+          label: "Standard Hook Metadata",
+        },
       ],
     },
     {

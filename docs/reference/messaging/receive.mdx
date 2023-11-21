@@ -3,19 +3,13 @@ import TabItem from '@theme/TabItem';
 
 import MessagingIsmDiagram from '@site/src/diagrams/messaging-isms.md';
 
+import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
+
 # Receive a message
 
 Contracts can receive interchain messages by implementing the `handle` function.
 
-```mermaid
-flowchart TB
-    subgraph Destination Chain
-      Recipient[Recipient]
-      M_D[(Mailbox)]
-
-      M_D -- "handle(origin, sender, body)" --> Recipient
-    end
-```
+<SimpleMessagingDiagram/>
 
 ## Handle
 
@@ -37,10 +31,8 @@ To ensure only valid interchain messages are accepted, it is important to restri
 - `sender`: Address of sender on origin chain as bytes32
 - `messageBody`: Raw bytes content of message body
 
-:::tip
-Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently.
-
-The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
+:::info
+Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently. The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/libs/TypeCasts.sol#L10-L13
 ```
 :::
@@ -130,7 +122,7 @@ To leverage Hyperlane's modular security, message recipients can specify a custo
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L37-L40
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L38-L41
 ```
 
 </TabItem>
