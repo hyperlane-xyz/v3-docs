@@ -290,8 +290,8 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "protocol/components",
-      label: "Protocol Implementation",
+      id: "protocol/implementation-guide",
+      label: "Implementation Guide",
     },
   ],
 
