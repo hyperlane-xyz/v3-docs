@@ -291,7 +291,7 @@ const sidebars = {
     {
       type: "doc",
       id: "protocol/components",
-      label: "Components",
+      label: "Protocol Implementation",
     },
   ],
 
