@@ -36,7 +36,7 @@ This allows developers to integrate third party/native bridges, make additional 
 
 ## Post Dispatch
 
-In addition to the `message` dispatched via the Mailbox, the `postDispatch` function receives a `metadata` parameter. This is maximally flexible, allowing message senders to pass any context they wish through to the hook.
+In addition to the `message` dispatched via the Mailbox, the `postDispatch` function receives a `metadata` parameter. The `metadata` parameter is passed from the `dispatch` call through the Mailbox unmodified. This allows developers to pass any context they wish through to the hook.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -47,50 +47,12 @@ In addition to the `message` dispatched via the Mailbox, the `postDispatch` func
 </TabItem>
 </Tabs>
 
-**Parameters**
+If the `postDispatch` function receives insufficient payment, it may revert. 
 
-- `metadata`: The metadata required for the hook
-- `message`: The message passed from the `dispatch` call
+### Quote Dispatch (Fees)
 
-### Access Control
+Fees are often charged in `postDispatch` to cover costs such as destination chain transaction submission and security provisioning. To receive a quote for a corresponding `postDispatch` call, you can query the `quoteDispatch` function. 
 
-If the `postDispatch` must only be called with a `message` that was *just* dispatched, the `latestDispatchedId` function on the Mailbox can be used to verify the message was *actually* dispatched.
-
-:::info
-This is used instead of Mailbox access control to support **composition** where a hook may pass a `message` along to another hook.
-:::
-
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-The following utility is provided in the [`MailboxClient` library](../libraries/mailboxclient.mdx) for convenience.
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/MailboxClient.sol#L89-L91
-```
-
-</TabItem>
-</Tabs>
-
-
-## Quote Dispatch
-
-Fees are often configured to cover protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `postDispatch` call, you can query the `quoteDispatch` function.
-
-The Mailbox has a `quoteDispatch` entrypoint that which returns the aggregate fee required for a `dispatch` call to be successful. 
-
-```mermaid
-flowchart TB
-    subgraph Origin
-      Sender
-      M_O[(Mailbox)]
-      R_H[RequiredHook]
-      Hook[CustomHook]
-
-      Sender -- "quoteDispatch(..., metadata, hook)" --> M_O
-      M_O -- "required = quoteDispatch(message, metadata)" --> R_H
-      M_O -- "fee = hook.quoteDispatch(message, metadata)" --> Hook
-      M_O -- "required + fee" --> Sender
-    end
-``` 
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -101,21 +63,67 @@ flowchart TB
 </TabItem>
 </Tabs>
 
-**Parameters**
+The Mailbox has a `quoteDispatch` function that returns the aggregate fee required for a `dispatch` call to be successful. 
 
-- `metadata`: The metadata required for the hook
-- `message`: The message passed from the `dispatch` call
+```mermaid
+flowchart TB
+    subgraph Origin
+      Sender
+      M_O[(Mailbox)]
+      R_H[RequiredHook]
+      Hook[Hook]
 
-**Returns**
+      Sender -- "quoteDispatch(..., metadata, hook)" --> M_O
+      M_O -- "required = quoteDispatch(message, metadata)" --> R_H
+      M_O -- "fee = hook.quoteDispatch(message, metadata)" --> Hook
+      M_O -- "required + fee" --> Sender
+    end
+```
 
-- `fee`: The fee required for the `postDispatch` call to be successful
+{/*
+Move to implementing a hook guide?
 
+### Access Control
 
-## Default Hook Overrides
+If `postDispatch` must only be called with a `message` that was *just* dispatched, the `latestDispatchedId` function on the Mailbox can be used to verify the message was *actually* dispatched.
 
-### Overriding default hook metadata
+:::info
+This is used instead of some `require(mailbox == msg.sender)` to support **composition** where a hook may pass a `message` along to another hook.
+:::
 
-To override the default hook metadata, there is a `dispatch` overload that 1pts a `metadata` parameter to be used in the configured `defaultHook`.
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+The following utility is provided in the [`MailboxClient` library](../libraries/mailboxclient.mdx) for convenience.
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/MailboxClient.sol#L89-L91
+```
+
+</TabItem>
+</Tabs> */}
+
+## Customize Hooks
+
+Message senders can customize post-dispatch behavior by passing custom metadata or a custom hook address that implements the `IPostDispatchHook` interface.
+
+### Default Hook Metadata
+
+To override the default metadata, there is a `dispatch` overload that takes an optional `metadata` parameter. 
+
+:::info
+Hooks currently expect metadata to be formatted with the [`StandardHookMetadata` library](../libraries/hookmetadata.mdx). 
+:::
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/Mailbox.sol#L125-L130
+
+```
+
+</TabItem>
+</Tabs>
+
+The custom `metadata` will be passed to the required hook's `quoteDispatch` and `postDispatch` functions, before being passed to the default hook's `postDispatch` function.
 
 ```mermaid
 flowchart LR
@@ -132,21 +140,20 @@ flowchart LR
     end
 ```
 
-:::warning
-Overriding the default hook metadata is an advanced feature. See the [Hooks](../hooks/overview.mdx) documentation for more information.
-:::
+#### Examples
+
+<details>
+<summary>`StandardHookMetadata` Library</summary>
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/Mailbox.sol#L125-L130
-
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/hooks/libs/StandardHookMetadata.sol
 ```
 
 </TabItem>
 </Tabs>
-
-#### Examples
+</details>
 
 <MultiLanguageExample
   solidity={({
@@ -159,22 +166,16 @@ Overriding the default hook metadata is an advanced feature. See the [Hooks](../
   }) => `\
 // send message from ${originChain} to ${destinationChain} TestRecipient
 IMailbox mailbox = IMailbox("${mailbox}");
-bytes memory metadata = abi.encodePacked(StandardHookMetadata({
-  variant: 1,
-  msgValue: 0,
-  gasLimit: 123456,         // override default gas limit
-  refundAddress: msg.sender // override default refund address
-});
 mailbox.dispatch{value: msg.value}(
   ${destinationDomain},
   "${paddedRecipient}",
   bytes("${body}"),
-  metadata
+  StandardHookMetadata.overrideGasLimit(200000)
 );
 `}
 />
 
-### Overriding the default hook and metadata
+### Custom Hook Contract
 
 To override the default hook configuration, there is a `dispatch` overload that accepts a `hook` and hook `metadata` parameters.
 
@@ -194,10 +195,6 @@ flowchart LR
       M_O -.- D_H
     end
 ```
-
-:::warning
-Overriding the default hook is an advanced feature. See the [Hooks](../hooks/overview.mdx) documentation for more information.
-:::
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
