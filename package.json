@@ -19,7 +19,7 @@
     "@docusaurus/preset-classic": "^3.0.0",
     "@docusaurus/theme-mermaid": "^3.0.0",
     "@easyops-cn/docusaurus-search-local": "^0.37.4",
-    "@hyperlane-xyz/core": "^3.1.1",
+    "@hyperlane-xyz/core": "^3.1.10",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.1.0",
@@ -54,8 +54,5 @@
   "engines": {
     "node": ">=16.14"
   },
-  "packageManager": "yarn@4.0.1",
-  "resolutions": {
-    "@hyperlane-xyz/core": "portal:/Users/yorhodes/hyperlane/monorepo/solidity"
-  }
+  "packageManager": "yarn@4.0.1"
 }
