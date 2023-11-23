@@ -2,7 +2,7 @@
 
 Optimism and other [OP Stack](https://stack.optimism.io/) rollups have their own interface for message passing between L1 and L2 called the `CrossDomainMessenger`. Messages passed via this interface benefit from the security of the rollup [settlement layer](https://stack.optimism.io/docs/understand/landscape/#execution).
 
-```solidity file=<rootDir>/static/contracts/interfaces/optimism/ICrossDomainMessenger.sol#L15-L19
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/optimism/ICrossDomainMessenger.sol#L15-L19
 ```
 
 To provide this security as an option in Hyperlane, we created a Hook and ISM combo that can be transparently configured to reuse the native OP Stack interface.
