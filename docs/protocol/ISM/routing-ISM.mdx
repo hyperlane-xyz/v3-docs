@@ -25,7 +25,7 @@ interface IRoutingIsm is IInterchainSecurityModule {
 
 The hyperlane-monorepo contains a `RoutingISM` implementation, `DomainRoutingIsm`, that application developers can deploy off-the-shelf, specifying their desired configuration.
 
-This ISM simply switches security models depending on the origin chain of the message. A simple use case for this is to use different [multisig-ism.md](multisig-ism.mdx "mention") validator sets for each chain.
+This ISM simply switches security models depending on the origin chain of the message. A simple use case for this is to use different [multisig-ism.md](multisig-ISM.mdx "mention") validator sets for each chain.
 
 Eventually, you could imagine a `DomainRoutingIsm` routing to different light-client-based ISMs, depending on the type of consensus protocol used on the origin chain.
 
