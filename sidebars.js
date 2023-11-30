@@ -273,6 +273,22 @@ const sidebars = {
           id: "protocol/ISM/aggregation-ISM",
           label: "Aggregation",
         },
+        {
+          type: "doc",
+          id: "protocol/ISM/ccip-read-ISM",
+          label: "CCIP-Read ISM",
+        },
+        {
+          type: "doc",
+          id: "protocol/ISM/optimistic-ISM",
+          label: "Optimistic ISM",
+        },
+        {
+          type: "doc",
+          id: "protocol/ISM/wormhole-ISM",
+          label: "Wormhole ISM",
+        },
+        
       ],
     },
     {

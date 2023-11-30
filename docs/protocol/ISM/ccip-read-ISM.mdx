@@ -1,0 +1,147 @@
+# CCIP Read ISM
+
+Using a `CcipReadIsm` provides developers with a lot of flexibility for verifying interchain messages. Ultimately, every other kind of ISM can be implemented as a CCIP Read ISM, so when building new types of ISM's moving forward it's encouraged to build CCIP Read ISM's as all the relayer integration work has already been done.
+
+One caveat to keep in mind for CCIP Read ISM's is that they do introduce a dependency on an external (to the blockchain), but self hostable, API. If this is a hard blocker for your use case, you may want to consider other message verification techniques.
+
+Before building a CCIP Read ISM it's worth familiarizing yourself with the [CCIP Read specification](https://eips.ethereum.org/EIPS/eip-3668). The specification describes a generalized protocol that allows smart contracts on EVM compatible chains to query and consume offchain data.
+
+## How it works
+
+Relayers are constantly listening to `Dispatch` events emitted from Hyperlane [Mailboxes](../../protocol/messaging.md). When a message is sent and picked up by a relayer, the relayer will query the destination ISM for information on how to process the message and if delivery will be successful.
+
+:::info
+The correct `moduleType` variable will need to be set on your ISM so that relayers know it's a CCIP Read ISM. To make sure this is configured correctly, you can inherit from the `AbstractCcipReadIsm` in `@hyperlane-xyz/core`.
+:::
+
+The relayer will then call the `getOffchainVerifyInfo(bytes)` function on the ISM with the contents of the message being delivered. This function should revert with the `OffchainLookup` error described in the [interface](./ccip-read-ism.md#interface) section below.
+
+The relayer will query the endpoint specified in this revert message and pass the provided response and original message to the `process(bytes,bytes)` function of the destination `Mailbox`.
+
+## Interface
+
+`CcipReadIsm`'s must implement the `ICcipReadIsm` interface and should extend the `AbstractCcipReadIsm`, a convenience contract that sets the `moduleType` correctly.
+
+```solidity
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity >=0.8.0;
+
+import {IInterchainSecurityModule} from "../IInterchainSecurityModule.sol";
+
+interface ICcipReadIsm is IInterchainSecurityModule {
+    /// @dev https://eips.ethereum.org/EIPS/eip-3668
+    /// @param sender the address of the contract making the call, usually address(this)
+    /// @param urls the URLs to query for offchain data
+    /// @param callData context needed for offchain service to service request
+    /// @param callbackFunction function selector to call with offchain information
+    /// @param extraData additional passthrough information to call callbackFunction with
+    error OffchainLookup(
+        address sender,
+        string[] urls,
+        bytes callData,
+        bytes4 callbackFunction,
+        bytes extraData
+    );
+
+    /**
+     * @notice Reverts with the data needed to query information offchain
+     * and be submitted via the origin mailbox
+     * @dev See https://eips.ethereum.org/EIPS/eip-3668 for more information
+     * @param _message data that will help construct the offchain query
+     */
+    function getOffchainVerifyInfo(bytes calldata _message) external view;
+}
+```
+
+## Configure
+
+A great example for reference while developing CCIP Read ISM's exists as the [ChainlinkISM](https://github.com/AlexBHarley/permissionless-chainlink-feeds). The `ChainlinkISM` is initialized with a set of Chainlink oracles and verifies the price feed data provided has been signed over by some subset of the signers.
+
+### API
+
+As per CCIP Read, the offchain API will need to return JSON data with the form,
+
+```json
+{
+  "data": "..."
+}
+```
+
+The relayer will pass this `data` property as the `metadata` parameter to `Mailbox.process(bytes metadata, bytes message)`.
+
+Note that in the case of the Chainlink ISM, where the receiver of the data also acts as the verifying ISM, `data` is just the raw transaction sent to submit price feed data with associated signatures. The `message` property is somewhat redundant.
+
+### Contract
+
+When setting up the ISM, the `getOffchainVerifyInfo` and `verify` functions are the important ones to specify.
+
+- `getOffchainVerifyInfo` function should revert with an `OffchainLookup` error that instructs the relayer to query the given API endpoint. The `OffchainLookup` error allows for an array of API endpoints to be provided, so you can enforce any level of redundancy you'd like
+
+- `verify` must take the provided `metadata` and assert its legitimacy. Again the [ChainlinkISM implementation](https://github.com/AlexBHarley/permissionless-chainlink-feeds/blob/main/apps/contracts/contracts/ChainlinkAggregator.sol#L114) can be a useful reference point when developing this logic for your own ISM.
+
+Below is the scaffold of what a CCIP Read ISM could look like, where the ISM is also the receiver of the message, as per the Chainlink ISM.
+
+```solidity
+pragma solidity ^0.8.13;
+
+import {AbstractCcipReadIsm} from "@hyperlane-xyz/core/contracts/isms/ccip-read/AbstractCcipReadIsm.sol";
+import {IInterchainSecurityModule, ISpecifiesInterchainSecurityModule} from "@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol";
+import {IMailbox} from "@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol";
+import {Message} from "@hyperlane-xyz/core/contracts/libs/Message.sol";
+
+contract MyCcipReadIsm is AbstractCcipReadIsm, ISpecifiesInterchainSecurityModule {
+    using Message for bytes;
+    IMailbox mailbox;
+
+    ...
+
+    /**
+     * No-op, everything happens in the verify function
+     */
+    function handle(uint32, bytes32, bytes calldata _report) public {}
+
+
+    /**
+     * @param _metadata ABI encoded module metadata
+     * @param _message Formatted Hyperlane message (see Message.sol).
+     */
+    function verify(
+        bytes calldata _metadata,
+        bytes calldata _message
+    ) external returns (bool) {
+        ...
+    }
+
+    function interchainSecurityModule()
+        external
+        view
+        returns (IInterchainSecurityModule)
+    {
+        return IInterchainSecurityModule(address(this));
+    }
+
+    function getOffchainVerifyInfo(
+        bytes calldata _message
+    ) external view override {
+        revert OffchainLookup(
+            address(this),
+            offchainUrls,
+            _message,
+            MyCcipReadIsm.process.selector,
+            _message
+        );
+    }
+
+    /**
+     * Provided for full CCIP Read specification compatibility. Relayers
+     * will call the Mailbox directly regardless of the selector specified
+     * in the `OffchainLookup` error
+     */
+    function process(
+        bytes calldata _metadata,
+        bytes calldata _message
+    ) external {
+        mailbox.process(_metadata, _message);
+    }
+}
+```
