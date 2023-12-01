@@ -459,11 +459,6 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "operate/validators/validator-guide",
-          label: "Local Environment",
-        },
-        {
-          type: "doc",
           id: "operate/validators/validator-aws",
           label: "AWS Production Setup",
         },
@@ -484,11 +479,6 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "operate/relayer/relayer-guide",
-          label: "Relayer Guide",
-        },
         {
           type: "doc",
           id: "operate/relayer/message-filtering",
