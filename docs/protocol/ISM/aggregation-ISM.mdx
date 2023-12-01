@@ -1,0 +1,17 @@
+# Aggregation ISM
+
+Developers can use an `AggregationISM` to combine security from multiple ISMs. Simply put, an `AggregationISM` requires that `m` of `n` ISMs verify a particular interchain message.
+
+Developers can configure, for each origin chain, a set of `n` ISMs, and the number of ISMs needed to verify a message.
+
+`AggregationISMs` can aggregate the security of any ISMs. For example, users can deploy a [MultisigISM](multisig-ISM.mdx "mention") with their own validator set, and deploy an `AggregationISM` that aggregates that ISM with the Hyperlane default ISM.
+
+## Customize
+
+The hyperlane-monorepo contains an abstract `AggregationISM` implementation that application developers can fork.
+
+Developers simply need to implement the `modulesAndThreshold()` function.
+
+By creating a custom implementation, application developers can tailor the security provided by a `AggregationISM` to the needs of their application.
+
+For example, a custom implementation could require that low value messages be verified by a [MultisigISM](multisig-ISM.mdx "mention"), and require that high value messages _also_ be verified by a [WormholeISM](./wormhole-ISM.mdx "mention").
