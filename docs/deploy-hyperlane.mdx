@@ -197,44 +197,32 @@ You can also [run the validators](./operate/validators/run-validators.mdx) and [
 ## 4. Send test messages
 
 You can check everything is working correctly by sending a test message between each pair of chains.
-Use the Hyperlane CLI again to send the message:
+Use the Hyperlane CLI again to send the message. The CLI will ask for a set of core deployment artifacts to use. Select the `core-deployments` JSON file from Step 2.
 
-```
-hyperlane send message \
-   --origin YOUR_ORIGIN
-   --destination YOUR_DEST
-   --core PATH_TO_STEP2_ARTIFACTS
-   --key $PRIVATE_KEY
+```bash
+hyperlane send message --key $PRIVATE_KEY
 ```
 
-The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
-To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
+The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above. To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
 
 ## Deploy a warp route
 
-Warp routes are a way to send tokens between chains. You can create a simple configuration file such as:
+Once messages are being delivered, you can optionally deploy a [Warp Route](./reference/applications/warp-routes.mdx). Warp is toolkit for permissionlessly bridging tokens between any chains. The routes can use native currencies (like `Eth`), or ERC20 tokens (like `USDC`).
 
-```yaml
-base:
-  chainName: goerli
-  type: native
-  # address: 0x123... # Required for collateral types
-synthetics:
-  - chainName: ancient8test
-  # You can optionally set the token metadata, otherwise the base token's will be used
-  # name: "MySyntheticToken"
-  # symbol: "MST"
-  # totalSupply: 10000000
-```
-
-Then all you have to do is deploy the warp route by referencing the existing chain and core artifacts with:
+To begin, create a new route config.
 
 ```bash
-hyperlane deploy warp --key $PRIVATE_KEY --chains ./configs/chain-config.yaml --config ../cli/examples/warp-tokens.yaml --core ./artifacts/core-deployment-2023-11-17-9-36-53.json
+hyperlane config create warp
 ```
 
-This command will output a warp-ui config file that you need to use in the next step.
+Next, you can deploy the route. As before, the CLI will prompt for a core deployment artifacts file.
+
+```bash
+hyperlane deploy warp --key $PRIVATE_KEY
+```
+
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
 
 ### Deploy the warp UI
 
-We have a template UI for interacting with your warp routes. You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.
+The Warp UI is a DApp template for interacting with Warp Routes. You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-ui-token-config.json` files from the previous steps to provide the UI with the information it needs.
