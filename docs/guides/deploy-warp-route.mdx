@@ -24,7 +24,10 @@ The easiest way to create one is with the CLI's config comamnd:
 hyperlane config create warp
 ```
 
-Alternatively, if you prefer to define your config manually, see the sections below. Otherwise you can skip to [deployment](#2-deployment).
+:::tip
+If your config looks correct, you can now skip to [Step 2: Deployment](#2-deployment). 
+Or see below for details on how to define your config manually.
+:::
 
 #### Base
 
@@ -45,7 +48,7 @@ Your config must have at least one `synthetics` entry. Here you will configure d
 
 You may specify the following optional values in your `base` and `synthetics` entries. If no values are provided, values from core deployment artifacts will be used, either yours (if provided) or the [SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json).
 
-* **mailbox:** The address of the the [mailbox](../reference/messaging/messaging-interface.mdx)contract to use to send and receive messages
+* **mailbox:** The address of the the [mailbox](../reference/messaging/messaging-interface.mdx) contract to use to send and receive messages
 * **interchainSecurityModule:** The address of an [interchain security modules](../reference/ISM/specify-your-ISM.mdx) to verify interchain messages
 * **interchainGasPaymaster:** The address of a [interchain gas payments](../reference/hooks/interchain-gas.mdx) to pay for the gas needed to deliver interchain messages
 
