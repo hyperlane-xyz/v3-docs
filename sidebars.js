@@ -318,15 +318,14 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Warp Routes",
+      label: "Deploy a Warp Route",
+      link: {
+        type: 'doc',
+        id: 'guides/deploy-warp-route',
+      },
       collapsible: true,
-      collapsed: true,
+      collapsed: false,
       items: [
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route",
-          label: "Deploy a Warp Route",
-        },
         {
           type: "doc",
           id: "guides/deploy-warp-route-UI",
