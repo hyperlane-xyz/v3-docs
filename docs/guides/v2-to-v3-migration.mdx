@@ -33,7 +33,7 @@ interface IMailbox {
 }
 ```
 
-This is a departure from the existing [interchain gas payment](https://docs.hyperlane.xyz/docs/apis-and-sdks/interchain-gas-paymaster-api) and [hook](https://docs.hyperlane.xyz/docs/apis-and-sdks/hooks) interfaces but should be almost entirely backwards compatible. Mirroring the [interchain security modules](../reference/ISM/specify-your-ISM.mdx) pre-handle lifecycle hook, the architectural change is introducing post-dispatch lifecycle hooks which receive authenticated message content from the mailbox and perform some additional task, like paying interchain gas to relayers or using a different transport layer.
+This is a departure from the existing [interchain gas payment](../reference/hooks/interchain-gas.mdx) and [hook](../reference/hooks/overview.mdx) interfaces but should be almost entirely backwards compatible. Mirroring the [interchain security modules](../reference/ISM/specify-your-ISM.mdx) pre-handle lifecycle hook, the architectural change is introducing post-dispatch lifecycle hooks which receive authenticated message content from the mailbox and perform some additional task, like paying interchain gas to relayers or using a different transport layer.
 
 ![v3 hook diagram](../../static/img/v3-hook-diagram.png)
 
