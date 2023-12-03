@@ -316,25 +316,24 @@ const sidebars = {
       id: "guides/v2-to-v3-migration",
       label: "v2 to v3 Migration",
     },
-    /*
     {
       type: "category",
-      label: "Deploy Warp Route",
-      link: {
-        type: 'doc',
-        id: 'guides/deploy-warp-route',
-      },
+      label: "Warp Routes",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "doc",
+          id: "guides/deploy-warp-route",
+          label: "Deploy a Warp Route",
+        },
+        {
+          type: "doc",
           id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Warp Route UI",
+          label: "Deploy a Warp UI",
         },
       ],
     },
-    */
     {
       type: "doc",
       id: "guides/create-your-own-ISM",

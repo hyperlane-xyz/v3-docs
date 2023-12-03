@@ -196,8 +196,8 @@ You can also [run the validators](./operate/validators/run-validators.mdx) and [
 
 ## 4. Send test messages
 
-You can check everything is working correctly by sending a test message between each pair of chains.
-Use the Hyperlane CLI again to send the message. The CLI will ask for a set of core deployment artifacts to use. Select the `core-deployments` JSON file from Step 2.
+You can check everything is working correctly by sending a test message between pairs of chains.
+Initiate the message with the CLI. It will ask for a set of core deployment artifacts to use. Select the `core-deployments` JSON file from Step 2.
 
 ```bash
 hyperlane send message --key $PRIVATE_KEY
@@ -225,4 +225,4 @@ Once finished, the CLI will create two new JSON artifact files: `warp-deployment
 
 ### Deploy the warp UI
 
-The Warp UI is a DApp template for interacting with Warp Routes. You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-ui-token-config.json` files from the previous steps to provide the UI with the information it needs.
+The Warp UI is a DApp template for interacting with Warp Routes. You can clone the [Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-ui-token-config.json` files from the previous steps to provide the UI with the information it needs.

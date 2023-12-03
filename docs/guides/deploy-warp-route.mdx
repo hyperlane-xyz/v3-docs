@@ -4,25 +4,31 @@ _Create an interchain route for your token_
 
 A Warp Route is a type of [router](../reference/libraries/router.mdx) application, requiring a `HypERC20` or `HypERC721` token contract to be deployed on each chain you wish to support.
 
-The [CLI](../deploy-hyperlane.mdx) includes a command to configure and deploy a Warp Route for your desired token.
+## Prerequisites
 
-## 1. Setup
+* [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli)
+* A private key for contract transaction signing
 
-Complete the [CLI](../deploy-hyperlane.mdx) steps and deploy hyperlane `core` and `warp` contracts.
-
-## 2. Configuration
+## 1. Configuration
 
 ### Warp Route config
 
-You will need to create a `WarpRouteConfig` in [`hyperlane-deploy/config/warp_tokens.ts`](https://github.com/hyperlane-xyz/hyperlane-deploy/blob/main/config/warp_tokens.ts) to define your Warp Route. This will include information such as:
-
+To deploy the route, you will need a warp route config file. A valid config will specify:
 * Which token, on which chain, is this Warp Route being created for?
 * _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](../reference/messaging/messaging-interface.mdx), [interchain gas](../reference/hooks/interchain-gas.mdx), and [interchain security modules](../reference/ISM/specify-your-ISM.mdx).
 * _Optional:_ The token standard - fungible tokens using ERC20 or NFTs using ERC721. Defaults to ERC20.
 
+The easiest way to create one is with the CLI's config comamnd:
+
+```bash
+hyperlane config create warp
+```
+
+Alternatively, if you prefer to define your config manually, see the sections below. Otherwise you can skip to [deployment](#2-deployment).
+
 #### Base
 
-Your `WarpRouteConfig` must have exactly one `base` entry. Here you will configure details about the token for which you are creating a warp route.
+Your config must have exactly one `base` entry. Here you will configure details about the token for which you are creating a warp route.
 
 * **chainName**: Set this equal to the chain on which your token exists
 * **type**: Set this to `TokenType.collateral` to create a warp route for an ERC20/ERC721 token, or `TokenType.native` to create a warp route for a native token (e.g. ether)
@@ -31,13 +37,13 @@ Your `WarpRouteConfig` must have exactly one `base` entry. Here you will configu
 
 #### Synthetics
 
-Your `WarpRouteConfig` must have at least one `synthetics` entry. Here you will configure details about the remote chains supported by your warp route.
+Your config must have at least one `synthetics` entry. Here you will configure details about the remote chains supported by your warp route.
 
 * **chainName:** Set this equal to the chain on which you want a wrapped version of your token
 
-#### Options
+#### Optional fields
 
-You may specify the following optional values in your `base` and `synthetics` entries. If no values are provided, defaults will be populated from `hyperlane-deploy/artifacts/addresses.json` and the [SDK](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json) (if present).
+You may specify the following optional values in your `base` and `synthetics` entries. If no values are provided, values from core deployment artifacts will be used, either yours (if provided) or the [SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json).
 
 * **mailbox:** The address of the the [mailbox](../reference/messaging/messaging-interface.mdx)contract to use to send and receive messages
 * **interchainSecurityModule:** The address of an [interchain security modules](../reference/ISM/specify-your-ISM.mdx) to verify interchain messages
@@ -45,103 +51,47 @@ You may specify the following optional values in your `base` and `synthetics` en
 
 #### Example
 
-An example `WarpRouteConfig` is provided in [`hyperlane-deploy/config/warp_tokens.ts`](https://github.com/hyperlane-xyz/hyperlane-deploy/blob/main/config/warp_tokens.ts)that defines a warp route for a native token between two local chains.
-
-This Warp Route is secured by the default [interchain security modules](../reference/ISM/specify-your-ISM.mdx) that are set on the `Mailboxes` for those chains.
-
-```typescript
-import { TokenType } from '@hyperlane-xyz/hyperlane-token';
-
-import type { WarpRouteConfig } from '../src/warp/config';
-
-export const warpRouteConfig: WarpRouteConfig = {
-  base: {
-    // Chain name must be in the Hyperlane SDK or in the chains.ts config
-    chainName: 'anvil1',
-    type: TokenType.native, //  TokenType.native or TokenType.collateral
-    // If type is collateral, a token address is required:
-    // address: '0x123...'
-
-    // Optionally, specify owner, mailbox, and interchainGasPaymaster addresses
-    // If not specified, the Permissionless Deployment artifacts or the SDK's defaults will be used
-  },
-  synthetics: [
-    {
-      chainName: 'anvil2',
-
-      // Optionally, specify owner, mailbox, and interchainGasPaymaster addresses
-      // If not specified, the Permissionless Deployment artifacts or the SDK's defaults will be used
-    },
-  ],
-};
-```
+For a minimal warp config example using local anvil chains, see [`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml).
 
 ### Chain config
 
-The Warp Route deployer will be aware of the connection details (e.g. RPC URL) for many standard chains.
+The Warp Route deployment will require basic information about any chains it will be interacting with. If the target chains include any not already in the Hyperlane SDK, you must specify chain metadata for it.
 
-If you would like to deploy a Warp Route to a chain that is not included in the Hyperlane SDK, you can specify a [`ChainMetadata`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21) entry in [`hyperlane-deploy/config/chains.ts`](https://github.com/hyperlane-xyz/hyperlane-deploy/blob/main/config/chains.ts).
-
-An example has been populated for you for [`anvil`](https://book.getfoundry.sh/anvil/).
-
-#### Example
-
-An example chain config for a Warp Route is shown below. The `blocks` and `blockExplorers` properties are optional.
-
-```typescript
-export const chains: ChainMap<ChainMetadata> = {
-  // ----------- Your chains here -----------------
-  anvil1: {
-    name: 'anvil1',
-    // anvil default chain id
-    chainId: 31337,
-    publicRpcUrls: [
-      {
-        http: 'http://localhost:8545',
-      },
-    ],
-  },
-};
-```
-
-## 3. Deployment
-
-Run the following script to deploy your Warp Route. You will need to provide the following arguments:
-
-* `key`: A hexadecimal private key for transaction signing
+To see what chains are in the SDK, run the following command:
 
 ```bash
-DEBUG=hyperlane* yarn ts-node scripts/deploy-warp-routes.ts 
-  --key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+hyperlane chains list
 ```
 
-When the command finishes, it will output the list of contracts addresses to `hyperlane-deploy/artifacts/warp-token-addresses.json.`
-
-The deployer will also output a token list file to `hyperlane-deploy/artifacts/warp-ui-token-list.ts` which can be used to [deploy the UI for your warp route.](deploy-warp-route-UI.mdx).
-
-## 4. Testing
-
-Run the following script to test your Warp Route by transferring tokens from one chain to another. You will need to provide the following arguments:
-
-* `origin`: The name of the chain that you are sending tokens from
-* `destination`: The name of the chain that you are sending tokens to
-* `wei`: The value of tokens to transfer, in wei
-* `recipient`: The address to send the tokens to on the destination chain
-* `key`: A hexadecimal private key for transaction signing
+To create a chain netadata config for any other chains, run the following command:
 
 ```bash
-yarn ts-node scripts/test-warp-transfer.ts 
-  --origin anvil1 --destination anvil2 --wei 1 
-  --recipient 0xac0974bec39a17e36ba4a6b4d238ff944bacb4a5 
-  --key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+hyperlane config create chain
 ```
 
-If everything goes well, you should see the following output:
+Or you can define the config manually. See the [ChainMetadata type](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts#L62) for its schema. A minimal example can be found in [`anvil-chains.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/anvil-chains.yaml).
+
+## 2. Deployment
+
+Run the following command to initiate the warp route deployment:
+
+```bash
+hyperlane deploy warp
+```
+
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
+
+## 3. Testing
+
+You can initiate a test transfer of a single wei with the following command:
+
+```bash
+hyperlane send transfer
+```
+
+If everything goes well, you should see the output similar to the following:
 
 ```
-Waiting for message delivery on destination chain
-Waiting for message delivery on destination chain
-Waiting for message delivery on destination chain
 Waiting for message delivery on destination chain
 Waiting for message delivery on destination chain
 Waiting for message delivery on destination chain
@@ -149,3 +99,7 @@ Message delivered on destination chain!
 Confirmed balance increase
 Warp test transfer complete
 ```
+
+## 4 (Optional) Warp UI
+
+The Warp UI is a DApp template for interacting with Warp Routes. See the [Warp UI docs](./deploy-warp-route-UI.mdx) for details on how to set it up.
