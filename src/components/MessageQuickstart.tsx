@@ -54,6 +54,11 @@ export default function MessageQuickstart() {
               </li>
             </ol>
           </TabItem>
+          <TabItem value="cli" label="Hyperlane CLI">
+            <CodeBlock language="shell">
+              hyperlane send message --origin {originChain} --destination {destinationChain}
+            </CodeBlock>
+          </TabItem>
         </Tabs>
       );
     },
