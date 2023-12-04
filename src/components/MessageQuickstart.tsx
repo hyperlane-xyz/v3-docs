@@ -25,7 +25,22 @@ export default function MessageQuickstart() {
 
       return (
         <Tabs>
-          <TabItem value="cast" label="Cast" default>
+          <TabItem value="cli" label="Hyperlane CLI" default>
+            Install the CLI:
+            <CodeBlock language="shell">
+              npm install -g @hyperlane-xyz/cli
+            </CodeBlock>
+            Send the message:
+            <CodeBlock language="shell">
+              hyperlane send message --origin {originChain} --destination {destinationChain}
+            </CodeBlock>
+          </TabItem>
+          <TabItem value="cast" label="Cast">
+            Install <code>cast</code>:
+            <CodeBlock language="shell">
+              curl -L https://foundry.paradigm.xyz | bash
+            </CodeBlock>
+            Send the message:
             <CodeBlock language="shell">
               cast send {mailbox} "dispatch(uint32,bytes32,bytes)"{" "}
               {destinationDomain} {paddedRecipient} $(cast --from-utf8 "{body}"){" "}
@@ -53,11 +68,6 @@ export default function MessageQuickstart() {
                 Click the <code>Write</code> button to submit the transaction!
               </li>
             </ol>
-          </TabItem>
-          <TabItem value="cli" label="Hyperlane CLI">
-            <CodeBlock language="shell">
-              hyperlane send message --origin {originChain} --destination {destinationChain}
-            </CodeBlock>
           </TabItem>
         </Tabs>
       );
