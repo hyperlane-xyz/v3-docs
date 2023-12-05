@@ -323,11 +323,6 @@ const sidebars = {
 
   guidesSidebar: [
     {
-      type: "doc",
-      id: "guides/v2-to-v3-migration",
-      label: "v2 to v3 Migration",
-    },
-    {
       type: "category",
       label: "Deploy a Warp Route",
       link: {
@@ -343,6 +338,11 @@ const sidebars = {
           label: "Deploy a Warp UI",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "guides/v2-to-v3-migration",
+      label: "v2 to v3 Migration",
     },
     {
       type: "doc",
