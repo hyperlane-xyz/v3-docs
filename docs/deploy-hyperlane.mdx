@@ -17,7 +17,7 @@ There are five steps in this guide:
 2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
 3. [<b>Run validators and relayers </b>](#3-run-validators-relayers) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2 and relayers send and receive messages between chains you deployed contracts to in step 2.
 4. [<b>Send a test message</b>](#4-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
-5. [<b>Deploy a warp route</b>](#5-deploy-a-warp-route) to send token value, not just messages, across chains
+5. [<b>Deploy a warp route</b>](#deploy-a-warp-route) to send token value, not just messages, across chains
 
 ## Getting Started
 
@@ -110,16 +110,11 @@ hyperlane config create chain
 
 Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM).
 
-:::info
-
-Note, currently only Multisig-based ISMs are supported by the CLI. More complex ISMs will require manual deployments.
-
-:::
 
 To create a multisig ISM configs, you can define it manually using JSON or YAML (see [example config here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/cli/examples/multisig-ism.yaml)), or create it with the following command:
 
 ```bash
-hyperlane config create multisig
+hyperlane config create ism
 ```
 
 When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
@@ -196,45 +191,33 @@ You can also [run the validators](./operate/validators/run-validators.mdx) and [
 
 ## 4. Send test messages
 
-You can check everything is working correctly by sending a test message between each pair of chains.
-Use the Hyperlane CLI again to send the message:
-
-```
-hyperlane send message \
-   --origin YOUR_ORIGIN
-   --destination YOUR_DEST
-   --core PATH_TO_STEP2_ARTIFACTS
-   --key $PRIVATE_KEY
-```
-
-The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above.
-To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
-
-## Deploy a warp route
-
-Warp routes are a way to send tokens between chains. You can create a simple configuration file such as:
-
-```yaml
-base:
-  chainName: goerli
-  type: native
-  # address: 0x123... # Required for collateral types
-synthetics:
-  - chainName: ancient8test
-  # You can optionally set the token metadata, otherwise the base token's will be used
-  # name: "MySyntheticToken"
-  # symbol: "MST"
-  # totalSupply: 10000000
-```
-
-Then all you have to do is deploy the warp route by referencing the existing chain and core artifacts with:
+You can check everything is working correctly by sending a test message between pairs of chains.
+Initiate the message with the CLI. It will ask for a set of core deployment artifacts to use. Select the `core-deployments` JSON file from Step 2.
 
 ```bash
-hyperlane deploy warp --key $PRIVATE_KEY --chains ./configs/chain-config.yaml --config ../cli/examples/warp-tokens.yaml --core ./artifacts/core-deployment-2023-11-17-9-36-53.json
+hyperlane send message --key $PRIVATE_KEY
 ```
 
-This command will output a warp-ui config file that you need to use in the next step.
+The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in steps 3 and 4 above. To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
+
+## 5. (Optional) Deploy a warp route
+
+Once messages are being delivered, you can optionally deploy a [Warp Route](./reference/applications/warp-routes.mdx). Warp is toolkit for permissionlessly bridging tokens between any chains. The routes can use native currencies (like `Eth`), or ERC20 tokens (like `USDC`).
+
+To begin, create a new route config.
+
+```bash
+hyperlane config create warp
+```
+
+Next, you can deploy the route. As before, the CLI will prompt for a core deployment artifacts file.
+
+```bash
+hyperlane deploy warp --key $PRIVATE_KEY
+```
+
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
 
 ### Deploy the warp UI
 
-We have a template UI for interacting with your warp routes. You can clone the repo at [https://github.com/hyperlane-xyz/hyperlane-warp-ui-template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in the README to deploy the warp UI. You just have to add the entry from Step 6 warp ui config in the `src/tokens.ts` file, as well as add your chain to the `src/chains.ts` file.
+The Warp UI is a DApp template for interacting with Warp Routes. You can clone the [Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-ui-token-config.json` files from the previous steps to provide the UI with the information it needs.
