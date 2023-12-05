@@ -95,15 +95,15 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "referenceSidebar",
+            sidebarId: "guidesSidebar",
             position: "left",
-            label: "📖 Reference",
+            label: "🧭 Guides",
           },
           {
             type: "docSidebar",
-            sidebarId: "operateSidebar",
+            sidebarId: "referenceSidebar",
             position: "left",
-            label: "⚙️ Operate",
+            label: "📖 Reference",
           },
           {
             type: "docSidebar",
@@ -113,9 +113,9 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "guidesSidebar",
+            sidebarId: "operateSidebar",
             position: "left",
-            label: "🧭 Guides",
+            label: "⚙️ Operate",
           },
           {
             href: "https://github.com/hyperlane-xyz",
