@@ -154,50 +154,7 @@ export HYP_CHAINS_ETHEREUM_DOMAIN=1
 </TabItem>
 </Tabs>
 
-{/* TODO: check */}
-## chains.`<chain_name>`.finalityBlocks
-
-**Description:** Number of blocks to wait before considering the blockchain state to be final. See also [latencies](../guides/latencies.mdx) for help choosing an appropriate finality.
-
-**Optional:** Defaults to `0`
-
-**Agents:** All
-
-**Type:** `Numeric (string | number)`
-
-<Tabs groupId="config-reference">
-<TabItem value="arg" label="As Arg" default>
-```bash
---chains.${CHAIN_NAME}.finalityBlocks $FINALITY_BLOCKS
---chains.ethereum.finalityBlcoks 20
-```
-</TabItem>
-
-<TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_FINALITY_BLOCKS="$FINALITY_BLOCKS"
-export HYP_CHAINS_ETHEREUM_FINALITY_BLOCKS=20
-```
-</TabItem>
-
-<TabItem value="config" label="As Config">
-```json
-{
-    "chains": {
-        "`<chain_name>`": {
-            "finalityBlocks": "<finality_blocks>"
-        },
-        "ethereum": {
-            "finalityBlocks": 20
-        }
-    }
-}
-```
-</TabItem>
-</Tabs>
-
-{/* TODO: check this */}
-## chains.`<chain_name>`.addresses.mailbox
+## chains.`<chain_name>`.mailbox
 
 **Description:** Address of the mailbox contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
 
@@ -210,15 +167,15 @@ export HYP_CHAINS_ETHEREUM_FINALITY_BLOCKS=20
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.addresses.mailbox "$MAILBOX_ADDRESS"
---chains.ethereum.addresses.mailbox "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+--chains.${CHAIN_NAME}.mailbox "$MAILBOX_ADDRESS"
+--chains.ethereum.mailbox "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_ADDRESSES_MAILBOX="$MAILBOX_ADDRESS"
-export HYP_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS"
+export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
 ```
 </TabItem>
 
@@ -242,7 +199,7 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.addresses.interchainGasPaymaster
+## chains.`<chain_name>`.interchainGasPaymaster
 
 **Description:** Address of the interchain gas paymaster contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
 
@@ -255,15 +212,15 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.addresses.interchainGasPaymaster "$IGP_ADDRESS"
---chains.ethereum.addresses.interchainGasPaymaster "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+--chains.${CHAIN_NAME}.interchainGasPaymaster "$IGP_ADDRESS"
+--chains.ethereum.interchainGasPaymaster "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="$IGP_ADDRESS"
-export HYP_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+export HYP_CHAINS_${CHAIN_NAME}_INTERCHAIN_GAS_PAYMASTER="$IGP_ADDRESS"
+export HYP_CHAINS_ETHEREUM_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
 ```
 </TabItem>
 
@@ -287,7 +244,7 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f0
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.addresses.validatorAnnounce
+## chains.`<chain_name>`.validatorAnnounce
 
 **Description:** Address of the validator announce contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
 
@@ -300,15 +257,15 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f0
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.addresses.validatorAnnounce "$VALIDATOR_ANNOUNCE_ADDRESS"
---chains.ethereum.addresses.validatorAnnounce "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+--chains.${CHAIN_NAME}.validatorAnnounce "$VALIDATOR_ANNOUNCE_ADDRESS"
+--chains.ethereum.validatorAnnounce "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_ADDRESSES_VALIDATOR_ANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
-export HYP_CHAINS_ETHEREUM_ADDRESSES_VALIDATOR_ANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+export HYP_CHAINS_${CHAIN_NAME}_VALIDATOR_ANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
+export HYP_CHAINS_ETHEREUM_VALIDATOR_ANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
 ```
 </TabItem>
 
@@ -583,7 +540,15 @@ export HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum"
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.connection.type
+## chains.`<chain_name>`.rpcConsensusType
+
+:::info
+
+**The consensus type currently only applies to EVM chains.**
+
+Connections to other VMs only support a single RPC connection. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
+
+:::
 
 **Description:** How to communicate with the provider
 
@@ -634,7 +599,7 @@ export HYP_CHAINS_ETHEREUM_CONNECTION_TYPE="httpFallback"
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.connection.url
+## chains.`<chain_name>`.customUrl
 
 **Description:** Url to connect to
 
@@ -643,7 +608,7 @@ export HYP_CHAINS_ETHEREUM_CONNECTION_TYPE="httpFallback"
 ```
 ((chains.`<chain_name>`.protocol = "ethereum" | undefined)
     AND (chains.`<chain_name>`.connection.type = "http" | "ws" | undefined)
-) OR chains.`<chain_name>`.protocol = "fuel"
+) OR chains.`<chain_name>`.protocol = "cosmos" | "sealevel" | "fuel"
 ```
 
 **Optional:** No (iff requirements are met)
@@ -687,15 +652,22 @@ export HYP_CHAINS_ETHEREUM_CONNECTION_URL="http://127.0.0.1:8545"
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.connection.urls
+## chains.`<chain_name>`.rpcUrls
 
-**Description:**
+:::info
+
+Connections to VMs other than EVM only support a single RPC connection. If more than one RPC url is specified, only the first one will be used.
+
+:::
+
+**Description:** Urls to rotate between in case of RPC failure. 
 
 **Requires:**
 
 ```
 (chains.`<chain_name>`.protocol = "ethereum" | undefined)
     AND (chains.`<chain_name>`.connection.type = "httpFallback" | "httpQuorum")
+    OR chains.`<chain_name>`.protocol = "cosmos" | "sealevel" | "fuel"
 ```
 
 **Optional:** No (iff requirements are met)
@@ -1006,7 +978,7 @@ export HYP_DEFAULTSIGNER_REGION="us-east-1"
 </TabItem>
 </Tabs>
 
-## metrics
+## metrics port
 
 **Description:** Port to expose prometheus metrics on
 
@@ -1019,13 +991,13 @@ export HYP_DEFAULTSIGNER_REGION="us-east-1"
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---metrics 9090
+--metrics-port 9090
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_METRICS=9090
+export HYP_METRICSPORT=9090
 ```
 </TabItem>
 
