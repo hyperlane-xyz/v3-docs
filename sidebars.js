@@ -344,11 +344,13 @@ const sidebars = {
       id: "guides/v2-to-v3-migration",
       label: "v2 to v3 Migration",
     },
+   /** generalize ccip-read-ism page into a create your own guide
     {
       type: "doc",
       id: "guides/create-your-own-ISM",
       label: "Create your own ISM",
     },
+    */
     {
       type: "category",
       label: "Developer Tips",
