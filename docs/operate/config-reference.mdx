@@ -154,50 +154,7 @@ export HYP_CHAINS_ETHEREUM_DOMAIN=1
 </TabItem>
 </Tabs>
 
-{/* TODO: check */}
-## chains.`<chain_name>`.finalityBlocks
-
-**Description:** Number of blocks to wait before considering the blockchain state to be final. See also [latencies](../guides/latencies.mdx) for help choosing an appropriate finality.
-
-**Optional:** Defaults to `0`
-
-**Agents:** All
-
-**Type:** `Numeric (string | number)`
-
-<Tabs groupId="config-reference">
-<TabItem value="arg" label="As Arg" default>
-```bash
---chains.${CHAIN_NAME}.finalityBlocks $FINALITY_BLOCKS
---chains.ethereum.finalityBlcoks 20
-```
-</TabItem>
-
-<TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_FINALITY_BLOCKS="$FINALITY_BLOCKS"
-export HYP_CHAINS_ETHEREUM_FINALITY_BLOCKS=20
-```
-</TabItem>
-
-<TabItem value="config" label="As Config">
-```json
-{
-    "chains": {
-        "`<chain_name>`": {
-            "finalityBlocks": "<finality_blocks>"
-        },
-        "ethereum": {
-            "finalityBlocks": 20
-        }
-    }
-}
-```
-</TabItem>
-</Tabs>
-
-{/* TODO: check this */}
-## chains.`<chain_name>`.addresses.mailbox
+## chains.`<chain_name>`.mailbox
 
 **Description:** Address of the mailbox contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
 
@@ -210,15 +167,15 @@ export HYP_CHAINS_ETHEREUM_FINALITY_BLOCKS=20
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.addresses.mailbox "$MAILBOX_ADDRESS"
---chains.ethereum.addresses.mailbox "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+--chains.${CHAIN_NAME}.mailbox "$MAILBOX_ADDRESS"
+--chains.ethereum.mailbox "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_ADDRESSES_MAILBOX="$MAILBOX_ADDRESS"
-export HYP_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS"
+export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
 ```
 </TabItem>
 
@@ -242,7 +199,7 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.addresses.interchainGasPaymaster
+## chains.`<chain_name>`.interchainGasPaymaster
 
 **Description:** Address of the interchain gas paymaster contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
 
@@ -255,15 +212,15 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.addresses.interchainGasPaymaster "$IGP_ADDRESS"
---chains.ethereum.addresses.interchainGasPaymaster "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+--chains.${CHAIN_NAME}.interchainGasPaymaster "$IGP_ADDRESS"
+--chains.ethereum.interchainGasPaymaster "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="$IGP_ADDRESS"
-export HYP_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+export HYP_CHAINS_${CHAIN_NAME}_INTERCHAIN_GAS_PAYMASTER="$IGP_ADDRESS"
+export HYP_CHAINS_ETHEREUM_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
 ```
 </TabItem>
 
@@ -287,7 +244,7 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f0
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.addresses.validatorAnnounce
+## chains.`<chain_name>`.validatorAnnounce
 
 **Description:** Address of the validator announce contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
 
@@ -300,15 +257,15 @@ export HYP_CHAINS_ETHEREUM_ADDRESSES_INTERCHAIN_GAS_PAYMASTER="0x6cA0B6D22da47f0
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.addresses.validatorAnnounce "$VALIDATOR_ANNOUNCE_ADDRESS"
---chains.ethereum.addresses.validatorAnnounce "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+--chains.${CHAIN_NAME}.validatorAnnounce "$VALIDATOR_ANNOUNCE_ADDRESS"
+--chains.ethereum.validatorAnnounce "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_ADDRESSES_VALIDATOR_ANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
-export HYP_CHAINS_ETHEREUM_ADDRESSES_VALIDATOR_ANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+export HYP_CHAINS_${CHAIN_NAME}_VALIDATOR_ANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
+export HYP_CHAINS_ETHEREUM_VALIDATOR_ANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
 ```
 </TabItem>
 
@@ -379,7 +336,12 @@ HYP_CHAINS_${CHAIN_NAME}_SIGNER_*
 
 **Agents:** All
 
-**Type:** `Enum ("hexKey" | "aws" | "node")`
+**Type:** `Enum ("hexKey" | "aws" | "cosmosKey" | "node")`
+
+Accepted values for the different VMs are:
+- EVM: `hexKey` (ECDSA) or `aws` (ECDSA)
+- sealevel: `hexKey` (ED25519)
+- cosmos: `cosmosKey`
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
@@ -583,34 +545,41 @@ export HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum"
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.connection.type
+## chains.`<chain_name>`.rpcConsensusType
+
+:::info
+
+**The consensus type currently only applies to EVM chains.**
+
+Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
+
+:::
 
 **Description:** How to communicate with the provider
 
-* `"http"` uses a basic http connection
-* `"ws"` uses a basic websocket connection
-* `"httpFallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
-* `"httpQuorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+* `"single"` uses a basic http connection
+* `"fallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
+* `"quorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
 
 **Requires:** `chains.<chain_name>.protocol = "ethereum" | undefined`
 
-**Optional:** Defaults to `"http"`
+**Optional:** Defaults to `"fallback"`
 
 **Agents:** All
 
-**Type:** `Enum ("http", "ws", "httpFallback", "httpQuorum")`
+**Type:** `Enum ("fallback", "single", "quorum")`
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.connection.type http
+--chains.${CHAIN_NAME}.rpcConsensusType single
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_CONNECTION_TYPE="url"
-export HYP_CHAINS_ETHEREUM_CONNECTION_TYPE="httpFallback"
+export HYP_CHAINS_${CHAIN_NAME}_RPCCONSENSUSTYPE="single"
+export HYP_CHAINS_ETHEREUM_RPCCONSENSUSTYPE="single"
 ```
 </TabItem>
 
@@ -619,14 +588,10 @@ export HYP_CHAINS_ETHEREUM_CONNECTION_TYPE="httpFallback"
 {
     "chains": {
         "`<chain_name>`": {
-            "connection": {
-                "type": "http"
-            }
+            "rpcConsensusType": "single"
         },
         "ethereum": {
-            "connection": {
-                "type": "httpFallback"
-            }
+            "rpcConsensusType": "single"
         }
     }
 }
@@ -634,88 +599,30 @@ export HYP_CHAINS_ETHEREUM_CONNECTION_TYPE="httpFallback"
 </TabItem>
 </Tabs>
 
-## chains.`<chain_name>`.connection.url
+## chains.`<chain_name>`.customRpcUrls
 
-**Description:** Url to connect to
+:::info
 
-**Requires:**
+Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified, only the first one will be used.
 
-```
-((chains.`<chain_name>`.protocol = "ethereum" | undefined)
-    AND (chains.`<chain_name>`.connection.type = "http" | "ws" | undefined)
-) OR chains.`<chain_name>`.protocol = "fuel"
-```
+:::
 
-**Optional:** No (iff requirements are met)
-
-**Agents:** All
-
-**Type:** `string`
-
-<Tabs groupId="config-reference">
-<TabItem value="arg" label="As Arg" default>
-```bash
---chains.${CHAIN_NAME}.connection.url "$CONNECTION_URL"
---chains.ethereum.connection.url "http://127.0.0.1:8545"
-```
-</TabItem>
-
-<TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_CONNECTION_URL="$CONNECTION_URL"
-export HYP_CHAINS_ETHEREUM_CONNECTION_URL="http://127.0.0.1:8545"
-```
-</TabItem>
-
-<TabItem value="config" label="As Config">
-```json
-{
-    "chains": {
-        "`<chain_name>`": {
-            "connection": {
-                "url": "<connection_url>"
-            }
-        },
-        "ethereum": {
-            "connection": {
-                "url": "http://127.0.0.1:8545"
-            }
-        }
-    }
-}
-```
-</TabItem>
-</Tabs>
-
-## chains.`<chain_name>`.connection.urls
-
-**Description:**
-
-**Requires:**
-
-```
-(chains.`<chain_name>`.protocol = "ethereum" | undefined)
-    AND (chains.`<chain_name>`.connection.type = "httpFallback" | "httpQuorum")
-```
-
-**Optional:** No (iff requirements are met)
-
-**Agents:**
+**Description:** Comma-separated URLs to connect the provider to. The difference between `customRpcUrls` and [rpcUrls](#chainschain_namerpcurls) is that `customRpcUrls` allows for more user friendly inputs from the CLI or environment variables (comma-separated vs array).
 
 **Type:** `string` (comma separated list of urls without spaces)
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---chains.${CHAIN_NAME}.connection.urls "$CONNECTION_URLS"
---chains.ethereum.connection.urls "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+--chains.${CHAIN_NAME}.customrpcurls "$CONNECTION_URLS"
+--chains.ethereum.customrpcurls "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_CHAINS_${CHAIN_NAME}_CONNECTION_URLS="$CONNECTION_URLS"
-export HYP_CHAINS_ETHEREUM_CONNECTION_URLS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+export HYP_CHAINS_${CHAIN_NAME}_CUSTOMRPCURLS="$CONNECTION_URLS"
+export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
 ```
 </TabItem>
 
@@ -724,14 +631,87 @@ export HYP_CHAINS_ETHEREUM_CONNECTION_URLS="http://127.0.0.1:8545,http://127.0.0
 {
     "chains": {
         "`<chain_name>`": {
-            "connection": {
-                "urls": "<connection_urls>"
-            }
+            "rpcUrls": "<connection_urls>"
         },
         "ethereum": {
-            "connection": {
-                "urls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
-            }
+            "rpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.rpcUrls
+
+:::info
+
+Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified, only the first one will be used.
+
+:::
+
+**Description:** URLs to connect the provider to. The first one is initially used, and on failure the other ones are tried. See [rpcConsensusType](#chainschain_namerpcconsensustype) for more information.
+
+**Requires:**
+
+```
+(chains.`<chain_name>`.protocol = "ethereum" | undefined)
+    AND (chains.`<chain_name>`.connection.type = "fallback" | "quorum")
+    OR chains.`<chain_name>`.protocol = "cosmos" | "sealevel" | "fuel"
+```
+
+**Optional:** No (iff requirements are met)
+
+**Agents:**
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.rpcurls.0.https "$CONNECTION_URL_0"
+--chains.${CHAIN_NAME}.rpcurls.1.https "$CONNECTION_URL_1"
+--chains.${CHAIN_NAME}.rpcurls.2.https "$CONNECTION_URL_2"
+--chains.ethereum.rpcurls.0.https "http://127.0.0.1:8545"
+--chains.ethereum.rpcurls.1.https "http://127.0.0.1:8546"
+--chains.ethereum.rpcurls.2.https "http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_0_HTTPS="$CONNECTION_URL_0"
+export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_1_HTTPS="$CONNECTION_URL_1"
+export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_2_HTTPS="$CONNECTION_URL_2"
+export HYP_CHAINS_ETHEREUM_RPCURLS_0_HTTPS="http://127.0.0.1:8545"
+export HYP_CHAINS_ETHEREUM_RPCURLS_1_HTTPS="http://127.0.0.1:8546"
+export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "rpcUrls": [
+                {
+                    "http": "<connection_url_1>"
+                },
+                {
+                    "http": "<connection_url_2>"
+                }
+            ],
+        },
+        "ethereum": {
+            "rpcUrls": [
+                {
+                    "http": "http://127.0.0.1:8545"
+                },
+                {
+                    "http": "http://127.0.0.1:8546"
+                }
+            ],
         }
     }
 }
@@ -831,6 +811,13 @@ export HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999
 
 ## defaultsigner
 
+
+:::info
+
+Because each VM supports a different signer type, the default signer can only support a single VM type. For instance, if the default signer is a ECDSA one, it will only be able to sign on EVM chains.
+
+:::
+
 **Description:** The default signer that should be used for all chains which did not specify their own.
 
 **Optional:** Yes
@@ -863,13 +850,13 @@ HYP_DEFAULTSIGNER_*
 
 ## defaultsigner.type
 
-**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS-based KMS, and `Node` assumes the local node will sign RPC calls.
 
 **Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
 
 **Agents:** All
 
-**Type:** `Enum ("hexKey" | "aws" | "node")`
+**Type:** `Enum ("hexKey" | "aws" | "cosmosKey" | "node")`
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
@@ -1006,7 +993,7 @@ export HYP_DEFAULTSIGNER_REGION="us-east-1"
 </TabItem>
 </Tabs>
 
-## metrics
+## metricsport
 
 **Description:** Port to expose prometheus metrics on
 
@@ -1019,13 +1006,13 @@ export HYP_DEFAULTSIGNER_REGION="us-east-1"
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---metrics 9090
+--metrics-port 9090
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```sh
-export HYP_METRICS=9090
+export HYP_METRICSPORT=9090
 ```
 </TabItem>
 
@@ -1172,7 +1159,7 @@ HYP_VALIDATOR_*
 
 ## validator.type
 
-**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+**Description:** The type of EVM signer that is defined. Note that regardless of the VM the validator is operating on, checkpoints are always signed using the EVM ECDSA curve. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
 
 **Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
 
@@ -1462,7 +1449,7 @@ export HYP_CHECKPOINTSYNCER_REGION="us-east-1"
 
 ## interval
 
-**Description:** How frequently to check for new checkpoints in seconds. See also [latencies](../guides/latencies.mdx).
+**Description:** How frequently the validator should check for new checkpoints in seconds. See also [latencies](../guides/latencies.mdx).
 
 **Optional:** No
 
@@ -1585,38 +1572,6 @@ export HYP_RELAYCHAINS="arbitrum,ethereum,bsc"
 ```json
 {
     "relaychains": "arbitrum,ethereum,bsc"
-}
-```
-</TabItem>
-</Tabs>
-
-## destinationchainnames
-
-**Description:** List of chains to deliver messages to. **Deprecated, use** [#relaychains](#relaychains) **instead.**
-
-**Optional:** Yes
-
-**Agents:** Relayer
-
-**Type:** `string` (comma separated list)
-
-<Tabs groupId="config-reference">
-<TabItem value="arg" label="As Arg" default>
-```bash
---destinationChainNames "arbitrum,ethereum,bsc"
-```
-</TabItem>
-
-<TabItem value="env" label="As Env">
-```sh
-export HYP_DESTINATIONCHAINNAMES="arbitrum,ethereum,bsc"
-```
-</TabItem>
-
-<TabItem value="config" label="As Config">
-```json
-{
-    "destinationchainnames": "arbitrum,ethereum,bsc"
 }
 ```
 </TabItem>

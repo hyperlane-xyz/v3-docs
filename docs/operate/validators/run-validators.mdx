@@ -62,7 +62,7 @@ Operating a validator for Polygon mainnet requires access to an archive node. Th
 :::
 
 - A secure signing key
-  - Validators use this key to sign the `Mailbox's` latest merkle root. Securing this key is important. If it is compromised, attackers can attempt to falsify messages, causing the validator to be slashed.
+  - Validators use this key to sign the `Mailbox`'s latest merkle root. Securing this key is important. If it is compromised, attackers can attempt to falsify messages, causing the validator to be slashed.
   - The Hyperlane validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys for testing. See more under [agent keys](../set-up-agent-keys.mdx).
 
 - Publicly readable storage
@@ -118,7 +118,7 @@ Your validator takes arguments and environment variables as configuration. See b
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `--reorgPeriod`                               | The number of block confirmations a validator should wait before signing the `Mailbox` merkle root. Note that signing a root that is later invalidated (i.e. due to a re-org) is considered fraudulent behavior and will eventually be slashable.                                                                                              |
 | `--originChainName`                           | The name of the chain being validated (e.g. `ethereum`)                                                                                                                                                                                                                                                                                                      |
-| `--chains.[origin chain name].connection.url` | The RPC URL of the node for the chain you are validating. Note Polygon mainnet requires an RPC URL of an archive node e.g. `--chains.ethereum.connection.url` or `--chains.polygon.connection.url`                                                                                                                          |
+| `--chains.[origin chain name].customrpcurls`  | The RPC URLs of the node for the chain you are validating. Note Polygon mainnet requires an RPC URL of an archive node. (e.g. `--chains.ethereum.customrpcurls` or `--chains.polygon.customrpcurls`)                                                                                                                          |
 | `--db`                                        | The path to where the validator should write persistent data to disk. Ensure this path to be persistent when using cloud setups. When using Docker, make sure to mount the persistent path/volume into the container.                                                                                                                                 |
 
 | Environment variable | Description                                                                                                                                                                                                                                                                                                                                                                               |
@@ -252,7 +252,7 @@ We can run the built binary from within the `hyperlane-monorepo/rust` directory:
 
 ## Announcing your validator
 
-The [relayer](../relayer/run-relayer.mdx) need to know where to find your validator's signatures. Your validator will automatically attempt to announce itself by writing to the `ValidatorAnnounce` contract on the chain that you're validating.&#x20;
+The [relayer](../relayer/run-relayer.mdx) needs to know where to find your validator's signatures. Your validator will automatically attempt to announce itself by writing to the `ValidatorAnnounce` contract on the chain that you're validating.&#x20;
 
 To do this, your validator must have a small amount of tokens to pay for the gas for this transaction.
 
