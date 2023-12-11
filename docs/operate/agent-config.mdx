@@ -29,7 +29,7 @@ Examples:
 
 * `{ "db": "/path/to/dir" }` can be set with `--db "/path/to/dir"`
 * `{ "chains": { "ethereum": { "name": "ethereum" } } }` (abbreviated as `chains.ethereum.name` or `chains.<chain_name>.name`) can be set with `--chains.ethereum.name ethereum`
-* `{ "chains": { "avalanche": { "rpcUrls": [ { "http": "https://some-url.com" } ] } } }` (abbreviated as `chains.<chain_name>.rpcurls.0.http`) can be set with `--chains.avalanche.rpcurls.0.http "https://some-url.com"`
+* `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` (abbreviated as `chains.<chain_name>.customrpcurls`) can be set with `--chains.avalanche.customrpcurls "https://some-url.com"`
 
 ## Environment variables
 
@@ -43,7 +43,7 @@ For example:
 
 * `{ "db": "/path/to/dir" }` can be set with `HYP_DB="/path/to/dir"` or `HYP_RELAYER_DB="/path/to/dir"`
 * `{ "chains": { "ethereum": { "name": "ethereum" } } }` (abbreviated as `chains.ethereum.name` or `chains.<chain_name>.name`) can be set with `HYP_CHAINS_ETHEREUM_NAME="ethereum"` or `HYP_VALIDATOR_CHAINS_ETHEREUM_NAME="ethereum"` or `HYP_RELAYER_CHAINS_ETHEREUM_NAME="ethereum"` ...
-* `{ "chains": { "avalanche": { "rpcUrls": [{ "http": "https://some-url.com" }] } } }` (abbreviated as `chains.avalanche.rpcurls.0.http` or `chains.<chain_name>.rpcurls.0.http`) can be set with `HYP_CHAINS_AVALANCHE_RPCURLS_0_HTTP="https://some-url.com"` or `HYP_VALIDATOR_AVALANCHE_RPCURLS_0_HTTP="https://some-url.com"` and so on...
+* `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` (abbreviated as `chains.<chain_name>.customrpcurls`) can be set with `HYP_CHAINS_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` or `HYP_VALIDATOR_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` and so on...
 
 ## Config files with Docker
 
