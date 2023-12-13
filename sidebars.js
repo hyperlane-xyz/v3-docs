@@ -86,6 +86,11 @@ const sidebars = {
           id: "reference/hooks/op-stack",
           label: "OP Stack",
         },
+        {
+          type: "doc",
+          id: "reference/hooks/polygon-pos",
+          label: "Polygon PoS",
+        },
       ],
     },
     {
