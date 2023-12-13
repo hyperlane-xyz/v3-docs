@@ -1,0 +1,132 @@
+# Unit testing - EVM
+
+Unit testing can prove to be challenging for a multi-chain setup with Foundry. Hence, we've provided a lightweight test environment `MockHyperlaneEnvironment` for you to unit test your cross-chain app while avoiding the need to fork multiple networks.
+
+Most multi-chain apps will be built on top of our Mailbox contract. So, we've abstracted away the details of a deployed mailbox with a `MockMailbox` and our environment contains an `originMailbox` and a `destinationMailbox` on the same chain. Internally, we store the messages arriving to the destination in the `inboundMessages` mapping on the destination mailbox. We simulate message delivery by enqueuing messages and increment the `inboundProcessednonce` with `mailbox.processNextInboundMessage()`.
+
+The setup for the simple messaging forge test is as following:
+
+### Sending a message
+
+```solidity
+contract SimpleMessagingTest is Test {
+    // origin and destination domains (recommended to be the chainId)
+    uint32 origin = 1;
+    uint32 destination = 2;
+
+    // both mailboxes will on the same chain but different addresses
+    MockMailbox originMailbox;
+    MockMailbox destinationMailbox;
+
+    // contract which can receive messages
+    TestRecipient receiver;
+
+    function setUp() public {
+        originMailbox = new MockMailbox(origin);
+        destinationMailbox = new MockMailbox(destination);
+        originMailbox.addRemoteMailbox(destination, destinationMailbox);
+
+        receiver = new TestRecipient();
+    }
+
+    function testSendMessage() public {
+        string _message = "Aloha!";
+        originMailbox.dispatch(
+            destination,
+            TypeCasts.addressToBytes32(address(receiver)),
+            bytes(_message)
+        );
+        // simulating message delivery to the destinationMailbox
+        destinationMailbox.processNextInboundMessage();
+        assertEq(string(receiver.lastData()), _message);
+    }
+}
+```
+
+### Testing Router-based apps
+
+Assuming you're testing `TestCrosschainApp` which inherits from `Router`:
+
+```solidity
+contract CrosschainAppTest is Test {
+    // origin and destination domains (recommended to be the chainId)
+    uint32 origin = 1;
+    uint32 destination = 2;
+
+    function setUp() public {
+        environment = new MockHyperlaneEnvironment(origin, destination);
+
+        // your cross-chain app
+        TestCrosschainApp originTelephone  = new TestCrosschainApp(environment.mailboxes(origin));
+        TestCrosschainApp destinationTelephone  = new TestCrosschainApp(environment.mailboxes(destination));
+
+        // assuming you're inheriting the Router pattern from https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/client/Router.sol
+        originTelephone.enrollRemoteRouter(destinationTelephone);
+        destinationTelephone.enrollRemoteRouter(originTelephone);
+    }
+}
+```
+
+`processNextPendingMessage()` and `processNextPendingMessageFromDestination()` process inbound messages for destination and origin mailboxes respectively. Now, you can make your cross-chain calls from origin to destination and vice-versa:
+
+```solidity
+    function testRemoteTelephoneCallFromOrigin() public {
+        // check behavior on origin
+        vm.expectEmit(true, true, true, false);
+        emit TelephoneRinging(destination,  TypeCasts.bytes32ToAddress(destinationTelephone), "Hello!"); // example event on origin
+        originTelephone.callRemote(destination,  TypeCasts.bytes32ToAddress(destinationTelephone), "Hello!");
+
+        // simulating message delivery origin -> destination
+        environment.processNextPendingMessage();
+
+        // check behavior on destination
+        assertEq(destinationTelephone.latestMessage(originTelephone) == "Hello!");
+    }
+
+    function testRemoteTelephoneCallFromDestination() public {
+        // check behavior on destination
+        vm.expectEmit(true, true, true, false);
+        emit TelephoneRinging(origin,  TypeCasts.bytes32ToAddress(originTelephone), "Howdy!"); // example event on destination
+        destinationTelephone.callRemote(origin,  TypeCasts.bytes32ToAddress(originTelephone), "Howdy!");
+
+         // simulating message delivery destination -> origin
+        environment.processNextPendingMessageFromDestination();
+
+        // check behavior on origin
+        assertEq(originTelephone.latestMessage(destinationTelephone) == "Howdy!");
+    }
+
+```
+
+If you want to use your own ISM for your app, you can override the `defaultIsm` mailbox provides by passing it to the Router's `initialize` method like following:
+
+```solidity
+contract CrosschainAppTest is Test {
+    // origin and destination domains (recommended to be the chainId)
+    uint32 origin = 1;
+    uint32 destination = 2;
+
+    function setUp() public {
+        ...
+
+        TestIgp igp = new TestIgp(); // example InterchainGasPaymaster passed as the hook
+
+        // deploy your own ISM contracts to verify messages between originTelephone and destinationTelephone
+        TelephoneISM originIsm = new TelephoneISM(); // local ISM for origin
+        TelephoneISM destinationIsm = new TelephoneISM(); // local ISM for destination
+
+
+        originTelephone.initialize(address(igp), address(originIsm), msg.sender);
+        originTelephone.initialize(address(igp), address(destinationIsm), msg.sender);
+
+        ...
+    }
+}
+
+```
+
+:::tip
+
+You can find examples of our unit testing setup here: [InterchainAccountRouterTest](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/dae8b26ed65383844e4fbed7585deeb52da4e454/solidity/test/InterchainAccountRouter.t.sol#L38)
+
+:::
