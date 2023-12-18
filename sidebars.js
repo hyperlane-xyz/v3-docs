@@ -86,11 +86,6 @@ const sidebars = {
           id: "reference/hooks/op-stack",
           label: "OP Stack",
         },
-        {
-          type: "doc",
-          id: "reference/hooks/custom-hook-and-ism",
-          label: "Custom hook and ISM",
-        },
       ],
     },
     {
@@ -350,8 +345,8 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "guides/create-your-own-ISM",
-      label: "Create your own ISM",
+      id: "guides/create-custom-hook-and-ism",
+      label: "Create your own hook and ISM",
     },
     {
       type: "category",

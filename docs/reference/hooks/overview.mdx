@@ -82,9 +82,9 @@ flowchart TB
     end
 ```
 
-Move to implementing a hook guide [here](./custom-hook-and-ism.mdx)
+Move to implementing a hook guide [here](../../guides/create-custom-hook-and-ism.mdx)
 
-### Default Hook Metadata
+### Overridding default Hook Metadata
 
 To override the default metadata, there is a `dispatch` overload that takes an optional `metadata` parameter.
 
@@ -154,3 +154,42 @@ mailbox.dispatch{value: msg.value}(
 );
 `}
 />
+
+### Custom hook and metadata
+
+After implementing the above interfaces, you can override default hook along the hook metadata by using the overloaded `dispatch` call in our mailbox:
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/Mailbox.sol#L269-L275
+
+```
+
+### Examples
+
+<MultiLanguageExample
+  solidity={({
+    mailbox,
+    merkleTreeHook,
+    originChain,
+    destinationDomain,
+    destinationChain,
+    paddedRecipient,
+    body,
+  }) => `\
+// send message from ${originChain} to ${destinationChain} TestRecipient
+IMailbox mailbox = IMailbox("${mailbox}");
+IPostDispatchHook merkleTree = IPostDispatchHook("${merkleTreeHook}");
+mailbox.dispatch(
+  ${destinationDomain},
+  "${paddedRecipient}",
+  bytes("${body}"),
+  "0x", // empty metadata
+  merkleTree
+);
+`}
+/>
+
+</TabItem>
+</Tabs>
