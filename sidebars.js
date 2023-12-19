@@ -401,6 +401,7 @@ const sidebars = {
         },
       ],
     },
+       /**
     {
       type: "category",
       label: "Ecosystems",
@@ -444,6 +445,7 @@ const sidebars = {
         },
       ],
     },
+   */
   ],
 
   operateSidebar: [
