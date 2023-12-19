@@ -161,6 +161,7 @@ const sidebars = {
         },
       ],
     },
+   /**
     {
       type: "category",
       label: "Typescript SDK",
@@ -198,6 +199,7 @@ const sidebars = {
         },
       ],
     },
+    */
     {
       type: "doc",
       id: "reference/contract-addresses",
@@ -286,6 +288,7 @@ const sidebars = {
         
       ],
     },
+   /**
     {
       type: "category",
       label: "Agents",
@@ -319,6 +322,7 @@ const sidebars = {
       id: "protocol/implementation-guide",
       label: "Implementation Guide",
     },
+    */
   ],
 
   guidesSidebar: [
@@ -351,6 +355,7 @@ const sidebars = {
       label: "Create your own ISM",
     },
     */
+   /**
     {
       type: "category",
       label: "Developer Tips",
@@ -401,6 +406,7 @@ const sidebars = {
         },
       ],
     },
+    */
        /**
     {
       type: "category",
