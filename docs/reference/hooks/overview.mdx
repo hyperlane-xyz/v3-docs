@@ -1,5 +1,5 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 import { MultiLanguageExample } from "@site/src/components/InteractiveExample";
 
@@ -28,6 +28,7 @@ This allows developers to integrate third party/native bridges, make additional 
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/hooks/IPostDispatchHook.sol
+
 ```
 
 </TabItem>
@@ -42,28 +43,29 @@ In addition to the `message` dispatched via the Mailbox, the `postDispatch` func
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/hooks/IPostDispatchHook.sol#L48-L51
+
 ```
 
 </TabItem>
 </Tabs>
 
-If the `postDispatch` function receives insufficient payment, it may revert. 
+If the `postDispatch` function receives insufficient payment, it may revert.
 
 ### Quote Dispatch (Fees)
 
-Fees are often charged in `postDispatch` to cover costs such as destination chain transaction submission and security provisioning. To receive a quote for a corresponding `postDispatch` call, you can query the `quoteDispatch` function. 
-
+Fees are often charged in `postDispatch` to cover costs such as destination chain transaction submission and security provisioning. To receive a quote for a corresponding `postDispatch` call, you can query the `quoteDispatch` function.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/hooks/IPostDispatchHook.sol#L59-L62
+
 ```
 
 </TabItem>
 </Tabs>
 
-The Mailbox has a `quoteDispatch` function that returns the aggregate fee required for a `dispatch` call to be successful. 
+The Mailbox has a `quoteDispatch` function that returns the aggregate fee required for a `dispatch` call to be successful.
 
 ```mermaid
 flowchart TB
@@ -80,37 +82,14 @@ flowchart TB
     end
 ```
 
-{/*
-Move to implementing a hook guide?
+Move to implementing a hook guide [here](../../guides/create-custom-hook-and-ism.mdx)
 
-### Access Control
+### Overridding default Hook Metadata
 
-If `postDispatch` must only be called with a `message` that was *just* dispatched, the `latestDispatchedId` function on the Mailbox can be used to verify the message was *actually* dispatched.
-
-:::info
-This is used instead of some `require(mailbox == msg.sender)` to support **composition** where a hook may pass a `message` along to another hook.
-:::
-
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-The following utility is provided in the [`MailboxClient` library](../libraries/mailboxclient.mdx) for convenience.
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/MailboxClient.sol#L89-L91
-```
-
-</TabItem>
-</Tabs> */}
-
-## Customize Hooks
-
-Message senders can customize post-dispatch behavior by passing custom metadata or a custom hook address that implements the `IPostDispatchHook` interface.
-
-### Default Hook Metadata
-
-To override the default metadata, there is a `dispatch` overload that takes an optional `metadata` parameter. 
+To override the default metadata, there is a `dispatch` overload that takes an optional `metadata` parameter.
 
 :::info
-Hooks currently expect metadata to be formatted with the [`StandardHookMetadata` library](../libraries/hookmetadata.mdx). 
+Hooks currently expect metadata to be formatted with the [`StandardHookMetadata` library](../libraries/hookmetadata.mdx).
 :::
 
 <Tabs groupId="lang">
@@ -149,6 +128,7 @@ flowchart LR
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/hooks/libs/StandardHookMetadata.sol
+
 ```
 
 </TabItem>
@@ -175,26 +155,9 @@ mailbox.dispatch{value: msg.value}(
 `}
 />
 
-### Custom Hook Contract
+### Custom hook and metadata
 
-To override the default hook configuration, there is a `dispatch` overload that accepts a `hook` and hook `metadata` parameters.
-
-```mermaid
-flowchart LR
-    subgraph Origin Chain
-      Sender
-      M_O[(Mailbox)]
-      R_H[RequiredHook]
-      D_H[DefaultHook]
-      C_H[CustomHook]
-      Sender -- "dispatch(..., metadata, hook){value}" --> M_O
-
-      M_O -. "fee = quoteDispatch(...)" .- R_H
-      M_O -- "postDispatch(metadata, ...)\n{fee}" --> R_H
-      M_O -- "hook.postDispatch(metadata, ...)\n{value - fee}" ---> C_H
-      M_O -.- D_H
-    end
-```
+After implementing the above interfaces, you can override default hook along the hook metadata by using the overloaded `dispatch` call in our mailbox:
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -203,7 +166,7 @@ flowchart LR
 
 ```
 
-#### Examples
+### Examples
 
 <MultiLanguageExample
   solidity={({
@@ -230,4 +193,3 @@ mailbox.dispatch(
 
 </TabItem>
 </Tabs>
-

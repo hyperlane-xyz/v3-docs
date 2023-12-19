@@ -48,8 +48,8 @@ const sidebars = {
       type: "category",
       label: "General Message Passing",
       link: {
-        type: 'doc',
-        id: 'reference/messaging/messaging-interface',
+        type: "doc",
+        id: "reference/messaging/messaging-interface",
       },
       collapsible: true,
       collapsed: false,
@@ -70,8 +70,8 @@ const sidebars = {
       type: "category",
       label: "Post-Dispatch Hooks",
       link: {
-        type: 'doc',
-        id: 'reference/hooks/overview',
+        type: "doc",
+        id: "reference/hooks/overview",
       },
       collapsible: true,
       collapsed: true,
@@ -92,8 +92,8 @@ const sidebars = {
       type: "category",
       label: "Interchain Security Modules",
       link: {
-        type: 'doc',
-        id: 'reference/ISM/specify-your-ISM',
+        type: "doc",
+        id: "reference/ISM/specify-your-ISM",
       },
       collapsible: true,
       collapsed: true,
@@ -166,8 +166,8 @@ const sidebars = {
       type: "category",
       label: "Typescript SDK",
       link: {
-        type: 'doc',
-        id: 'reference/typescript-sdk/sdk-overview',
+        type: "doc",
+        id: "reference/typescript-sdk/sdk-overview",
       },
       collapsible: true,
       collapsed: true,
@@ -285,7 +285,6 @@ const sidebars = {
           id: "protocol/ISM/wormhole-ISM",
           label: "Wormhole ISM",
         },
-        
       ],
     },
    /**
@@ -330,8 +329,8 @@ const sidebars = {
       type: "category",
       label: "Deploy a Warp Route",
       link: {
-        type: 'doc',
-        id: 'guides/deploy-warp-route',
+        type: "doc",
+        id: "guides/deploy-warp-route",
       },
       collapsible: true,
       collapsed: false,
@@ -351,8 +350,8 @@ const sidebars = {
    /** generalize ccip-read-ism page into a create your own guide
     {
       type: "doc",
-      id: "guides/create-your-own-ISM",
-      label: "Create your own ISM",
+      id: "guides/create-custom-hook-and-ism",
+      label: "Create your own hook and ISM",
     },
     */
    /**
@@ -371,8 +370,8 @@ const sidebars = {
           type: "category",
           label: "Explorer Debugging",
           link: {
-            type: 'doc',
-            id: 'guides/developer-tips/explorer-debugging',
+            type: "doc",
+            id: "guides/developer-tips/explorer-debugging",
           },
           collapsible: true,
           collapsed: true,
@@ -395,14 +394,14 @@ const sidebars = {
           ],
         },
         {
-          type: 'doc',
-          id: 'guides/latencies',
-          label: 'Latencies',
+          type: "doc",
+          id: "guides/latencies",
+          label: "Latencies",
         },
         {
-          type: 'doc',
-          id: 'guides/token-faucets',
-          label: 'Token Faucets',
+          type: "doc",
+          id: "guides/token-faucets",
+          label: "Token Faucets",
         },
       ],
     },
@@ -459,8 +458,8 @@ const sidebars = {
       type: "category",
       label: "Run Validators",
       link: {
-        type: 'doc',
-        id: 'operate/validators/run-validators',
+        type: "doc",
+        id: "operate/validators/run-validators",
       },
       collapsible: true,
       collapsed: true,
@@ -481,8 +480,8 @@ const sidebars = {
       type: "category",
       label: "Run Relayer",
       link: {
-        type: 'doc',
-        id: 'operate/relayer/run-relayer',
+        type: "doc",
+        id: "operate/relayer/run-relayer",
       },
       collapsible: true,
       collapsed: true,
@@ -503,8 +502,8 @@ const sidebars = {
       type: "category",
       label: "Agent Config",
       link: {
-        type: 'doc',
-        id: 'operate/agent-config',
+        type: "doc",
+        id: "operate/agent-config",
       },
       collapsible: true,
       collapsed: true,
@@ -514,7 +513,7 @@ const sidebars = {
           id: "operate/config-reference",
           label: "Config Reference",
         },
-      ]
+      ],
     },
     {
       type: "doc",
