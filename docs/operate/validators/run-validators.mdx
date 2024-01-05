@@ -100,7 +100,7 @@ When running a validator locally, your validator will write its signatures to a 
 MY_VALIDATOR_SIGNATURES_DIRECTORY=/tmp/hyperlane-validator-signatures-ethereum
 
 # Create the directory
-mkdir $MY_VALIDATOR_SIGNATURES_DIRECTORY
+mkdir -p $MY_VALIDATOR_SIGNATURES_DIRECTORY
 ```
 
 
@@ -230,7 +230,7 @@ For example, if your local validator is writing signatures to `/tmp/hyperlane-va
 ```sh
 docker run \
   -it \
-  -e CONFIG_FILES=/path/to/file/inside/container
+  -e CONFIG_FILES=/path/to/file/inside/container \
   --mount type=bind,source="$(pwd)"/hyperlane-validator-signatures-ethereum,target=/tmp/hyperlane-validator-signatures-ethereum,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
   $DOCKER_IMAGE \
