@@ -44,7 +44,7 @@ export default function MessageQuickstart() {
             <CodeBlock language="shell">
               cast send {mailbox} "dispatch(uint32,bytes32,bytes)"{" "}
               {destinationDomain} {paddedRecipient} $(cast --from-utf8 "{body}"){" "}
-              --rpc-url {originRpc} --value {value}
+              --rpc-url {originRpc} --value {value}ether
             </CodeBlock>
           </TabItem>
           <TabItem value="explorer" label="Explorer">
@@ -62,7 +62,7 @@ export default function MessageQuickstart() {
               <li>
                 Fill in value: <code>{value}</code>, destination:{" "}
                 <code>{destinationDomain}</code>, recipient:{" "}
-                <code>{paddedRecipient}</code>, and message: <code>{body}</code>
+                <code>{paddedRecipient}</code>, and message the hex representation of "{body}". For example if you have <code>cast</code> installed, <code>cast --from-utf8 "Hello, world"</code> returns <code>0x48656c6c6f2c20776f726c64</code>.
               </li>
               <li>
                 Click the <code>Write</code> button to submit the transaction!
