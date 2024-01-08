@@ -169,7 +169,15 @@ If this is your first time using Kurtosis Cloud, you'll need to sign in with Goo
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
-A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration.
+A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2.
+
+:::note
+
+If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
+
+:::
+
+The last step will be to input your `Validator Key` from Step 2. The screenshots below show an example prefilled configuration.
 
 :::warning
 
@@ -180,6 +188,14 @@ The Kurtosis team is still building the secrets functionality of Kurtosis Cloud,
 ![Example Configuration One](../static/img/kurtosis-example-config-one.png)
 
 ![Example Configuration Two](../static/img/kurtosis-example-config-two.png)
+
+:::warning
+
+Relayers can be defined with multiple origin chains, therefore only one relayer is required to operate across a set of chains.
+
+If you are deploying more than one Kurtosis enclave, ensure that the set of relay chains for each enclave does not overlap.
+
+:::
 
 Click `Run` to deploy your relayer and validator!
 
