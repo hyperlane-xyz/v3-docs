@@ -1,0 +1,92 @@
+# Troubleshooting
+
+## Chain configuration
+
+Within your working directory, you may find a `config/` folder containing a `chains.yaml` file. This `chains.yaml` configuration file allows you to describe chain metadata for use in Hyperlane deployments or apps.
+
+You can define a full configuration for any new chain in this file. The metadata that can be configured is defined in this [example configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml). You can also find the chain metadata schema at [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
+
+Here's an example configuration for two local anvil chains:
+
+```yaml
+---
+anvil1:
+  chainId: 31337
+  domainId: 31337
+  name: anvil1
+  protocol: ethereum
+  rpcUrls:
+    - http: http://localhost:8545
+  nativeToken:
+    name: Ether
+    symbol: ETH
+    decimals: 18
+anvil2:
+  chainId: 31338
+  domainId: 31338
+  name: anvil2
+  protocol: ethereum
+  rpcUrls:
+    - http: http://localhost:8555
+```
+
+You can also extend a core chain config by providing the fields to be overridden:
+
+```yaml
+---
+sepolia:
+  blocks:
+    confirmations: 2
+```
+
+### Override RPC URLs
+
+You can override the RPC urls by extending the core chain config.
+
+In the example below, you can see how to define an array of RPCs and also adjust the retry parameters for any of them.
+
+```yaml
+---
+demochain:
+  name: demochain
+  chainId: 123456
+  domainId: 123456
+  protocol: ethereum
+  rpcUrls:
+    - http: https://rpc-testnet.demochain.gg
+sepolia:
+  rpcUrls:
+    - http: https://rpc2.sepolia.org
+    - http: https://some-other-sepolia-rpc.gg
+      retry:
+        maxRequests: 10
+```
+
+### Override transaction settings
+
+Transaction overrides are any properties to include when forming transaction requests. For example:
+
+- `gasPrice`: BigNumberish
+- `maxFeePerGas`: BigNumberish
+- `maxPriorityFeePerGas`: BigNumberish
+- `nonce`: BigNumberish
+- `type`: number
+- `ccipReadEnabled`: boolean
+
+In the example below we're using a gas price of 7 gwei, hardcoding the nonce, and setting a maximum value for the base and priority fees.
+
+```yaml
+---
+sepolia:
+  transactionOverrides:
+    gasPrice: 7000000000 # 7 gwei
+    maxFeePerGas: 150000000000 # 150 gwei
+    maxPriorityFeePerGas: 40000000000 # 40 gwei
+    nonce: 1337
+```
+
+:::warning
+
+If you are overriding the nonce in the chain configuration, ensure you are updating the value on successful transactions.
+
+:::

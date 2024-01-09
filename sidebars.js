@@ -28,9 +28,21 @@ const sidebars = {
       label: "Send your first message",
     },
     {
-      type: "doc",
-      id: "deploy-hyperlane",
+      type: "category",
       label: "Deploy Hyperlane to a new chain",
+      link: {
+        type: "doc",
+        id: "deploy-hyperlane",
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshooting",
+        },
+      ],
     },
     {
       type: "doc",
