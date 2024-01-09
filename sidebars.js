@@ -354,7 +354,6 @@ const sidebars = {
       label: "Create your own hook and ISM",
     },
     */
-   /**
     {
       type: "category",
       label: "Developer Tips",
@@ -366,6 +365,7 @@ const sidebars = {
           id: "guides/developer-tips/unit-testing",
           label: "Unit Testing",
         },
+        /**
         {
           type: "category",
           label: "Explorer Debugging",
@@ -403,9 +403,9 @@ const sidebars = {
           id: "guides/token-faucets",
           label: "Token Faucets",
         },
+     */
       ],
     },
-    */
        /**
     {
       type: "category",
