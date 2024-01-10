@@ -39,7 +39,7 @@ export default function InteractiveExample(props: Props) {
   const [body, setBody] = useState("Hello, world");
 
   const originDomain = testnetChainMetadata[originChain].domainId;
-  const destinationDomain = testnetChainMetadata[originChain].domainId;
+  const destinationDomain = testnetChainMetadata[destinationChain].domainId;
 
   const mailbox = TestnetAddresses[originChain]?.mailbox;
   const merkleTreeHook = TestnetAddresses[originChain]?.merkleTreeHook;
