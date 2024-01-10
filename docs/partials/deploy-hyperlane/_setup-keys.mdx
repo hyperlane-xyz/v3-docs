@@ -1,0 +1,55 @@
+There are three keys you must set up and fund.
+
+:::tip
+
+To get started, you can simplify by using the same hexadecimal key for all three roles.
+
+:::
+
+<table>
+  <thead>
+    <tr>
+      <th>Key Role</th>
+      <th>Description</th>
+      <th>Funding Needs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Contract Deployer</td>
+      <td>32 byte hexadecimal private key</td>
+      <td>Funded on all the chains on which we need to deploy contracts.</td>
+    </tr>
+    <tr>
+      <td>Validator Accounts</td>
+      <td>
+        A list of validator addresses that will sign outbound messages from your
+        local chain. Just one validator works to get started quickly.
+      </td>
+      <td>
+        A small amount so validators can announce the location of their
+        signatures onchain with a one-time transaction
+      </td>
+    </tr>
+    <tr>
+      <td>Relayer Accounts</td>
+      <td>
+        The single relayer you will operate requires an account on each chain it
+        will deliver messages to & from
+      </td>
+      <td>
+        The relayer must have a balance on all chains it's relaying between.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+For instructions on how to generate keys, see the [agent keys](/docs/operate/set-up-agent-keys) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
+
+If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_TARGET_ADDRESS` environment variable.
+
+```
+cast send $YOUR_TARGET_ADDRESS \
+--private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+--value $(cast tw 1)
+```
