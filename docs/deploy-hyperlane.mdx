@@ -9,6 +9,12 @@ import DeployWarpRoutePartial from "/docs/partials/deploy-hyperlane/_deploy-warp
 Hyperlane can be deployed by anyone to any chain.
 This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
 
+:::note
+
+This guide has been specifically made to demonstrate how to connect a chain that _already has Hyperlane on it_ to a new chain that does _not_ have Hyperlane.
+
+:::
+
 <TerminologyPartial />
 
 ## Overview
@@ -35,6 +41,12 @@ There are five steps in this guide:
 
 We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
 
+:::tip
+
+To run the Hyperlane agents yourself, follow the [Local Agents guide](/docs/guides/deploy-hyperlane-local-agents).
+
+:::
+
 To get started, [install](https://docs.kurtosis.com/install/) Kurtosis.
 
 ```bash
@@ -53,7 +65,15 @@ If this is your first time using Kurtosis Cloud, you'll need to sign in with Goo
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
-A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration.
+A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2.
+
+:::note
+
+If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
+
+:::
+
+The last step will be to input your `Validator Key` from Step 2. The screenshots below show an example prefilled configuration.
 
 :::warning
 
@@ -82,8 +102,6 @@ For issues with Kurtosis, please file an [issue on the Kurtosis Github repositor
 :::info
 
 Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/pricing) and payment method information [here](https://cloud.kurtosis.com/payment-method).
-
-You can also [run the validators](./operate/validators/run-validators.mdx) and [relayer](./operate/relayer/run-relayer.mdx) yourself by following the Operate section of the docs.
 
 :::
 
