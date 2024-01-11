@@ -3,12 +3,6 @@
 Hyperlane can be deployed by anyone to any chain.
 This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
 
-:::note
-
-This guide has been specifically made to demonstrate how to connect a chain that _already has Hyperlane on it_ to a new chain that does _not_ have Hyperlane.
-
-:::
-
 ## Terminology
 
 The "**local chain**" is your new chain that you want to deploy Hyperlane onto.
@@ -155,31 +149,14 @@ The `agent-config` file contains the data needed to run Hyperlane agents for the
 
 We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
 
-:::info
-
-To run the Hyperlane agents yourself:
-
-- Follow the [Validators](./operate/validators/run-validators.mdx) guide to run validators for the Mailbox on your local chain. These validators will provide the security for messages sent _from_ your chain to remote chains.
-- Follow the [Relayer](./operate/relayer/run-relayer.mdx) guide to run a relayer that will deliver interchain messages sent between the local and remote chains. Remember to set `--relayChains` or `HYP_RELAYCHAINS` appropriately.
-
-Don't forget to include the agent config from the deploy contracts step in `CONFIG_FILES`.
-If you are using Docker, you will need to mount the file into the container.
-You should have already set up your validator and relayer keys, so you can skip that part of the guide.
-
-Once the Validators and Relayer are running, you can skip to Step 4 and start sending test messages!
-
-:::warning
-
-Make sure these validators match the addresses you provided when creating your ISM config. Otherwise, the ISM you deployed in the previous step will not be able to verify messages sent from your chain.
-
-:::
-
+/**
 To get started, [install](https://docs.kurtosis.com/install/) Kurtosis.
 
 ```bash
 brew install kurtosis-tech/tap/kurtosis-cli
 ```
 
+*/
 Then, use the `deploy kurtosis-agents` command to generate a link for configuring your Kurtosis deployment.
 
 ```bash
@@ -192,15 +169,7 @@ If this is your first time using Kurtosis Cloud, you'll need to sign in with Goo
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
-A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2.
-
-:::note
-
-If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
-
-:::
-
-The last step will be to input your `Validator Key` from Step 2. The screenshots below show an example prefilled configuration.
+A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2. The last step will be to input your `Validator Key` from Step 2. The screenshot below shows an example prefilled configuration.
 
 :::warning
 
@@ -229,6 +198,8 @@ For issues with Kurtosis, please file an [issue on the Kurtosis Github repositor
 :::info
 
 Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/pricing) and payment method information [here](https://cloud.kurtosis.com/payment-method).
+
+You can also [run the validators](./operate/validators/run-validators.mdx) and [relayer](./operate/relayer/run-relayer.mdx) yourself by following the Operate section of the docs.
 
 :::
 
