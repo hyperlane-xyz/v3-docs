@@ -212,7 +212,7 @@ docker run \
   -it \
   --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
   $DOCKER_IMAGE \
-  --db /hyperlane_db --originChainName ethereum --reorgPeriod 20 --checkpointSyncer.type localStorage --checkpointSyncer.path /tmp/hyperlane-validator-signatures-ethereum
+  ./validator --db /hyperlane_db --originChainName ethereum --reorgPeriod 20 --checkpointSyncer.type localStorage --checkpointSyncer.path /tmp/hyperlane-validator-signatures-ethereum
 ```
 
 :::info
