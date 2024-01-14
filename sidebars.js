@@ -328,11 +328,6 @@ const sidebars = {
       id: "protocol/economic-security",
       label: "Economic Security",
     },
-    {
-      type: "doc",
-      id: "protocol/implementation-guide",
-      label: "Implementation Guide",
-    },
     */
   ],
 
@@ -358,6 +353,11 @@ const sidebars = {
       type: "doc",
       id: "guides/v2-to-v3-migration",
       label: "v2 to v3 Migration",
+    },
+    {
+      type: "doc",
+      id: "protocol/implementation-guide",
+      label: "Implementation Guide",
     },
    /** generalize ccip-read-ism page into a create your own guide
     {
