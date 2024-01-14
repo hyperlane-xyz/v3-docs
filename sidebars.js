@@ -356,7 +356,7 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "protocol/implementation-guide",
+      id: "guides/implementation-guide",
       label: "Implementation Guide",
     },
    /** generalize ccip-read-ism page into a create your own guide
