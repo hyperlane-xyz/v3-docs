@@ -2054,7 +2054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/core@npm:3.0.0, @docusaurus/core@npm:^3.0.0":
+"@docusaurus/core@npm:3.0.0":
   version: 3.0.0
   resolution: "@docusaurus/core@npm:3.0.0"
   dependencies:
@@ -2215,6 +2215,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@docusaurus/plugin-client-redirects@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@docusaurus/plugin-client-redirects@npm:3.0.0"
+  dependencies:
+    "@docusaurus/core": "npm:3.0.0"
+    "@docusaurus/logger": "npm:3.0.0"
+    "@docusaurus/utils": "npm:3.0.0"
+    "@docusaurus/utils-common": "npm:3.0.0"
+    "@docusaurus/utils-validation": "npm:3.0.0"
+    eta: "npm:^2.2.0"
+    fs-extra: "npm:^11.1.1"
+    lodash: "npm:^4.17.21"
+    tslib: "npm:^2.6.0"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: 6664e47fc168c0b31428e17e71df70ebee796836f83d2e26bfbb3ac030a4a7195602c2fcf67f9e0a5e634e37cf287c992b61802c25da2e285844f0f5ee33c274
+  languageName: node
+  linkType: hard
+
 "@docusaurus/plugin-content-blog@npm:3.0.0":
   version: 3.0.0
   resolution: "@docusaurus/plugin-content-blog@npm:3.0.0"
@@ -2371,7 +2391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/preset-classic@npm:^3.0.0":
+"@docusaurus/preset-classic@npm:3.0.0":
   version: 3.0.0
   resolution: "@docusaurus/preset-classic@npm:3.0.0"
   dependencies:
@@ -2469,7 +2489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/theme-mermaid@npm:^3.0.0":
+"@docusaurus/theme-mermaid@npm:3.0.0":
   version: 3.0.0
   resolution: "@docusaurus/theme-mermaid@npm:3.0.0"
   dependencies:
@@ -8677,10 +8697,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hyperlane-v3-docs@workspace:."
   dependencies:
-    "@docusaurus/core": "npm:^3.0.0"
+    "@docusaurus/core": "npm:3.0.0"
     "@docusaurus/module-type-aliases": "npm:^3.0.0"
-    "@docusaurus/preset-classic": "npm:^3.0.0"
-    "@docusaurus/theme-mermaid": "npm:^3.0.0"
+    "@docusaurus/plugin-client-redirects": "npm:3.0.0"
+    "@docusaurus/preset-classic": "npm:3.0.0"
+    "@docusaurus/theme-mermaid": "npm:3.0.0"
     "@docusaurus/tsconfig": "npm:^3.0.0"
     "@docusaurus/types": "npm:^3.0.0"
     "@easyops-cn/docusaurus-search-local": "npm:^0.37.4"

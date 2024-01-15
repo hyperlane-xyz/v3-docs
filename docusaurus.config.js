@@ -37,6 +37,20 @@ const config = {
     locales: ["en"],
   },
 
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            to: '/docs/guides/implementation-guide',
+            from: '/docs/protocol/implementation-guide',
+          },
+        ],
+      },
+    ],
+  ],
+
   markdown: {
     mermaid: true,
   },
