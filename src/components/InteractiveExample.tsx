@@ -47,7 +47,7 @@ export default function InteractiveExample(props: Props) {
 
   const paddedRecipient = hexLeftPad(recipient);
 
-  const value = "0.01 ether";
+  const value = "0.01";
 
   return (
     <div>
