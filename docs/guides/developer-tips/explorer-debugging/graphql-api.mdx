@@ -1,0 +1,175 @@
+# GraphQL API
+
+The Hyperlane agents collect useful information about activity on the system, including all messages. That data can be queried via APIs. These APIs are currently available free of charge and without any required authentication. Connect your preferred GraphQL client or library to [https://api.hyperlane.xyz/v1/graphql](https://api.hyperlane.xyz/v1/graphql) to query data!
+
+:::info
+Note, the REST API is recommended over the GraphQL API because it exposes a simpler schema for message data.&#x20;
+:::
+
+### Example Query
+
+The following query will retrieve useful information about a message:
+
+```graphql
+query MyQuery {
+  message_view(limit: 10, where: {msg_id: {_eq: "\xYOUR_MSG_ID"}}) {
+    msg_id
+    nonce
+    sender
+    recipient
+    is_delivered
+    message_body
+    origin_mailbox
+    origin_domain_id
+    origin_chain_id
+    origin_block_id
+    origin_block_height
+    origin_block_hash
+    origin_tx_sender
+    origin_tx_recipient
+    origin_tx_nonce
+    origin_tx_max_priority_fee_per_gas
+    origin_tx_max_fee_per_gas
+    origin_tx_id
+    origin_tx_hash
+    origin_tx_gas_used
+    origin_tx_gas_price
+    origin_tx_gas_limit
+    origin_tx_effective_gas_price
+    origin_tx_cumulative_gas_used
+    destination_block_id
+    destination_block_hash
+    destination_block_height
+    destination_chain_id
+    destination_domain_id
+    destination_mailbox
+    destination_tx_cumulative_gas_used
+    destination_tx_effective_gas_price
+    destination_tx_gas_limit
+    destination_tx_gas_price
+    destination_tx_gas_used
+    destination_tx_hash
+    destination_tx_id
+    destination_tx_max_fee_per_gas
+    destination_tx_max_priority_fee_per_gas
+    destination_tx_nonce
+    destination_tx_recipient
+    destination_tx_sender
+    send_occurred_at
+    delivery_occurred_at
+    delivery_latency
+    num_payments
+    total_payment
+    total_gas_amount
+  }
+}
+```
+
+### GraphQL Schema Types
+
+```graphql
+type message_view {
+  msg_id: bytea
+  nonce: Int!
+  sender: bytea
+  recipient: bytea
+  is_delivered: Boolean!
+  message_body: bytea
+  origin_mailbox: bytea
+  origin_domain_id: Int!
+  origin_chain_id: Int!
+  origin_block_id: Int!
+  origin_block_height: Int!
+  origin_block_hash: bytea
+  origin_tx_sender: bytea
+  origin_tx_recipient: bytea
+  origin_tx_nonce: Int!
+  origin_tx_max_priority_fee_per_gas: Int!
+  origin_tx_max_fee_per_gas: Int!
+  origin_tx_id: Int!
+  origin_tx_hash: bytea
+  origin_tx_gas_used: Int!
+  origin_tx_gas_price: Int!
+  origin_tx_gas_limit: Int!
+  origin_tx_effective_gas_price: Int!
+  origin_tx_cumulative_gas_used: Int!
+  destination_block_id: Int!
+  destination_block_hash: bytea
+  destination_block_height: Int!
+  destination_chain_id: Int!
+  destination_domain_id: Int!
+  destination_mailbox: bytea
+  destination_tx_cumulative_gas_used: Int!
+  destination_tx_effective_gas_price: Int!
+  destination_tx_gas_limit: Int!
+  destination_tx_gas_price: Int!
+  destination_tx_gas_used: Int!
+  destination_tx_hash: bytea
+  destination_tx_id: Int!
+  destination_tx_max_fee_per_gas: Int!
+  destination_tx_max_priority_fee_per_gas: Int!
+  destination_tx_nonce: Int!
+  destination_tx_recipient: bytea
+  destination_tx_sender: bytea
+  send_occurred_at: timestamp!
+  delivery_occurred_at: timestamp!
+  delivery_latency: Int!
+  num_payments: Int!
+  total_payment: Int!
+  total_gas_amount: Int!
+}
+
+type block {
+  domain: Int!
+  domainByDomain: domain!
+  hash: String!
+  height: bigint!
+  id: bigint!
+  time_created: timestamp!
+  timestamp: timestamp!
+}
+
+type domain {
+  chain_id: bigint
+  id: Int!
+  is_deprecated: Boolean!
+  is_test_net: Boolean!
+  name: String!
+  native_token: String!
+  time_created: timestamp!
+  time_updated: timestamp!
+}
+
+type gas_payment {
+  amount: numeric!
+  domain: Int!
+  domainByDomain: domain!
+  id: bigint!
+  msg_id: String
+  time_created: timestamp!
+  transaction: transaction!
+  tx_id: bigint!
+}
+
+type transaction {
+  block: block!
+  block_id: bigint!
+  checkpoint_updates: [checkpoint_update!]!
+  cumulative_gas_used: float8!
+  delivered_messages: [delivered_message!]!
+  effective_gas_price: float8
+  gas_limit: float8!
+  gas_payments: [gas_payment!]!
+  gas_price: float8
+  gas_used: float8!
+  hash: String!
+  id: bigint!
+  max_fee_per_gas: float8
+  max_priority_fee_per_gas: float8
+  messages: [message!]!
+  nonce: bigint!
+  recipient: String
+  sender: String!
+  time_created: timestamp!
+}
+```

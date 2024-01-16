@@ -1,0 +1,147 @@
+# REST API
+
+The Hyperlane agents collect useful information about activity on the system, including all messages. That data can be queried via the APIs.
+
+The APIs are currently available free of charge and without any required authentication.
+
+:::info
+Connect your preferred fetch client or library to [Explorer API page](https://explorer.hyperlane.xyz/api-docs) to query data!
+:::
+
+### Example Query
+
+#### Request
+
+```javascript
+const baseUrl = "https://explorer.hyperlane.xyz/api";
+const action = "module=message&action=get-messages";
+const messageId = "0x34f4cb7510b37265d43243ec4bd0498e0b70792ffc61a9918fdc468bfcefb5ed";
+const url = `${baseUrl}?${action}&id=${messageId}`;
+const response = await fetch(url, {
+  method: "GET",
+  headers: { "Content-Type": "application/json" },
+});
+const data = await response.json();
+```
+
+#### Response
+
+```js
+{
+  "status": "1",
+  "message": "OK",
+  "result": [
+    {
+      "status": "delivered",
+      "id": "0x34f4cb7510b37265d43243ec4bd0498e0b70792ffc61a9918fdc468bfcefb5ed",
+      "nonce": 619,
+      "sender": "0x3da5fdccc661c84454f49db0cf519561bc7c2729",
+      "recipient": "0xaad207a0fd7a4e3c927ccc78ac8134baf586b852",
+      "originChainId": 10,
+      "originDomainId": 10,
+      "destinationChainId": 1101,
+      "destinationDomainId": 1101,
+      "origin": {
+        "timestamp": 1705415163000,
+        "hash": "0x0326496236d9851036f318e233635bc5ed414f16cc690559c652b80917689922",
+        "from": "0x5fb02f40f56d15f0442a39d11a23f73747095b20",
+        "blockHash": "0x998265318678dedb8c5ff9fca0da636228af786219c33e71a9a061e638e4d850",
+        "blockNumber": 114908193,
+        "mailbox": "0xd4c1905bb1d26bc93dac913e13cacc278cdcc80d",
+        "nonce": 258,
+        "to": "0x3da5fdccc661c84454f49db0cf519561bc7c2729",
+        "gasLimit": 211561,
+        "gasPrice": 1514414964,
+        "effectiveGasPrice": 1514414964,
+        "gasUsed": 175214,
+        "cumulativeGasUsed": 222127,
+        "maxFeePerGas": 1528802752,
+        "maxPriorityPerGas": 1500000000
+      },
+      "destination": {
+        "timestamp": 1705415186000,
+        "hash": "0x2a1d1ae84732061ca98589d20c48812ec7b6cba60e75c259fedd067c635dc9c2",
+        "from": "0x74cae0ecc47b02ed9b9d32e000fd70b9417970c5",
+        "blockHash": "0x04ee8dff56033cd2ceb104f416cbc9b98d3d021eedac58f4b590327839ebcb23",
+        "blockNumber": 9269332,
+        "mailbox": "0x3a464f746d23ab22155710f44db16dca53e0775e",
+        "nonce": 589,
+        "to": "0x3a464f746d23ab22155710f44db16dca53e0775e",
+        "gasLimit": 184174,
+        "gasPrice": 6600000000,
+        "effectiveGasPrice": 4073437500,
+        "gasUsed": 130109,
+        "cumulativeGasUsed": 130109,
+        "maxFeePerGas": null,
+        "maxPriorityPerGas": null
+      },
+      "isPiMsg": false,
+      "body": "0x48656c6c6f21",
+      "totalGasAmount": "209736",
+      "totalPayment": "419472000000000",
+      "numPayments": 1
+    }
+  ]
+}
+```
+
+### API Reference
+
+#### Module: Message
+
+Action: `get-message`, Parameter (1 required):
+
+- `id`: message id (string)
+- `sender`: address of message sender (string)
+- `recipient`: address of message recipient (string)
+- `origin-tx-hash`: hash of origin transaction (string)
+- `origin-tx-sender`: address of origin tx sender (string)
+- `destination-tx-hash`: hash of destination transaction (string)
+- `destination-tx-sender`: address of destination tx sender (string)
+
+Action: `get-status` Parameter (1 required):
+
+- Same as `get-message` above
+
+Action: `search-messages`, Parameter (1 required):
+
+- `query`: address or hash to search (string)
+
+### APIs for Permissionless Interoperability chains&#x20;
+
+Hyperlane can be [permissionlessly deployed](/docs/deploy-hyperlane) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, query the `search-pi-messages` action. The search requires a chain config in the request body. Note, this same functionality is also available in the [explorer UI](/docs/guides/developer-tips/explorer-debugging/configuring-pi-chains).
+
+```javascript
+const chainConfig = {
+  chainId: 1234,
+  name: "mychain",
+  publicRpcUrls: [{ http: "https://myRpcUrl.com" }],
+  blockExplorers: [
+    {
+      name: "MyChainScan",
+      url: "https://myChainExplorer.com",
+      apiUrl: "https://myChainExplorer.com/api",
+      apiKey: "12345",
+    },
+  ],
+  contracts: {
+    mailbox: "0x123...",
+  },
+};
+
+const baseUrl = "https://explorer.hyperlane.xyz/api";
+const action = "module=message&action=search-pi-messages";
+const query =
+  "0x34f4cb7510b37265d43243ec4bd0498e0b70792ffc61a9918fdc468bfcefb5ed";
+const url = `${baseUrl}?${action}&query=${query}`;
+const response = await fetch(url, {
+  method: "POST",
+  body: JSON.stringify(chainConfig),
+  headers: { "Content-Type": "application/json" },
+});
+const data = await response.json();
+```
+
+#### Chain Config Schema
+
+The chain config schema is an extension of the Hyperlane SDK's [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21) but with a `contracts` object added. See [Configuring PI Chains](/docs/guides/developer-tips/explorer-debugging/configuring-pi-chains) for more details about this config object.
