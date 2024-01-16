@@ -316,8 +316,8 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "protocol/agents/relayer",
-          label: "Relayer",
+          id: "protocol/agents/relayers",
+          label: "Relayers",
         },
         {
           type: "doc",
