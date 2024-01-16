@@ -76,7 +76,7 @@ The primary function that ISMs must implement is `verify()`. The [Mailbox](../ma
 
 The `verify()` function takes two parameters.
 
-The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx "mention"). Typically, these bytes are specific to the ISM. For example, for a [MultisigISM](multisig-ISM.mdx "mention"), `_metadata` must include validator signatures.
+The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayers.mdx "mention"). Typically, these bytes are specific to the ISM. For example, for a [MultisigISM](multisig-ISM.mdx "mention"), `_metadata` must include validator signatures.
 
 The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [MultisigISM](multisig-ISM.mdx "mention") could change validator sets based on the origin chain of the message.
 
@@ -86,7 +86,7 @@ See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob
 
 ### Module type
 
-The secondary function that ISMs must implement is `moduleType()`. This is used to signal to [Relayer](../agents/relayer.mdx "mention") what to include in `_metadata`. ISMs **must** return one of the supported module types.&#x20;
+The secondary function that ISMs must implement is `moduleType()`. This is used to signal to [Relayer](../agents/relayers.mdx "mention") what to include in `_metadata`. ISMs **must** return one of the supported module types.&#x20;
 
 ## Sequence diagram
 

@@ -1,0 +1,9 @@
+# Agents
+
+Like most intricate protocols, the Hyperlane protocol is operated by a set of off-chain agents. These agents are critical for the overall function of the network. In its quest for maximal decentralization, Hyperlane seeks to keep these roles permissionless, so that anyone willing and able can take an active role in operating the protocol.
+
+For convenience, Hyperlane implements these agents as a set of Rust binaries.
+
+1. [Validators](/docs/protocol/agents/validators) attest to the validity of [Mailbox](/docs/protocol/mailbox) messages and make their signatures available to relayers.
+1. [Relayers](/docs/protocol/agents/relayers) aggregate off-chain metadata for the [`IInterchainSecurityModule` interface](/docs/reference/ISM/specify-your-ISM) and deliver messages to their recipients.
+1. [Watchtowers](/docs/protocol/agents/watchtowers) observe the network for fraud by validators. If detected, watchtowers submit evidence to the origin chain, slashing the fraudulent validator(s).

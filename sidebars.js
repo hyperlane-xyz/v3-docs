@@ -299,10 +299,13 @@ const sidebars = {
         },
       ],
     },
-   /**
     {
       type: "category",
       label: "Agents",
+      link: {
+        type: "doc",
+        id: "protocol/agents",
+      },
       collapsible: true,
       collapsed: false,
       items: [
@@ -313,8 +316,8 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "protocol/agents/relayer",
-          label: "Relayer",
+          id: "protocol/agents/relayers",
+          label: "Relayers",
         },
         {
           type: "doc",
@@ -323,6 +326,8 @@ const sidebars = {
         },
       ],
     },
+   /**
+
     {
       type: "doc",
       id: "protocol/economic-security",
