@@ -3,12 +3,12 @@
 Relayers are responsible for ensuring messages are delivered to their recipients. Relayers are a permissionless but integral part of the Hyperlane protocol. Anyone can run a relayer!
 
 :::info
-Want to run a relayer? Follow the [relayers guide](/docs/operate/relayer/run-relayer).
+Want to run a relayer? Follow the [relayers guide](../../operate/relayer/run-relayer.mdx).
 :::
 
-Relayers are configured to relay messages from one or more origin chains to one or more destination chains. A relayer observes the [Mailbox](/docs/protocol/mailbox) contract on the origin chain, watching for new messages. When a new message is detected, the relayer queries the destination chain to determine the message recipient's [Interchain Security Module](/docs/reference/ISM/specify-your-ISM).
+Relayers are configured to relay messages from one or more origin chains to one or more destination chains. A relayer observes the [Mailbox](../mailbox.mdx) contract on the origin chain, watching for new messages. When a new message is detected, the relayer queries the destination chain to determine the message recipient's [Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx).
 
-The relayer is then responsible for aggregating the metadata needed by that ISM. This will vary by ISM, and may include signatures from one or more [validators](/docs/protocol/agents/validators), merkle proofs, zero knowledge proofs, and more!
+The relayer is then responsible for aggregating the metadata needed by that ISM. This will vary by ISM, and may include signatures from one or more [validators](./validators.mdx), merkle proofs, zero knowledge proofs, and more!
 
 Finally, relayers deliver the message to its recipient by calling `Mailbox.process()` on the destination chain with the aforementioned metadata.
 
@@ -18,7 +18,7 @@ Relayers can easily configure the messages that they wish to process. Currently,
 
 1. A sender/recipient whitelist.
 2. A sender/recipient blacklist.
-3. The ability to accept [payments on the origin chain](/docs/reference/messaging/send#quote-dispatch) for processing a message on the destination chain.
+3. The ability to accept [payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch) for processing a message on the destination chain.
 
 For convenience, Hyperlane will run an open source and configurable relayer agent, implemented as a rust binary. If you'd like to run your own relayer, we've open sourced the [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer).
 

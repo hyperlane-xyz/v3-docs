@@ -4,11 +4,11 @@
 `Watchtowers` are coming soon and are not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
 :::
 
-[Validators](/docs/protocol/agents/validators) are responsible for signing attestations of [Mailbox](/docs/protocol/mailbox) state on the origin chain. These attestations can be consumed by [Interchain Security Modules](/docs/reference/ISM/specify-your-ISM) to prove the validity of interchain messages on the destination chain.
+[Validators](validators.mdx) are responsible for signing attestations of [Mailbox](../mailbox.mdx) state on the origin chain. These attestations can be consumed by [Interchain Security Modules](../../reference/ISM/specify-your-ISM.mdx) to prove the validity of interchain messages on the destination chain.
 
 But who watches them? Who makes sure they perform their role dutifully, without fault? The Watchtowers!
 
-Watchtowers are responsible for observing a [Mailbox](/docs/protocol/mailbox) and validator signatures to detect if validators are attempting to censor or falsify messages. They are a permissionless agent by which the network protects against fraud.
+Watchtowers are responsible for observing a [Mailbox](../mailbox.mdx) and validator signatures to detect if validators are attempting to censor or falsify messages. They are a permissionless agent by which the network protects against fraud.
 
 If fraud is detected, the watchtower submits evidence to the origin chain, slashing the validator. Watchtowers earn a reward for successfully submitting evidence of fraud.
 
