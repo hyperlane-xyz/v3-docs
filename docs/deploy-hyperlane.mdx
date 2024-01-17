@@ -39,13 +39,13 @@ There are five steps in this guide:
 
 ## 3. Run validators and relayers
 
-We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
+:::note
 
-:::tip
-
-To run the Hyperlane agents yourself, follow the [Local Agents guide](guides/deploy-hyperlane-local-agents.mdx).
+This section covers how to 1-click deploy agents using a third party. To run the Hyperlane agent binaries yourself, follow the [Local Agents guide](guides/deploy-hyperlane-local-agents.mdx).
 
 :::
+
+We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
 
 To get started, [install](https://docs.kurtosis.com/install/) Kurtosis.
 
@@ -69,7 +69,11 @@ A prefilled configuration screen will pop up with all your relayer and validator
 
 :::note
 
-If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
+If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by:
+
+1. Signing into [Kurtosis Cloud](https://cloud.kurtosis.com/).
+1. Clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
+1. Filling in the configuration modal.
 
 :::
 
