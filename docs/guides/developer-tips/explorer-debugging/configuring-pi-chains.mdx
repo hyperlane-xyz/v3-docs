@@ -1,10 +1,10 @@
 # Configuring PI Chains
 
-Hyperlane can be [permissionlessly deployed](/docs/deploy-hyperlane) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, first configure the explorer with metadata about that chain.
+Hyperlane can be [permissionlessly deployed](../../../deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, first configure the explorer with metadata about that chain.
 
 To begin, go to the [explorer's settings page](https://explorer.hyperlane.xyz/settings).
 
-![](/img/explorer-debugging/explorer-settings.png)
+![](../../../../static/img/explorer-debugging/explorer-settings.png)
 
 From there, click the Add Custom Chain button. A modal will appear. Input the configuration for your PI Chain.
 
@@ -12,7 +12,7 @@ The chain config schema is an extension of the Hyperlane SDK's [ChainMetadata sc
 
 If a valid Etherscan-based block explorer config is provided, the Hyperlane Explorer will utilize it to find the desired messages. If not, it will use the RPC URL. Note, Explorers with api keys (even just free-tier keys), perform faster and more reliably.
 
-![](/img/explorer-debugging/explorer-add-custom-chain.png)
+![](../../../../static/img/explorer-debugging/explorer-add-custom-chain.png)
 
 ### Chain Config Examples
 

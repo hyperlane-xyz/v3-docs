@@ -5,7 +5,7 @@ Visit the Explorer at [https://explorer.hyperlane.xyz](https://explorer.hyperlan
 Then paste a sender/recipient address or a transaction hash into the top search field. All matching messages will be shown in the result list. Click the row for more details.
 
 <figure>
-![](/img/explorer-debugging/explorer-search.png)
+![](../../../static/img/explorer-debugging/explorer-search.png)
 <figcaption>Retrieving a transaction in the Hyperlane Explorer.</figcaption>
 </figure>
 
@@ -14,7 +14,7 @@ Then paste a sender/recipient address or a transaction hash into the top search 
 You'll know that a message failed to process because the bar at the top of the Message Explorer will turn red and the upper right section of the page will feature error reasons indicating why the message wasn't able to process.
 
 <figure>
-![](/img/explorer-debugging/tx-failing.png)
+![](../../../static/img/explorer-debugging/tx-failing.png)
 <figcaption>Failed transaction from Alfajores to Base Goerli.</figcaption>
 </figure>
 
@@ -22,7 +22,7 @@ If your message was not delivered it can be due to several factors.
 
 ### Invalid destination
 
-If the destination domain identifier (`uint32`) is not known to relay clients they will have no way to deliver your message. Refer to the [domains](/docs/reference/domains) for known domains and the canonical identifiers to use when sending messages to these destinations.
+If the destination domain identifier (`uint32`) is not known to relay clients they will have no way to deliver your message. Refer to the [domains](../../reference/domains.mdx) for known domains and the canonical identifiers to use when sending messages to these destinations.
 
 ### Invalid recipient
 
@@ -32,15 +32,15 @@ If the recipient address (`bytes32`) is not a contract address that implements t
 ```
 
 :::warning
-EVM addresses (`address`) must be left-padded with zeroes to be compliant. Refer to the [TypeCasts library](/docs/reference/libraries/typecasts) for a `pure addressToBytes32` utility function, and the message [dispatch](/docs/reference/messaging/send#dispatch) section for other details.
+EVM addresses (`address`) must be left-padded with zeroes to be compliant. Refer to the [TypeCasts library](../../reference/libraries/typecasts.mdx) for a `pure addressToBytes32` utility function, and the message [dispatch](../../reference/messaging/send.mdx#dispatch) section for other details.
 :::
 
 ### Unprocessable
 
-If gas estimation of the message recipient's `IMessageRecipient.handle()` function fails, [relayers](/docs/protocol/agents/relayers) will not be able to deliver the message. Relayers will continue to estimate gas for message delivery, as state changes may allow for successful delivery of a previously undeliverable message.
+If gas estimation of the message recipient's `IMessageRecipient.handle()` function fails, [relayers](../../protocol/agents/relayers.mdx) will not be able to deliver the message. Relayers will continue to estimate gas for message delivery, as state changes may allow for successful delivery of a previously undeliverable message.
 
 <figure>
-![](/img/explorer-debugging/call-revert-exception.png)
+![](../../../static/img/explorer-debugging/call-revert-exception.png)
 <figcaption>Example exception of a transaction signed by validators but unprocessable by the relayer.</figcaption>
 </figure>
 
@@ -50,11 +50,11 @@ If you have a use case which is not accommodated by this behavior, **please reac
 
 ### Underfunded
 
-An underfunded message implies the [interchain gas payments](/docs/reference/hooks/interchain-gas) made to deliver this message are insufficient.
+An underfunded message implies the [interchain gas payments](../../reference/hooks/interchain-gas.mdx) made to deliver this message are insufficient.
 
 Relayers use the [`eth_estimateGas`](https://ethereum.github.io/execution-apis/api-documentation/)RPC on the destination chain to determine the absolute cost of relaying a message. If this amount exceeds the total amount of gas paid for on the origin chain, relayers will typically refuse to deliver a message.
 
-You can [manually pay for interchain gas](/docs/reference/hooks/interchain-gas#retrying) to resolve this.
+You can [manually pay for interchain gas](../../reference/hooks/interchain-gas.mdx#retrying) to resolve this.
 
 ## Using Etherscan
 
