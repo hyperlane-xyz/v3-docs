@@ -113,20 +113,26 @@ Hyperlane can be [permissionlessly deployed](../../../deploy-hyperlane.mdx) to a
 
 ```javascript
 const chainConfig = {
-  chainId: 1234,
-  name: "mychain",
-  publicRpcUrls: [{ http: "https://myRpcUrl.com" }],
-  blockExplorers: [
-    {
-      name: "MyChainScan",
-      url: "https://myChainExplorer.com",
-      apiUrl: "https://myChainExplorer.com/api",
-      apiKey: "12345",
-    },
-  ],
-  contracts: {
-    mailbox: "0x123...",
+  chainId: 5,
+  domainId: 5,
+  name: "goerli",
+  protocol: "ethereum",
+  nativeToken: {
+    name "Goerli ETH",
+    symbol "GETH",
+    decimals 18
   },
+  rpcUrls: [
+    {
+      http: "https://rpc.ankr.com/eth_goerli"
+    },
+    {
+      http: "https://eth-goerli.public.blastapi.io"
+    }
+  ],
+  isTestnet: true,
+  mailbox: "0x123...",
+  interchainGasPaymaster: "0x123..."
 };
 
 const baseUrl = "https://explorer.hyperlane.xyz/api";

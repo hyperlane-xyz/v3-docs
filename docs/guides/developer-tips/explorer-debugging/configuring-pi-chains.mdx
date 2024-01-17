@@ -20,12 +20,10 @@ If a valid Etherscan-based block explorer config is provided, the Hyperlane Expl
 
 ```js
 {
-  "chainId": 12345,
-  "name": "myChain",
-  "publicRpcUrls": [{ "http": "https://myRpcUrl.com" }],
-  "contracts": {
-    "mailbox": "0x12345..."
-  }
+  "chainId": 5,
+  "name": "goerli",
+  "protocol": "ethereum",
+  "rpcUrls": [{ "http": "https://foobar.com" }]
 }
 ```
 
@@ -33,23 +31,40 @@ If a valid Etherscan-based block explorer config is provided, the Hyperlane Expl
 
 ```js
 {
-  "chainId": 12345,
-  "name": "myChain",
-  "publicRpcUrls": [{ "http": "https://myRpcUrl.com" }],
+  "chainId": 5,
+  "domainId": 5,
+  "name": "goerli",
+  "protocol": "ethereum",
+  "displayName": "Goerli",
+  "nativeToken": {
+    "name": "Ether",
+    "symbol": "ETH",
+    "decimals": 18
+  },
+  "rpcUrls": [
+    {
+      "http": "https://rpc.ankr.com/eth_goerli"
+    },
+    {
+      "http": "https://eth-goerli.public.blastapi.io"
+    }
+  ],
   "blockExplorers": [
     {
-      "name": "MyScan",
-      "url": "https://myScanExplorer.com",
-      "apiUrl": "https://api-myScanExplorer.com/api"
+      "name": "Etherscan",
+      "url": "https://goerli.etherscan.io",
+      "apiUrl": "https://api-goerli.etherscan.io/api",
+      "family": "etherscan"
     }
   ],
   "blocks": {
     "confirmations": 1,
-    "estimateBlockTime": 10
+    "reorgPeriod": 2,
+    "estimateBlockTime": 13
   },
-  "contracts": {
-    "mailbox": "0x12345..."
-  }
+  "isTestnet": true,
+  "mailbox": "0x123...",
+  "interchainGasPaymaster": "0x123..."
 }
 ```
 
