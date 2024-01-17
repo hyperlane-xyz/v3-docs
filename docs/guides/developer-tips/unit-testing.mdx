@@ -2,7 +2,7 @@
 
 Unit testing can prove to be challenging for a multi-chain setup with Foundry. Hence, we've provided a lightweight test environment `MockHyperlaneEnvironment` for you to unit test your cross-chain app while avoiding the need to fork multiple networks.
 
-Most multi-chain apps will be built on top of our Mailbox contract. So, we've abstracted away the details of a deployed mailbox with a `MockMailbox` and our environment contains an `originMailbox` and a `destinationMailbox` on the same chain. Internally, we store the messages arriving to the destination in the `inboundMessages` mapping on the destination mailbox. We simulate message delivery by enqueuing messages and increment the `inboundProcessednonce` with `mailbox.processNextInboundMessage()`.
+Most multi-chain apps will be built on top of our Mailbox contract. So, we've abstracted away the details of a deployed mailbox with a `MockMailbox` and our environment contains an `originMailbox` and a `destinationMailbox` on the same chain. Internally, we store the messages arriving to the destination in the `inboundMessages` mapping on the destination mailbox. We simulate message delivery by enqueuing messages and increment the `inboundProcessedNonce` with `MockMailbox.processNextInboundMessage()`.
 
 The setup for the simple messaging forge test is as following:
 
@@ -45,7 +45,6 @@ contract SimpleMessagingTest is Test {
 
 ### Testing Router-based apps
 
-
 Assuming you're testing `TestCrosschainApp` which inherits from `Router`:
 
 ```solidity
@@ -68,8 +67,7 @@ contract CrosschainAppTest is Test {
 }
 ```
 
-
-`processNextPendingMessage()` and `processNextPendingMessageFromDestination()` process inbound messages for destination and origin mailboxes respectively. Now, you can make your cross-chain calls from origin to destination and vice-versa:
+Call `processNextPendingMessage()` and `processNextPendingMessageFromDestination()` to process inbound messages for destination and origin mailboxes respectively. Now, you can make your cross-chain calls from origin to destination and vice-versa:
 
 ```solidity
     function testRemoteTelephoneCallFromOrigin() public {
@@ -97,9 +95,7 @@ contract CrosschainAppTest is Test {
         // check behavior on origin
         assertEq(originTelephone.latestMessage(destinationTelephone) == "Howdy!");
     }
-
 ```
-
 
 If you want to use your own ISM for your app, you can override the `defaultIsm` mailbox provides by passing it to the Router's `initialize` method like following:
 
@@ -125,7 +121,6 @@ contract CrosschainAppTest is Test {
         ...
     }
 }
-
 ```
 
 :::tip
