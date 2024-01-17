@@ -42,7 +42,7 @@ There are six steps in this guide:
 
 ## 3. Run a validator
 
-Validators provide the security for messages sent _from_ your chain to remote chains.
+Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](../protocol/ISM/multisig-ISM.mdx).
 
 ### Setup directories
 
@@ -53,6 +53,10 @@ export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
 ```
 
 Next, create a local directory for your validator to write its signatures to. Remember the path, as you will need this when configuring your validator.
+
+:::danger
+The validator signatures path will be written on-chain as part of the [validator announcement transaction](./implementation-guide.mdx#validator-announce). **Be careful not to reveal any security-sensitive or personal information!**
+:::
 
 ```sh
 # Pick an informative name specific to the chain you're validating
@@ -83,13 +87,13 @@ mkdir -p $VALIDATOR_SIGNATURES_DIR
 
 There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
 
-| Parameter                 | Description                                                         |
-| ------------------------- | ------------------------------------------------------------------- |
-| `--db`                    | Path for writing persistent data to disk.                           |
-| `--originChainName`       | Name of the chain being validated (e.g. `ethereum`).                |
-| `--checkpointSyncer.type` | Set to `localStorage` for this guide.                               |
-| `--checkpointSyncer.path` | Path to local directory where validator signatures will be written. |
-| `--validator.key`         | Your validator's hexadecimal private key.                           |
+| Parameter                 | Description                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `--db`                    | Path for writing persistent data to disk.                                                                     |
+| `--originChainName`       | Name of the chain being validated (e.g. `ethereum`).                                                          |
+| `--checkpointSyncer.type` | Set to `localStorage` for this guide.                                                                         |
+| `--checkpointSyncer.path` | Path to local directory where validator signatures will be written. Same path as `$VALIDATOR_SIGNATURES_DIR`. |
+| `--validator.key`         | Your validator's hexadecimal private key.                                                                     |
 
 :::info
 
@@ -126,9 +130,9 @@ To do this, navigate to the agent-configuration at `$CONFIG_FILES` and replace a
 
 **Mounting directories**
 
-Running with Docker adds an extra layer of complexity because config files need to be accessible from within the Docker container, and validator signatures need to be accessible from outside of the container. This can be solved by mounting directories on your file system into the container.
+Running with Docker adds an extra layer of complexity because config files need to be accessible from within the Docker container, and validator signatures need to be accessible from outside of the container for the relayer to read. This is so the relayer can construct the metadata required for the message to be successfully validated by the Multisig ISM.
 
-In the arguments below, we:
+To solve this issue, you can mount directories on your file system into the container. In the arguments below, we:
 
 1. Set the `$CONFIG_FILES` environment variable to a fixed path within the container.
 1. Mount the agent config file to this fixed path and making it readonly.
@@ -144,7 +148,7 @@ In the arguments below, we:
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration, making it easier to pass the right arguments when running the container. See the example below, where that's left is for you to configure the chain name and validator key.
+Hardcoding these paths deduplucates the configuration between docker instances running validators for different origin chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the chain name and validator key.
 
 ```sh
 ...
@@ -188,7 +192,13 @@ softwareupdate --install-rosetta --agree-to-license
 Now that you understand more about configuring validator arguments, pull the latest docker image:
 
 ```sh
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:main
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734
+```
+
+Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_validator_<your_chain_name>` if it does not exist yet.
+
+```sh
+mkdir -p hyperlane_db_validator_<your_chain_name>
 ```
 
 Finally, run the validator:
@@ -200,7 +210,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_validator_<your_chain_name>,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures \
-  gcr.io/abacus-labs-dev/hyperlane-agent:main \
+  gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
@@ -216,7 +226,7 @@ docker run \
 After following the setup instructions, you should now be able to use `cargo` to run the Validator:
 
 ```sh
-cargo run --bin validator -- \
+cargo run --release --bin validator -- \
     --db ./hyperlane_db_validator_<your_chain_name> \
     --originChainName <your_chain_name> \
     --checkpointSyncer.type localStorage \
@@ -264,13 +274,17 @@ export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
 
 There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
 
-| Parameter                       | Description                                                                                                                    |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `--db`                          | Path for writing persistent data to disk.                                                                                      |
-| `--relayChains`                 | Comma separates names of the origin chain and destination chains to relay messages between. E.g. `ethereum,polygon,avalanche`. |
-| `--allowLocalCheckpointSyncers` | Allows the relayer to look for validator signatures on the local filesystem.                                                   |
-| `--defaultSigner.key`           | A hexadecimal private key used to sign transactions for all chains.                                                            |
-| `--metrics-port`                | Optional. The port to expose prometheus metrics on, defaults to `9090`.                                                        |
+| Parameter                       | Description                                                                              |
+| ------------------------------- | ---------------------------------------------------------------------------------------- |
+| `--db`                          | Path for writing persistent data to disk.                                                |
+| `--relayChains`                 | Comma separated names of the chains to relay between. E.g. `ethereum,polygon,avalanche`. |
+| `--allowLocalCheckpointSyncers` | Allows the relayer to look for validator signatures on the local filesystem.             |
+| `--defaultSigner.key`           | A hexadecimal private key used to sign transactions for all chains.                      |
+| `--metrics-port`                | Optional. The port to expose prometheus metrics on, defaults to `9090`.                  |
+
+:::tip
+Your set of relay chains should include both the origin chain and destination chain.
+:::
 
 To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
 
@@ -295,14 +309,14 @@ For the relayer, we provide almost the same arguments to Docker as the validator
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration, making it easier to pass the right arguments when running the container.
+Hardcoding these paths deduplucates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
 
 </TabItem>
 <TabItem value="from-source" label="Building from source">
 
 **Clone and setup**
 
-If you haven't already done so when setting up the validator, clone the Hyperlane monorepo and follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) in the `rust` directory.
+If you haven't already done so, clone the Hyperlane monorepo and follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) in the `rust` directory.
 
 ```sh
 # clone hyperlane monorepo
@@ -323,10 +337,16 @@ softwareupdate --install-rosetta --agree-to-license
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
 
-If you haven't already pulled the Docker image when setting up your validator, do this now by running:
+If you haven't already pulled the Docker image, do this now by running:
 
 ```sh
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:main
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734
+```
+
+Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
+
+```sh
+mkdir -p hyperlane_db_validator_<your_chain_name>
 ```
 
 Finally, run the relayer:
@@ -338,12 +358,12 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_relayer,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures,readonly \
-  gcr.io/abacus-labs-dev/hyperlane-agent:main \
+  gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734 \
   ./relayer \
   --db /hyperlane_db \
-  --relayChains <your_chain_name>,<remote_chain_name> \
+  --relayChains <chain_1_name>,<chain_2_name> \
   --allowLocalCheckpointSyncers true \
-  --defaultSigner.key <your_validator_key>
+  --defaultSigner.key <your_relayer_key> \
 ```
 
 </TabItem>
@@ -352,11 +372,11 @@ docker run \
 After following the setup instructions, you should now be able to use `cargo` to run the Relayer:
 
 ```sh
-cargo run --bin relayer -- \
+cargo run --release --bin relayer -- \
     --db ./hyperlane_db_relayer \
-    --relayChains <your_chain_name>,<remote_chain_name> \
+    --relayChains <chain_1_name>,<chain_2_name> \
     --allowLocalCheckpointSyncers true \
-    --defaultSigner.key <your_validator_key> \
+    --defaultSigner.key <your_relayer_key> \
     --metrics-port 9091
 ```
 
@@ -375,9 +395,9 @@ And run the binary directly:
 ```sh
 ./target/release/relayer \
     --db ./hyperlane_db_relayer \
-    --relayChains <your_chain_name>,<remote_chain_name> \
+    --relayChains <chain_1_name>,<chain_2_name> \
     --allowLocalCheckpointSyncers true \
-    --defaultSigner.key <your_validator_key> \
+    --defaultSigner.key <your_relayer_key> \
     --metrics-port 9091
 ```
 
