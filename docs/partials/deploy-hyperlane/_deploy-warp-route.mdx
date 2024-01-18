@@ -1,0 +1,25 @@
+Once messages are being delivered, you can optionally deploy a [Warp Route](/docs/reference/applications/warp-routes). Warp is toolkit for permissionlessly bridging tokens between any chains. The routes can use native currencies (like `Eth`), or ERC20 tokens (like `USDC`).
+
+To begin, create a new route config.
+
+```bash
+hyperlane config create warp
+```
+
+Next, you can deploy the route. As before, the CLI will prompt for a core deployment artifacts file.
+
+```bash
+hyperlane deploy warp --key $PRIVATE_KEY
+```
+
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment-{timestamp}.json` and `warp-ui-token-config-{timestamp}`. The first only contains the addresses of the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
+
+:::tip
+
+Follow the detailed [**Deploy Warp Guide**](/docs/guides/deploy-warp-route) to learn more about the underlying concepts and how to set up your Warp Route to transfer tokens.
+
+:::
+
+### Deploy the Warp UI
+
+The Warp UI is a DApp template for interacting with Warp Routes. You can clone the [Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-ui-token-config.json` files from the previous steps to provide the UI with the information it needs. See the [**Deploy Warp UI guide**](/docs/guides/deploy-warp-route-UI) for step-by-step instructions.

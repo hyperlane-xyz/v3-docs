@@ -19,7 +19,7 @@ Check out the [Warp Route](/docs/reference/applications/warp-routes) reference p
 
 ### Warp Route config
 
-To deploy the route, you will need a warp route config file. A valid config will specify:
+To deploy the route, you will need a Warp Route config file. A valid config will specify:
 * Which token, on which chain, is this Warp Route being created for?
 * _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](../reference/messaging/messaging-interface.mdx), [interchain gas](../reference/hooks/interchain-gas.mdx), and [interchain security modules](../reference/ISM/specify-your-ISM.mdx).
 * _Optional:_ The token standard - fungible tokens using ERC20 or NFTs using ERC721. Defaults to ERC20.
@@ -39,16 +39,16 @@ Or see below for details on how to define your config manually.
 
 #### Base
 
-Your config must have exactly one `base` entry. Here you will configure details about the token for which you are creating a warp route.
+Your config must have exactly one `base` entry. Here you will configure details about the token for which you are creating a Warp Route.
 
 * **chainName**: Set this equal to the chain on which your token exists
-* **type**: Set this to `TokenType.collateral` to create a warp route for an ERC20/ERC721 token, or `TokenType.native` to create a warp route for a native token (e.g. ether)
+* **type**: Set this to `TokenType.collateral` to create a Warp Route for an ERC20/ERC721 token, or `TokenType.native` to create a Warp Route for a native token (e.g. ether)
 * **address:** If using `TokenType.collateral`, the address of the ERC20/ERC721 contract for which to create a route
 * **isNft:** If using `TokenType.collateral` for an ERC721 contract, set to `true`.
 
 #### Synthetics
 
-Your config must have at least one `synthetics` entry. Here you will configure details about the remote chains supported by your warp route.
+Your config must have at least one `synthetics` entry. Here you will configure details about the remote chains supported by your Warp Route.
 
 * **chainName:** Set this equal to the chain on which you want a wrapped version of your token
 
@@ -62,7 +62,7 @@ You may specify the following optional values in your `base` and `synthetics` en
 
 #### Example
 
-For a minimal warp config example using local anvil chains, see [`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml).
+For a minimal Warp config example using local anvil chains, see [`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml).
 
 ### Chain config
 
@@ -84,13 +84,13 @@ Or you can define the config manually. See the [ChainMetadata type](https://gith
 
 ## 2. Deployment
 
-Run the following command to initiate the warp route deployment:
+Run the following command to initiate the Warp Route deployment:
 
 ```bash
 hyperlane deploy warp
 ```
 
-Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
 
 ## 3. Testing
 

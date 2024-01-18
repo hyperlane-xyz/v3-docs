@@ -1,6 +1,6 @@
 # Deploy a UI for your Warp Route
 
-After you've successfully [deployed a warp route](./deploy-warp-route.mdx), you may want to deploy a front-end UI to faciliate interchain token transfers. You can fork the [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and customize it to fit your needs.
+After you've successfully [deployed a Warp Route](./deploy-warp-route.mdx), you may want to deploy a front-end UI to faciliate interchain token transfers. You can fork the [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and customize it to fit your needs.
 
 ## Configure & Customize the UI
 
@@ -66,8 +66,8 @@ And that's it! Now you and your users can use the UI to send tokens from the col
 
 :::note
 
-**Consider return gas in your design.** A common problem with token bridges like Warp Routes is that a user may transfer a token like USDC to a new chain, but only afterwards realize that they do not have the native gas token to move those tokens anywhere including back. 
+**Consider return gas in your design.** A common problem with token bridges like Warp Routes is that a user may transfer a token like USDC to a new chain, but only afterwards realize that they do not have the native gas token to move those tokens anywhere including back.
 
-Besides warning users in the UI about ensuring they have gas, you can also faucet them some native gas tokens to improve their initial experience. To achieve this faucet, you can modify the warp route contracts to hold some balance of the native token and share that with recipients. In addition, you could build an off-chain service which just observes for [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) and transfers the native gas token to the recipient.
+Besides warning users in the UI about ensuring they have gas, you can also faucet them some native gas tokens to improve their initial experience. To achieve this faucet, you can modify the Warp Route contracts to hold some balance of the native token and share that with recipients. In addition, you could build an off-chain service which just observes for [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) and transfers the native gas token to the recipient.
 
 :::

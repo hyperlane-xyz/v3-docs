@@ -351,6 +351,11 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "guides/deploy-hyperlane-local-agents",
+      label: "Deploy Hyperlane with Local Agents",
+    },
+    {
+      type: "doc",
       id: "guides/v2-to-v3-migration",
       label: "v2 to v3 Migration",
     },
