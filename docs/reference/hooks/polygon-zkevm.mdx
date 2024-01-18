@@ -27,9 +27,10 @@ flowchart TB
     end
 
     M_O -. "relay" .-> M_D
-    Eth -. "Rollup sync" .-> Polygon
 
     subgraph Destination Polygon zkEvm chain
+    Eth -. "Rollup sync" .-> Polygon
+
       Recipient
       M_D[(Mailbox)]
       ISM{PolygonZkEvmISM}
@@ -39,7 +40,9 @@ flowchart TB
       M_D -- "handle(...)" --> Recipient
       ISM -. "interchainSecurityModule()" .- Recipient
 
-      Polygon -- "verifyMessageId(messageId)" --> ISM
+
+      ISM -- "claimMessage(messageId)" --> Polygon
+      Polygon -- "onMessageRecieved(messageId)" --> ISM
     end
 
     style Eth fill: #ff0402
