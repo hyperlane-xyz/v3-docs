@@ -2,6 +2,12 @@
 
 A Hyperlane [relayer](../../protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
 
+:::tip
+
+We recommend you read through the [**Deploy Hyperlane Local Agents**](../../guides/deploy-hyperlane-local-agents.mdx) guide as well as the [**Run Validators**](../validators/run-validators.mdx) documentation before trying to run a production relayer.
+
+:::
+
 Every Hyperlane message requires two transactions to be delivered, one on the origin chain to [send](../../reference/messaging/send.mdx) the message, and one on the destination chain to [receive](../../reference/messaging/receive.mdx) the messages. A Relayer is responsible for sending the second transaction.
 
 ```mermaid

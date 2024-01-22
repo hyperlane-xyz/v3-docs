@@ -486,8 +486,8 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "operate/validators/validator-aws",
-          label: "AWS Production Setup",
+          id: "operate/validators/validator-signatures-aws",
+          label: "AWS Signatures Bucket Setup",
         },
         {
           type: "doc",
@@ -539,6 +539,11 @@ const sidebars = {
       type: "doc",
       id: "operate/run-docker-compose",
       label: "Run Docker Compose",
+    },
+    {
+      type: "doc",
+      id: "operate/deploy-with-terraform",
+      label: "Deploy with Terraform",
     },
   ],
 };
