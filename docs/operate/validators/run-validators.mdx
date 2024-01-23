@@ -66,7 +66,7 @@ Operating a validator for Polygon mainnet requires access to an archive node. Th
   - The Hyperlane validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys for testing. See more under [agent keys](../set-up-agent-keys.mdx).
 
 - Publicly readable storage
-  - Validators write their signatures off-chain to publicly accessible, highly available, storage, so that they can be aggregated by the [relayer](../../protocol/agents/relayers.mdx).
+  - Validators write their signatures off-chain to publicly accessible, highly available, storage, so that they can be aggregated by the [relayer](../../protocol/agents/relayer.mdx).
   - The Hyperlane validator agent currently supports storing signatures on AWS S3 using the same AWS API key above, as well as storing signatures in the local filesystem for testing.
 
 - A machine to run on

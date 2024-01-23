@@ -37,7 +37,7 @@ EVM addresses (`address`) must be left-padded with zeroes to be compliant. Refer
 
 ### Unprocessable
 
-If gas estimation of the message recipient's `IMessageRecipient.handle()` function fails, [relayers](../../protocol/agents/relayers.mdx) will not be able to deliver the message. Relayers will continue to estimate gas for message delivery, as state changes may allow for successful delivery of a previously undeliverable message.
+If gas estimation of the message recipient's `IMessageRecipient.handle()` function fails, [relayers](../../protocol/agents/relayer.mdx) will not be able to deliver the message. Relayers will continue to estimate gas for message delivery, as state changes may allow for successful delivery of a previously undeliverable message.
 
 <figure>
 ![](../../../static/img/explorer-debugging/call-revert-exception.png)
