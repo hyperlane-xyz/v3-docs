@@ -7,7 +7,7 @@ Want to run a relayer? Follow the [Relayer](../../operate/relayer/run-relayer.md
 :::
 
 :::note
-Running your own relayer involves deploying an [IGP contract](../interchain-gas-payment.mdx) and maintaining a gas price inside of it. Therfore, we only recommend doing this while setting up a permissionlessly deployed bridge, rather than reusing an existing bridge.
+Running your own relayer involves deploying an [IGP contract](../interchain-gas-payment.mdx) and maintaining token exchange rates and gas prices inside of it to accurately charge message delivery fees. Therefore, we only recommend doing this while setting up a permissionlessly deployed bridge, rather than reusing an existing bridge.
 :::
 
 Relayers are configured to relay messages between two or more chains. A relayer observes the origin [Mailbox](../mailbox.mdx) contracts, watching for new messages. When a new message is detected, the relayer queries the destination chain to determine the message recipient's [Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx).
@@ -32,4 +32,4 @@ For convenience, Hyperlane will run an open source and configurable relayer agen
 
 #### Error handling
 
-The relayer will periodically retry messages when processing fails. Messages that fail to process on the first attempt will cause the relayer to retry with exponential backoff. After a maximum amount of retries, the relayer will no longer attempt to process the message.
+The relayer will periodically retry messages when processing fails, using an exponential backoff strategy. Currently, there is no fixed maximum number of retries after which the relayer will cease to attempt processing a message. However, this is not a guarantee of indefinite retries, and operators should not rely on this as a service level agreement (SLA).
