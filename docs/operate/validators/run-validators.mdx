@@ -66,7 +66,7 @@ Operating a validator for Polygon mainnet requires access to an archive node. Th
   - The Hyperlane validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys for testing. See more under [agent keys](../set-up-agent-keys.mdx).
 
 - Publicly readable storage
-  - Validators write their signatures off-chain to publicly accessible, highly available, storage, so that they can be aggregated by the [relayer](../../protocol/agents/relayers.mdx).
+  - Validators write their signatures off-chain to publicly accessible, highly available, storage, so that they can be aggregated by the [relayer](../../protocol/agents/relayer.mdx).
   - The Hyperlane validator agent currently supports storing signatures on AWS S3 using the same AWS API key above, as well as storing signatures in the local filesystem for testing.
 
 - A machine to run on
@@ -81,7 +81,7 @@ import TabItem from '@theme/TabItem';
 
 **The local setup is only intended for testing or development purposes.**
 
-This is intended to show how you can run a validator on your _local machine_, which is only for testing and development purposes. This also means that signatures from local validators are only able to be accessed by locally ran relayers.
+This is intended to show how you can run a validator on your _local machine_, which is only for testing and development purposes. This also means that signatures from local validators are only able to be accessed by a locally ran relayer.
 
 For running a validator in a production environment, see the [**AWS setup guide**](validator-aws.mdx).
 
@@ -142,7 +142,7 @@ These are required for the local setup.
 
 :::warning
 
-Note that relayers **must** be configured with `--allowLocalCheckpointSyncers` to be able to read signatures from this validator.
+Note that the relayer **must** be configured with `--allowLocalCheckpointSyncers` to be able to read signatures from this validator.
 
 :::
 

@@ -8,10 +8,10 @@ Before building a CCIP Read ISM it's worth familiarizing yourself with the [CCIP
 
 ## How it works
 
-Relayers are constantly listening to `Dispatch` events emitted from Hyperlane [Mailboxes](../../protocol/mailbox.mdx). When a message is sent and picked up by a relayer, the relayer will query the destination ISM for information on how to process the message and if delivery will be successful.
+A relayer will constantly listening to `Dispatch` events emitted from Hyperlane [Mailboxes](../../protocol/mailbox.mdx). When a message is sent and picked up by a relayer, the relayer will query the destination ISM for information on how to process the message and if delivery will be successful.
 
 :::info
-The correct `moduleType` variable will need to be set on your ISM so that relayers know it's a CCIP Read ISM. To make sure this is configured correctly, you can inherit from the `AbstractCcipReadIsm` in `@hyperlane-xyz/core`.
+The correct `moduleType` variable will need to be set on your ISM so that the relayer knows it's a CCIP Read ISM. To make sure this is configured correctly, you can inherit from the `AbstractCcipReadIsm` in `@hyperlane-xyz/core`.
 :::
 
 The relayer will then call the `getOffchainVerifyInfo(bytes)` function on the ISM with the contents of the message being delivered. This function should revert with the `OffchainLookup` error described in the [interface](#interface) section below.

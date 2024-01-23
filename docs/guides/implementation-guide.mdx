@@ -181,7 +181,7 @@ function verify(
 
 ### Validator Announce
 
-Validators announce their signature storage location so that relayers can fetch and verify their signatures.
+Validators announce their signature storage location so that the relayer can fetch and verify their signatures.
 
 ### announce
 
@@ -258,7 +258,7 @@ After implementing the MultisigISM, you reach the second milestone to test that 
 
 ### Interchain Gas Paymaster
 
-The gas paymaster is used to pay for the gas required in message processing on the destination chain. This is not strictly required if relayers are willing to subsidize message processing.
+The gas paymaster is used to pay for the gas required in message processing on the destination chain. This is not strictly required if the relayer is willing to subsidize message processing.
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
@@ -351,11 +351,11 @@ You can test your validator by configuring it with a chain with the above contra
 
 ### Relayer
 
-In addition to indexing messages dispatched from the mailbox, relayers process messages on the destination chain. This requires building metadata that satisfies the message recipient's ISM verification requirements, and signing transactions that process the message on the destination mailbox.
+In addition to indexing messages dispatched from the mailbox, a relayer processes messages on the destination chain. This requires building metadata that satisfies the message recipient's ISM verification requirements, and signing transactions that process the message on the destination mailbox.
 
 #### Metadata Builders
 
-Each module type implies a different metadata format for message verification to succeed. Relayers need each module trait (eg [multisig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/multisig_ism.rs)) to be implemented.
+Each module type implies a different metadata format for message verification to succeed. A Relayer will need each module trait (eg [multisig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/multisig_ism.rs)) to be implemented.
 
 #### Message Processor
 
@@ -369,7 +369,7 @@ then the message will be kicked to an exponential backoff retry queue. The relay
 
 #### Gas Payment Enforcement
 
-Relayers may also require gas payment for a specific message ID on the origin chain before processing the message on the destination chain. To do this, they must have an IGP deployed with their address set as beneficiary and index gas payment events. See [gas payment enforcement trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/gas_payment/mod.rs). We recommend to start with no gas payment enforcement policy and then gradually support more restrictive ones.
+The Relayer may also require gas payment for a specific message ID on the origin chain before processing the message on the destination chain. To do this, they must have an IGP deployed with their address set as beneficiary and index gas payment events. See [gas payment enforcement trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/gas_payment/mod.rs). We recommend to start with no gas payment enforcement policy and then gradually support more restrictive ones.
 
 :::tip
 

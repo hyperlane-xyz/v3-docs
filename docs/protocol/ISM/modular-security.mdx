@@ -8,13 +8,13 @@ Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.
 
 Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
 
-For example, application developers that want increased sovereignty over interchain security could deploy a [MultisigISM](multisig-ISM.mdx) configured with validators sourced from their community.
+For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
 
 ### Compose
 
 ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
 
-For example, application developers that want additional security could deploy an [AggregationISM](aggregation-ISM.mdx) that requires verification by both a [MultisigISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [WormholeISM](wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
+For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [Wormhole ISM](wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
 
 ### Customize
 
@@ -76,9 +76,9 @@ The primary function that ISMs must implement is `verify()`. The [Mailbox](../ma
 
 The `verify()` function takes two parameters.
 
-The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayers.mdx). Typically, these bytes are specific to the ISM. For example, for a [MultisigISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
+The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
 
-The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [MultisigISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
+The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
 
 :::warning
 See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
@@ -86,7 +86,7 @@ See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob
 
 ### Module type
 
-The secondary function that ISMs must implement is `moduleType()`. This is used to signal to [Relayer](../agents/relayers.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
+The secondary function that ISMs must implement is `moduleType()`. This is used to signal to [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
 
 ## Sequence diagram
 

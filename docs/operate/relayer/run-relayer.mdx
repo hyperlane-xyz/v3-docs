@@ -1,8 +1,8 @@
 # Run a Relayer
 
-A Hyperlane [relayer](../../protocol/agents/relayers.mdx) deliver interchain messages to their recipients.
+A Hyperlane [relayer](../../protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
 
-Every Hyperlane message requires two transactions to be delivered, one on the origin chain to [send](../../reference/messaging/send.mdx) the message, and one on the destination chain to [receive](../../reference/messaging/receive.mdx) the messages. Relayers are responsible for sending the second transaction.
+Every Hyperlane message requires two transactions to be delivered, one on the origin chain to [send](../../reference/messaging/send.mdx) the message, and one on the destination chain to [receive](../../reference/messaging/receive.mdx) the messages. A Relayer is responsible for sending the second transaction.
 
 ```mermaid
 flowchart TB
@@ -30,17 +30,17 @@ flowchart TB
     click IGP https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol
 ```
 
-Hyperlane relayers are configured to relay messages between one or more origin chains and destination chains. Relayers have no special permissions in Hyperlane. If relayer keys are compromised, only the tokens held by those keys are at risk.
+Hyperlane relayers are configured to relay messages between one or more origin chains and destination chains. A relayer has no special permissions in Hyperlane. If relayer keys are compromised, only the tokens held by those keys are at risk.
 
 Running a relayer requires the following:
 
 - RPC nodes
-  - Relayers use RPC nodes to read the origin chain(s), and deliver messages to the destination chain(s). Relayers must be configured with an RPC node for all origin and destination chains.
+  - A relayer uses RPC nodes to read the origin chain(s), and deliver messages to the destination chain(s). The relayer must be configured with an RPC node for all origin and destination chains.
 - One or more signing keys
-  - In order to deliver messages, relayers must be configured with a signing key to submit transactions on each destination chain (thus need funds on those chains).
+  - In order to deliver messages, the relayer must be configured with a signing key to submit transactions on each destination chain (thus need funds on those chains).
   - The relayer uses this key to sign `Mailbox.process()` transactions. The Hyperlane relayer agent currently supports configuration with AWS KMS keys that are accessed via API keys/secrets or raw hexadecimal private keys.
 - A machine to run on
-  - Relayers can compile the Rust binary themselves, or run a Docker image provided by Abacus Works. The binary can be run using your favorite cloud service.
+  - Relayer operators can compile the Rust binary themselves, or run a Docker image provided by Abacus Works. The binary can be run using your favorite cloud service.
 
 ## Guide
 
@@ -57,7 +57,7 @@ A hexadecimal private key used for in-memory signing can be used by your relayer
 
 #### AWS KMS keys
 
-An AWS KMS key can be used by your relayer to sign transactions. This is the recommended setup for production relayers.
+An AWS KMS key can be used by your relayer to sign transactions. This is the recommended setup for a production relayer.
 
 > See the [Agent Keys](../set-up-agent-keys.mdx) page to set up your Hexadecimal or AWS KMS keys
 
@@ -184,4 +184,4 @@ We can run the built binary from within the `hyperlane-monorepo/rust` directory:
   </TabItem>
 </Tabs>
 
-Relayers needs to index all historic messages for the origin chain(s). This information is stored in a local database on disk (set with `db` in the config). This means running a relayer for the first time may take some extra time to catch up with the current state.
+The relayer needs to index all historic messages for the origin chain(s). This information is stored in a local database on disk (set with `db` in the config). This means running a relayer for the first time may take some extra time to catch up with the current state.

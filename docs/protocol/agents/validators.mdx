@@ -2,13 +2,13 @@
 
 Validators are responsible for observing the [Mailbox](../mailbox.mdx) contract and, if required, signing its merkle root to facilitating message transmission to remote chains.
 
-Unlike many other protocols, Hyperlane does **not** have an enshrined validator set. Anyone is free to run a validator and help contribute to securing interchain messages.
+Unlike many other protocols, Hyperlane does **not** have an enshrined validator set. Anyone is free to run their own validator, as long as the receiver contract specifies a [Multisig ISM](../ISM/multisig-ISM.mdx) includes their validator.
 
 :::info
 Want to run a validator? Follow the [validators guide](../../operate/validators/run-validators.mdx).
 :::
 
-For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.  Once a root has achieved sufficient [finality](https://medium.com/mechanism-labs/finality-in-blockchain-consensus-d1f83c120a9a), validators are expected to sign it and post their signature to highly available storage so that it can be aggregated by [relayers](./relayers.mdx).
+For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.  Once a root has achieved sufficient [finality](https://medium.com/mechanism-labs/finality-in-blockchain-consensus-d1f83c120a9a), validators are expected to sign it and post their signature to highly available storage so that it can be collected by a [relayer](./relayer.mdx).
 
 ```solidity
 /**
@@ -24,4 +24,4 @@ function latestCheckpoint()
 
 Validators that sign anything other than a finalized checkpoint risk compromising the safety of the protocol. If they are participating in proof of stake, this may result in their stake being slashed.
 
-Hyperlane is developing the validator as a Rust binary that can be easily run by anyone. Operationally, validators need to run this binary and a node for the chain that they are validating for. We hope that the majority of Hyperlane validators will come from each chain's existing node operator community.
+Hyperlane is developing the validator as a binary implemented in Rust that can be easily run by anyone. Operationally, validators need to run this binary and have access to an RPC provider or node for the chain that they are validating for. We hope that the majority of Hyperlane validators will come from each chain's existing node operator community.
