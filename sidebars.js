@@ -387,7 +387,6 @@ const sidebars = {
           id: "guides/developer-tips/unit-testing",
           label: "Unit Testing",
         },
-        /**
         {
           type: "category",
           label: "Explorer Debugging",
@@ -400,17 +399,17 @@ const sidebars = {
           items: [
             {
               type: "doc",
-              id: "guides/developer-tips/configuring-pi-chains",
+              id: "guides/developer-tips/explorer-debugging/configuring-pi-chains",
               label: "Configuring PI Chains",
             },
             {
               type: "doc",
-              id: "guides/developer-tips/rest-api",
+              id: "guides/developer-tips/explorer-debugging/rest-api",
               label: "REST API",
             },
             {
               type: "doc",
-              id: "guides/developer-tips/graphql-api",
+              id: "guides/developer-tips/explorer-debugging/graphql-api",
               label: "GraphQL API",
             },
           ],
@@ -425,7 +424,6 @@ const sidebars = {
           id: "guides/token-faucets",
           label: "Token Faucets",
         },
-     */
       ],
     },
        /**

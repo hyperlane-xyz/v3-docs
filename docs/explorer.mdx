@@ -2,7 +2,7 @@
 
 The [Hyperlane Explorer](https://explorer.hyperlane.xyz/) can be used to find messages on any network with a Hyperlane deployment. Drill down into messages for more details about their properties and status.
 
-Messages to/from [core chains](./reference/domains) will searchable by transaction hash, message ID, or sender/recipient address. For other chains, the explorer can be configured to search for messages by providing it a chain config.
+Messages to/from [core chains](./reference/domains.mdx) will searchable by transaction hash, message ID, or sender/recipient address. For other chains, the explorer can be configured to search for messages by providing it a chain config.
 
 ### Searching for messages
 
@@ -22,17 +22,15 @@ To search, enter your query into the top search bar. You can use the Origin Chai
 
 :::info
 
-Note, by default the explorer will only find message on [core Hyperlane chains](./reference/domains).
+Note, by default the explorer will only find message on [core Hyperlane chains](./reference/domains.mdx).
 
-<!--Commenting out this line as the configuring-pi-chains page has no content on it yet.
-To view messages send to and/or from other chains, see [configuring PI Chains](./guides/developer-tips/configuring-pi-chains.mdx).
--->
+To view messages send to and/or from other chains, see [configuring PI Chains](./guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx).
 
 :::
 
 ### Permissionless Interoperability
 
-The explorer UI and REST API can be configured to search for messages on any chain with a Hyperlane deployment. See [configuring PI Chains](./guides/developer-tips/configuring-pi-chains.mdx) for details.
+The explorer UI and REST API can be configured to search for messages on any chain with a Hyperlane deployment. See [configuring PI Chains](./guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx) for details.
 
 ### Debugging Messages
 
@@ -40,4 +38,4 @@ If you're trying to debug a problem with message delivery, the [explorer debuggi
 
 ### API Reference
 
-The explorer's data can be accessed programmatically via the [REST API](./guides/developer-tips/rest-api.mdx) or [GraphQL API](./guides/developer-tips/rest-api.mdx). The REST API is recommended because it exposes a simpler interface for message data.
+The explorer's data can be accessed programmatically via the [REST API](./guides/developer-tips/explorer-debugging/rest-api.mdx) or [GraphQL API](./guides/developer-tips/explorer-debugging/graphql-api.mdx). The REST API is recommended because it exposes a simpler interface for message data.
