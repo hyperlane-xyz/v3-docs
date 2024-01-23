@@ -2,19 +2,19 @@
 
 Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
 
-Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx "mention")'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
+Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx)'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
 
 ### Configure
 
 Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
 
-For example, application developers that want increased sovereignty over interchain security could deploy a [MultisigISM](multisig-ISM.mdx "mention") configured with validators sourced from their community.
+For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
 
 ### Compose
 
 ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
 
-For example, application developers that want additional security could deploy an [AggregationISM](aggregation-ISM.mdx "mention") that requires verification by both a [MultisigISM](multisig-ISM.mdx "mention") configured with validators from the Hyperlane community, **and** a [WormholeISM](wormhole-ISM.mdx "mention") that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
+For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [Wormhole ISM](wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
 
 ### Customize
 
@@ -72,13 +72,13 @@ interface IInterchainSecurityModule {
 
 ### Verify
 
-The primary function that ISMs must implement is `verify()`. The [Mailbox](../mailbox.mdx "mention") will call `IInterchainSecurityModule.verify()` before delivering a message to its recipient. If `verify()` reverts or returns `false`, the message will not be delivered.
+The primary function that ISMs must implement is `verify()`. The [Mailbox](../mailbox.mdx) will call `IInterchainSecurityModule.verify()` before delivering a message to its recipient. If `verify()` reverts or returns `false`, the message will not be delivered.
 
 The `verify()` function takes two parameters.
 
-The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx "mention"). Typically, these bytes are specific to the ISM. For example, for a [MultisigISM](multisig-ISM.mdx "mention"), `_metadata` must include validator signatures.
+The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
 
-The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [MultisigISM](multisig-ISM.mdx "mention") could change validator sets based on the origin chain of the message.
+The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
 
 :::warning
 See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
@@ -86,14 +86,14 @@ See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob
 
 ### Module type
 
-The secondary function that ISMs must implement is `moduleType()`. This is used to signal to [Relayer](../agents/relayer.mdx "mention") what to include in `_metadata`. ISMs **must** return one of the supported module types.&#x20;
+The secondary function that ISMs must implement is `moduleType()`. This is used to signal to [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
 
 ## Sequence diagram
 
 The following shows a simplified sequence diagram of an interchain message being verified and delivered on the destination chain.
 
 :::info
-If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the [Mailbox](../mailbox.mdx "mention") will be used to verify the message.
+If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the [Mailbox](../mailbox.mdx) will be used to verify the message.
 
 This is omitted from the sequence diagram for clarity.
 :::

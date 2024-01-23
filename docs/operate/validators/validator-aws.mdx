@@ -23,7 +23,7 @@ Your validator will post their signatures to this bucket.
 3. Pick an informative bucket name, such as `hyperlane-validator-signatures-${validator_name}-${chain_name}`
 4. Consider choosing the same region as the KMS key you created in the previous step.
 5. Keep the recommended "ACLs disabled" setting for object ownership.
-6. Configure public access settings so that relayers can read your signatures
+6. Configure public access settings so that the relayer can read your signatures
    1. Uncheck "Block all public access"
    2. Check the first two options that block access via access control lists
    3. Leave the last two options unchecked, we will be granting public read access via a bucket policy
@@ -32,7 +32,7 @@ Your validator will post their signatures to this bucket.
 
 ### 3. Configure S3 bucket permissions
 
-Your validator IAM user will need write permissions, and it should be publicly readable by relayers.
+Your validator IAM user will need write permissions, and it should be publicly readable by the relayer.
 
 1. Navigate back to "Identity and Access Management (IAM)" in the AWS console
 2. Under "IAM resources" you should see at least one "User", click into that

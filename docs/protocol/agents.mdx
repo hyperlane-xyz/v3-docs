@@ -1,0 +1,9 @@
+# Agents
+
+The Hyperlane protocol relies on decentralized offchain agents to observe, sign, and transmit messages.
+
+For convenience, Hyperlane implements these agents as a set of binaries implemented in Rust.
+
+1. [Validators](./agents/validators.mdx) attest to the validity of [Mailbox](./mailbox.mdx) messages that use a [Multisig ISM](./ISM/multisig-ISM.mdx), and make their signatures available to a relayer.
+1. [Relayers](./agents/relayer.mdx) aggregate off-chain metadata for the [`IInterchainSecurityModule` interface](../reference/ISM/specify-your-ISM) and deliver messages to their recipients.
+1. [Watchtowers](./agents/watchtowers) observe the network for fraud by validators. If detected, watchtowers submit evidence to the origin chain, slashing the fraudulent validator(s).

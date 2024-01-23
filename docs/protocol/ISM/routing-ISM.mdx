@@ -1,8 +1,8 @@
 # Routing ISM
 
-Developers can use a `RoutingISM` to delegate message verification to a different ISM. This allows developers to change security models based on message content or application context.&#x20;
+Developers can use a `RoutingISM` to delegate message verification to a different ISM. This allows developers to change security models based on message content or application context.
 
-This ISM simply switches security models depending on the origin chain of the message. A simple use case for this is to use different [MultisigISM](multisig-ISM.mdx "mention") validator sets for each chain.
+This ISM simply switches security models depending on the origin chain of the message. A simple use case for this is to use different [Multisig ISM](multisig-ISM.mdx) validator sets for each chain.
 
 Eventually, you could imagine a `DomainRoutingIsm` routing to different light-client-based ISMs, depending on the type of consensus protocol used on the origin chain.
 
