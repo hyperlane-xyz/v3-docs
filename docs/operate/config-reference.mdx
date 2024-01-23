@@ -1025,9 +1025,9 @@ export HYP_METRICSPORT=9090
 </TabItem>
 </Tabs>
 
-## tracing.fmt
+## log.fmt
 
-**Description:** Configuration for the tracing module. This controls logging.
+**Description:** Configuration for the log module. This controls logging.
 
 **Optional:** Defaults to `pretty`
 
@@ -1038,20 +1038,20 @@ export HYP_METRICSPORT=9090
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---tracing.fmt pretty
+--log.fmt pretty
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```bash
-export HYP_TRACING_FMT="pretty"
+export HYP_LOG_FMT="pretty"
 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
 ```json
 {
-    "tracing": {
+    "log": {
         "fmt": "pretty"
     }
 }
@@ -1059,9 +1059,9 @@ export HYP_TRACING_FMT="pretty"
 </TabItem>
 </Tabs>
 
-## tracing.level
+## log.level
 
-**Description:** Configuration for the tracing module. This controls logging.
+**Description:** Configuration for the log module. This controls logging.
 
 **Optional:** Defaults to `info`
 
@@ -1072,20 +1072,20 @@ export HYP_TRACING_FMT="pretty"
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---tracing.level info
+--log.level info
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_TRACING_LEVEL="info"
+HYP_LOG_LEVEL="info"
 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
 ```json
 {
-    "tracing": {
+    "log": {
         "level": "info"
     }
 }
