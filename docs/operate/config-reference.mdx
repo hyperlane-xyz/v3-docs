@@ -289,6 +289,51 @@ export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFF
 </TabItem>
 </Tabs>
 
+## chains.`<chain_name>`.merkleTreeHook
+
+**Description:** Address of the merkle tree hook contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+
+**Optional:** No
+
+**Agents:** All
+
+**Type:** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.merkleTreeHook "$MERKLE_TREE_HOOK_ADDRESS"
+--chains.ethereum.merkleTreeHook "0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS"
+export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "merkleTreeHook": "<merkle_tree_hook_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "merkleTreeHook": "0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
 ## chains.`<chain_name>`.signer
 
 **Description:** The signer that should be used this chain
