@@ -51,8 +51,8 @@ Not supported in configuration files
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_CHAINS_${CHAIN_NAME}_*
-HYP_CHAINS_ETHEREUM_*
+export HYP_CHAINS_${CHAIN_NAME}_*="...."
+export HYP_CHAINS_ETHEREUM_*="...."
 ```
 </TabItem>
 
@@ -90,8 +90,8 @@ HYP_CHAINS_ETHEREUM_*
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_CHAINS_${CHAIN_NAME}_NAME="$DOMAIN_NAME"
-HYP_CHAINS_ETHEREUM_NAME="ethereum"
+export HYP_CHAINS_${CHAIN_NAME}_NAME="$DOMAIN_NAME"
+export HYP_CHAINS_ETHEREUM_NAME="ethereum"
 ```
 </TabItem>
 
@@ -308,7 +308,7 @@ export HYP_CHAINS_ETHEREUM_VALIDATOR_ANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdF
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_CHAINS_${CHAIN_NAME}_SIGNER_*
+export HYP_CHAINS_${CHAIN_NAME}_SIGNER_*="...."
 ```
 </TabItem>
 
@@ -835,7 +835,7 @@ Because each VM supports a different signer type, the default signer can only su
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_DEFAULTSIGNER_*
+export HYP_DEFAULTSIGNER_*="...."
 ```
 </TabItem>
 
@@ -1078,7 +1078,7 @@ export HYP_LOG_FMT="pretty"
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_LOG_LEVEL="info"
+export HYP_LOG_LEVEL="info"
 ```
 </TabItem>
 
@@ -1144,7 +1144,7 @@ export HYP_ORIGINCHAINNAME="ethereum"
 
 <TabItem value="env" label="As Env">
 ```bash
-HYP_VALIDATOR_*
+export HYP_VALIDATOR_*="...."
 ```
 </TabItem>
 
