@@ -246,3 +246,7 @@ graph TD
 
 It is non-trivial to set custom configuration values for non-core chains.
 Currently you may have to just pass a long list of environment variables or command line arguments.
+
+### Individual agent logs
+
+Currently all agents log to the same log group - `DefaultLogGroup`. To separate them per agent, you may have to adjust the log group name and update the agent's log policy with the new group name.
