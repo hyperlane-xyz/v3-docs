@@ -1,10 +1,10 @@
 # Run a Relayer
 
-A Hyperlane [relayer](../../protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
+A Hyperlane [Relayer](../../protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
 
 :::tip
 
-We recommend you read through the [**Deploy Hyperlane Local Agents**](../../guides/deploy-hyperlane-local-agents.mdx) guide as well as the [**Run Validators**](../validators/run-validators.mdx) documentation before trying to run a production relayer.
+We recommend you read through the [**Deploy Hyperlane Local Agents**](../../guides/deploy-hyperlane-local-agents.mdx) guide as well as the [**Run Validators**](../validators/run-validators.mdx) documentation before trying to run a production Relayer.
 
 :::
 
@@ -36,52 +36,62 @@ flowchart TB
     click IGP https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol
 ```
 
-Hyperlane relayers are configured to relay messages between one or more origin chains and destination chains. A relayer has no special permissions in Hyperlane. If relayer keys are compromised, only the tokens held by those keys are at risk.
+Hyperlane Relayers are configured to relay messages between one or more origin chains and destination chains. A Relayer has no special permissions in Hyperlane. If Relayer keys are compromised, only the tokens held by those keys are at risk.
 
-Running a relayer requires the following:
+Running a Relayer requires the following:
 
 - RPC nodes
-  - A relayer uses RPC nodes to read the origin chain(s), and deliver messages to the destination chain(s). The relayer must be configured with an RPC node for all origin and destination chains.
+  - A Relayer uses RPC nodes to read the origin chain(s), and deliver messages to the destination chain(s). The Relayer must be configured with an RPC node for all origin and destination chains.
 - One or more signing keys
-  - In order to deliver messages, the relayer must be configured with a signing key to submit transactions on each destination chain (thus need funds on those chains).
-  - The relayer uses this key to sign `Mailbox.process()` transactions. The Hyperlane relayer agent currently supports configuration with AWS KMS keys that are accessed via API keys/secrets or raw hexadecimal private keys.
+  - In order to deliver messages, the Relayer must be configured with a signing key to submit transactions on each destination chain (thus need funds on those chains).
+  - The Relayer uses this key to sign `Mailbox.process()` transactions. The Hyperlane Relayer agent currently supports configuration with AWS KMS keys that are accessed via API keys/secrets or raw hexadecimal private keys.
 - A machine to run on
   - Relayer operators can compile the Rust binary themselves, or run a Docker image provided by Abacus Works. The binary can be run using your favorite cloud service.
 
 ## Guide
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+We strongly encourage you to follow the [local agents guide](../../guides/deploy-hyperlane-local-agents.mdx) to understand how to configure and run the Relayer locally.
+
+:::info
+The local agent setup shows how you can run a Relayer on your _local machine_, which is **only for testing and development purposes**.
+:::
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 ### Keys
 
-The relayer needs to be able to submit transactions to many destination chains, and therefore requires access to a key for signing transactions. There are two supported key types: hexadecimal private keys (for in-memory signing), and AWS KMS based keys (best practice for production environments).
+The Relayer needs to be able to submit transactions to many destination chains, and therefore requires access to a key for signing transactions. There are two supported key types: hexadecimal private keys (for in-memory signing), and AWS KMS based keys (best practice for production environments).
 
 #### Hexadecimal keys
 
-A hexadecimal private key used for in-memory signing can be used by your relayer to sign transactions. This is the recommended setup for testing or development purposes.
+A hexadecimal private key used for in-memory signing can be used by your Relayer to sign transactions. This is the recommended setup for testing or development purposes.
 
 #### AWS KMS keys
 
-An AWS KMS key can be used by your relayer to sign transactions. This is the recommended setup for a production relayer.
+An AWS KMS key can be used by your Relayer to sign transactions. This is the recommended setup for a production Relayer.
 
-> See the [Agent Keys](../set-up-agent-keys.mdx) page to set up your Hexadecimal or AWS KMS keys
+:::tip
+See the [Agent Keys](../set-up-agent-keys.mdx) page to set up your Hexadecimal or AWS KMS keys.
+:::
 
 ### Configuration
 
-Also take a look at the [agent configuration](../agent-config.mdx) page and the [configuration reference](../config-reference.mdx) for a full list of configuration possibilities. **The list below is not complete,** however it should be enough to get started.
+Like the local setup, there are a few base arguments you should provide when configuring your Relayer.
 
-Your relayer takes as configuration the following:
+| Argument                        | Description                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--relayChains`                 | Comma separated names of the origin and destination chains to relay messages between. For example: `ethereum,polygon,avalanche`.                                                                                                                                                                                                                          |
+| `--db`                          | The path to where the Relayer should write persistent data to disk. Ensure this path to be persistent when using cloud setups. When using Docker, make sure to mount the persistent path/volume into the container. See [config-reference](../config-reference.mdx#db) for more info.                                                                     |
+| `--allowLocalCheckpointSyncers` | If `true`, this will allow the Relayer to look for Validator signatures on the Relayer's local filesystem. In a production environment, this should be `false`. If you're running a Validator on the same machine by following the Validator local setup instructions, set this to `true` so that your Relayer can access the local Validator signatures. |
 
-| Argument                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--relayChains`                        | Comma separated names of the origin and destination chains to relay messages between. _Example:_ `ethereum,polygon,avalanche`                                                                                                                 |
-| `--db`                                 | The path to where the relayer should write persistent data to disk. Ensure this path to be persistent when using cloud setups. When using Docker, make sure to mount the persistent path/volume into the container.See `config-reference` for more info                                                                                                           |
-| `--allowLocalCheckpointSyncers`        | If `true`, this will allow the relayer to look for validator signatures on the relayer's local filesystem. In a production environment, this should be `false`. If you're running a validator on the same machine by following the validator local setup instructions, set this to `true` so that your relayer can access the local validator signatures. |
+:::info
 
-| Environment variable | Description                                                                                                                                                                                                                                                                                                                                                                               |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CONFIG_FILES`       | If you want to add additional configuration files you can add additional paths here as a comma separated list. These files must be accessible within the filesystem your agent has access to. If you're running in Docker, see the docker section of [agent configuration](../agent-config.mdx) for tips on mounting your config files into your Docker container. |
+Your Relayer takes both command line arguments and environment variables as configuration. Take a look at the [agent configuration](../agent-config.mdx) page and the [configuration reference](../config-reference.mdx) for a full list of configuration possibilities.
+
+:::
+
+Of course, you can also provide the path to additional configuration files as a comma separated list with the [`CONFIG_FILES` environment variable](../config-reference.mdx#config_files). If you choose to run in Docker, see the docker section of [agent configuration](../agent-config.mdx) for tips on mounting your config files into your Docker container.
 
 ### Setup-specific configuration
 
@@ -89,94 +99,126 @@ These configurations requirements differ depending on which key setup instructio
 
 <Tabs groupId="keys">
   <TabItem value="hexadecimal" label="Hexidecimal Key">
-If you created a [hexadecimal key](../set-up-agent-keys.mdx), use these configs.
+If you created a [hexadecimal key](../set-up-agent-keys.mdx), configure the default signer like so:
 
-| Argument              | Description                                                                                                                                    |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--defaultSigner.key` | A hexadecimal private key used to sign transactions for all chains. _Example:_ `--defaultSigner.key=123...def` |
+| Argument              | Description                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| `--defaultSigner.key` | A hexadecimal private key used to sign transactions for all chains. For example: `1b3dead...beef`. |
+
   </TabItem>
   <TabItem value="aws-kms" label="AWS KMS Key">
-If you created an [AWS KMS key](../set-up-agent-keys.mdx), use these configs.
+If you created an [AWS KMS key](../set-up-agent-keys.mdx), configure the default signer like so:
 
-| Argument                 | Description                                                                                                                                                                               |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--defaultSigner.type`   | Set to `aws`. _Example:_ `--defaultSigner.type=aws`                                                                                         |
-| `--defaultSigner.id`     | The alias of your validator's AWS KMS key, prefixed with `alias/`. _Example:_ `--defaultSigner.id=alias/hyperlane-validator-signer-polygon` |
-| `--defaultSigner.region` | The region of your AWS KMS key. `--defaultSigner.region=us-east-1`                                                                                               |
+| Argument                 | Description                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `--defaultSigner.type`   | Set to `aws`.                                                                                               |
+| `--defaultSigner.id`     | The alias of your Relayer's AWS KMS key, prefixed with `alias/`. For example: `alias/hyperlane-relayer-1`. |
+| `--defaultSigner.region` | The region of your AWS KMS key. For example: `us-east-1`.                                                   |
 
-| Environment variable    | Description                                           |
-| ----------------------- | ----------------------------------------------------- |
-| `AWS_ACCESS_KEY_ID`     | The access key ID of your relayer's AWS IAM user.     |
-| `AWS_SECRET_ACCESS_KEY` | The secret access key of your relayer's AWS IAM user. |
   </TabItem>
 </Tabs>
 
-
 For chain-specific signers (i.e. to customize the key to use for each chain) take a look at the [configuration reference](../config-reference.mdx)
 
-### Installation
+## Start Relaying
+
+### Setup
 
 The recommended installation method for a production environment is using a Docker image.
 
 <Tabs groupId="docker">
   <TabItem value="docker" label="Docker image">
 
-To download the docker image, run:
+First download the docker image:
 
 ```bash
 docker pull gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734
 ```
+
   </TabItem>
   <TabItem value="from-source" label="Building from source">
 
-First, clone the repo
+**Clone and setup**
+
+First, clone the Hyperlane monorepo:
 
 ```sh
 git clone git@github.com:hyperlane-xyz/hyperlane-monorepo.git
 ```
 
-And then follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md#setup) in the `rust` directory
+Then follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) in the `rust` directory. This should setup `rustup` as well as Rosetta 2 if you are on Apple Silicon.
+
+```sh
+# install rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# (apple silicon only) install rosetta 2
+softwareupdate --install-rosetta --agree-to-license
+```
+
+Build the Relayer:
+
+```sh
+cargo build --release bin relayer
+```
+
   </TabItem>
 </Tabs>
 
-### Start Relaying
+### Running the agent
 
-To run the relayer binary with configuration items specified via `CONFIG_FILES`, environment variables, or command line arguments, run:
+If the Relayer's keys have been configured with AWS KMS, you will have to provide the AWS access key and secret as environment variables.
+
+| Environment variable    | Description                                           |
+| ----------------------- | ----------------------------------------------------- |
+| `AWS_ACCESS_KEY_ID`     | The access key ID of your Relayer's AWS IAM user.     |
+| `AWS_SECRET_ACCESS_KEY` | The secret access key of your Relayer's AWS IAM user. |
+
+For a refresher, check out the [Agent Keys](../set-up-agent-keys.mdx) guide.
 
 <Tabs groupId="docker">
   <TabItem value="docker" label="Using Docker">
-Find the latest docker image and set it to the environment variable `$DOCKER_IMAGE`.
+
+Then start the container with the relevant arguments. For example, your configuration for AWS:
 
 ```sh
 docker run \
   -it \
-  --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
-  $DOCKER_IMAGE \
-  ./relayer --db /hyperlane_db --relayChains ethereum,polygon,avalanche
+  -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
+  -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
+  --mount ... \
+  gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734 \
+  ./relayer \
+  --db /hyperlane_db \
+  --relayChains <chain_1_name>,<chain_2_name> \
+  --defaultSigner.type aws \
+  --defaultSigner.id alias/hyperlane-relayer-1 \
+  --defaultSigner.region us-east-1 \
 ```
-
-:::info
-
-If you have followed the instructions to [deploy hyperlane](../../deploy-hyperlane.mdx) and are specifying a path to your own config file in the `CONFIG_FILES` environment variable, check out the config files with docker section of [agent configuration](../agent-config.mdx).
-
-:::
 
 :::tip
 
-If you're running validators with a local setup on the same machine and want the relayer to access these validator signatures, be sure to [mount](https://docs.docker.com/storage/bind-mounts/) your local validator's signature directory into your relayer at the same path that you used when [announcing your validator](../validators/run-validators.mdx#Announcing-your-validator)
+If you're running Validators with a local setup on the same machine and running a local Relayer to access these Validator signatures, be sure to [mount](https://docs.docker.com/storage/bind-mounts/) your local Validator's signature directory into your Relayer at the same path that you used when [announcing your Validator](../validators/run-validators.mdx#Announcing-your-validator)
 
-For example, if your local validator is writing signatures to `/tmp/hyperlane-validator-signatures-ethereum`, you should mount a directory for the Docker container:
+For example, if your local Validator is writing signatures to `/tmp/hyperlane-validator-signatures-ethereum`, you should mount a directory for the Docker container:
 
 ```sh
 docker run \
   -it \
-  -e CONFIG_FILES=/path/to/file/inside/container \
+  -e CONFIG_FILES=/config/agent-config.json \
+  --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane-validator-signatures-ethereum,target=/tmp/hyperlane-validator-signatures-ethereum,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
-  $DOCKER_IMAGE \
-  ./relayer --db /hyperlane_db --relayChains ethereum,polygon,avalanche
+  gcr.io/abacus-labs-dev/hyperlane-agent:f44589e-20231130-114734 \
+  ./relayer \
+  --db /hyperlane_db \
+  --relayChains ethereum,polygon,avalanche \
+  --allowLocalCheckpointSyncers true \
+  --defaultSigner.key <your_relayer_key> \
 ```
+
 :::
+
   </TabItem>
 
   <TabItem value="from-source" label="Building from source">
@@ -185,9 +227,22 @@ See these instructions for building from source without Docker.
 We can run the built binary from within the `hyperlane-monorepo/rust` directory:
 
 ```sh
-./target/release/relayer --db /hyperlane_db --relayChains ethereum,polygon,avalanche
+# set AWS environment variables
+export AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP
+export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
+
+# run the Relayer
+./target/release/relayer \
+  --db /hyperlane_db \
+  --relayChains <chain_1_name>,<chain_2_name> \
+  --defaultSigner.type aws \
+  --defaultSigner.id alias/hyperlane-relayer-1 \
+  --defaultSigner.region us-east-1 \
 ```
+
   </TabItem>
 </Tabs>
 
-The relayer needs to index all historic messages for the origin chain(s). This information is stored in a local database on disk (set with `db` in the config). This means running a relayer for the first time may take some extra time to catch up with the current state.
+## Indexing
+
+The Relayer needs to index all historic messages for the origin chain(s). This information is stored in a local database on disk (set with `db` in the config). This means running a Relayer for the first time may take some extra time to catch up with the current state.

@@ -4,9 +4,9 @@ Configure your signing key and S3 bucket
 
 :::info
 
-These instructions are for a production environment where validator keys exist in AWS's Key Management Service and validator signatures are posted publicly in an S3 bucket.
+These instructions are for a production environment where Validator keys exist in AWS's Key Management Service and Validator signatures are posted publicly in an S3 bucket.
 
-If you're only intending to run a validator for testing or development purposes, consider following the [local setup guide](../../guides/deploy-hyperlane-local-agents.mdx) instead.
+If you're only intending to run a Validator for testing or development purposes, consider following the [local setup guide](../../guides/deploy-hyperlane-local-agents.mdx) instead.
 
 :::
 
@@ -16,7 +16,7 @@ Follow the instructions in [Agent Keys](../set-up-agent-keys.mdx) to generate an
 
 ### 2. Create an S3 bucket
 
-Your validator will post their signatures to this bucket.
+Your Validator will post their signatures to this bucket.
 
 1. Go to AWS's S3 in the AWS console.
 2. On the right, click the orange "Create Bucket" button
@@ -32,7 +32,7 @@ Your validator will post their signatures to this bucket.
 
 ### 3. Configure S3 bucket permissions
 
-Your validator IAM user will need write permissions, and it should be publicly readable by the relayer.
+Your Validator IAM user will need write permissions, and it should be publicly readable by the Relayer.
 
 1. Navigate back to "Identity and Access Management (IAM)" in the AWS console
 2. Under "IAM resources" you should see at least one "User", click into that
@@ -74,3 +74,9 @@ Your validator IAM user will need write permissions, and it should be publicly r
     ]
 }
 ```
+
+:::tip
+
+Advanced users may consider using the [S3 terraform module](../deploy-with-terraform.mdx#iam--kms) instead to create the S3 bucket with the correct permissions.
+
+:::
