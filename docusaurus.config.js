@@ -208,7 +208,7 @@ const config = {
             from: ['/docs/operators/relayers/message-filtering'],
           },
           {
-            to: '/docs/operate/validators/validator-aws',
+            to: '/docs/operate/validators/validator-signatures-aws',
             from: ['/docs/operators/validators/aws-setup'],
           },
           {
