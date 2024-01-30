@@ -26,7 +26,7 @@ Message recipients can specify custom security constraints by specifying an `Int
 
 ## Verify
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L31-L33
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L31-L34
 ```
 
 The Mailbox will call `verify` before delivering a message to its recipient. If `verify` reverts or returns `false`, the message will not be delivered.
