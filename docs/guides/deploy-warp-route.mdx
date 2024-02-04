@@ -35,6 +35,11 @@ hyperlane config create warp
 If your config looks correct, you can now skip to [Step 2: Deployment](#2-deployment).
 Or see below for details on how to define your config manually.
 
+If you want to use some custom chains in your warp route deployment use the --chains flag
+```bash
+hyperlane config create warp --chains <PATH-TO-CHAINS-FILE>
+```
+
 :::
 
 #### Base
@@ -89,6 +94,15 @@ Run the following command to initiate the Warp Route deployment:
 ```bash
 hyperlane deploy warp
 ```
+
+:::tip
+
+If you are using some custom chains in your warp route config use the --chains flag while deploying
+```bash
+hyperlane deploy warp --chains <PATH-TO-CHAINS-FILE>
+```
+
+:::
 
 Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
 
