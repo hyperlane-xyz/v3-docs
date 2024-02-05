@@ -24,7 +24,7 @@ To deploy the route, you will need a Warp Route config file. A valid config will
 * _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](../reference/messaging/messaging-interface.mdx), [interchain gas](../reference/hooks/interchain-gas.mdx), and [interchain security modules](../reference/ISM/specify-your-ISM.mdx).
 * _Optional:_ The token standard - fungible tokens using ERC20 or NFTs using ERC721. Defaults to ERC20.
 
-The easiest way to create one is with the CLI's config comamnd:
+The easiest way to create one is with the CLI's config command:
 
 ```bash
 hyperlane config create warp
@@ -35,7 +35,7 @@ hyperlane config create warp
 If your config looks correct, you can now skip to [Step 2: Deployment](#2-deployment).
 Or see below for details on how to define your config manually.
 
-If you want to use custom chains in your Warp Route config, use the `--chains` flag. 
+If you want to use [custom chains](../deploy-hyperlane.mdx) in your Warp Route config, use the `--chains` flag. 
 ```bash
 hyperlane config create warp --chains <PATH-TO-CHAINS-FILE>
 ```
@@ -97,7 +97,7 @@ hyperlane deploy warp
 
 :::tip
 
-If you are using custom chains in your Warp Route config, don't forget to use the `--chains` flag.
+If you are using [custom chains](../deploy-hyperlane.mdx) in your Warp Route config, don't forget to use the `--chains` flag.
 ```bash
 hyperlane deploy warp --chains <PATH-TO-CHAINS-FILE>
 ```
