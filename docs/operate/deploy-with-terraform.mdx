@@ -1,0 +1,205 @@
+# Deploy with Terraform
+
+For those more familiar with deploying to AWS through infrastructure-as-code tools such as Terraform, we provide an [**example configuration in Github**](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/terraform) designed to set up the necessary infrastructure for a Hyperlane Validator on AWS. It automates the creation of resources such as ECS clusters, VPCs, subnets, and security groups required for running a Validator agent.
+
+:::caution
+
+The configuration provided is intended to only be an _example_ of running a Validator for a core supported network. You may have to modify the Validator module to support more advanced configurations. It is recommended to test thoroughly before using this setup in a production environment.
+
+:::
+
+## Overview
+
+The provided terraform has a few key parts:
+
+- IAM/KMS module: automatically completes [Agent Keys](set-up-agent-keys.mdx) configuration for you.
+- S3 module: automatically completes [AWS Signatures Bucket](validators/validator-signatures-aws.mdx) configuration for you.
+- EFS module: sets up a persistent volume that can be mounted to the Validator.
+- Validator module: uses the above modules to run an instance of a Validator.
+- `global.tf`: top-level networking configuration for a cluster that Validators can run in.
+- `main.tf`: configures Validators for deployment.
+
+The diagram below shows how it fits together.
+
+```mermaid
+graph LR
+    subgraph VPC_Network ["VPC Network"]
+        Subnet -- Protected by --> SG[AWS Security Group]
+
+        subgraph SG ["AWS Security Group"]
+            NATG[AWS NAT Gateway]
+            IGW[AWS Internet Gateway]
+        end
+    end
+
+    subgraph ECS_Validator ["Validator Module"]
+        ECSTask[ECS Task: Validator] -- Executes in --> Subnet
+    end
+
+    subgraph S3_Subgraph ["S3 Module"]
+        S3Bucket[AWS S3 Bucket] -- Accessed by --> ECSTask
+        ECSTask -- Writes to --> S3Bucket[Validator Signatures]
+    end
+
+    subgraph EFS_Subgraph ["EFS Module"]
+        EFS[AWS EFS] -- Mounted on --> ECSTask
+    end
+
+    subgraph IAM_KMS ["IAM / KMS Module"]
+        IAMUser[Validator IAM User]
+        KMSKey[KMS Key]
+    end
+
+    Internet -- Accessing Metrics --> IGW
+    NATG -- RPC Calls --> Internet
+
+    %% Additional Interconnections
+    ECSTask -- Signs with --> KMSKey
+    ECSTask -- Perms from --> IAMUser
+
+```
+
+## Usage
+
+As a prerequisite, you need to have Terraform installed and the AWS CLI configured with your credentials.
+
+To initialize the terraform state:
+
+```bash
+terraform init
+```
+
+To generate the plan of infrastructure changes:
+
+```bash
+terraform plan
+```
+
+To preview and apply the infrastructure changes:
+
+```bash
+terraform apply
+```
+
+To list the outputs such as KMS, IAM or S3 information, you will have to parse the JSON output:
+
+```bash
+terraform output -json
+```
+
+## Modules
+
+Several modules exist so you can choose which parts of the Validator setup you would like managed by terraform.
+
+### IAM / KMS
+
+The `iam_kms` module creates an IAM user and a KMS key for secure signing operations. It also sets up IAM policies and attachments to grant the necessary permissions for using the KMS key and other AWS services, such as S3, EFS and ECS later on.
+
+### S3
+
+The `s3` module creates an S3 bucket for storing Validator-related data, such as signatures. It also sets bucket policies to manage access and permissions, including public access restrictions and versioning.
+
+### EFS
+
+The `efs` module defines an EFS file system and access point, allowing the Validator application to store and access data on EFS. It also sets up a mount target for connecting the EFS file system to the network.
+
+:::note
+This module is only required when using the `validator` module.
+:::
+
+### Validator
+
+The `validator` module uses all of the above to integrate the EFS, IAM/KMS, and S3 configurations.
+
+In addition to:
+- Creating a new IAM user and relevant roles to run a Validator.
+- Creating an S3 bucket that a Validator can write signatures to.
+- Creating an EFS volume to persist data in the service.
+
+This module also:
+- Defines an ECS task definition for running the Validator application, including container definitions, volume configurations, and logging.
+- Creates an ECS service to manage the deployment and scaling of the Validator tasks.
+
+## Main Configuration
+
+The root level configuration sets up a VPC, subnets, internet gateway, NAT gateway, route tables, and security groups for network infrastructure. It also provides example usage of the `validator` module.
+
+```terraform
+module "your_validator_name" {
+  source = "./modules/validator"
+
+  validator_name    = "your-validator-name"
+  origin_chain_name = "originChainName"
+
+  aws_region               = var.aws_region
+  validator_cluster_id     = aws_ecs_cluster.validator_cluster.id
+  validator_subnet_id      = aws_subnet.validator_subnet.id
+  validator_sg_id          = aws_security_group.validator_sg.id
+  validator_nat_gateway_id = aws_nat_gateway.validator_nat_gateway.id
+
+  # Disabling the Validator task allows you to set up all the required infrastructure
+  # without running the actual Validator yet. This is useful when setting up a Validator for
+  # the first time, so that you can find out the Validator's address and fund it before it
+  # performs the announcement transaction.
+  # validator_task_disabled = true
+}
+```
+
+### Outputs
+
+The root-level `outputs.tf` passes forward all outputs from the Validators configured in `main.tf`. **You will have to update this as you add, modify or remove Validators.**
+
+### Example architecture
+
+The diagram below shows how the Validator ECS cluster fits into the top-level network infrastructure.
+
+```mermaid
+graph TD
+    subgraph VPC_Network ["VPC Network"]
+        VPC[AWS VPC]
+        Public_Subnet[AWS Public Subnet]
+        Private_Subnet[AWS Private Subnet]
+        VPC -- Connected to --> IGW[AWS Internet Gateway]
+        VPC -- Contains --> SG[AWS Security Group]
+        Public_Subnet -- Internet Access via --> IGW
+        Private_Subnet -- Internet Access via NAT --> NAT_Gateway[AWS NAT Gateway]
+        NAT_Gateway -- Utilizes --> EIP[AWS Elastic IP]
+        NAT_Gateway -- Located in --> Public_Subnet
+
+        subgraph Routing ["Routing"]
+            Public_Subnet -- Associates --> Public_Route_Table[AWS Public Route Table]
+            Public_Route_Table -- Routes Internet Traffic --> IGW
+            Private_Subnet -- Associates --> Private_Route_Table[AWS Private Route Table]
+            Private_Route_Table -- Routes Traffic To --> NAT_Gateway
+        end
+    end
+
+    subgraph ECS_Infrastructure ["ECS Infrastructure"]
+        VPC -- Hosts --> ECS_Cluster[AWS ECS Cluster]
+        SG -- Secures --> ECS_Cluster
+    end
+
+    %% Additional Details
+    SG -- Secures --> Public_Subnet
+    SG -- Secures --> Private_Subnet
+
+    %% Internet Node
+    Internet[Internet]
+    IGW -- Connects to --> Internet
+    EIP -- Connects to --> Internet
+```
+
+## Known issues
+
+### PI configuration
+
+It is non-trivial to set custom configuration values for PI chains, such as ones you've deployed Hyperlane to yourself.
+Currently you may have to just pass a long list of environment variables or command line arguments.
+
+### Individual agent logs
+
+Currently all agents log to the same log group - `DefaultLogGroup`. To separate them per agent, you may have to adjust the log group name and update the agent's log policy with the new group name.
+
+### Relayer module
+
+The docker image supports running both types of agents. Therefore, if you choose to do so, you can use the Validator module as a starting point for a new Relayer module.
