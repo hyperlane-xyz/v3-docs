@@ -1,16 +1,16 @@
 # REST API
 
-The Hyperlane agents collect useful information about activity on the system, including all messages. That data can be queried via the APIs.
+Hyperlane 代理收集系统活动的有用信息，包括所有消息。可以通过应用程序接口查询这些数据。
 
-The APIs are currently available free of charge and without any required authentication.
+这些应用程序接口目前免费提供，无需任何认证。
 
-:::info
-Connect your preferred fetch client or library to [Explorer API page](https://explorer.hyperlane.xyz/api-docs) to query data!
+:::信息
+将您喜欢的获取客户端或库连接到 [Explorer API page](https://explorer.hyperlane.xyz/api-docs) 以查询数据！
 :::
 
-### Example Query
+### 查询示例
 
-#### Request
+#### 请求
 
 ```javascript
 const baseUrl = "https://explorer.hyperlane.xyz/api";
@@ -24,7 +24,7 @@ const response = await fetch(url, {
 const data = await response.json();
 ```
 
-#### Response
+#### 响应
 
 ```js
 {
@@ -85,9 +85,9 @@ const data = await response.json();
 }
 ```
 
-### API Reference
+### 应用程序接口参考
 
-#### Module: Message
+#### 模块： 信息
 
 Action: `get-message`, Parameter (1 required):
 
@@ -107,9 +107,9 @@ Action: `search-messages`, Parameter (1 required):
 
 - `query`: address or hash to search (string)
 
-### APIs for Permissionless Interoperability chains&#x20;
+### 无需权限的互操作链的APIs
 
-Hyperlane can be [permissionlessly deployed](../../../deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, query the `search-pi-messages` action. The search requires a chain config in the request body. Note, this same functionality is also available in the [explorer UI](../../../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx).
+Hyperlane 可以[无需权限地部署](.../.../.../deploy-hyperlane.mdx)到任何链上，但PI链上的消息无法被默认的Hyperlane代理所识别。要查看来自PI链的消息的详细信息，请查询search-pi-messages操作。搜索需要在请求正文中提供链配置。请注意，这个功能也可以在[资源管理器用户界面]（.../.../.../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx）中使用。
 
 ```javascript
 const chainConfig = {
@@ -150,4 +150,4 @@ const data = await response.json();
 
 #### Chain Config Schema
 
-The chain config schema is an extension of the Hyperlane SDK's [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21) but with a `contracts` object added. See [Configuring PI Chains](../../../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx) for more details about this config object.
+链配置模式是Hyperlane SDK的[ChainMetadata模式](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21)的扩展，但添加了一个`contracts`对象。有关此配置对象的更多详细信息，请参阅[配置PI链](../../../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx)。
