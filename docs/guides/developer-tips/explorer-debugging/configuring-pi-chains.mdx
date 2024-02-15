@@ -1,20 +1,20 @@
-# Configuring PI Chains
+# 配置 PI 链
 
-Hyperlane can be [permissionlessly deployed](../../../deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, first configure the explorer with metadata about that chain.
+Hyperlane 可以[无权限部署]（.../.../.../deploy-hyperlane.mdx）到任何链上，但 PI 链上的报文无法通过默认的 Hyperlane 代理识别。要查看 PI 链上消息的详细信息，首先要用该链的元数据配置资源管理器。
 
-To begin, go to the [explorer's settings page](https://explorer.hyperlane.xyz/settings).
+首先，进入 [资源管理器设置页面](https://explorer.hyperlane.xyz/settings)。
 
 ![](../../../../static/img/explorer-debugging/explorer-settings.png)
 
-From there, click the Add Custom Chain button. A modal will appear. Input the configuration for your PI Chain.
+然后点击添加自定义链按钮。此时会出现一个模态窗口。输入 PI 链的配置。
 
-The chain config schema is an extension of the Hyperlane SDK's [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21) but with a `contracts` object added. Currently only the `mailbox` contract address is required but more functionality may be enabled in the future if more addresses are provided.
+链配置模式是 Hyperlane SDK [ChainMetadata 模式](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21)的扩展，但增加了一个`contracts` 对象。目前只要求提供`mailbox`合约地址，但如果提供了更多地址，将来可能会启用更多功能。
 
-If a valid Etherscan-based block explorer config is provided, the Hyperlane Explorer will utilize it to find the desired messages. If not, it will use the RPC URL. Note, Explorers with api keys (even just free-tier keys), perform faster and more reliably.
+如果提供了有效的基于 Etherscan 的区块资源管理器配置，Hyperlane Explorer 将利用它来查找所需的信息。如果没有，则会使用 RPC URL。请注意，使用 api 密钥（即使只是自由层密钥）的资源管理器运行速度更快、更可靠。
 
 ![](../../../../static/img/explorer-debugging/explorer-add-custom-chain.png)
 
-### Chain Config Examples
+### 链配置示例
 
 **A minimal chain config:**
 
@@ -68,6 +68,6 @@ If a valid Etherscan-based block explorer config is provided, the Hyperlane Expl
 }
 ```
 
-:::info
-If the origin or destination `domainId` of chains in your messages doesn't match their `chainId` then you must include the `domainId` field in your chain config.
+:::信息
+如果信息中链的来源或目的地 `domainId` 与其 `chainId` 不匹配，则必须在链配置中包含 `domainId` 字段。
 :::
