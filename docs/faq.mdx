@@ -21,13 +21,13 @@
 <details>
   <summary>**谁是 Hyperlane 验证者？**</summary>
   <div>
-    <div>Hyperlane采用以ISM为特色的模块化安全堆栈来确保安全。没有协议规定的安全模型，更没有验证程序集。尽管如此，大多数Hyperlane部署都配置有一个默认的ISM，该ISM指定了如果消息接收者未指定ISM覆盖时要使用的安全模型。</div>
+    <div>Hyperlane采用以ISM为特色的模块化安全堆栈来确保安全。没有协议规定的安全模型，更没有验证程序集。尽管如此，大多数Hyperlane部署都配置有一个默认的ISM，该ISM指定了如果信息接收者未指定ISM覆盖时要使用的安全模型。</div>
   </div>
 </details>
 <details>
   <summary>**我可以用Hyperlane构建什么？**</summary>
   <div>
-    <div>Hyperlane的[消息传递接口]（./reference/messaging/messaging-interface.mdx）允许dapp开发者在不同链上的智能合约之间发送任意字节。这可用于创建跨链应用程序，即跨越多个链的dapp。要想获得灵感，可以查看一些构建在Hyperlane之上的预构建应用程序，包括Warp Routes：允许用户将代币从一条链转移到另一条链；Interchain Accounts：允许用户进行跨链函数调用；Interchain Queries：允许用户进行跨链视图调用。</div>
+    <div>Hyperlane的信息[传递接口]（./reference/messaging/messaging-interface.mdx）允许dapp开发者在不同链上的智能合约之间发送任意字节。这可用于创建跨链应用程序，即跨越多个链的dapp。要想获得灵感，可以查看一些构建在Hyperlane之上的预构建应用程序，包括Warp Routes：允许用户将代币从一条链转移到另一条链；Interchain Accounts：允许用户进行跨链函数调用；Interchain Queries：允许用户进行跨链视图调用。</div>
   </div>
 </details>
 <details>
@@ -37,27 +37,27 @@
   </div>
 </details>
 <details>
-  <summary>**在 Hyperlane上发送消息时会发生什么？**</summary>
+  <summary>**在 Hyperlane上发送信息时会发生什么？**</summary>
   <div>
-    <div>详情请参阅[send](./reference/messaging/send.mdx) 和 [receive](./reference/messaging/receive.mdx) 页面。简而言之，一个应用程序在原始链上调用 "dispatch() "函数，将消息插入邮箱的默克尔树中。Hyperlane中继观察到分发的消息，并为接收方的Interchain安全模块（ISM）组装元数据。中继器通过调用 "Mailbox.process() "将消息传递给接收方。中继器接收方使用其ISM验证消息，并调用`recipient.handle()`来传递消息。</div>
+    <div>详情请参阅[send](./reference/messaging/send.mdx) 和 [receive](./reference/messaging/receive.mdx) 页面。简而言之，一个应用程序在原始链上调用 "dispatch() "函数，将信息插入邮箱的默克尔树中。Hyperlane中继观察到分发的信息，并为接收方的Interchain安全模块（ISM）组装元数据。中继器通过调用 "Mailbox.process() "将信息传递给接收方。中继器接收方使用其ISM验证信息，并调用`recipient.handle()`来传递信息。</div>
   </div>
 </details>
 <details>
   <summary>**如何查看已发送信息的状态？**</summary>
   <div>
-    <div>在[Hyperlane消息浏览器](./explorer.mdx)的搜索栏中粘贴地址或交易哈希值，可查看消息的状态和历史详情。如果消息因某种原因发送失败，将提示可能出现的问题。有关如何调试未传递消息的更多信息，请参阅[浏览器调试]（./guides/developer-tips/explorer-debugging.mdx）。</div>
+    <div>在[Hyperlane信息浏览器](./explorer.mdx)的搜索栏中粘贴地址或交易哈希值，可查看信息的状态和历史详情。如果信息因某种原因发送失败，将提示可能出现的问题。有关如何调试未传递信息的更多信息，请参阅[浏览器调试]（./guides/developer-tips/explorer-debugging.mdx）。</div>
   </div>
 </details>
 <details>
-  <summary>**使用Hyperlane发送链间消息是否意味着实时聊天和短信？**</summary>
+  <summary>**使用Hyperlane发送链间信息是否意味着实时聊天和短信？**</summary>
   <div>
-    <div>Hyperlane是一种协议，旨在允许不同链上的智能合约相互交互。我们所说的消息传递是指在智能合约之间发送任意字节，而不是点对点或文本消息。有几个web3项目适合聊天用例；考虑使用 [XMTP](https://xmtp.org/)、[Push](https://push.org/) 或 [Orbis](https://useorbis.com/)，以实现这种类型的消息传递。</div>
+    <div>Hyperlane是一种协议，旨在允许不同链上的智能合约相互交互。我们所说的信息传递是指在智能合约之间发送任意字节，而不是点对点或文本信息。有几个web3项目适合聊天用例；考虑使用 [XMTP](https://xmtp.org/)、[Push](https://push.org/) 或 [Orbis](https://useorbis.com/)，以实现这种类型的信息传递。</div>
   </div>
 </details>
 <details>
   <summary>**Hyperlane是代币桥吗?**</summary>
   <div>
-    <div>不完全是。Hyperlane是一种通用消息传递（GMP）协议，允许区块链之间进行通信。代币桥只是在Hyperlane基础上构建的多种应用之一！</div>
+    <div>不完全是。Hyperlane是一种通用信息传递（GMP）协议，允许区块链之间进行通信。代币桥只是在Hyperlane基础上构建的多种应用之一！</div>
   </div>
 </details>
 <details>
