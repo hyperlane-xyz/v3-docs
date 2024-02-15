@@ -1,10 +1,10 @@
-# Unit testing - EVM
+# 单元测试 - EVM(Unit testing - EVM)
 
-Unit testing can prove to be challenging for a multi-chain setup with Foundry. Hence, we've provided a lightweight test environment `MockHyperlaneEnvironment` for you to unit test your cross-chain app while avoiding the need to fork multiple networks.
+单元测试在使用 Foundry 进行多链设置时可能会变得具有挑战性。因此，我们提供了一个轻量级的测试环境 `MockHyperlaneEnvironment`，让您能够在不需要分叉多个网络的情况下对您的跨链应用进行单元测试。
 
-Most multi-chain apps will be built on top of our Mailbox contract. So, we've abstracted away the details of a deployed mailbox with a `MockMailbox` and our environment contains an `originMailbox` and a `destinationMailbox` on the same chain. Internally, we store the messages arriving to the destination in the `inboundMessages` mapping on the destination mailbox. We simulate message delivery by enqueuing messages and increment the `inboundProcessedNonce` with `MockMailbox.processNextInboundMessage()`.
+大多数多链应用将构建在我们的 Mailbox 合约之上。因此，我们使用 `MockMailbox` 将已部署的邮箱的细节抽象化，而我们的环境包含了同一链上的 `originMailbox` 和 `destinationMailbox`。在内部，我们通过将到达目标的消息存储在目标邮箱的 `inboundMessages` 映射中来模拟消息传递。我们通过将消息入队并使用 `MockMailbox.processNextInboundMessage()` 增加 `inboundProcessedNonce` 来模拟消息传递。
 
-The setup for the simple messaging forge test is as following:
+简单消息 Forge 测试的设置如下：
 
 ### Sending a message
 
@@ -45,7 +45,7 @@ contract SimpleMessagingTest is Test {
 
 ### Testing Router-based apps
 
-Assuming you're testing `TestCrosschainApp` which inherits from `Router`:
+假设您正在测试继承自 `Router` 的 `TestCrosschainApp`：
 
 ```solidity
 contract CrosschainAppTest is Test {
@@ -67,7 +67,7 @@ contract CrosschainAppTest is Test {
 }
 ```
 
-Call `processNextPendingMessage()` and `processNextPendingMessageFromDestination()` to process inbound messages for destination and origin mailboxes respectively. Now, you can make your cross-chain calls from origin to destination and vice-versa:
+调用 `processNextPendingMessage()` 和 `processNextPendingMessageFromDestination()` 分别处理目标邮箱和源邮箱的入站消息。现在，您可以从源链到目标链以及从目标链到源链进行跨链调用了：
 
 ```solidity
     function testRemoteTelephoneCallFromOrigin() public {
@@ -97,7 +97,7 @@ Call `processNextPendingMessage()` and `processNextPendingMessageFromDestination
     }
 ```
 
-If you want to use your own ISM for your app, you can override the `defaultIsm` mailbox provides by passing it to the Router's `initialize` method like following:
+如果您想为您的应用程序使用自己的 ISM，可以通过将其传递给 Router 的 `initialize` 方法来覆盖 Mailbox 提供的 `defaultIsm`，如下所示：
 
 ```solidity
 contract CrosschainAppTest is Test {
@@ -123,8 +123,8 @@ contract CrosschainAppTest is Test {
 }
 ```
 
-:::tip
+:::提示
 
-You can find examples of our unit testing setup here: [InterchainAccountRouterTest](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/dae8b26ed65383844e4fbed7585deeb52da4e454/solidity/test/InterchainAccountRouter.t.sol#L38)
+您可以在此处找到我们单元测试设置的示例：[InterchainAccountRouterTest](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/dae8b26ed65383844e4fbed7585deeb52da4e454/solidity/test/InterchainAccountRouter.t.sol#L38)
 
 :::
