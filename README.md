@@ -1,36 +1,36 @@
-# Website
+# 网站
 
-This website is built using [Docusaurus 3](https://docusaurus.io/), a modern static website generator.
+该网站使用现代静态网站生成器[Docusaurus 3](https://docusaurus.io/)制作。
 
-## Generated Content
+## 生成的内容
 
-The `static` directory includes generated content. Please ask @yorhodes for assistance if you need to update this content.
+`static`目录包含生成的内容。如果需要更新此内容，请询问 @yorhodes 寻求帮助。
 
-Most of this is simply serialized content from `@hyperlane-xyz` NPM packages (see `devDependencies`). Eventually this should be part of the build process.
+其中大部分来自 `@hyperlane-xyz` NPM 包的序列化内容（请参见`devDependencies`）。最终，这将成为构建过程的一部分。
 
-### Installation
+### 安装
 
 ```
 $ yarn
 ```
 
-### Local Development
+### 本地开发
 
 ```
 $ yarn start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+该命令启动本地开发服务器并打开浏览器窗口。大多数更改都会实时反映，而无需重启服务器。
 
-### Build
+### 构建
 
 ```
 $ yarn build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+该命令可在 `build` 目录中生成静态内容，并可使用任何静态内容托管服务进行托管。 
 
-### Deployment
+### 部署
 
-Vercel Github Action is used to deploy the website. The action is triggered on every push to the `main` branch.
+使用 Vercel Github Action 来部署网站。该操作在每次推送到`main`分支时触发。
 
