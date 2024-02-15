@@ -1,12 +1,12 @@
 # Troubleshooting
 
-## Chain configuration
+## 链配置
 
-Within your working directory, you may find a `config/` folder containing a `chains.yaml` file. This `chains.yaml` configuration file allows you to describe chain metadata for use in Hyperlane deployments or apps.
+在您的工作目录中，可能会发现一个包含 `chains.yaml` 文件的 `config/` 文件夹。通过该 `chains.yaml` 配置文件，您可以描述链元数据，以便在 Hyperlane 部署或应用程序中使用。
 
-You can define a full configuration for any new chain in this file. The metadata that can be configured is defined in this [example configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml). You can also find the chain metadata schema at [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
+您可以在此文件中为任何新链定义完整配置。可配置的元数据在此[配置示例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)中定义。您还可以在 [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts) 中找到链元数据模式。
 
-Here's an example configuration for two local anvil chains:
+下面是两个本地anvil chains的配置示例：
 
 ```yaml
 ---
@@ -30,7 +30,7 @@ anvil2:
     - http: http://localhost:8555
 ```
 
-You can also extend a core chain config by providing the fields to be overridden:
+您还可以通过提供要重写的字段来扩展核心链配置：
 
 ```yaml
 ---
@@ -39,11 +39,11 @@ sepolia:
     confirmations: 2
 ```
 
-### Override RPC URLs
+### 重写 RPC URL
 
-You can override the RPC urls by extending the core chain config.
+您可以通过扩展核心链配置来覆盖 RPC 网址。
 
-In the example below, you can see how to define an array of RPCs and also adjust the retry parameters for any of them.
+在下面的示例中，你可以看到如何定义 RPC 数组，以及如何调整其中任何一个 RPC 的重试参数。
 
 ```yaml
 ---
@@ -62,9 +62,9 @@ sepolia:
         maxRequests: 10
 ```
 
-### Override transaction settings
+### 覆盖交易设置
 
-Transaction overrides are any properties to include when forming transaction requests. For example:
+事务重载是在形成事务请求时包含的任何属性。例如
 
 - `gasPrice`: number | string
 - `maxFeePerGas`: number | string
@@ -73,7 +73,7 @@ Transaction overrides are any properties to include when forming transaction req
 - `type`: number
 - `ccipReadEnabled`: boolean
 
-In the example below we're using a gas price of 7 gwei, hardcoding the nonce, and setting a maximum value for the base and priority fees.
+在下面的示例中，我们使用的燃料价格为7gwei，对 nonce 进行了硬编码，并为基本费和优先费设置了最大值。
 
 ```yaml
 ---
@@ -85,8 +85,8 @@ sepolia:
     nonce: 1337
 ```
 
-:::warning
+:::警告
 
-If you are overriding the nonce in the chain configuration, ensure you are updating the value on successful transactions.
+如果要覆盖链配置中的 nonce，请确保在交易成功时更新该值。
 
 :::
