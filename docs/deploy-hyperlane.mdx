@@ -4,78 +4,78 @@ import DeployContractsPartial from "/docs/partials/deploy-hyperlane/_deploy-cont
 import SendTestMessagesPartial from "/docs/partials/deploy-hyperlane/_send-test-messages.mdx";
 import DeployWarpRoutePartial from "/docs/partials/deploy-hyperlane/_deploy-warp-route.mdx";
 
-# Get Started
+# 立即开始
 
-Hyperlane can be deployed by anyone to any chain.
-This guide covers sending your first interchain message from a new EVM chain. By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
+任何人都可以在任何链上部署 Hyperlane。
+本指南涵盖从新 EVM 链发送第一条链间信息。在本指南结束时，您将部署并配置好邮箱智能合约和链外代理，从而允许开发人员向您的链发送链间消息或从您的链发送链间消息。
 
-:::note
+:::备注
 
-This guide has been specifically made to demonstrate how to connect a chain that _already has Hyperlane on it_ to a new chain that does _not_ have Hyperlane.
+本指南专门用于演示如何将已有Hyperlane的链连接到没有Hyperlane的新链上。
 
 :::
 
 <TerminologyPartial />
 
-## Overview
+## 概览
 
-There are five steps in this guide:
+本指南共有五个步骤：
 
-1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayer.
-2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-3. [<b>Run validators and relayer </b>](#3-run-validators-relayer) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2. The relayer will deliver messages between chains you deployed contracts to.
-4. [<b>Send a test message</b>](#4-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
-5. [<b>Deploy a warp route</b>](#5-optional-deploy-a-warp-route) to send token value, not just messages, across chains
+1. [<b>Set up keys</b>](#1-set-up-keys) 您将使用它来部署合同、运行验证器和中继器。
+2. [<b>Deploy contracts</b>](#2-deploy-contracts) 到本地链以及本地链可以收发信息的所有远程链。
+3. [<b>Run validators and relayer </b>](#3-run-validators-relayer) 使用 [Kurtosis](https://cloud.kurtosis.com)。验证器为您在步骤 2 中部署的链间安全模块提供所需的签名。中继器将在已部署合约的链之间传递信息。
+4. [<b>Send a test message</b>](#4-send-test-messages) 以确认中继器能够在每对链之间传递信息
+5. [<b>Deploy a warp route</b>](#5-optional-deploy-a-warp-route) 跨链发送标令牌
 
-## Getting Started
+## 立即开始
 
-## 1. Set up keys
+## 1. 设置密钥
 
 <SetupKeysPartial />
 
-## 2. Deploy contracts
+## 2. 部署合约
 
 <DeployContractsPartial />
 
-## 3. Run validators and relayer
+## 3. 运行验证器和中继器
 
-:::note
+:::备注
 
-This section covers how to 1-click deploy agents using a third party. To run the Hyperlane agent binaries yourself, follow the [Local Agents guide](guides/deploy-hyperlane-local-agents.mdx).
+本节介绍如何使用第三方一键部署代理。要自行运行 Hyperlane 代理二进制文件，请遵循[本地代理指南]（guides/deploy-hyperlane-local-agents.mdx）。
 
 :::
 
-We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
+我们与 [Kurtosis](https://www.kurtosis.com/) 合作，在云中提供一键式验证器和中继器部署。您将获得为期一个月的试用期，在此期间，您的验证器和中继器将在 Kurtosis Cloud 中免费运行。试用结束后，您需要自行运行验证器和中继器，或者购买 Kurtosis Cloud 订阅。
 
-To get started, use the `deploy kurtosis-agents` command to generate a link for configuring your Kurtosis deployment.
+要开始使用，请使用 `deploy kurtosis-agents` 命令生成一个链接，用于配置 Kurtosis 部署。
 
 ```bash
 hyperlane deploy kurtosis-agents
 ```
 
-Follow the prompts and then click on the Kurtosis Cloud link output by the command.
+按照提示操作，然后点击命令输出的 Kurtosis Cloud 链接。
 
-If this is your first time using Kurtosis Cloud, you'll need to sign in with Google and Kurtosis will provision a remote cloud instance for your validator and relayer in roughly 2 minutes.
+如果这是您第一次使用 Kurtosis Cloud，您需要使用Google登录 ，Kurtosis 会在大约 2 分钟内为您的验证器和中继器提供一个远程云实例。
 
 ![Get excited](../static/img/kurtosis-get-excited.png)
 
-A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2.
+将弹出一个预填配置屏幕，其中包含步骤 1 和 2 中的所有中继器和验证器信息。
 
-:::note
+:::备注
 
-If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by:
+如果您在通过 CLI 在 Kurtosis Cloud 上部署代理时遇到问题，可以通过以下方式手动输入此信息：
 
-1. Signing into [Kurtosis Cloud](https://cloud.kurtosis.com/).
-1. Clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
-1. Filling in the configuration modal.
+1. 登录 [Kurtosis Cloud](https://cloud.kurtosis.com/)。
+1. 点击[Hyperlane 软件包](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package)上的 "run"。
+1. 填写配置模块。
 
 :::
 
-The last step will be to input your `Validator Key` from Step 2. The screenshots below show an example prefilled configuration.
+最后一步是输入步骤 2 中的 "验证密钥"。下面的截图显示了一个预填充配置示例。
 
-:::warning
+:::警告
 
-The Kurtosis team is still building the secrets functionality of Kurtosis Cloud, so for now do not enter any sensitive information (e.g. your private keys) into Kurtosis! Only testing and non-sensitive values should be used.
+Kurtosis 团队仍在构建 Kurtosis Cloud 的保密功能，因此目前请勿在 Kurtosis 中输入任何敏感信息（例如您的私钥）！只能使用测试值和非敏感值。
 
 :::
 
@@ -83,30 +83,30 @@ The Kurtosis team is still building the secrets functionality of Kurtosis Cloud,
 
 ![Example Configuration Two](../static/img/kurtosis-example-config-two.png)
 
-Click `Run` to deploy your relayer and validator!
+单击 "run"部署中继器和验证器！
 
-Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis!
+配置成功执行后，您将看到一个绿色的"running"标记。恭喜您 您现在已经使用 Kurtosis 部署了自己的中继器和验证器！
 
 ![Success](../static/img/kurtosis-success.png)
 
-You can see information about your relayer and validator deployment, including logs, by navigating to the `Overview` tab.
+通过导航到 `Overview`选项卡，可以查看中继器和验证器部署的相关信息，包括日志。
 
 ![Enclave Overview](../static/img/kurtosis-enclave-overview.png)
 
 ![Validator Logs](../static/img/kurtosis-validator-logs.png)
 
-For issues with Kurtosis, please file an [issue on the Kurtosis Github repository](https://github.com/kurtosis-tech/kurtosis/issues/new/choose). For questions or discussion, use the [Github Discussions section of the Kurtosis repository](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a) or visit [the Kurtosis Discord server](https://discord.com/invite/jJFG7XBqcY).
+有关 Kurtosis 的问题，请提交 [Kurtosis Github repository](https://github.com/kurtosis-tech/kurtosis/issues/new/choose)。如有问题或讨论，请使用 [Kurtosis 仓库的 Github 讨论区](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a) 或访问 [Kurtosis Discord 服务器](https://discord.com/invite/jJFG7XBqcY)。
 
-:::info
+:::信息
 
-Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/pricing) and payment method information [here](https://cloud.kurtosis.com/payment-method).
+Kurtosis 提供一个月的 Kurtosis Cloud 免费试用期，用于运行您的中继器和验证器，但试用期结束后，您需要添加付款方式才能继续运行您的 Hyperlane 部署。查看订阅价格 [此处](https://kurtosis.com/pricing) 和支付方式信息 [此处](https://cloud.kurtosis.com/payment-method)。
 
 :::
 
-## 4. Send test messages
+## 4. 发送测试信息
 
 <SendTestMessagesPartial />
 
-## 5. (Optional) Deploy a Warp Route
+## 5. (可选) 部署一个Warp Route
 
 <DeployWarpRoutePartial />
