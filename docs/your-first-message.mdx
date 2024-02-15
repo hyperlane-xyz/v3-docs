@@ -8,23 +8,23 @@ import {
 } from "@site/src/components/AddressTable";
 import MessageQuickstart from "@site/src/components/MessageQuickstart";
 
-# Send your first interchain message
+# 发送您的第一条链间消息
 
-This tutorial demonstrates how to [send](./reference/messaging/send.mdx) an interchain message to a pre-deployed `TestRecipient` contract.
+本教程演示如何 [发送]（./reference/messaging/send.mdx）链间消息到预先部署的 "TestRecipient "合约。
 
 <SimpleMessagingDiagram />
 
-Sending a message is a simple matter of calling `Mailbox.dispatch`. Make sure you have an account with funds on the origin chain.
+发送信息只需调用 `Mailbox.dispatch`方法。请确保您的账户在原始链上有资金。
 
 <MessageQuickstart />
 
-:::tip
-You can watch the progress of your message on [explorer.hyperlane.xyz](https://explorer.hyperlane.xyz/) by searching for the **transaction hash** of your `Mailbox.dispatch` call.
+:::提示
+你可以在[explorer.hyperlane.xyz](https://explorer.hyperlane.xyz/)上通过搜索你的`Mailbox.dispatch`调用的**transaction hash**来查看消息的进度。
 :::
 
-## Check the result
+## 查看结果
 
-The `TestRecipient` has the following [handle](./reference/messaging/receive.mdx) implementation:
+`TestRecipient`具有以下处理[handle](./reference/messaging/receive.mdx)实现：
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -35,12 +35,12 @@ The `TestRecipient` has the following [handle](./reference/messaging/receive.mdx
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-Check the logs to see your message delivery!
+查看日志，了解信息的发送情况！git
 
 <details>
   <summary>Testnet `TestRecipient` Addresses</summary>
