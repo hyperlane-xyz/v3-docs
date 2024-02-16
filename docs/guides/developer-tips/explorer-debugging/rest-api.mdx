@@ -109,7 +109,7 @@ Action: `search-messages`, Parameter (1 required):
 
 ### 无需权限的互操作链的APIs
 
-Hyperlane 可以[无需权限地部署](.../.../.../deploy-hyperlane.mdx)到任何链上，但PI链上的消息无法被默认的Hyperlane代理所识别。要查看来自PI链的消息的详细信息，请查询search-pi-messages操作。搜索需要在请求正文中提供链配置。请注意，这个功能也可以在[资源管理器用户界面]（.../.../.../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx）中使用。
+Hyperlane 可以[permissionlessly deployed](../../../deploy-hyperlane.mdx)到任何链上，但PI链上的消息无法被默认的Hyperlane代理所识别。要查看来自PI链的消息的详细信息，请查询search-pi-messages操作。搜索需要在请求正文中提供链配置。请注意，这个功能也可以在[资源管理器用户界面]（.../.../.../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx）中使用。
 
 ```javascript
 const chainConfig = {

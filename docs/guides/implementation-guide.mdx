@@ -1,23 +1,23 @@
-# Implementation Guide
+# 实施指南(Implementation Guide)
 
-A Hyperlane implementation for a new chain architecture is comprised of the following:
+一个新链架构的 Hyperlane 实施由以下内容组成：
 
-1. [Contracts](#1-contracts): expose the interface for application developers to send and receive messages with
-2. [Agents](#2-agents): operate the protocol by adding security and relaying messages
-3. [Applications](#3-applications): applications that use the protocol and demonstrate its capabilities
+1. [Contracts](#1-contracts): 公开应用程序开发人员用于发送和接收消息的接口
+2. [Agents](#2-agents): 通过添加安全性并中继消息来操作协议
+3. [Applications](#3-applications): 使用协议并展示其功能的应用程序
 
-Before getting started here, it is recommended to review the protocol documentation.
+在开始之前，建议先查阅协议文档。
 
 ## 1. Contracts
 
-Below describes the onchain contract spec for the Hyperlane protocol. It uses solidity types for familiarity but everything should be generalizable to other languages.
+下面描述了 Hyperlane 协议的链上合约规范。它使用了 Solidity 类型以便熟悉，但所有内容都可以推广到其他语言。
 
-* `address` should be interpreted as the local chain's address type
-* `payable` describes a function that allows callers to pass native tokens
+* `address` 应该解释为本地链的地址类型
+* `payable` 描述了一个允许调用者传递本地代币的函数
 
 ### Message
 
-The message is the core data structure used by the Hyperlane protocol. It is a packed data structure that contains all the information needed to route a message from one domain to another.
+消息是 Hyperlane 协议使用的核心数据结构。它是一个紧凑的数据结构，包含了将消息从一个域路由到另一个域所需的所有信息。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
@@ -43,14 +43,14 @@ struct Message {
 
 ### Mailbox
 
-The mailbox is the entrypoint for developers to send and receive messages from.
+邮箱是开发人员发送和接收消息的入口。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-mailbox/src/main.sw)
 
 #### dispatch
 
-Dispatches a message to the destination domain and recipient.
+将消息分派到目标域和接收者。
 
 ```solidity
 function dispatch(
@@ -68,7 +68,7 @@ function dispatch(
 
 #### process
 
-Attempts to deliver `message` to its recipient. Verifies `message` via the recipient's ISM using the provided `metadata`.
+尝试将 `message` 交付给其接收者。使用提供的 `metadata` 通过接收者的 ISM 验证 `message`。
 
 ```solidity
 function process(
@@ -81,7 +81,7 @@ function process(
 
 #### count
 
-Returns the number of messages dispatched
+返回已发送的消息数量。
 
 ```solidity
 function count() public view returns (uint32);
@@ -89,7 +89,7 @@ function count() public view returns (uint32);
 
 #### root
 
-Returns root of merkle tree which contains all dispatched message IDs as leaves.
+返回包含所有已发送消息 ID 的 Merkle 树的根(root of merkle tree)。
 
 ```solidity
 function root() public view returns (bytes32);
@@ -97,7 +97,7 @@ function root() public view returns (bytes32);
 
 ### Message Recipient
 
-A contract that wants to receive a message must expose the following handler.
+想要接收消息的合约必须公开以下处理程序。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMessageRecipient.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw#L109)
@@ -113,27 +113,27 @@ function handle(
 );
 ```
 
-They may optionally specify a security module to verify messages before they are handled.
+它们可以选择性地指定一个安全模块，在消息被处理之前进行验证。
 
 ```solidity
 function interchainSecurityModule() returns (address);
 ```
 
-:::info
+:::信息
 
-After implementing these three contracts, you can reach your first milestone to test, mocking a message transfer, by calling a `Mailbox`'s `dispatch` function to send a message to a recipient and assert that the recipient received the message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/Messaging.t.sol#L29)
+实现了这三个合约后，您就可以达到第一个里程碑，即通过调用 `Mailbox` 的 `dispatch` 函数来向接收者发送消息，并判断接收者是否收到了消息，以模拟消息传输。参见[这里的 Foundry 测试案例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/Messaging.t.sol#L29)。
 
 :::
 
-### Interchain Security Module
+### 跨链安全模块（Interchain Security Module）
 
-Interchain security modules are used to verify messages before they are processed.
+跨链安全模块用于在消息被处理之前进行验证。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IInterchainSecurityModule.sol)
 
 #### moduleType
 
-Returns an enum that represents the type of security model encoded by this ISM.
+返回一个枚举，表示此 ISM 编码的安全模型的类型。
 
 ```solidity
 enum ModuleType {
@@ -149,11 +149,11 @@ enum ModuleType {
 function moduleType() returns (ModuleType);
 ```
 
-_Relayers infer how to fetch and format metadata from this type._
+_中继器推断如何从此类型获取和格式化元数据_
 
 #### verify
 
-Defines a security model responsible for verifying interchain messages based on the provided metadata.
+定义一个安全模型，负责根据提供的元数据验证跨链消息。
 
 ```solidity
 function verify(
@@ -171,11 +171,11 @@ function verify(
 
 ### Validator Announce
 
-Validators announce their signature storage location so that the relayer can fetch and verify their signatures.
+验证器公布其签名存储位置，以便中继器获取并验证其签名。
 
 ### announce
 
-Announces a validator signature storage location
+通知验证者签名存储位置
 
 ```solidity
 function announce(
@@ -187,7 +187,7 @@ function announce(
 
 ### getAnnouncedStorageLocations
 
-Returns a list of all announced storage locations
+返回所有已宣布的存储位置列表
 
 ```solidity
 function getAnnouncedStorageLocations(
@@ -199,14 +199,14 @@ function getAnnouncedStorageLocations(
 
 ### Multisig ISM
 
-Implements a security module that checks if the metadata provided to verify satisfies a quorum of signatures from a set of configured validators.
+实现一个安全模块，检查提供的元数据是否满足一组配置的验证者的签名法定数量。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/AbstractMultisigIsm.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism/src/main.sw)
 
 #### Metadata
 
-To be used with the MESSAGE_ID_MULTISIG module type implementation in the relayer, the metadata must be formatted as follows:
+要与中继器中的 MESSAGE_ID_MULTISIG 模块类型实现一起使用，元数据必须格式化如下：
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/isms/MessageIdMultisigIsmMetadata.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism-metadata/src/main.sw)
@@ -224,9 +224,9 @@ struct MultisigMetadata {
 
 #### validatorsAndThreshold
 
-Returns the set of validators responsible for verifying message and the number of signatures required
+返回负责验证消息的验证者集合以及所需签名的数量
 
-_Can change based on the content of _message_
+_可以根据 _message 的内容进行更改_
 
 ```solidity
 function validatorsAndThreshold(
@@ -242,22 +242,22 @@ function validatorsAndThreshold(
 
 :::info
 
-After implementing the MultisigISM, you reach the second milestone to test that your Mailbox only processes after a recipient's ISM returns true. You can test that with a `TestISM` that you can statically set to accept or reject any message. See a [Hardhat test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)
+实现了 MultisigISM 后，您就可以达到第二个里程碑，即测试您的邮箱仅在接收者的 ISM 返回 true 后才处理。您可以使用一个 `TestISM` 来测试，您可以静态设置它来接受或拒绝任何消息。参见[这里的 Hardhat 测试案例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)。
 
 :::
 
 ### Interchain Gas Paymaster
 
-The gas paymaster is used to pay for the gas required in message processing on the destination chain. This is not strictly required if the relayer is willing to subsidize message processing.
+燃料支付器用于支付目的链上信息处理所需的燃料。如果中继者愿意补贴信息处理费用，则不一定需要这样做。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
 
 #### payForGas
 
-Deposits msg.value as a payment for the relaying of a message to its destination chain.
+将 msg.value 存入作为向目标链中继消息的支付。
 
-_Overpayment will result in a refund of native tokens to the refundAddress. Callers should be aware that this may present reentrancy issues._
+_超额支付将导致向 refundAddress 退还本地令牌。调用者应注意这可能会产生重入问题。_
 
 ```solidity
 function payForGas(
@@ -274,7 +274,7 @@ function payForGas(
 
 #### Gas Payment
 
-Emitted when a payment is made for a message's gas costs.
+当支付消息燃料费用时发出。
 
 ```solidity
 event GasPayment(
@@ -286,21 +286,21 @@ event GasPayment(
 
 ## 2. Agents
 
-Below describes the agent spec for a new chain implementation. The rust implementations hope to support all chains, but the spec is intended to be chain agnostic.
+下面描述了新链实现的代理规范。Rust 实现希望支持所有链，但该规范的目的是与链无关。
 
 #### Message Indexing
 
-All agents must index messages from the origin mailbox. In the solidity mailbox, we [emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L125-L129) dispatched. Other chains may have different ways of surfacing this information, but the agent must be able to get message content reliably and with consistent ordering -- see the [message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs) trait.
+所有代理必须索引来自原始邮箱的消息。在 Solidity 邮箱中，我们[为每条分派的消息发出一个事件](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L125-L129)。其他链可能有不同的方式来呈现这些信息，但代理必须能够可靠地获取消息内容，并具有一致的顺序 - 请参见[消息索引器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs)特性。
 
 * [ethereum](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/chains/hyperlane-ethereum/src/mailbox.rs)
 
 ### Validator
 
-In addition to indexing messages dispatched from the mailbox, validators produce attestations for the messages they observe to be used on the destination chain for security.
+除了索引从邮箱分派的消息之外，验证者还会为他们观察到的消息生成认证，以便在目的地链上使用，确保安全。
 
 #### Checkpoint
 
-Validators produce attestations called checkpoints from the Mailbox which commit via merkle root to all dispatched message IDs.
+验证者从邮箱产生称为检查点的认证，这些认证通过 Merkle 根对所有已分派的消息 ID 进行提交。
 
 ```rust
 pub struct Checkpoint {
@@ -315,11 +315,11 @@ pub struct Checkpoint {
 }
 ```
 
-Validators use the latest checkpoint method on the [mailbox trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/16146f0f03d0b0be67583cf16b22a3c50abdd977/rust/hyperlane-core/src/traits/mailbox.rs) to get the latest checkpoint from the mailbox and submit signatures to some highly available storage using the [checkpoint syncer trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/16146f0f03d0b0be67583cf16b22a3c50abdd977/rust/hyperlane-base/src/traits/checkpoint_syncer.rs).
+验证者使用邮箱特性中的最新检查点方法来从邮箱获取最新的检查点，并使用检查点同步器特性将签名提交到一些高可用存储中。
 
 #### Checkpoint with Message ID
 
-Validators use indexed messages to join the checkpoint with the corresponding message ID emitted from the mailbox.
+验证者使用索引消息将检查点与邮箱发出的相应消息 ID 进行关联。
 
 ```rust
 pub struct CheckpointWithMessageId {
@@ -331,61 +331,61 @@ pub struct CheckpointWithMessageId {
 }
 ```
 
-They also publish these augmented checkpoints on their syncer.
+他们还将这些增强的检查点发布到他们的同步器上。
 
 :::tip
 
-You can test your validator by configuring it with a chain with the above contracts and observe that it creates valid signatures.
+您可以通过将验证器配置为具有上述合约的链，并观察它是否创建有效的签名来测试验证器。
 
 :::
 
 ### Relayer
 
-In addition to indexing messages dispatched from the mailbox, a relayer processes messages on the destination chain. This requires building metadata that satisfies the message recipient's ISM verification requirements, and signing transactions that process the message on the destination mailbox.
+除了索引从邮箱分派的消息外，中继器还会在目标链上处理消息。这需要构建满足消息接收者 ISM 验证要求的元数据，并签署处理消息的交易，以在目标邮箱上处理消息。
 
 #### Metadata Builders
 
-Each module type implies a different metadata format for message verification to succeed. A Relayer will need each module trait (eg [multisig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/multisig_ism.rs)) to be implemented.
+每个模块类型都意味着消息验证成功所需的不同元数据格式。中继器需要实现每个模块特性（例如 [multisig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/multisig_ism.rs)）来实现。
 
 #### Message Processor
 
-The relayer will attempt to process messages on the destination mailbox (see [message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)). If
+中继器将尝试在目标邮箱上处理消息（参见[消息处理器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)）。 如果
 
-* the message recipient ISM returns an unknown module type
-* module type is known but metadata fails to verify
-* metadata verifies but dry running (gas estimation) message processing fails
+* 消息接收方 ISM 返回一个未知的模块类型
+* 模块类型已知，但元数据验证失败
+* 元数据验证成功，但是进行燃料估算消息处理失败
 
-then the message will be kicked to an exponential backoff retry queue. The relayer relies on implementations of the [mailbox](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/mailbox.rs) and [ism](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/interchain_security_module.rs) traits for these checks.
+那么消息将被推送到指数回退重试队列。中继器依赖于 [mailbox](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/mailbox.rs) 和 [ism](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/interchain_security_module.rs) 特性的实现来进行这些检查。
 
 #### Gas Payment Enforcement
 
-The Relayer may also require gas payment for a specific message ID on the origin chain before processing the message on the destination chain. To do this, they must have an IGP deployed with their address set as beneficiary and index gas payment events. See [gas payment enforcement trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/gas_payment/mod.rs). We recommend to start with no gas payment enforcement policy and then gradually support more restrictive ones.
+中继器在处理目标链上的消息之前，可能还需要在源链上为特定的消息ID支付燃料费用。为了实现这一点，他们必须部署一个 IGP（燃料支付）合约，并将其地址设置为受益者，然后索引燃料支付事件。请参阅[gas payment enforcement trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/gas_payment/mod.rs)。我们建议开始时不使用气体支付强制执行策略，然后逐步支持限制性更强的策略。
 
 :::tip
 
-Once you implemented the MVP of the relayer, you can create an end-to-end test that
+一旦您实现了中继器的MVP（最小可行产品），您可以创建一个端到端测试，
 
-1. Spins up local origin and destination chain
-2. Deploys your contracts onto both
-3. Run validators for the origin chain
-4. Run a relayer between both chains
-5. Observe that upon dispatch of a message of the origin chain, the validator observes the message, creates a signature and the relayer appropriately processes your message via the ISM that specifies the validator on the destination chain.
+1. 启动本地源链和目标链
+2. 将您的智能合约部署到两条链上
+3. 在源链上运行验证者
+4. 在两个链之间运行中继器
+5. 请注意，验证器观察到该消息在源链上布时，会创建签名，然后中继器通过在目标链上指定验证者的ISM适当地处理您的消息。
 
 
-See this [end-to-end test on the Rust codebase ](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)for inspiration.
+查看[Rust代码库中的端到端测试](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)以获得灵感。
 
 :::
 
 
 ## 3. Applications
 
-### Warp Routes
+### Warp Router
 
-Token router application that routes tokens between domains on demand.
+令牌路由器应用程序，根据需要在不同域之间路由令牌。
 
 #### transferRemote
 
-Transfers `amountOrId` token to `recipient` on `destination` domain.
+将 `amountOrId` 令牌转移到目标域上的 `recipient`。
 
 ```solidity
 function transferRemote(
@@ -403,7 +403,7 @@ function transferRemote(
 
 #### Transfer Message
 
-To be interoperable with Warp Routes on other chains, the `body` of a transfer message must be a byte packed `TransferMessage` struct.
+为了与其他链上的Warp Routes实现互操作性，转账消息的`body`必须是一个按字节打包的`TransferMessage`结构体。
 
 ```solidity
 struct TransferMessage {

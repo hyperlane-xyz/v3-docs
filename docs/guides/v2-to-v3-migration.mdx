@@ -1,22 +1,22 @@
-# Hyperlane v2 to v3 Migration Guide
+# Hyperlane v2 到 v3 迁移指南
 
-Now in v3, we’ve improved the Mailbox to unlock modularity in how you transport messages, while simplifying the interface.
+现在在v3中，我们改进了邮箱以解锁消息传输的模块化方式，同时简化了界面。
 
 :::caution
 
-**Note:** v3 is a breaking change to v2.
+**Note:** v3 对 v2 进行了重大变更。
 
 :::
 
 ### Mailbox Interface
 
-A major version change of the Mailbox, v3, has arrived with these improvements:
+Mailbox 的重大版本变更 v3 已经推出，并带来了以下改进：
 
-1. modularity of domain specific transport and security layers
-2. simplifying the Hyperlane API to a single call (and address)
-3. configurable dispatch time requirements such as fee payments
+1. 特定域传输层和安全层的模块化
+2. 将 Hyperlane API 简化为单一调用（和地址）
+3. 可配置的分发时间要求，如费用支付
 
-v3 unifies interchain gas payments, protocol fees, and any message dispatch time behavior into a streamlined interface.
+v3 将跨链燃料支付、协议费用和任何消息派发时间行为统一到一个简化的接口中。
 
 ```solidity
 interface IMailbox {
@@ -33,15 +33,15 @@ interface IMailbox {
 }
 ```
 
-This is a departure from the existing [interchain gas payment](../reference/hooks/interchain-gas.mdx) and [hook](../reference/hooks/overview.mdx) interfaces but should be almost entirely backwards compatible. Mirroring the [interchain security modules](../reference/ISM/specify-your-ISM.mdx) pre-handle lifecycle hook, the architectural change is introducing post-dispatch lifecycle hooks which receive authenticated message content from the mailbox and perform some additional task, like paying interchain gas to the relayer or using a different transport layer.
+这与现有的[跨链燃料支付](../reference/hooks/interchain-gas.mdx)和[钩子](../reference/hooks/overview.mdx)接口有所不同，但几乎完全向后兼容。与[跨链安全模块](../reference/ISM/specify-your-ISM.mdx)的预处理生命周期钩子相呼应，这种架构变更引入了后处理生命周期钩子，它们从邮箱中接收经过身份验证的消息内容，并执行一些额外的任务，比如向中继器支付跨链燃料或使用不同的传输层。
 
 ![v3 hook diagram](../../static/img/v3-hook-diagram.png)
 
-The mailbox will have a required hook needed by the protocol and a default hook that can be overridden by the message sender, further modularizing the mailbox interface. We expect the required hook to include enforcing protocol fees. These hooks will be governable, enabling Mailbox operators to add message-specific capabilities as default or required behavior incrementally without mutating message content. This mirrors default ISM governance and post-dispatch hook behavior should reflect requirements of the message destination’s ISM, default or otherwise.
+邮箱将具有协议所需的必需钩子和可以被消息发送方覆盖的默认钩子，进一步将邮箱接口模块化。我们预计必需的钩子将包括执行协议费用。这些钩子将是可管理的，使邮箱操作员能够逐步添加消息特定的功能作为默认或必需的行为，而不会改变消息内容。这与默认ISM的治理相呼应，后处理钩子的行为应反映消息目的地的ISM的要求，无论是默认的还是其他。
 
 ### Post Dispatch Hook Interface
 
-The post dispatch hook interface is designed for maximal generality and extensibility of implementation (quite similar to the ISM verification interface). In addition to the entire message content, metadata can be provided by the dispatcher for further expression of preferences. For hooks that charge for use, a quote interface is necessary to inform the message sender how much value must be passed to the mailbox dispatch call.
+后处理钩子接口旨在实现最大的通用性和可扩展性（与ISM验证接口非常相似）。除了整个消息内容外，调度器还可以提供元数据以进一步表达偏好。对于收费使用的钩子，需要一个报价接口来告知消息发送者必须传递多少价值给邮箱派发调用。
 
 ```solidity
 interface IPostDispatchHook {
@@ -58,7 +58,7 @@ interface IPostDispatchHook {
 
 ### Usage Patterns
 
-This new interface greatly simplifies the integration experience and prevents confusion for first time users.
+这个新接口极大地简化了集成体验，并消除了初次使用者的困惑。
 
 **Before**
 
@@ -81,13 +81,13 @@ uint256 quote = mailbox.quoteDispatch(destination, recipient, body);
 mailbox.dispatch{value: quote}(destination, recipient, body);
 ```
 
-Alternatively, any overpayment will be refunded so quoting is not strictly necessary but dispatch may revert if payment is insufficient.
+或者，任何超额支付都将退款，因此报价并不是绝对必要的，但如果支付不足，派发可能会回滚。
 
 ```solidity
 mailbox.dispatch{value: msg.value}(destination, recipient, body);
 ```
 
-If you want post-dispatch behavior on a non-default chain, such as using an OpStack bridge on messages outbound from ethereum, simply pass the corresponding hook.
+如果您想要在非默认链上执行后处理行为，例如在从以太坊出站的消息上使用OpStack桥接，只需传递相应的钩子。
 
 ```solidity
 // overrides default hook with opStackHook
@@ -100,20 +100,20 @@ mailbox.dispatch{value: msg.value}(destination, recipient, body, opStackHook);
 
 ## Implementation Guide
 
-We have [implemented these changes for the EVM implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/v3) of Hyperlane and are sending them off for audit, targeting mid-September for mainnet launch. The following summarizes the logical changes (in pseudocode) as a reference for other execution environments.
+我们已经为Hyperlane的EVM实现[实施了这些更改](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/v3)，并将它们发送给审计，目标是在9月中旬启动主网。以下是逻辑变更的总结（伪代码形式），供其他执行环境参考。
 
 :::info
 
-**`param?`** indicates an optional parameter
+**`param?`** 表示可选参数
 
 
-**`optional ?? fallback`** resolves to **`optional`** if some value is specified, **`fallback`** if it is not
+**`optional ?? fallback`** 如果指定了某个值，则解析为 **`optional`**，如果没有指定，则解析为 **`fallback`**
 
 :::
 
 ### Mailbox Implementation
 
-The incremental merkle tree has been migrated out of the mailbox and replaced by `nonce` and `latestDispatchedId` storage variables. The nonce is necessary for maintaining message uniqueness. The latest dispatched message ID is useful for hooks which need to authenticate message content independent of the caller (`msg.sender`) address.
+增量 Merkle 树已从邮箱中迁移出来，并由 `nonce` 和 `latestDispatchedId` 存储变量替换。nonce 对于保持消息的唯一性是必要的。最新派发的消息 ID 对于需要独立于调用者 (`msg.sender`) 地址认证消息内容的钩子非常有用。
 
 ```solidity
 contract Mailbox {
@@ -166,7 +166,7 @@ contract Mailbox {
 
 ### Interchain Gas Paymaster Hook Implementation
 
-As a motivating example, the default hook may contain an interchain gas payment hook with defaults for gas limit and refund address that may be overridden via metadata.
+举个例子，默认钩子可能包含一个链间燃料支付钩子，其中默认的燃料限额和退款地址可通过元数据覆盖。
 
 ```solidity
 contract IgpHook is InterchainGasPaymaster {
