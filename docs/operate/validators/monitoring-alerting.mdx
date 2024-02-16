@@ -1,11 +1,11 @@
-# Monitoring & Alerting
+# 监控 & 警报
 
-Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen.
+Validators在由参数`--metrics`指定的端口号上公开指标。默认情况下为端口`9090`，但可以选择任何有效的端口。
 
 :::info
 
-If running as a Docker image, make sure to port-forward the metrics endpoint port. For, instance, to forward port 9090 on the local port 80, add the following flag to your `docker run` command: `-p 9090:80`
+如果作为Docker镜像运行，请确保将指标端口进行端口转发。例如，要将本地端口80上的端口9090进行转发，请在`docker run`命令中添加以下标志：`-p 9090:80`
 
 :::
 
-We also provide a mostly-ready-to-go Grafana dashboard to get you started, you can find the source and instructions for importing it under [tools/grafana](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/tools/grafana). If you want to use your own, the `hyperlane_latest_checkpoint` is the most critical metric in both the `phase="validator_observed"` and `phase="validator_processed"` dimension. It should gradually increase and the two should never really be out of sync.
+我们还提供了一个准备就绪的Grafana仪表板，可帮助您快速入门，您可以在[tools/grafana](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/tools/grafana)下找到源代码和导入说明。如果您想使用自己的仪表板，则`hyperlane_latest_checkpoint`是两个最关键的度量值，分别为`phase="validator_observed"`和`phase="validator_processed"`。它应该会逐渐增加，而且这两个值不应该出现不同步的情况。
