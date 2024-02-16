@@ -7,85 +7,85 @@ import DeployWarpRoutePartial from "/docs/partials/deploy-hyperlane/_deploy-warp
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Deploy Hyperlane with Local Agents
+# 使用本地代理部署 Hyperlane（Deploy Hyperlane with Local Agents）
 
-:::tip
+:::提示
 
-This guide is for advanced users who may eventually intend to run Hyperlane agents in a production-like environment. It will cover the basics of how to manually configure and run agents but **it is not a production setup guide**.
+这个指南适用于高级用户，他们可能最终打算在类似生产环境的环境中运行 Hyperlane 代理。它将介绍如何手动配置和运行代理的基础知识，但**不是生产设置指南**。
 
-If not done so already, beginners should get started by [**deploying Hyperlane with Kurtosis agents**](../deploy-hyperlane.mdx).
+如果尚未这样做，初学者应该从[**使用 Kurtosis 代理部署 Hyperlane**](../deploy-hyperlane.mdx)开始。
 
 :::
 
 <TerminologyPartial />
 
-## Overview
+## 概览
 
-There are six steps in this guide:
+这个指南分为六个步骤：
 
-1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers.
-1. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-1. [<b>Run a validator</b>](#3-run-a-validator) to provide the signatures needed for the Interchain Security Modules you deployed.
-1. [<b>Run a relayer</b>](#4-run-a-relayer) to send and receive messages between the chains you deployed contracts to.
-1. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains.
-1. [<b>Deploy a Warp Route</b>](#6-optional-deploy-a-warp-route) to send token value, not just messages, across chains.
+1. [<b>Set up keys</b>](#1-set-up-keys) 您将使用这些密钥部署合约并运行验证人和中继。
+1. [<b>Deploy contracts</b>](#2-deploy-contracts) 在本地链和与本地链能够发送和接收消息的每个远程链上部署合约。
+1. [<b>Run a validator</b>](#3-run-a-validator) 为您部署的互链安全模块提供所需的签名。
+1. [<b>Run a relayer</b>](#4-run-a-relayer) 在您部署合约的链之间发送和接收消息。
+1. [<b>Send a test message</b>](#5-send-test-messages) 确认您的中继能够在每对链之间传递消息。
+1. [<b>Deploy a Warp Route</b>](#6-optional-deploy-a-warp-route) 跨链发送令牌，而不仅仅是消息。
 
-## Getting Started
+## 立即开始
 
-## 1. Set up keys
+## 1. 设置密钥
 
 <SetupKeysPartial />
 
-## 2. Deploy contracts
+## 2. 部署合约
 
 <DeployContractsPartial />
 
-## 3. Run a validator
+## 3. 运行验证人
 
-Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](../protocol/ISM/multisig-ISM.mdx).
+验证者为从您的链发送到远程链的消息提供安全性。仅在使用[多重签名 ISM](../protocol/ISM/multisig-ISM.mdx)时才需要它们。
 
-### Setup directories
+### 设置目录
 
-First, set the `CONFIG_FILES` environment variable to the path of the agent config generated in the [deploy contracts](#2-deploy-contracts) step. For example:
+首先，将 `CONFIG_FILES` 环境变量设置为在 [部署合约](#2-deploy-contracts) 步骤中生成的代理配置文件的路径。例如：
 
 ```bash
 export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
 ```
 
-Next, create a local directory for your validator to write its signatures to. Remember the path, as you will need this when configuring your validator.
+接下来，创建一个本地目录，用于让您的验证器将其签名写入其中。记住这个路径，因为在配置验证器时您将需要它。
 
-:::danger
-The validator signatures path will be written on-chain as part of the [validator announcement transaction](./implementation-guide.mdx#validator-announce). **Be careful not to reveal any security-sensitive or personal information!**
+:::危险操作
+验证器签名路径将作为[验证器公告交易](./implementation-guide.mdx#validator-announce)的一部分写入链上。**请注意不要泄露任何安全敏感或个人信息！**
 :::
 
 ```sh
-# Pick an informative name specific to the chain you're validating
+# 选择一个具体到您正在验证的链的信息性名称
 export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-<your_chain_name>
 
-# Create the directory
+# 创建目录
 mkdir -p $VALIDATOR_SIGNATURES_DIR
 ```
 
-:::warning
+:::警告
 
-You will not be able to mount anything in `/tmp` when running the agent via Docker on Mac. To counter this, create a local `tmp` directory to mount instead.
+在 Mac 上通过 Docker 运行代理时，您将无法将任何内容挂载到 `/tmp`。为了解决这个问题，请创建一个本地的 `tmp` 目录进行挂载。
 
 ```sh
-# Create a local tmp directory that can be accessed by docker
+# 创建一个本地的 tmp 目录，该目录可以被 Docker 访问。
 mkdir tmp
 
-# Pick an informative name specific to the chain you're validating
+# 选择一个具有特定信息的名称，该名称与您正在验证的链相关。
 export VALIDATOR_SIGNATURES_DIR=tmp/hyperlane-validator-signatures-<your_chain_name>
 
-# Create the directory
+# 创建目录
 mkdir -p $VALIDATOR_SIGNATURES_DIR
 ```
 
 :::
 
-### Configure
+### 配置
 
-There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
+Validators可以配置许多参数。对于本指南，我们只关心其中的一小部分：
 
 | Parameter                 | Description                                                                                                   |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -95,22 +95,22 @@ There are numerous parameters that validators can be configured with. For this g
 | `--checkpointSyncer.path` | Path to local directory where validator signatures will be written. Same path as `$VALIDATOR_SIGNATURES_DIR`. |
 | `--validator.key`         | Your validator's hexadecimal private key.                                                                     |
 
-:::info
+:::信息
 
-Make sure the validator key corresponds to the address provided when setting up your MultisigIsmConfig. Otherwise, the Multisig ISM you deployed in the previous step will not be able to verify messages sent from your chain.
+确保验证器密钥对应于设置 MultisigIsmConfig 时提供的地址。否则，你在上一步中部署的 Multisig ISM 将无法验证从你的链发送的消息。
 
 :::
 
-To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
+要了解您可以更改的所有参数，请阅读 [代理配置参考](../operate/config-reference.mdx)。
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
 
-**Update agent config**
+****更新代理配置****
 
-Unless you are running Docker on Linux, you will also need to update the agent configuration for your network. This is because Docker does not support the [`host` network mode](https://docs.docker.com/network/drivers/host/) on Mac, Windows or Windows Server.
+除非您正在Linux上运行Docker，否则您还需要更新您网络的代理配置。这是因为Docker在Mac、Windows或Windows Server上不支持[`host`网络模式](https://docs.docker.com/network/drivers/host/)。
 
-To do this, navigate to the agent-configuration at `$CONFIG_FILES` and replace all instances of "localhost" or "127.0.0.1" in to `host.docker.internal`. For example:
+要做到这一点，请转到`$CONFIG_FILES`下的代理配置，将所有实例中的 "localhost" 或 "127.0.0.1" 替换为 `host.docker.internal`。例如：
 
 ```json
 ...
@@ -128,16 +128,16 @@ To do this, navigate to the agent-configuration at `$CONFIG_FILES` and replace a
 ...
 ```
 
-**Mounting directories**
+**挂载目录**
 
-Running with Docker adds an extra layer of complexity because config files need to be accessible from within the Docker container, and validator signatures need to be accessible from outside of the container for the relayer to read. This is so the relayer can construct the metadata required for the message to be successfully validated by the Multisig ISM.
+使用Docker运行会增加额外的复杂性，因为配置文件需要从Docker容器内部访问，并且验证器签名需要从容器外部访问，以便中继器能够读取。这样中继器就可以构建所需的元数据，以便消息能够成功地通过Multisig ISM进行验证。
 
-To solve this issue, you can mount directories on your file system into the container. In the arguments below, we:
+为解决这个问题，您可以将文件系统中的目录挂载到容器中。在下面的参数中，我们：
 
-1. Set the `$CONFIG_FILES` environment variable to a fixed path within the container.
-1. Mount the agent config file to this fixed path and making it readonly.
-1. Mount the persistent data directory at a fixed path within the container.
-1. Mount the validator signatures directory to a fixed path within the container.
+1. 将 `$CONFIG_FILES` 环境变量设置为容器内的固定路径。
+1. 将代理配置文件挂载到此固定路径，并将其设置为只读。
+1. 将持久数据目录挂载到容器内的固定路径。
+1. 将验证器签名目录挂载到容器内的固定路径。
 
 ```sh
 ...
@@ -148,7 +148,7 @@ To solve this issue, you can mount directories on your file system into the cont
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration between docker instances running validators for different origin chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the chain name and validator key.
+硬编码这些路径可以在运行验证器的不同源链的 Docker 实例之间去重配置。这样可以更轻松地在运行容器时传递正确的参数。请参阅下面的示例，其中唯一需要针对不同链进行不同配置的是链名称和验证器密钥。
 
 ```sh
 ...
@@ -164,15 +164,15 @@ Hardcoding these paths deduplucates the configuration between docker instances r
 </TabItem>
 <TabItem value="from-source" label="Building from source">
 
-**Clone and setup**
+**克隆并设置**
 
-First, clone the Hyperlane monorepo:
+首先，克隆 Hyperlane monorepo：
 
 ```sh
 git clone git@github.com:hyperlane-xyz/hyperlane-monorepo.git
 ```
 
-Then follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) in the `rust` directory. This should setup `rustup` as well as Rosetta 2 if you are on Apple Silicon.
+然后按照 `rust` 目录中的 [设置说明](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) 进行操作。这将设置 `rustup` ，如果你使用的是 Apple Silicon，则会安装 Rosetta 2。
 
 ```sh
 # install rustup
@@ -185,23 +185,22 @@ softwareupdate --install-rosetta --agree-to-license
 </TabItem>
 </Tabs>
 
-### Run
+### 运行
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
-Now that you understand more about configuring validator arguments, pull the latest docker image:
+现在您对配置验证器参数有了更多的了解，请拉取最新的 Docker 镜像：
 
 ```sh
 docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519
 ```
 
-Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_validator_<your_chain_name>` if it does not exist yet.
+在运行之前，请确保所有需要挂载的目录都存在。这可能需要创建 `hyperlane_db_validator_<your_chain_name>`，如果它尚不存在的话。
 
 ```sh
 mkdir -p hyperlane_db_validator_<your_chain_name>
 ```
-
-Finally, run the validator:
+ 最后，运行验证程序：
 
 ```sh
 docker run \
@@ -223,7 +222,7 @@ docker run \
 
 <TabItem value="from-source" label="Building from source">
 
-After following the setup instructions, you should now be able to use `cargo` to run the Validator:
+完成设置后，您现在应该能够使用 `cargo` 运行验证器：
 
 ```sh
 cargo run --release --bin validator -- \
@@ -234,15 +233,15 @@ cargo run --release --bin validator -- \
     --validator.key <your_validator_key>
 ```
 
-:::note (optional) Run the binary directly
+:::备注（可选）：直接运行二进制文件
 
-You can alternatively build out the agent:
+你也可以构建代理程序：
 
 ```sh
 cargo build --release bin validator
 ```
 
-And run the binary directly:
+然后直接运行二进制文件：
 
 ```sh
 ./target/release/validator \
@@ -258,13 +257,13 @@ And run the binary directly:
 </TabItem>
 </Tabs>
 
-For further information, check out the [Validators guide](../operate/validators/run-validators.mdx).
+欲了解更多信息，请查阅[验证者指南](../operate/validators/run-validators.mdx)。
 
-## 4. Run a relayer
+## 4. 运行中继器
 
-Relayers deliver interchain messages sent between the local and remote chains.
+Relayers负责传递在本地链和远程链之间发送的跨链消息。
 
-You should already have set the `CONFIG_FILES` environment variable to the path of the agent config generated in the [deploy contracts](#2-deploy-contracts) step. If not, do so now.
+如果还没有，请确保已将 `CONFIG_FILES` 环境变量设置为在 [部署合约](#2-deploy-contracts) 步骤中生成的代理配置文件的路径。
 
 ```bash
 export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
@@ -272,7 +271,7 @@ export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
 
 ### Configure
 
-There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
+这个指南涉及到配置验证器的许多参数。对于这个指南，我们只关注其中的一小部分：
 
 | Parameter                       | Description                                                                              |
 | ------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -282,23 +281,22 @@ There are numerous parameters that validators can be configured with. For this g
 | `--defaultSigner.key`           | A hexadecimal private key used to sign transactions for all chains.                      |
 | `--metrics-port`                | Optional. The port to expose prometheus metrics on, defaults to `9090`.                  |
 
-:::tip
-Your set of relay chains should include both the origin chain and destination chain.
+:::提示
+您的中继链集应包括原始链和目标链。
 :::
 
-To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
+要了解您可以更改的所有参数，请阅读 [代理配置参考](../operate/config-reference.mdx)。
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
 
-**Mounting directories**
+**挂载目录**
+对于中继器（relayer），我们向Docker提供的参数几乎与验证器相同。
 
-For the relayer, we provide almost the same arguments to Docker as the validator:
-
-1. Set the `$CONFIG_FILES` environment variable to a fixed path within the container.
-1. Mount the agent config file to this fixed path and making it **readonly**.
-1. Mount the persistent data directory at a fixed path within the container.
-1. Mount the validator signatures directory to a fixed path within the container and making it **readonly**.
+1. 将`$CONFIG_FILES`环境变量设置为容器内的固定路径。
+1. 将代理配置文件挂载到此固定路径，并将其设置为**只读**。
+1. 将持久化数据目录挂载到容器内的固定路径。
+1. 将验证器签名目录挂载到容器内的固定路径，并将其设置为**只读**。
 
 ```sh
 ...
@@ -309,14 +307,14 @@ For the relayer, we provide almost the same arguments to Docker as the validator
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
+硬编码这些路径可以消除在运行中维护不同链集的中继器的Docker实例之间的配置重复。这样可以在运行容器时更容易传递正确的参数。请参阅下面的示例，其中唯一需要针对不同链进行配置的项目是中继的链列表和中继器密钥。
 
 </TabItem>
 <TabItem value="from-source" label="Building from source">
 
-**Clone and setup**
+**克隆并设置**
 
-If you haven't already done so, clone the Hyperlane monorepo and follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) in the `rust` directory.
+如果还没有这样做，请克隆 Hyperlane monorepo 并按照 `rust` 目录中的 [设置说明](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) 进行操作。
 
 ```sh
 # clone hyperlane monorepo
@@ -332,24 +330,24 @@ softwareupdate --install-rosetta --agree-to-license
 </TabItem>
 </Tabs>
 
-### Run
+### 运行
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
 
-If you haven't already pulled the Docker image, do this now by running:
+如果您还没有拉取 Docker 镜像，请现在运行以下命令进行操作：
 
 ```sh
 docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519
 ```
 
-Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
+在运行之前，请确保所有需要挂载的目录都存在。如果尚不存在的话，可能需要创建 `hyperlane_db_relayer` 目录。
 
 ```sh
 mkdir -p hyperlane_db_validator_<your_chain_name>
 ```
 
-Finally, run the relayer:
+最后，运行中继器：
 
 ```sh
 docker run \
@@ -369,7 +367,7 @@ docker run \
 </TabItem>
 <TabItem value="from-source" label="Building from source">
 
-After following the setup instructions, you should now be able to use `cargo` to run the Relayer:
+在按照设置说明进行操作后，您现在应该可以使用 `cargo` 运行中继器了：
 
 ```sh
 cargo run --release --bin relayer -- \
@@ -380,17 +378,17 @@ cargo run --release --bin relayer -- \
     --metrics-port 9091
 ```
 
-The metrics port is overriden to avoid clashing with the validator.
+为了避免与验证器发生冲突，metrics端口被覆盖。
 
-:::note (optional) Run the binary directly
+:::备注（可选）：直接运行二进制文件
 
-You can alternatively build out the agent:
+您也可以选择构建代理程序：
 
 ```sh
 cargo build --release bin relayer
 ```
 
-And run the binary directly:
+然后直接运行二进制文件：
 
 ```sh
 ./target/release/relayer \
@@ -406,12 +404,12 @@ And run the binary directly:
 </TabItem>
 </Tabs>
 
-For further information, check out the [Relayer guide](../operate/relayer/run-relayer.mdx).
+要获取更多信息，请查阅[中继器指南](../operate/relayer/run-relayer.mdx)。
 
-## 5. Send test messages
+## 5. 发送测试信息
 
 <SendTestMessagesPartial />
 
-## 6. (Optional) Deploy a Warp Route
+## 6. (可选) 部署一个Warp Route
 
 <DeployWarpRoutePartial />
