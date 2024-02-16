@@ -1,24 +1,24 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Configuration reference
+# 参考配置
 
 
 ## CONFIG_FILES
 
-**Description:** (Env only) List of additional configuration file paths to load in order (such as those in `hyperlane-monorepo/rust/config`). They will be merged first to last, so if both the first one and the last one specify a specific config path, the value set in the last file listed will be used.
+**说明：**（仅限环境变量）要加载的附加配置文件路径列表（例如 `hyperlane-monorepo/rust/config` 中的路径）。它们将按照从第一个到最后一个的顺序进行合并，因此如果第一个和最后一个都指定了特定的配置路径，那么将使用最后一个文件中设置的值。
 
-These files must be accessible within the filesystem your agent has access to. If you're running in Docker, see [the agent configuration guide](./agent-config.mdx#config-files-with-docker) for tips on mounting your config files into your Docker container.
+这些文件必须在代理程序可以访问的文件系统中可访问。如果您正在运行 Docker，请参阅[代理配置指南](./agent-config.mdx#config-files-with-docker)中有关将配置文件挂载到 Docker 容器中的提示。
 
 **Optional:** Yes
 
 **Agents:** All
 
-**Type:** `string` (Comma separated list of file paths)
+**Type:** `string` (用逗号分隔的文件路径列表)
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
-Not supported as an argument
+在参数不支持。
 </TabItem>
 
 <TabItem value="env" label="As Env">
@@ -28,13 +28,13 @@ export CONFIG_FILES='./config/ethereum/my-config.json,./config/ethereum/my-valid
 </TabItem>
 
 <TabItem value="config" label="As Config">
-Not supported in configuration files
+在配置文件中不支持。
 </TabItem>
 </Tabs>
 
 ## chains
 
-**Description:** Configuration for each of the chains that must be used by an agent.
+**说明：** 每个代理必须使用的链的配置。
 
 **Optional:** No
 
@@ -70,9 +70,9 @@ export HYP_CHAINS_ETHEREUM_*="...."
 
 ## chains.`<chain_name>`.name
 
-**Description:** Name of the domain. Allows specifying a different name for the domain than the chain's true name. This should _almost always_ be the same as `chain_name`.
+**说明：** 域名的名称。允许指定与链的真实名称不同的名称。这几乎总是应该与 `chain_name` 相同。
 
-**Requires:** Alignment with domain id if it is a known domain name.
+**Requires:** 如果是已知的域名，则需要与域 ID 对齐。
 
 **Optional:** No
 
@@ -113,9 +113,9 @@ export HYP_CHAINS_ETHEREUM_NAME="ethereum"
 
 ## chains.`<chain_name>`.domain
 
-**Description:** Hyperplane domain id to uniquely identify the domain. See also: [Domain Identifiers](../reference/domains.mdx).
+**说明：** 用于唯一标识域的超平面域 ID。另请参阅：[域标识符](../reference/domains.mdx)。
 
-**Requires:** Alignment with domain name if it is a known domain.
+**Requires:** 如果是已知域名，则与域名一致。
 
 **Optional:** No
 
@@ -156,7 +156,7 @@ export HYP_CHAINS_ETHEREUM_DOMAIN=1
 
 ## chains.`<chain_name>`.mailbox
 
-**Description:** Address of the mailbox contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+**说明：** 链上邮箱合约的地址。另请参阅 [contract addresses]（.../reference/contract-addresses.mdx）。
 
 **Optional:** No
 
@@ -201,7 +201,7 @@ export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
 
 ## chains.`<chain_name>`.interchainGasPaymaster
 
-**Description:** Address of the interchain gas paymaster contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+**说明：** 链上链间燃料主合同的地址。另请参阅 [contract addresses]（.../reference/contract-addresses.mdx）。
 
 **Optional:** No
 
@@ -246,7 +246,7 @@ export HYP_CHAINS_ETHEREUM_INTERCHAINGASPAYMASTER="0x6cA0B6D22da47f091B7613223cD
 
 ## chains.`<chain_name>`.validatorAnnounce
 
-**Description:** Address of the validator announce contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+**说明：** 链上验证公告合约的地址。另请参阅 [contract addresses]（.../reference/contract-addresses.mdx）。
 
 **Optional:** No
 
@@ -291,7 +291,7 @@ export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFF
 
 ## chains.`<chain_name>`.merkleTreeHook
 
-**Description:** Address of the merkle tree hook contract on the chain. See also [contract addresses](../reference/contract-addresses.mdx).
+**说明：** 链上merkle树钩子合约的地址。另请参阅 [contract addresses]（.../reference/contract-addresses.mdx）。
 
 **Optional:** No
 
@@ -336,9 +336,9 @@ export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5
 
 ## chains.`<chain_name>`.signer
 
-**Description:** The signer that should be used this chain
+**说明：** 本链应使用的签名者
 
-**Optional:** Yes (Will use `defaultsigner` if not specified)
+**Optional:** Yes（如果未指定，将使用 `defaultsigner`)
 
 **Agents:** All
 
@@ -375,9 +375,9 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_*="...."
 
 ## chains.`<chain_name>`.signer.type
 
-**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+**说明：** 定义的签名者类型。`HexKey` 签名者使用私钥，`Aws` 签名者使用基于 AWS 的 KMS，而 `Node` 则假设本地节点将签署 RPC 调用。
 
-**Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
+**Optional:** Yes；默认设置为 `node`，除非指定了 `key`，在这种情况下默认设置为 `hexKey`。
 
 **Agents:** All
 
@@ -424,11 +424,11 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey"
 
 ## chains.`<chain_name>`.signer.key
 
-**Description:** A local hex key. The hex string of a private key.
+**说明：** 本地十六进制密钥。私人密钥的十六进制字符串。
 
 **Requires:** `chains.<chain_name>.signer.type = "hexKey" | undefined`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No（如果符合要求）
 
 **Agents:** All
 
@@ -469,11 +469,11 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46
 
 ## chains.`<chain_name>`.signer.id
 
-**Description:** The UUID identifying the AWS KMS key
+**说明：** 标识 AWS KMS 密钥的 UUID
 
 **Requires:** `chains.<chain_name>.signer.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No（如果符合要求）
 
 **Agents:** All
 
@@ -510,11 +510,11 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum"
 
 ## chains.`<chain_name>`.signer.region
 
-**Description:** The AWS region
+**说明：** AWS 区域
 
 **Requires:** `chains.<chain_name>.signer.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No（如果符合要求）
 
 **Agents:** All
 
@@ -551,9 +551,9 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_REGION="us-east-1"
 
 ## chains.`<chain_name>`.protocol
 
-**Description:** Connection protocol to use.
+*说明：** 使用的连接协议。
 
-**Optional:** Defaults to `"ethereum"`
+**Optional:** 默认设置为`"ethereum"`
 
 **Agents:** All
 
@@ -594,17 +594,17 @@ export HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum"
 
 :::info
 
-**The consensus type currently only applies to EVM chains.**
+**共识类型目前只适用于 EVM 链。**
 
-Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
+与非 EVM 链的连接只支持一个 RPC url。如果在 [rpcUrls](#chainschain_namerpcurls)中指定了多个 RPC 网址，则只会使用第一个。
 
 :::
 
-**Description:** How to communicate with the provider
+**说明：**与提供者进行通信的方式
 
-* `"single"` uses a basic http connection
-* `"fallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
-* `"quorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+* `"single"` 使用基本的 http 连接
+* `"fallback"` 将首先尝试第一个 URL，然后在连接或其他提供者故障时自动“退回”到下一个提供者；这应该只重新尝试由于提供者而失败的调用，而不是调用本身；例如，不足的 gas 错误不会回退。
+* `"quorum"` 要求大多数 URL 同步一致，但提交事务除外；如果没有指定，它会自动协调 "最新 "区块，以减少同步错误。
 
 **Requires:** `chains.<chain_name>.protocol = "ethereum" | undefined`
 
@@ -648,13 +648,13 @@ export HYP_CHAINS_ETHEREUM_RPCCONSENSUSTYPE="single"
 
 :::info
 
-Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified, only the first one will be used.
+与非 EVM 链的连接只支持一个 RPC 网址。如果指定了多个 RPC 网址，则只会使用第一个。
 
 :::
 
-**Description:** Comma-separated URLs to connect the provider to. The difference between `customRpcUrls` and [rpcUrls](#chainschain_namerpcurls) is that `customRpcUrls` allows for more user friendly inputs from the CLI or environment variables (comma-separated vs array).
+*说明：**用于连接提供者的URL逗号以分隔。`customRpcUrls` 和 [rpcUrls](#chainschain_namerpcurls) 之间的区别在于，`customRpcUrls` 允许从 CLI 或环境变量中输入更加用户友好的内容（逗号分隔 vs 数组）。
 
-**Type:** `string` (comma separated list of urls without spaces)
+**Type:** `string` (以逗号分隔的网址列表，不含空格)
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
@@ -691,11 +691,11 @@ export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0
 
 :::info
 
-Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified, only the first one will be used.
+与非 EVM 链的连接只支持一个 RPC 网址。如果指定了多个 RPC 网址，则只会使用第一个。
 
 :::
 
-**Description:** URLs to connect the provider to. The first one is initially used, and on failure the other ones are tried. See [rpcConsensusType](#chainschain_namerpcconsensustype) for more information.
+**说明：** 用于连接提供者的 URL。最初使用第一个，如果失败，则尝试其他的。有关更多信息，请参阅 [rpcConsensusType](#chainschain_namerpcconsensustype)。
 
 **Requires:**
 
@@ -705,7 +705,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
     OR chains.`<chain_name>`.protocol = "cosmos" | "sealevel" | "fuel"
 ```
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果满足要求)
 
 **Agents:**
 
@@ -766,7 +766,7 @@ export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547"
 
 ## chains.`<chain_name>`.index.from
 
-**Description:** Height at which to start indexing contracts.
+**说明：** 开始索引合约的高度。
 
 **Optional:** Defaults to `0`
 
@@ -811,9 +811,9 @@ export HYP_CHAINS_ETHEREUM_INDEX_FROM=16271503
 
 ## chains.`<chain_name>`.index.chunk
 
-**Description:** Number of blocks to query at once when indexing contracts. Note that the configured providers must support whatever value is set. The default should work with nearly all providers.
+**说明：** 一次查询索引合约的区块数。请注意，配置的提供者必须支持设置的任何值。默认值几乎适用于所有提供者。
 
-**Optional:** Defaults to `1999`
+**Optional:** 默认设置为 `1999`
 
 **Agents:** Relayer & Scraper
 
@@ -859,11 +859,11 @@ export HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999
 
 :::info
 
-Because each VM supports a different signer type, the default signer can only support a single VM type. For instance, if the default signer is a ECDSA one, it will only be able to sign on EVM chains.
+由于每个 VM 支持不同的签名者类型，因此默认签名者只能支持单个 VM 类型。例如，如果默认签名者是 ECDSA 类型，则只能在 EVM 链上签名。
 
 :::
 
-**Description:** The default signer that should be used for all chains which did not specify their own.
+**说明：** 默认的签名者应该用于所有没有指定自己的链。
 
 **Optional:** Yes
 
@@ -895,9 +895,9 @@ export HYP_DEFAULTSIGNER_*="...."
 
 ## defaultsigner.type
 
-**Description:** The type of signer that is defined. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS-based KMS, and `Node` assumes the local node will sign RPC calls.
+**说明：** 已定义的签名者类型。HexKey "签名者使用私钥，"Aws "签名者使用基于 AWS 的 KMS，而 "Node "则假定本地节点将签署 RPC 调用。
 
-**Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
+**Optional:** 是；默认设置为 `node`，除非指定了 `key`，在这种情况下默认设置为 `hexKey`。
 
 **Agents:** All
 
@@ -929,11 +929,11 @@ export HYP_DEFAULTSIGNER_TYPE="hexKey"
 
 ## defaultsigner.key
 
-**Description:** A local hex key. The hex string of a private key.
+**说明：** 本地十六进制密钥。私人密钥的十六进制字符串。
 
 **Requires:** `defaultsigner.type = "hexKey" | undefined`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果符合要求)
 
 **Agents:** All
 
@@ -966,11 +966,11 @@ export HYP_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875e
 
 ## defaultsigner.id
 
-**Description:** The UUID identifying the AWS KMS key
+**说明：** 识别 AWS KMS 密钥的 UUID
 
 **Requires:** `defaultsigner.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果符合要求)
 
 **Agents:** All
 
@@ -1003,11 +1003,11 @@ export HYP_DEFAULTSIGNER_ID="alias/validator-signer-ethereum"
 
 ## defaultsigner.region
 
-**Description:** The AWS region
+*说明：** AWS 区域
 
 **Requires:** `defaultsigner.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果符合要求)
 
 **Agents:** All
 
@@ -1040,7 +1040,7 @@ export HYP_DEFAULTSIGNER_REGION="us-east-1"
 
 ## metricsport
 
-**Description:** Port to expose prometheus metrics on
+**说明：** 在以下平台上公开 prometheus 指标的端口
 
 **Optional:** Defaults to `9090`
 
@@ -1072,9 +1072,9 @@ export HYP_METRICSPORT=9090
 
 ## log.fmt
 
-**Description:** Configuration for the log module. This controls logging.
+**说明：** 日志模块的配置。它控制日志记录。
 
-**Optional:** Defaults to `pretty`
+**Optional:** 默认设置为 `pretty`
 
 **Agents:** All
 
@@ -1106,9 +1106,9 @@ export HYP_LOG_FMT="pretty"
 
 ## log.level
 
-**Description:** Configuration for the log module. This controls logging.
+**说明：** 日志模块的配置。它控制日志记录。
 
-**Optional:** Defaults to `info`
+**Optional:** 默认设置为 `info`
 
 **Agents:** All
 
@@ -1140,7 +1140,7 @@ export HYP_LOG_LEVEL="info"
 
 ## originchainname
 
-**Description:** Name of the chain a validator should validate for and name of the chain a relayer should relayer messages from. **Deprecated for Relayer, use** [#relaychains](#relaychains) **instead.**
+**说明:** 验证者应验证的链的名称以及中继器应从中中继消息的链的名称。 **已弃用 Relayer，请使用** [#relaychains](#relaychains) **代替。**
 
 **Optional:** No - Validators; Yes - Relayer
 
@@ -1172,7 +1172,7 @@ export HYP_ORIGINCHAINNAME="ethereum"
 
 ## validator
 
-**Description:** The signer that should be used by the validator.
+**说明：** 验证器应使用的签名。
 
 **Optional:** Yes
 
@@ -1204,9 +1204,9 @@ export HYP_VALIDATOR_*="...."
 
 ## validator.type
 
-**Description:** The type of EVM signer that is defined. Note that regardless of the VM the validator is operating on, checkpoints are always signed using the EVM ECDSA curve. A `HexKey` signer uses a private key, an `Aws` signer uses an AWS based KMS, and `Node` assumes the local node will sign RPC calls.
+**说明：** 已定义的 EVM 签名器类型。请注意，无论验证器在哪个虚拟机上运行，检查点始终使用 EVM ECDSA 曲线签名。HexKey "签名器使用私钥，"Aws "签名器使用基于 AWS 的 KMS，而 "Node "则假定本地节点将签署 RPC 调用。
 
-**Optional:** Yes; Defaults to `node` unless a `key` is specified in which case it defaults to `hexKey`
+**Optional:** Yes; 默认为 `node`，除非指定了一个 `key`，在这种情况下，默认为 `hexKey`。
 
 **Agents:** All
 
@@ -1238,11 +1238,11 @@ export HYP_VALIDATOR_TYPE="hexKey"
 
 ## validator.key
 
-**Description:** A local hex key. The hex string of a private key.
+**说明:**  一个本地的十六进制密钥。私钥的十六进制字符串。
 
 **Requires:** `validator.type = "hexKey" | undefined`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果符合要求)
 
 **Agents:** All
 
@@ -1275,11 +1275,11 @@ export HYP_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec
 
 ## validator.id
 
-**Description:** The UUID identifying the AWS KMS key
+**说明：** 标识 AWS KMS 密钥的 UUID
 
 **Requires:** `validator.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果符合条件)
 
 **Agents:** All
 
@@ -1312,11 +1312,11 @@ export HYP_VALIDATOR_ID="alias/validator-signer-ethereum"
 
 ## validator.region
 
-**Description:** The AWS region
+**说明:**  AWS 地区
 
 **Requires:** `validator.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (如果符合条件)
 
 **Agents:** All
 
@@ -1349,7 +1349,7 @@ export HYP_VALIDATOR_REGION="us-east-1"
 
 ## checkpointsyncer.type
 
-**Description:** Defines the method of syncing checkpoints
+**说明：** 定义同步检查点的方法
 
 **Optional:** No
 
@@ -1383,11 +1383,11 @@ export HYP_CHECKPOINTSYNCER_TYPE="localStorage"
 
 ## checkpointsyncer.path
 
-**Description:** Path on the local disk of a local storage type checkpoint syncer configuration.
+**说明：** 本地存储类型检查点同步器配置在本地磁盘上的路径。
 
 **Requires:** `checkpointsyncer.type = "localStorage"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (如果符合条件)
 
 **Agents:** Validator
 
@@ -1420,11 +1420,11 @@ export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer"
 
 ## checkpointsyncer.bucket
 
-**Description:** S3 bucket name
+**说明：** S3 存储名称
 
 **Requires:** `checkpointsyncer.type = "s3"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (如果符合条件)
 
 **Agents:** Validator
 
@@ -1457,11 +1457,11 @@ export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
 
 ## checkpointsyncer.region
 
-**Description:** S3 bucket region
+**说明：** S3 存储地区
 
 **Requires:** `checkpointsyncer.type = "s3"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (如果符合条件)
 
 **Agents:** Validator
 
@@ -1494,7 +1494,7 @@ export HYP_CHECKPOINTSYNCER_REGION="us-east-1"
 
 ## interval
 
-**Description:** How frequently the validator should check for new checkpoints in seconds. See also [latencies](../guides/latencies.mdx).
+**说明：** 验证器检查新检查点的频率（以秒为单位）。另请参阅[latencies](../guides/latencies.mdx)。
 
 **Optional:** No
 
@@ -1526,11 +1526,11 @@ export HYP_INTERVAL=30
 
 ## db
 
-**Description:** This is a local filesystem path to where the agents store relevant data on disk. **This must be unique per agent!** Multiple agents must have different paths. The path is relative to the current working directory if it does not start with a system defined root path such as `/` on unix. When using docker images, ensure that this folder gets persisted across runs.
+**说明：** 这是代理在磁盘上存储相关数据的本地文件系统路径。**每个代理的路径必须是唯一的！** 多个代理必须有不同的路径。如果路径不是以系统定义的根路径（如 unix 上的 `/`）开始，则是相对于当前工作目录的路径。使用 docker 镜像时，请确保该文件夹在运行过程中得到持久保存。
 
-For the scraper, this is the connection string to a postgresql database.
+对于 scraper，这是 postgresql 数据库的连接字符串。
 
-**Optional:** For validators and relayer it is optional and defaults to a path in the current working directory which includes the `originchainname`. For the scraper it is required.
+**Optional:** 对于验证器和中继器来说，它是可选项，默认为当前工作目录中包含 `originchainname` 的路径。对于scraper则为必填项。
 
 **Agents:** All
 
@@ -1564,6 +1564,7 @@ export HYP_DB="postgresql://postgres:password@localhost:5432/dbname"
 </TabItem>
 
 <TabItem value="config" label="As Config">
+
 For the validator:
 
 ```json
@@ -1592,13 +1593,13 @@ For the scraper:
 
 ## relaychains
 
-**Description:** List of chains to deliver messages between.
+**说明：** 在两个链之间传递信息的链列表。
 
 **Optional:** No
 
 **Agents:** Relayer
 
-**Type:** `string` (comma separated list)
+**Type:** `string` (逗号分隔列表)
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
@@ -1624,9 +1625,9 @@ export HYP_RELAYCHAINS="arbitrum,ethereum,bsc"
 
 ## gaspaymentenforcement
 
-**Description:** JSON stringified array of gas payment enforcement configurations sorted by highest priority first. The last policy should be a catch-all and handle any messages that did not match a previous policy.
+**说明:** 以最高优先级为第一的 JSON 字符串化数组，其中包含燃料支付执行配置。最后一个策略应该是一个全捕获策略，处理任何未匹配到之前策略的消息。
 
-**Optional:** Defaults to no enforcement (`[{"type": "none"}]`)
+**Optional:** 默认为不强制执行 (`[{"type": "none"}]`)
 
 **Agents:** Relayer
 
@@ -1636,25 +1637,25 @@ export HYP_RELAYCHAINS="arbitrum,ethereum,bsc"
 type gaspaymentenforcement = Array<GasPaymentEnforcementPolicy>;
 
 type GasPaymentEnforcementPolicy =
-( // fields specific to each type...
-    // No requirements - all messages are processed regardless of gas payment
+( // 每种类型的特定字段...
+    // 无要求--无论是否支付燃气费，所有信息均得到处理
     { type: "none" }
-    // Messages that have paid a minimum amount will be processed
+    // 将处理已支付最低金额的信息
   & { type: "minimum", payment: U256 }
-    // Required amount of gas on the foreign chain has been paid according
-    // to on-chain fee quoting. `gasfraction` defaults to "1 / 2".
+    // 外链上所需的燃料费已按以下规定支付
+    // 到链上费用报价。`gasfraction` 默认为 "1 / 2"。
   & { type: "onChainFeeQuoting", gasfraction?: GasFraction }
-) | { // all types have the following fields...
-    // If a message matches, this policy will be used.
-    // If no matching list is specified, all messages will match.
+) | { // 所有类型都有以下字段...
+    // 如果有匹配的信息，就会使用该策略。
+    // 如果没有指定匹配列表，则所有信息都将匹配。
     matchingList?: MatchingList
 };
 
-// A list of matching rules. A message matches if any of the list
-// elements matches the message.
+// 一组匹配规则。如果消息符合列表中的任何规则，则认为匹配。
+// 元素与消息匹配。
 type MatchingList = Array<MatchingListElement>;
 
-// Matches a message if any of the provided values matches.
+// 如果提供的任何值匹配，则匹配消息。
 interface MatchingListElement {
     originDomain?: NumericFilter
     senderAddress?: HashFilter
@@ -1673,7 +1674,7 @@ type U256 = string | number;
 type H256 = string;
 // Matches anything
 type Wildcard = "*";
-// A numeric string in the form `{numerator} / {denominator}`, e.g. "1 / 2"
+// 一个形式为 `{分子} / {分母}` 的数字字符串，例如 "1 / 2"。
 type GasFraction = string;
 ```
 
@@ -1701,9 +1702,9 @@ export HYP_GASPAYMENTENFORCEMENT='[{"type": "none", "matchingList": [{"senderAdd
 
 ## whitelist
 
-**Description:** A matching list to define what messages should be allowed. Any messages which do not match this list will not be relayed. If no whitelist is supplied all messages will be allowed.
+**说明：** 匹配列表，用于定义应允许哪些消息。任何不符合此列表的消息都不会被中继。如果未提供白名单，则将允许所有消息。
 
-See also [message filtering](./relayer/message-filtering.mdx)
+另请参阅 [信息过滤](./relayer/message-filtering.mdx)
 
 **Optional:** Yes
 
@@ -1712,11 +1713,11 @@ See also [message filtering](./relayer/message-filtering.mdx)
 **Type:** `JSON (string)`
 
 ```typescript
-// A list of matching rules. A message matches if any of the list
-// elements matches the message.
+// 匹配规则列表。如果消息与列表中的任何规则匹配，则视为匹配。
+// 元素与消息匹配。
 type MatchingList = Array&#x3C;MatchingListElement>;
 
-// Matches a message if any of the provided values matches.
+// 如果提供的任何值匹配，则匹配消息。
 interface MatchingListElement {
     originDomain?: NumericFilter
     senderAddress?: HashFilter
@@ -1759,9 +1760,9 @@ export HYP_WHITELIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d04
 
 ## blacklist
 
-**Description:** A matching list to define what messages should be ignored. Any messages which match this list will not be relayed. If no blacklist is supplied all messages will be allowed.
+**说明：**  一个匹配列表，用于定义应该被忽略的消息。与此列表匹配的任何消息都不会被中继。如果未提供黑名单，则将允许所有消息。
 
-See also [message filtering](./relayer/message-filtering.mdx)
+另请参阅 [信息过滤](./relayer/message-filtering.mdx)
 
 **Optional:** Yes
 
@@ -1772,11 +1773,11 @@ See also [message filtering](./relayer/message-filtering.mdx)
 ```typescript
 type blacklist = MatchingList | undefined;
 
-// A list of matching rules. A message matches if any of the list
-// elements matches the message.
+// 一个匹配规则列表。如果消息与列表中的任何规则匹配，则匹配。
+// 元素与消息匹配。
 type MatchingList = Array<MatchingListElement>;
 
-// Matches a message if any of the provided values matches.
+// 如果提供的任何值匹配，则匹配消息。
 interface MatchingListElement {
     originDomain?: NumericFilter
     senderAddress?: HashFilter
@@ -1819,9 +1820,9 @@ export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d04
 
 ## transactiongaslimit
 
-**Description:** The max allowable gas to relay a transaction.
+**说明:** 中继交易的最大允许燃料。
 
-**Optional:** Defaults to no limit
+**Optional:** 默认设置无限制
 
 **Agents:** Relayer
 
@@ -1851,13 +1852,13 @@ export HYP_TRANSACTIONGASLIMIT="250000000"
 
 ## skiptransactiongaslimitfor
 
-**Description:** List of domain ids to skip applying the `transactiongaslimit` for.
+**说明：** 跳过应用 transactiongaslimit 的域 ID 列表。
 
-**Optional:** Defaults to using the `transactiongaslimit` for all domains
+**Optional:** 默认情况下，所有域都使用 "transactiongaslimit"。
 
 **Agents:** Relayer
 
-**Type:** `string` (comma separated list of domain ids)
+**Type:** `string` (以逗号分隔的域 ID 列表)
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
@@ -1883,9 +1884,9 @@ export HYP_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220"
 
 ## allowlocalcheckpointsyncers
 
-**Description:** Whether to allow local `checkpointsyncer` types, if `false` it will ignore them.
+**说明：** 是否允许本地 `checkpointsyncer` 类型，如果为 `false`，则忽略它们。
 
-**Optional:** Defaults to `false`
+**Optional:** 默认设置为 `false`
 
 **Agents:** Relayer
 
@@ -1915,9 +1916,9 @@ export HYP_ALLOWLOCALCHECKPOINTSYNCERS=false
 
 ## AWS_ACCESS_KEY_ID
 
-**Description:** (Env only) The access key ID of your validator's AWS IAM user.
+**说明：** (仅限 Env）验证器的 AWS IAM 用户的访问密钥 ID。
 
-**Optional**: Required if any signer configuration uses `aws`
+**Optional**: 如果签名者配置中使用了 `aws` 则必须填写
 
 **Agents:** Relayer & Validator
 
@@ -1941,9 +1942,9 @@ Not supported in configuration files
 
 ## AWS_SECRET_ACCESS_KEY
 
-**Description:** (Env only) The secret access key of your validator's AWS IAM user.
+**说明：** (仅限 Env）验证器 AWS IAM 用户的秘密访问密钥。
 
-**Optional:** Required if any signer configuration uses `aws`
+**Optional:** 如果签名者配置中使用了 `aws` 则必须填写
 
 **Agents:** Relayer & Validator
 
