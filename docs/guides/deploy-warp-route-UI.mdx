@@ -1,41 +1,41 @@
 import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
-# Deploy a UI for your Warp Route
+# 部署一个用于您的 Warp 路由的用户界面
 
-After you've successfully [deployed a Warp Route](./deploy-warp-route.mdx), you may want to deploy a front-end UI to faciliate interchain token transfers. You can fork the [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and customize it to fit your needs.
+在成功[部署了一个 Warp 路由](./deploy-warp-route.mdx)之后，您可能希望部署一个前端用户界面来促进跨链代币转账。您可以 fork [Hyperlane Warp UI 模板](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) 并根据您的需求进行定制。
 
-## Configure & Customize the UI
+## 配置和定制用户界面
 
-Follow the [customization instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) for details on how to configure the UI's tokens and change the default branding assets/theme.
+请按照 [自定义说明](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) 中的说明，了解如何配置 UI 的代币和更改默认的品牌资产/主题。
 
-### Token Config Example
+### 代币配置示例
 
-Here's an example of a token config for a Warp Route that connects WETH on Goerli (chain ID 5). You can use Typescript, JSON, or YAML configs for your token configs.
+这是一个 Warp 路由的代币配置示例，连接到 Goerli 上的 WETH（链 ID 5）。您可以使用 Typescript、JSON 或 YAML 配置您的代币配置。
 
 ```typescript
 {
-  // The chain ID of the base chain
+  // 链ID
   chainId: 5,
-  // The address of the underlying token
+  // 代币的地址
   address: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
-  // The address of the HypERC20Token contract
+  // HypERC20Token 合约的地址
   hypCollateralAddress: '0x145de8760021c4ac6676376691b78038d3DE9097',
-  // The type, either 'collateral' or 'native'
+  // 类型：可以是 'collateral' 或 'native'
   type: 'collateral'
-  // The base token name
+  // 代币名称
   name: 'Weth',
-  // The base token symbol
+  // 代币符号
   symbol: 'WETH',
-  // The base token decimals
+  // 代币小数
   decimals: 18,
-  // A path to a token logo image
+  // 代币LOGO路径
   logoURI: '/logos/weth.png'
 }
 ```
 
-#### Chain Config Example
+#### 链配置示例
 
-Chain metadata can also be configured as needed. These are the same configs as the those used with the CLI for any of its deploy or send command (for example, those from the [deploy guide](../deploy-hyperlane.mdx)).
+链元数据也可以根据需要进行配置。这些配置与 CLI 中用于任何部署或发送命令的配置相同（例如，来自[部署指南](../deploy-hyperlane.mdx)的配置）。
 
 ```typescript
 {
@@ -55,25 +55,25 @@ anvil1: {
 }
 ```
 
-### Deploy the UI
+### 部署用户界面
 
-Since the UI is a Next.js app, you can use your favorite hosting service to host it. We recommend [Vercel](https://vercel.com), which works very well with Next. [AWS Amplify](https://aws.amazon.com/amplify) is another popular option.
+由于用户界面是一个 Next.js 应用程序，您可以使用您喜欢的托管服务来托管它。我们推荐使用 [Vercel](https://vercel.com)，它与 Next.js 非常配合。[AWS Amplify](https://aws.amazon.com/amplify) 是另一个流行的选择。
 
-* Sign up for [Vercel](https://vercel.com/)
-* Create a new project
-* Connect it to your Git repo
-* Hit Deploy!
+* 注册 [Vercel](https://vercel.com/)
+* 创建新项目
+* 将其连接到您的 Git 仓库
+* 点击部署！
 
-And that's it! Now you and your users can use the UI to send tokens from the collateral chain to remote chains, from one remote chain to another, and from any remote chain back to the collateral chain.
+就是这样！现在您和您的用户可以使用该用户界面将代币从抵押链（collateral chain）发送到远程链，从一个远程链发送到另一个远程链，并从任何远程链发送回抵押链。
 
-### Return gas
+### 返回燃料（Return gas）
 
-A common problem with token bridges like Warp Routes is that a user may transfer a token like USDC to a new chain, but only afterwards realize that they do not have the native gas token to move those tokens anywhere including back.
+像 Warp 路由这样的代币桥接器的一个常见问题是，用户可能会将诸如 USDC 的代币转移到新链上，但只在此之后才意识到他们没有本地的燃料代币将这些代币移动到任何地方，包括返回。
 
-Besides warning users in the UI about ensuring they have gas, you can also faucet them some native gas tokens to improve their initial experience. To achieve this faucet, you can modify the Warp Route contracts to hold some balance of the native token and share that with recipients. In addition, you could build an off-chain service which just observes for [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) and transfers the native gas token to the recipient.
+除了在用户界面中警告用户确保他们拥有燃料之外，您还可以为他们提供一些本地燃料代币，以改善他们的初始体验。要实现这个水龙头，您可以修改 Warp 路由合约以持有一些本地代币的余额，并与接收者分享。此外，您还可以构建一个离线服务，该服务只需观察 [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) 并将本地燃料代币转移到接收者。
 
 
-:::tip
+:::提示
 
 <TypescriptSdkPlaceholder />
 
