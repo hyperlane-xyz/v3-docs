@@ -1,20 +1,20 @@
-# Agent configuration
+# Agent 配置
 
-All agents use the same method of configuration which is a multi-layered config approach which allows for easy overriding of default configs. Each layer overrides overlapping values in the previous.
+所有代理都使用相同的配置方法，这是一种多层配置方法，可以轻松地覆盖默认配置。每一层都会覆盖前一层中重叠的值。
 
-## Config layers
+## 配置layers
 
-1. Base configuration from "default deployments" are in the [monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) and all of these are loaded automatically.
-2. Config files passed in via the `CONFIG_FILES` env var are loaded next; this env var should be a comma separated list of paths to json files that should be loaded in order from first to last.
-3. `HYP_` prefixed env vars will be read next.
-4. `HYP_<AGENT>_` prefixed env vars are then read and apply ONLY for the current agent. I.e. `RELAYER`, `VALIDATOR`, and `SCRAPER` will only read their respective prefixes.
-5. Command line arguments will be read last
+1. ”默认部署“的基本配置在 [monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) 中，所有这些配置都会自动加载。
+2. 接下来将加载通过 `CONFIG_FILES` env var 传入的配置文件；该 env var 应该是一个以逗号分隔的 json 文件路径列表，加载顺序为从第一个到最后一个。
+3. 接下来将读取以 `HYP_` 为前缀的环境变量。
+4. `HYP_<AGENT>_` 前缀的环境变量将被读取并仅应用于当前代理。例如，`RELAYER`、`VALIDATOR` 和`SCRAPER` 只读取各自的前缀。
+5. 最后读取命令行参数
 
-## Command line arguments
+## 命令行参数
 
-Command line arguments are added after the application name, such as`./relayer --originChainNames="test1,test2,test3"`
+在应用程序名称后添加命令行参数，例如`./relayer --originChainNames="test1,test2,test3"`
 
-The following formats are supported:
+支持以下格式：
 
 * `--argName argValue`
 * `--argName "argValue"`
@@ -23,40 +23,40 @@ The following formats are supported:
 * `--argName="argValue"`
 * `--argName='argValue'`
 
-Argument names are case-insensitive, so in this guide we may show them in camel-case for easier reading, but `--argName` is equivalent to `--ARGNAME` and `--argname.`
+参数名是不区分大小写的，因此在本指南中，为了方便阅读，我们可能会用驼峰小写显示参数名，但 `--argName`等同于 `--ARGNAME`和 `--argname.`。
 
-Examples:
+示例：
 
 * `{ "db": "/path/to/dir" }` can be set with `--db "/path/to/dir"`
 * `{ "chains": { "ethereum": { "name": "ethereum" } } }` (abbreviated as `chains.ethereum.name` or `chains.<chain_name>.name`) can be set with `--chains.ethereum.name ethereum`
 * `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` (abbreviated as `chains.<chain_name>.customrpcurls`) can be set with `--chains.avalanche.customrpcurls "https://some-url.com"`
 
-## Environment variables
+## 环境参数
 
-The config file format is the preferred way to set things which are not secret and do not need to change for each run as it is the easiest format to inspect and edit. Every config value in the file can be set as an env var if you use the correct name, however, there are a few env vars that cannot be set in the config such as `CONFIG_FILES`.
+配置文件格式是设置非机密内容的首选方式，每次运行都不需要更改，因为它是最容易检查和编辑的格式。如果使用正确的名称，文件中的每个配置值都可以设置为env-var，但是，有一些env-var不能在配置中设置，例如`CONFIG_FILES`。
 
-`HYP_` and `HYP_<AGENT>_` are equivalent prefixes with the only difference being which order they are loaded in and can refer to all of the config values in the config files.
+`HYP_` 和 `HYP_<AGENT>_` 是等效的前缀，唯一的区别在于加载顺序，它们可以引用配置文件中的所有配置值。
 
-The env name will be one of those two prefixes, and then the underscore-separated path of the uppercased path components to the config value.
+env 名称将是这两个前缀之一，然后是配置值的大写路径组件的下划线分隔路径。
 
-For example:
+示例：
 
-* `{ "db": "/path/to/dir" }` can be set with `HYP_DB="/path/to/dir"` or `HYP_RELAYER_DB="/path/to/dir"`
-* `{ "chains": { "ethereum": { "name": "ethereum" } } }` (abbreviated as `chains.ethereum.name` or `chains.<chain_name>.name`) can be set with `HYP_CHAINS_ETHEREUM_NAME="ethereum"` or `HYP_VALIDATOR_CHAINS_ETHEREUM_NAME="ethereum"` or `HYP_RELAYER_CHAINS_ETHEREUM_NAME="ethereum"` ...
-* `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` (abbreviated as `chains.<chain_name>.customrpcurls`) can be set with `HYP_CHAINS_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` or `HYP_VALIDATOR_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` and so on...
+* `{ "db": "/path/to/dir" }` 可以用 `HYP_DB="/path/to/dir"` or `HYP_RELAYER_DB="/path/to/dir"`
+* `{ "chains": { "ethereum": { "name": "ethereum" } } }` (abbreviated as `chains.ethereum.name` or `chains.<chain_name>.name`) 可以用 `HYP_CHAINS_ETHEREUM_NAME="ethereum"` or `HYP_VALIDATOR_CHAINS_ETHEREUM_NAME="ethereum"` or `HYP_RELAYER_CHAINS_ETHEREUM_NAME="ethereum"` ...
+* `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` (abbreviated as `chains.<chain_name>.customrpcurls`) 可以用 `HYP_CHAINS_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` or `HYP_VALIDATOR_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` 等等...
 
-## Config files with Docker
+## 使用 Docker 配置文件
 
-Running with the agent in Docker adds an extra layer of complexity because the config files need to be accessible from within the Docker container. The base configs that can be found in [the repo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) are already part of the provided Docker image and will all be loaded by default.
+在 Docker 中运行代理会增加额外的复杂性，因为配置文件需要从 Docker 容器内部访问。可以在[存储库](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config)中找到的基本配置已经是提供的 Docker 镜像的一部分，并且将默认加载所有配置文件。
 
-Mounting a single config file can be done with the flag `--mount type=bind,source=$LOCAL_CONFIG_PATH,target=/config/$CONFIG_NAME,readonly` and then adding the config file to `CONFIG_FILES` so it is loaded.
+要挂载单个配置文件，可以使用标志 `--mount type=bind,source=$LOCAL_CONFIG_PATH,target=/config/$CONFIG_NAME,readonly`，然后将配置文件添加到 `CONFIG_FILES` 中，以便加载它。
 
-Mounting an entire directory can be done with the flag `--mount source=$LOCAL_CONFIG_DIR_PATH,target=/config,readonly` then adding the individual config files to `CONFIG_FILES` that you want so they are loaded.
+要挂载整个目录，可以使用标志 `--mount source=$LOCAL_CONFIG_DIR_PATH,target=/config,readonly`，然后将您想要加载的个别配置文件添加到 `CONFIG_FILES` 中。
 
-For example, suppose you have a config file at your local machine's path `/home/workspace/ethereum.json` and want to run the validator with it.
+例如，假设您在本地机器上的路径 `/home/workspace/ethereum.json` 上有一个配置文件，并希望使用它来运行验证器。
 
 ```bash
 docker run -it --mount type=bind,source=/home/workspace/ethereum.json,target=/config/ethereum.json,readonly -e CONFIG_FILES=/config/ethereum.json $DOCKER_IMAGE ./validator
 ```
 
-The `source` path is the path on your local machine, the `target` path is where the source path contents will be made available within the Docker container, and the `CONFIG_FILES` should specify config(s) from the target path.
+`source`是宿主机上的路径，而`target`是容器内部相应路径。`CONFIG_FILES`应指定容器内部的目标路径中的配置文件。
