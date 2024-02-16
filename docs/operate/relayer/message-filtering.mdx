@@ -1,20 +1,20 @@
 # Message filtering
-_Configure which messages to relay, and which to ignore_
+_配置要中继的消息以及要忽略的消息_
 
-By default, the Relayer will attempt to deliver messages sent from its origin chain to any of the configured destination chains.
+默认情况下，中继器将尝试将从其源链发送到任何配置的目标链的消息传递到目标链。
 
-Relayers may want to further filter the messages they attempt to deliver. For example, someone building an interchain app may want to run a Relayer that only delivers messages sent to that application. Similarly, some Relayers may wish to only relay messages to a subset of available chains.
+中继器可能希望进一步筛选它们尝试传递的消息。例如，构建跨链应用程序的人可能希望运行一个仅传递发送到该应用程序的消息的中继器。同样，一些中继器可能希望仅将消息中继到一部分可用的链。
 
-Relayers may **optionally** filter the messages they deliver by setting the `--whitelist` or `--blacklist` environment variables. See also the [configuration reference's](../config-reference.mdx) whitelist section.
+中继器可以通过设置 `--whitelist` 或 `--blacklist` 环境变量来**可选地**筛选它们传递的消息。另请参阅配置参考[configuration reference's](../config-reference.mdx) 的白名单部分。
 
-These configs are stringified JSON objects with the following format:
+这些配置是字符串化的 JSON 对象，格式如下：
 
 ```typescript
-// A list of matching rules. A message matches if any of the list
-// elements matches the message.
+// 一个匹配规则列表。如果列表中的任何一个匹配，则消息会匹配。
+// 元素匹配消息。
 type MatchingList = Array<ListElement>;
 
-// Matches a message if any of the provided values matches.
+// 如果提供的任何值匹配，则匹配消息。
 interface ListElement {
     originDomain?: NumericFilter
     senderAddress?: HashFilter
@@ -33,9 +33,9 @@ type H256 = string;
 type Wildcard = "*";
 ```
 
-Both the whitelist and blacklists have "any" semantics. In other words, the Relayer will deliver messages that match _any_ of the whitelist filters, and ignore messages that match _any_ of the blacklist filters.
+白名单和黑名单都有 "任意 "语义。换句话说，中继器将传送符合_any_个白名单过滤器的信息，并忽略符合_any_个黑名单过滤器的信息。
 
-For example, the following config used as a whitelist will ensure the Relayer will relay any messages sent to Ethereum, any messages sent from address `0xca7f632e91B592178D83A70B404f398c0a51581F` to either Celo or Avalanche, and any messages sent to address `0xca7f632e91B592178D83A70B404f398c0a51581F` on Arbitrum or Optimism.
+例如，将以下配置用作白名单将确保中继器转发发送到以太坊的任何消息、从地址 `0xca7f632e91B592178D83A70B404f398c0a51581F` 发送到 Celo 或 Avalanche 的任何消息，以及发送到 Arbitrum 或 Optimism 上地址 `0xca7f632e91B592178D83A70B404f398c0a51581F` 的任何消息。
 
 ```json
 [
@@ -57,10 +57,10 @@ For example, the following config used as a whitelist will ensure the Relayer wi
 ]
 ```
 
-A valid config may look like&#x20;
+一个有效的配置可能如下所示：
 
 ```bash
 --whitelist='[{"senderAddress":"*","destinationDomain":["1"],"recipientAddress":"*"},{"senderAddress":"0xca7f632e91B592178D83A70B404f398c0a51581F","destinationDomain":["42220","43114"],"recipientAddress":"*"},{"senderAddress":"*","destinationDomain":["42161","420"],"recipientAddress":"0xca7f632e91B592178D83A70B404f398c0a51581F"}]'
 ```
 
-The blacklist supersedes the whitelist, i.e. if a message matches both the whitelist _and_ the blacklist, it will not be delivered.
+黑名单会覆盖白名单，即如果消息同时匹配白名单和黑名单，则该消息不会被传递。
