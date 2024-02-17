@@ -46,7 +46,7 @@
 
 有关如何生成密钥的说明，请参阅[agent keys](/docs/operate/set-up-agent-keys) 部分。部署程序密钥**must**是十六进制密钥，而验证器和中继程序密钥可以是十六进制或AWS KMS。
 
-如果使用 [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil) 在本地网络上进行部署，请使用以下命令为新生成的帐户提供资金。 它使用预先资助的私钥之一将 1 ETH 转移到“$YOUR_TARGET_ADDRESS”环境变量中的地址。
+如果使用 [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil) 在本地网络上进行部署，请使用以下命令为新生成的帐户提供资金。 它使用预先注入资金的私钥之一将 1 ETH 转移到“$YOUR_TARGET_ADDRESS”环境变量中的地址。
 
 ```
 cast send $YOUR_TARGET_ADDRESS \

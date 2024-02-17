@@ -1,31 +1,31 @@
-# Warp Routes
+# Warp路由
 
 :::caution
 
-This protocol overview is from our v2 contract version. 
+此协议概述来自我们的v2合同版本。
 
-v3 now includes [post-dispatch hooks](../reference/hooks/overview.mdx), with [interchain gas payments (IGP)](../reference/hooks/interchain-gas.mdx) as one of the required hooks. 
+v3现在包含了[post-dispatch hooks](../reference/hooks/overview.mdx)，其中[interchain gas payments (IGP)](../reference/hooks/interchain-gas.mdx)是必需的钩子之一。
 
-We are working to update it with the relevant content ASAP. In the meantime, see the fully [**updated v3 Reference**](../reference/messaging/messaging-interface.mdx) tab for the latest contract interfaces.
+我们正在努力尽快更新相关内容。与此同时，请参阅完整的[**updated v3 Reference**](../reference/messaging/messaging-interface.mdx)选项卡以获取最新的合约接口。
 
 :::
 
-## Overview of Warp Routes
+## Warp路由概述
 
-Warp Routes are Hyperlane's take on the concept of token bridging, allowing you to permissionlessly transfer any ERC20 or ERC721-like asset to any chain via Hyperlane.
+Warp路由是Hyperlane对令牌桥接概念的演绎，允许你通过Hyperlane将任何类似ERC20或erc721的资产无需许可转移到任何链上。
 
-You can combine Warp Routes with a Hyperlane deployment to create economic trade routes between any chain and others already connected through Hyperlane.
+您可以将Warp Routes与Hyperlane部署相结合，在任何链上与其他已通过 Hyperlane 连接的链之间实现资金流动。
 
-This diagram below illustrates a fairly simplified overview of the flow in creating your Warp Route, and the resulting asset.
+下面这张图简单地展示了创建Warp路由的流程，以及生成的资源。
 
-## Warp Route Architecture
+## Warp路由架构
 
 ![Warp Route diagram/doodle](../../static/img/warpcontractdiagram.png)
 
-Warp Route contracts transfer value between chains by locking collateral tokens on the origin chain (aka the collateral chain) and then minting wrapped tokens on the destination chain (the synthetic chain).
+Warp Route 合约通过在起源链（又称抵押链）上锁定抵押代币，然后在目的链（合成链）上铸造warp代币，从而在链之间转移价值。
 
-Users can redeem their locked tokens at any time by transferring their wrapped tokens back to the collateral chain.
+用户可以随时通过将其warp好的代币转回抵押链来赎回被锁定的代币。
 
-Like all applications built on top of Hyperlane, Warp Routes have customizable security via [Interchain Security Modules](../protocol/ISM/modular-security.mdx). This allows Warp Route deployers to configure and enforce custom rules and constraints that the interchain token must follow.
+与所有建立在 Hyperlane 基础上的应用程序一样，Warp Routes 可通过[Interchain Security Modules](../protocol/ISM/modular-security.mdx)自定义安全性。这样，Warp 路由部署者就可以配置和执行链间令牌必须遵守的自定义规则和约束。
 
-Warp Routes can be deployed between any set of chains that have Hyperlane deployments. If you would like to create a Warp Route that includes a chain that Hyperlane is not currently deployed on, feel free to [deploy hyperlane](../deploy-hyperlane.mdx) yourself!
+可以在任何一组部署了 Hyperlane 的链之间部署 Warp Routes。如果您想创建的 Warp Route 包含当前未部署 Hyperlane 的链，请自行 [deploy hyperlane](../deploy-hyperlane.mdx) ！
