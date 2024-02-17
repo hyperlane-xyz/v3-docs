@@ -1,9 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Interchain Gas Payment
+# 链间燃料费支付
 
-To [deliver a message](../messaging/receive.mdx), a transaction must be included on the destination chain that calls the Mailbox `process` function with the encoded message and ISM metadata.
+为了[deliver a message](../messaging/receive.mdx)，目标链上必须包含一个事务，该事务使用编码的消息和ISM元数据调用邮箱的 `process`函数。
 
 ```mermaid
 flowchart LR
@@ -21,7 +21,7 @@ flowchart LR
     IGP -. "value" .- Relayer
 ```
 
-For convenience, a [relayer](../../operate/relayer/run-relayer.mdx) watches for dispatched messages and will submit process transactions on behalf of the message sender if they receive sufficient payment on the origin chain. We refer to this as *interchain gas payment*.
+为了方便起见， [relayer](../../operate/relayer/run-relayer.mdx) 监视已分发的消息，如果消息发送者在原始链上收到足够的付款，则代表消息发送者提交进程事务。我们称之为**链间燃料费支付**。
 
 ```mermaid
 flowchart LR
@@ -35,7 +35,7 @@ flowchart LR
     Relayer -- "process{gasLimit}(...)" --> M_D
 ```
 
-Because messages can trigger arbitrary code execution, the relayer must meter the [`handle` call](../messaging/receive.mdx#handle) with a `gasLimit` to charge appropriately at message dispatch time.
+因为消息可以触发任意代码执行，所以中继器必须用`gasLimit`测量[`handle` call](../messaging/receive.mdx#handle) ，以便在消息分发时适当收费。
 
 $$
 txCost = gasPrice * gasLimit
@@ -47,31 +47,31 @@ $$
 
 ## Post Dispatch
 
-During the post-dispatch hook, the `InterchainGasPaymaster` contract will revert if payment is insufficient to cover the relayer's *anticipated* costs. The relayer will honor quotes from `dispatch` time.
+在发送后钩子期间，如果付款不足以支付中继器的“预期”成本，则 `InterchainGasPaymaster`合同将回滚。中继器将尊重`dispatch` 时间的报价。
 
 ### Gas Limit
 
-When none is specified, the `gasLimit` for metering the `handle` call uses a static default of `50_000`.
+当没有指定时，用于计量`handle` 调用的 `gasLimit`使用静态默认值`50_000`。
 
 :::tip
-We recommend developers benchmark their [`handle` implementations](../messaging/receive.mdx#handle) in unit tests to determine a reasonable `gasLimit` to use.
+我们建议开发人员在单元测试中对他们的[`handle` implementations](../messaging/receive.mdx#handle) 进行基准测试，以确定要使用的合理`gasLimit`。
 :::
 
-If you expect the `handle` function to consume more than this default, you should override the [default `gasLimit` in metadata](#metadata).
+如果你希望 `handle` 函数消耗超过这个默认值，你应该覆盖[default `gasLimit` in metadata](#metadata)。
 
-### Refunds
+### 退款
 
-If the message sender pays more than the hook quotes, the contract will refund the difference. If none is specified, the refund address will default to the message sender. This allows senders to skip explicit `quoteDispatch` calls.
+如果消息发送方支付的金额超过钩子报价，合同将退还差额。如果没有指定，退款地址将默认为消息发送方。这允许发送方跳过显式的`quoteDispatch` 调用。
 
 :::warning
-Refunds can present a risk of [reentrancy](https://www.certik.com/resources/blog/3K7ZUAKpOr1GW75J2i0VHh-what-is-a-reentracy-attack). Special care should be taken to ensure safety against reentrancy exploits.
+退款可能存在[reentrancy](https://www.certik.com/resources/blog/3K7ZUAKpOr1GW75J2i0VHh-what-is-a-reentracy-attack)。应特别注意确保安全，防止再入漏洞。
 :::
 
-Refunds are only made if payment is greater than the quote. Refunds **are not** made if delivery requires less gas than what was paid. If a refund is unsuccessful, the `payForGas` call will revert. To specify a different refund address, override the [default `refundAddress` in metadata](#metadata).
+只有在付款金额大于报价的情况下才会退款。如果发送所需的燃料费比已支付的燃料费少，则**不会**退款。如果退款不成功，`payForGas`调用将回滚。要指定不同的退款地址，请覆盖[default `refundAddress` in metadata](#metadata)。
 
-### Metadata
+### 元数据
 
-This hook expects metadata in a **packed encoding** of `StandardHookMetadata`. See the Mailbox [dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) for how to pass metadata overrides.
+这个钩子需要`StandardHookMetadata`的打包编码的元数据。关于如何传递元数据覆盖，请参阅邮箱Mailbox [dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) 。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -85,7 +85,7 @@ struct StandardHookMetadata {
 }
 ```
 
-#### Examples
+#### 示例
 
 ```solidity
 bytes memory metadata = abi.encodePacked(
@@ -103,10 +103,10 @@ bytes memory metadata = abi.encodePacked(
 
 ## Gas Oracles
 
-The interchain gas payment requirement is calculated using oraclized gas price and exchange rates between supported origin and destination chains.
+链间燃料费支付需求是使用支持的始发链和目的地链之间的整体燃料价格和汇率来计算的。
 
 :::info
-Exchange rates and gas prices are up to the relayer to decide. A spread may be charged to account for drift and operating costs.
+汇率和天然气价格由中继器决定。 可能会收取差价，以计入漂没和运营成本。
 :::
 
 <Tabs groupId="lang">
@@ -115,18 +115,18 @@ Exchange rates and gas prices are up to the relayer to decide. A spread may be c
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/hooks/igp/InterchainGasPaymaster.sol#L224-L228
 ```
 
-**Parameters**
+**参数**
 
-- `destinationDomain`: The message's destination domain
+- `destinationDomain`: 消息的目的域
 
-**Returns**
-- `tokenExchangeRate`: The exchange rate between the origin and destination chain's gas tokens
-- `gasPrice`: The gas price for the destination chain
+**返回**
+- `tokenExchangeRate`: 起源链和目的地链的gas代币之间的汇率
+- `gasPrice`: 目的地链的燃料价格
 
 </TabItem>
 </Tabs>
 
- The `quoteGasPayment` function calculates fees for the relayer's anticipated costs.
+`quoteGasPayment` 函数计算中继器预期成本的费用。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -134,19 +134,19 @@ Exchange rates and gas prices are up to the relayer to decide. A spread may be c
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/hooks/igp/InterchainGasPaymaster.sol#L195-L200
 ```
 
-**Parameters**
-- `destinationDomain`: The message's destination domain
-- `gasLimit`: The gas limit to meter the `handle` call with
+**参数**
+- `destinationDomain`: 消息的目的域
+- `gasLimit`: 测量`handle`调用的燃料制
 
-**Returns**
-- `fee`: The payment required for the `postDispatch` to succeed
+**返回**
+- `fee`: `postDispatch` 成功所需的付款
 
 </TabItem>
 </Tabs>
 
-## Retrying
+## 重试
 
-If the `handle` call consumes more gas than quoted, the relayer will not submit a process transaction. In this case, additional gas can be paid for with the `payForGas` function.
+如果`handle`调用消耗的燃料费超过报价，中继器将不会提交进程事务。在这种情况下，可以使用`payForGas` 功能支付额外的gas。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -154,11 +154,11 @@ If the `handle` call consumes more gas than quoted, the relayer will not submit 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainGasPaymaster.sol#L24-L29
 ```
 
-**Parameters**
-- `messageId`: The message identifier returned from `dispatch` call
-- `destinationDomain`: The message's destination domain
-- `gasAmount`: The additional gas amount to pay for
-- `refundAddress`: The address to refund excess payment to
+**参数**
+- `messageId`: 从`dispatch`调用返回的消息标识符
+- `destinationDomain`: 消息的目的域
+- `gasAmount`: 额外的燃料费用
+- `refundAddress`: 退还超额款项的地址
 
 </TabItem>
 </Tabs>
