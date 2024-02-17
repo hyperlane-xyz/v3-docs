@@ -1,9 +1,9 @@
 # Agents
 
-The Hyperlane protocol relies on decentralized offchain agents to observe, sign, and transmit messages.
+Hyperlane协议依靠去中心化的链下代理来观察、签名和传输消息。
 
-For convenience, Hyperlane implements these agents as a set of binaries implemented in Rust.
+为了方便，Hyperlane将这些代理实现为一组用Rust实现的二进制文件。
 
-1. [Validators](./agents/validators.mdx) attest to the validity of [Mailbox](./mailbox.mdx) messages that use a [Multisig ISM](./ISM/multisig-ISM.mdx), and make their signatures available to a relayer.
-1. [Relayers](./agents/relayer.mdx) aggregate off-chain metadata for the [`IInterchainSecurityModule` interface](../reference/ISM/specify-your-ISM) and deliver messages to their recipients.
-1. [Watchtowers](./agents/watchtowers) observe the network for fraud by validators. If detected, watchtowers submit evidence to the origin chain, slashing the fraudulent validator(s).
+1. [Validators](./agents/validators.mdx)验证使用 [Multisig ISM](./ISM/multisig-ISM.mdx)的[Mailbox](./mailbox.mdx) 消息的有效性，并使它们的签名对中继器可用。
+1. [Relayers](./agents/relayer.mdx)聚合[`IInterchainSecurityModule`接口](../reference/ISM/specify-your-ISM)的链下元数据，并将消息传递给他们的接收者。
+1. [Watchtowers](./agents/watchtowers)观察网络以防止验证者进行欺诈。如果被发现，watchtowers塔会向源链提交证据，削减欺诈的验证者。
