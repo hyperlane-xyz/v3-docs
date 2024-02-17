@@ -1,35 +1,34 @@
-# Relayer
+# 中继器
 
-A relayer is responsible for ensuring messages are delivered to their recipients. Relayers are a permissionless but integral part of the Hyperlane protocol. Anyone can run a relayer!
-
+中继器负责确保消息传递到接收方。中继器是Hyperlane协议中无需许可且不可分割的一部分。任何人都可以运行中继器!
 :::info
-Want to run a relayer? Follow the [Relayer](../../operate/relayer/run-relayer.mdx) guide.
+想要运行一个中继器？查看[Relayer](../../operate/relayer/run-relayer.mdx) 指南。
 :::
 
 :::note
-Running your own relayer involves deploying an [IGP contract](../interchain-gas-payment.mdx) and maintaining token exchange rates and gas prices inside of it to accurately charge message delivery fees. Therefore, we only recommend doing this while setting up a permissionlessly deployed bridge, rather than reusing an existing bridge.
+运行你自己的中继器涉及部署[IGP合同](../interchain-gas payment.mdx)，并在其中维护代币汇率和燃料费价格，以准确收取消息传输费用。因此，我们只建议在设置无需许可部署的网桥时这样做，而不是重用现有的网桥。
 :::
 
-Relayers are configured to relay messages between two or more chains. A relayer observes the origin [Mailbox](../mailbox.mdx) contracts, watching for new messages. When a new message is detected, the relayer queries the destination chain to determine the message recipient's [Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx).
+中继器被配置为在两个或多个链之间中继消息。中继者观察原始[Mailbox](../mailbox.mdx)合约，监视新消息。当检测到新消息时，中继器查询目的链以确定消息接收者的[Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx)。
 
-The relayer is then responsible for collecting the metadata needed by that ISM. This will vary by ISM, and may include signatures from one or more [validators](./validators.mdx), merkle proofs, zero knowledge proofs, and more!
+然后，中继器负责收集该ISM所需的元数据。这可能因ISM而异，可能包括来自一个或多个[validators](./validators.mdx)、merkle证明、零知识证明等等的签名!
 
-Finally, the relayer delivers the message to its recipient by calling `Mailbox.process()` on the destination chain with the aforementioned metadata.
+最后，中继器使用上述元数据在目标链上调用`Mailbox.process()`将消息传递给收件人。
 
 :::tip
-The relayer will periodically retry metadata gathering and message submission. This is important to improve resilience against validator downtime or temporary spikes in transaction fees on the destination.
+中继器将定期重试元数据收集和消息提交。这对于提高验证器宕机或目的地交易费用临时峰值的弹性非常重要。
 :::
 
-The relayer does not receive direct token incentives from the protocol, but operators can configure their fee structure for the messages they process, enabling them to earn revenue streams for providing their critical service. For more information, check out [interchain gas payments](../interchain-gas-payment.mdx).
+中继器不能从协议中直接获得令牌激励，但运营商可以配置他们处理的消息的费用结构，使他们能够通过提供关键服务获得收入流。有关更多信息，请查看[interchain gas payments](../interchain-gas payment.mdx)。
 
-Relayers can easily configure the messages that they wish to process. Currently, the relayer will support:
+中继器可以轻松配置它们希望处理的消息。目前，中继器将支持:
 
-1. A sender/recipient whitelist.
-2. A sender/recipient blacklist.
-3. The ability to accept [payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch) for processing a message on the destination chain.
+1. 发送/接收方白名单。
+2. 发件人/收件人黑名单。
+3. 接收[payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch)以处理目标链上的消息的能力。
 
-For convenience, Hyperlane will run an open source and configurable relayer agent, implemented as a rust binary. If you'd like to run your own relayer, we've open sourced the [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer).
+为了方便，Hyperlane将运行一个开源的可配置的中继代理，以rust二进制文件的形式实现。如果你想运行你自己的relayer，我们已经开源了[二进制文件](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer)。
 
-#### Error handling
+#### 错误处理
 
-The relayer will periodically retry messages when processing fails, using an exponential backoff strategy. Currently, there is no fixed maximum number of retries after which the relayer will cease to attempt processing a message. However, this is not a guarantee of indefinite retries, and operators should not rely on this as a service level agreement (SLA).
+当处理失败时，中继器将使用指数退避策略周期性地重试消息。目前，没有固定的最大重试次数，超过重试次数后，中继器将停止尝试处理消息。然而，这并不是无限期重试的保证，运营商不应将此作为服务水平协议(SLA)的依赖。
