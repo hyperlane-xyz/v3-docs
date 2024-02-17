@@ -1,8 +1,8 @@
-There are three keys you must set up and fund.
+您必须设置三个密钥并为其提供资金。
 
 :::tip
 
-To get started, you can simplify by using the same hexadecimal key for all three roles.
+首先，您可以通过对所有三个角色使用相同的十六进制密钥来简化。
 
 :::
 
@@ -44,9 +44,9 @@ To get started, you can simplify by using the same hexadecimal key for all three
   </tbody>
 </table>
 
-For instructions on how to generate keys, see the [agent keys](/docs/operate/set-up-agent-keys) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
+有关如何生成密钥的说明，请参阅[agent keys](/docs/operate/set-up-agent-keys) 部分。部署程序密钥**must**是十六进制密钥，而验证器和中继程序密钥可以是十六进制或AWS KMS。
 
-If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_TARGET_ADDRESS` environment variable.
+如果使用 [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil) 在本地网络上进行部署，请使用以下命令为新生成的帐户提供资金。 它使用预先资助的私钥之一将 1 ETH 转移到“$YOUR_TARGET_ADDRESS”环境变量中的地址。
 
 ```
 cast send $YOUR_TARGET_ADDRESS \

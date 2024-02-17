@@ -1,8 +1,8 @@
-You can check everything is working correctly by sending a test message between pairs of chains.
-Initiate the message with the CLI. It will ask for a set of core deployment artifacts to use. Select the `core-deployments` JSON file from Step 2.
+您可以在成对的链之间发送测试消息，检查一切工作是否正常。
+使用 CLI 启动信息。它会要求提供一组要使用的核心部署工件。选择步骤 2 中的 `core-deployments` JSON 文件。
 
 ```bash
 hyperlane send message --key $PRIVATE_KEY
 ```
 
-The `send message` command will inform you when the message is dispatched. After a short wait, a confirmation of delivery will be displayed. If the message delivery times out, it is likely that there's an issue with the Validator or Relayer setup in the steps above. To troubleshoot start by looking at the origin chain relayer logs. If you need further help, reach out on [Discord](https://discord.gg/hyperlane).
+`send message`命令会在发送信息时通知您。短暂等待后，系统将显示发送确认。如果信息发送超时，很可能是上述步骤中的验证器或中继器设置出现了问题。要排除故障，请查看起源链中继器日志。如果您需要进一步帮助，请联系 [Discord](https://discord.gg/hyperlane)。
