@@ -4,29 +4,29 @@ description: Aggregate security from multiple ISMs
 
 # Aggregation Module
 
-Developers can use an `AggregationISM` to combine security from multiple ISMs. Simply put, an `AggregationISM` requires that `m` of `n` ISMs verify a particular interchain message.
+开发人员可以使用“AggregationISM”来组合来自多个ISMs的安全性。简单地说，“aggreationism”要求“n”个ISMs中的“m”验证特定的链间消息。
 
-## Interface
+## 接口
 
 `AggregationISMs` must implement the `IAggregationIsm` interface.
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IAggregationIsm.sol
 ```
 
-## Configure
+## 配置
 
-The hyperlane-monorepo contains an `AggregationISM` implementation that application developers can deploy off-the-shelf, specifying their desired configuration.
+hyperlane-monorepo包含一个`AggregationISM`实现，应用程序开发人员可以部署现成的实现，指定他们想要的配置。
 
-Developers can configure, for each origin chain, a set of `n` ISMs, and the number of ISMs needed to verify a message.
+开发人员可以为每个源链配置一组“n”个ISMs，以及验证消息所需的ISMs数量。
 
-`AggregationISMs` can aggregate the security of any ISMs. For example, users can deploy a [Multisig ISM](multisig-ISM-interface.mdx) with their own validator set, and deploy an `AggregationISM` that aggregates that ISM with the Hyperlane default ISM.
+`AggregationISMs`可以聚合任何ISMs的安全性。例如，用户可以使用自己的验证器集部署[Multisig ISM](multisig-ISM-interface.mdx)，并部署一个`AggregationISM` ，将该ISM与Hyperlane默认ISM聚合在一起。
 
-## Customize
+## 自定义
 
-The hyperlane-monorepo contains an abstract `AggregationISM` implementation that application developers can fork.
+hyperlane-monorepo包含一个抽象的`AggregationISM`实现，应用程序开发人员可以对其进行分叉。
 
-Developers simply need to implement the `modulesAndThreshold()` function.
+开发人员只需要实现`modulesAndThreshold()` 函数。
 
-By creating a custom implementation, application developers can tailor the security provided by a `AggregationISM` to the needs of their application.
+通过创建自定义实现，应用程序开发人员可以根据应用程序的需要定制`AggregationISM`提供的安全性。
 
-For example, a custom implementation could require that low value messages be verified by a [Multisig ISM](multisig-ISM-interface.mdx), and require that high value messages _also_ be verified by a Wormhole ISM.
+例如，自定义实现可能要求低值消息由[Multisig ISM](multisig-ISM-interface.mdx)验证，并要求高值消息也由Wormhole ISM验证。
