@@ -1,19 +1,20 @@
 # OP Stack Hook
 
-Optimism and other [OP Stack](https://stack.optimism.io/) rollups have their own interface for message passing between L1 and L2 called the `CrossDomainMessenger`. Messages passed via this interface benefit from the security of the rollup [settlement layer](https://stack.optimism.io/docs/understand/landscape/#execution).
+optimistic和其他[OP Stack](https://stack.optimism.io/)聚合有自己的接口，用于L1和L2之间的消息传递，称为`CrossDomainMessenger`。通过此接口传递的消息受益于rollup[settlement layer](https://stack.optimism.io/docs/understand/landscape/#execution)的安全性。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/optimism/ICrossDomainMessenger.sol#L15-L19
 ```
 
-To provide this security as an option in Hyperlane, we created a Hook and ISM combo that can be transparently configured to reuse the native OP Stack interface.
+为了在Hyperlane中提供这种安全性，我们创建了一个Hook和ISM组合，可以透明地配置以重用本机OP Stack接口。
 
-See the [addresses](../contract-addresses.mdx) page for Hook and ISM addresses. 
-This is currently deployed between Goerli -> Optimism Goerli and Goerli -> Base Goerli. See contract deployments [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/sdk/src/consts/environments/testnet.json)
+请参阅[addresses](../contract-addresses.mdx) 页面获取Hook和ISM地址。
+目前部署在Goerli -> Optimism Goerli和Goerli -> Base Goerli之间。参见合同部署[here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/sdk/src/consts/environments/testnet.json)
 
-## How It Works
+## 它是如何工作的
 
-The OPStackHook sends the messageId to the L1CrossDomainMessenger which registers it as an Optimism `TransactionDeposited` event with ETH deposit and message data which gets picked up by the rollup node.
-The rollup node calls the precompiled contract `L2CrossDomainMessenger`'s relayMessage function which in turn makes calls configured OptimismISM contract, setting the messageId in the verifiedMessageId's mapping to the original L1 sender (ie. the user). The relayer carries just the message with no metadata, waiting for the Optimism node to pick and make a storage write to Optimism and the message delivery is then verified.
+OPStackHook将messageId发送给L1CrossDomainMessenger，后者将其注册为带有ETH存款和消息数据的Optimism`TransactionDeposited`事件，该事件由rollup节点拾取。
+
+rollup节点调用预编译的合约 `L2CrossDomainMessenger`的relayMessage函数，该函数反过来调用配置的OptimismISM合约，在verifiedMessageId的映射中设置messageId到原始L1发送者(即，用户)。中继器只携带没有元数据的消息，等待Optimism节点选择并对Optimism节点进行存储写入，然后验证消息传递。
 
 ```mermaid
 flowchart TB
