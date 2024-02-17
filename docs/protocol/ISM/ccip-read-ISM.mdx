@@ -1,26 +1,26 @@
 # CCIP Read ISM
 
-Using a `CcipReadIsm` provides developers with a lot of flexibility for verifying interchain messages. Ultimately, every other kind of ISM can be implemented as a CCIP Read ISM, so when building new types of ISM's moving forward it's encouraged to build CCIP Read ISM's as all the relayer integration work has already been done.
+使用`CcipReadIsm`为开发人员验证链间消息提供了很大的灵活性。最终，每一种其他类型的ISM都可以实现为CCIP Read ISM，因此，当构建新的ISM时，我们鼓励构建CCIP Read ISM，因为所有中继集成工作已经完成。
 
-One caveat to keep in mind for CCIP Read ISM's is that they do introduce a dependency on an external (to the blockchain), but self hostable, API. If this is a hard blocker for your use case, you may want to consider other message verification techniques.
+对于CCIP Read ISM要记住的一个警告是，它们确实引入了对外部(到区块链)但自托管的API的依赖。如果这对您的用例来说是一个困难的障碍，您可能需要考虑其他消息验证技术。
 
-Before building a CCIP Read ISM it's worth familiarizing yourself with the [CCIP Read specification](https://eips.ethereum.org/EIPS/eip-3668). The specification describes a generalized protocol that allows smart contracts on EVM compatible chains to query and consume offchain data.
+在构建CCIP Read ISM之前，您有必要熟悉[CCIP Read规范](https://eips.ethereum.org/EIPS/eip-3668)。该规范描述了一种通用协议，允许EVM兼容链上的智能合约查询和消费链下数据。
 
-## How it works
+## 它是如何工作的
 
-A relayer will constantly listening to `Dispatch` events emitted from Hyperlane [Mailboxes](../../protocol/mailbox.mdx). When a message is sent and picked up by a relayer, the relayer will query the destination ISM for information on how to process the message and if delivery will be successful.
+中继器会持续监听从Hyperlane [Mailboxes](../../protocol/mailbox.mdx)发出的`Dispatch`事件。当消息被中继器发送和接收时，中继器将向目的ISM查询如何处理该消息以及是否交付成功的信息。
 
 :::info
-The correct `moduleType` variable will need to be set on your ISM so that the relayer knows it's a CCIP Read ISM. To make sure this is configured correctly, you can inherit from the `AbstractCcipReadIsm` in `@hyperlane-xyz/core`.
+正确的`moduleType`变量需要在你的ISM上设置，以便中继知道这是一个CCIP Read ISM。为了确保正确配置，你可以从`@hyperlane-xyz/core`中的`AbstractCcipReadIsm`继承。
 :::
 
-The relayer will then call the `getOffchainVerifyInfo(bytes)` function on the ISM with the contents of the message being delivered. This function should revert with the `OffchainLookup` error described in the [interface](#interface) section below.
+然后，中继器将在ISM上调用`getOffchainVerifyInfo(bytes)`函数来传递消息的内容。当出现下面 [interface](#interface)部分描述的`OffchainLookup`错误时，该函数应该恢复。
 
-The relayer will query the endpoint specified in this revert message and pass the provided response and original message to the `process(bytes,bytes)` function of the destination `Mailbox`.
+中继器将查询此还原消息中指定的端点，并将提供的响应和原始消息传递给目的地`Mailbox`的`process(bytes,bytes)`函数。
 
-## Interface
+## 接口
 
-`CcipReadIsm`'s must implement the `ICcipReadIsm` interface and should extend the `AbstractCcipReadIsm`, a convenience contract that sets the `moduleType` correctly.
+`CcipReadIsm`必须实现`ICcipReadIsm`接口，并且应该扩展`AbstractCcipReadIsm`，这是一个方便的协议，可以正确设置`moduleType`。
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
@@ -53,13 +53,13 @@ interface ICcipReadIsm is IInterchainSecurityModule {
 }
 ```
 
-## Configure
+## 配置
 
-A great example for reference while developing CCIP Read ISM's exists as the [ChainlinkISM](https://github.com/AlexBHarley/permissionless-chainlink-feeds). The `ChainlinkISM` is initialized with a set of Chainlink oracles and verifies the price feed data provided has been signed over by some subset of the signers.
+在开发CCIP Read ISM时，[ChainlinkISM](https://github.com/AlexBHarley/permissionless-chainlink-feeds)是一个很好的参考例子。`ChainlinkISM`用一组Chainlink oracle初始化，并验证所提供的价格feed数据是否已经由部分签名者进行了签名。
 
 ### API
 
-As per CCIP Read, the offchain API will need to return JSON data with the form,
+根据CCIP Read，链下API需要返回带有表单的JSON数据，
 
 ```json
 {
@@ -67,19 +67,19 @@ As per CCIP Read, the offchain API will need to return JSON data with the form,
 }
 ```
 
-The relayer will pass this `data` property as the `metadata` parameter to `Mailbox.process(bytes metadata, bytes message)`.
+中继器会将这个`data`属性作为`metadata`参数传递给`Mailbox.Process ` (bytes metadata, bytes message)。
 
-Note that in the case of the Chainlink ISM, where the receiver of the data also acts as the verifying ISM, `data` is just the raw transaction sent to submit price feed data with associated signatures. The `message` property is somewhat redundant.
+请注意，在链式ISM的情况下，数据的接收方也充当验证ISM， `data`只是发送的原始交易，以提交具有相关签名的价格数据。`message`属性有些多余。
 
-### Contract
+### 合约
 
-When setting up the ISM, the `getOffchainVerifyInfo` and `verify` functions are the important ones to specify.
+在设置ISM时，`getOffchainVerifyInfo`和`verify`函数是需要指定的重要函数。
 
-- `getOffchainVerifyInfo` function should revert with an `OffchainLookup` error that instructs the relayer to query the given API endpoint. The `OffchainLookup` error allows for an array of API endpoints to be provided, so you can enforce any level of redundancy you'd like
+- `getOffchainVerifyInfo`函数应该返回一个`OffchainLookup`错误，指示中继器查询给定的API端点。`OffchainLookup`错误允许提供一组API端点，因此你可以强制执行你想要的任何级别的冗余
 
-- `verify` must take the provided `metadata` and assert its legitimacy. Again the [ChainlinkISM implementation](https://github.com/AlexBHarley/permissionless-chainlink-feeds/blob/main/apps/contracts/contracts/ChainlinkAggregator.sol#L114) can be a useful reference point when developing this logic for your own ISM.
+- `verify`必须获取提供的`metadata`并验证其合法性。同样，在为您自己的ISM开发此逻辑时，[ChainlinkISM实现](https://github.com/AlexBHarley/permissionless-chainlink-feeds/blob/main/apps/contracts/contracts/ChainlinkAggregator.sol#L114)可以是一个有用的参考点。
 
-Below is the scaffold of what a CCIP Read ISM could look like, where the ISM is also the receiver of the message, as per the Chainlink ISM.
+下面是CCIP Read ISM的示例，其中ISM也是消息的接收者，根据链链接ISM。
 
 ```solidity
 pragma solidity ^0.8.13;
