@@ -1,23 +1,23 @@
-# Mailbox
+# 邮箱
 
 :::caution
 
-This protocol overview is from our v2 contract version.
+本协议概述来自我们的v2合约版本。
 
-v3 now includes [post-dispatch hooks](../reference/hooks/overview.mdx), with [interchain gas payments (IGP)](../reference/hooks/interchain-gas.mdx) as one of the required hooks.
+v3现在包括了[post-dispatch hooks](../reference/hooks/overview.mdx)， [interchain gas payments (IGP)](../reference/hooks/interchain-gas.mdx)作为必需的hooks之一。
 
-We are working to update it with the relevant content ASAP. In the meantime, see the fully [**updated v3 Reference**](../reference/messaging/messaging-interface.mdx) tab for the latest contract interfaces.
+我们正在尽快更新相关内容。同时，请参阅完整的[**updated v3 Reference**](../reference/messaging/messaging-interface.mdx) 选项卡获取最新的合约接口。
 
 :::
 
 
-The Hyperlane `Mailbox` smart contracts expose an on-chain API for sending and receiving interchain messages. There is a `Mailbox` contract deployed on every chain Hyperlane supports.
+Hyperlane `Mailbox`智能合约公开了用于发送和接收链间消息的链上API。Hyperlane支持的每个链上都部署了一个“邮箱”合约。
 
-The network of `Mailboxes` facilitates the connective tissue between blockchains that developers leverage to create interchain applications, and add interchain functionality to their existing applications.
+`Mailboxes` 网络促进了区块链之间的连接，开发人员可利用其创建链间应用程序，并将链间功能添加到其现有应用程序中。
 
-## Interface
+## 接口
 
-The `IMailbox` interface exposes two state-mutating functions; `dispatch()` and `process()`, which are used to send and receive messages, respectively.
+“IMailbox”接口公开了两个状态变化函数;' dispatch() '和' process() '，它们分别用于发送和接收消息。
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
@@ -35,24 +35,24 @@ interface IMailbox {
 }
 ```
 
-### Dispatch
+### 发送
 
-To send interchain messages, developers call `Mailbox.dispatch()`.
+要发送链间消息，开发人员需要调用`Mailbox.dispatch()`。
 
-This function takes as parameters the message contents, the destination chain ID, and the recipient address. Each message get inserted as a leaf into an [incremental merkle tree](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f) stored by the `Mailbox`.
+该函数将消息内容、目标链ID和收件人地址作为参数。每条消息都作为叶子插入到由`Mailbox`存储的[增量默克尔树](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f)中。
 
-Hyperlane's proof of stake protocol uses this merkle tree to verify fraud proofs.
+Hyperlane的权益证明协议使用该merkle树来验证欺诈证据。
 
-### Process
+### 进程
 
-To deliver interchain messages, the [relayer](./agents/relayer.mdx) call `Mailbox.process()`.
+为了传递链间消息，[relayer](./agents/relayer.mdx)调用`Mailbox.process()`。
 
-This function takes as parameters the message to deliver as well as arbitrary metadata that can be specified by the relayer.
+这个函数接受要传递的消息以及中继器指定的任意元数据作为参数。
 
-The `Mailbox` will pass the message and metadata to the recipient's interchain security module for verification. If the ISM successfully verifies the message, the `Mailbox` delivers the message to the recipient by calling `recipient.handle()`.
+`Mailbox`将消息和元数据传递给收件人的链间安全模块进行验证。如果ISM成功验证消息，`Mailbox`通过调用`recipient.handle()`将消息传递给收件人。
 
 :::info
 
-See [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)for more details on Hyperlane message encoding
+请参阅[' message .sol '](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)for)了解Hyperlane消息编码的更多详细信息
 
 :::
