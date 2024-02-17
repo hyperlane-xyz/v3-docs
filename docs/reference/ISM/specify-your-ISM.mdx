@@ -3,13 +3,13 @@ import TabItem from '@theme/TabItem';
 
 import IsmDiagram from '@site/src/diagrams/messaging-isms.md';
 
-# Interchain Security Module Interface
+# 链间安全模块接口
 
-Hyperlane modularizes interchain message security through a generic smart contract interface. Implementations are responsible for verifying that messages being delivered on the destination chain were actually sent on the origin chain using some proof metadata.
+Hyperlane通过通用智能合约接口模块化链间消息安全。实现负责使用一些证明元数据验证在目标链上传递的消息实际上是在源链上发送的。
 
 <IsmDiagram/>
 
-Message recipients can specify custom security constraints by specifying an `InterchainSecurityModule` address. This implementation can be configured, composed, and customized according to the needs of their application.
+消息接收者可以通过指定`InterchainSecurityModule`地址来指定自定义安全约束。这个实现可以根据应用程序的需要进行配置、组合和定制。
 
 <details>
 <summary>`IInterchainSecurityModule` Interface</summary>
@@ -24,30 +24,30 @@ Message recipients can specify custom security constraints by specifying an `Int
 </Tabs>
 </details>
 
-## Verify
+## 验证
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L31-L33
 ```
 
-The Mailbox will call `verify` before delivering a message to its recipient. If `verify` reverts or returns `false`, the message will not be delivered.
+在将邮件传递给收件人之前，邮箱将调用`verify`。如果`verify`返回`false`，消息将不会被传递。
 
-- `_metadata` consists of arbitrary bytes provided by the Relayer. Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](./multisig-ISM-interface.mdx), `_metadata` must include validator signatures.
+- `_metadata`由中继器提供的任意字节组成。通常，这些字节是针对ISM的。例如，对于[Multisig ISM](./multisig-ISM-interface.mdx)，`_metadata`必须包含验证器签名。
 
-- `_message` consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](./multisig-ISM-interface.mdx) could change validator sets based on the origin chain of the message.
+_`_message` 由正在验证的Hyperlane消息组成。ISMs可以使用它来检查正在验证的消息的详细信息。例如，[Multisig ISM](./multisig-ISM-interface.mdx) 可以根据消息的原始链更改验证器集。
 
-### Module Type
+### 模块类型
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L21
 ```
 
-This is used to signal to the Relayer how to encode `_metadata`. ISMs **must** return one of the supported module types.
+这是用来通知中继器如何编码 `_metadata`。ISMs **必须**返回一个支持的模块类型。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
 ```
 
-## Specifying an ISM
+## 指定ISM
 
-To specify the ISM they would like to use, developers implement the `ISpecifiesInterchainSecurityModule` interface in any contract that receives interchain messages via `handle()`. 
+为了指定他们想要使用的ISM，开发人员在任何通过`handle()`接收链间消息的合约中实现`ISpecifiesInterchainSecurityModule`接口。
 
 ```solidity
 interface ISpecifiesInterchainSecurityModule {
@@ -57,16 +57,15 @@ interface ISpecifiesInterchainSecurityModule {
         returns (IInterchainSecurityModule);
 }
 ```
-If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
+如果未指定ISM或指定的ISM为空地址，则将使用目的链上已配置为默认地址的ISM。
 
-## Sequence Diagram
+## 排序图
 
-Here is a detailed sequence diagram of an interchain message being verified and delivered on the destination chain.
+下面是在目标链上验证和传递链间消息的详细序列图。
 
 :::info
 
-If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the Mailbox will be used to verify the message.
-
+如果收件人没有实现`ISpecifiesInterchainSecurityModule`或`recipient.interchainSecurityModule()`返回`address(0)`，则使用邮箱上配置的默认ISM来验证消息。
 :::
 
 ```mermaid
