@@ -1,17 +1,17 @@
 # Routing ISM
 
-Developers can use a `RoutingISM` to delegate message verification to a different ISM. This allows developers to change security models based on message content or application context.
+开发人员可以使用`RoutingISM`将消息验证委托给不同的ISM。这允许开发人员根据消息内容或应用程序上下文更改安全模型。
 
-This ISM simply switches security models depending on the origin chain of the message. A simple use case for this is to use different [Multisig ISM](multisig-ISM.mdx) validator sets for each chain.
+该ISM根据消息的原始链简单地切换安全模型。一个简单的用例是为每个链使用不同的 [Multisig ISM](multisig-ISM.mdx)验证器集。
 
-Eventually, you could imagine a `DomainRoutingIsm` routing to different light-client-based ISMs, depending on the type of consensus protocol used on the origin chain.
+最终，你可以实现一个`DomainRoutingIsm`路由到不同的基于轻客户端的ISMs，这取决于在origin链上使用的共识协议的类型。
 
-## Customize
+## 自定义
 
-The hyperlane-monorepo contains an abstract `RoutingISM` implementation that application developers can fork.
+hyperlane-monorepo包含一个抽象的`RoutingISM`实现，应用程序开发人员可以对其进行分支。
 
-Developers simply need to implement the `route()` function.
+开发人员只需要实现`route()`函数。
 
-By creating a custom implementation, application developers can tailor the security provided by a `RoutingISM` to the needs of their application.
+通过创建自定义实现，应用程序开发人员可以根据应用程序的需求定制`RoutingISM`提供的安全性。
 
-For example, a custom implementation could change security models based on the contents of the message or the state of the application receiving the message.
+例如，自定义实现可以根据消息的内容或接收消息的应用程序的状态更改安全模型。
