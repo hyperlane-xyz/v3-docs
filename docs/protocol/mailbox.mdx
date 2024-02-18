@@ -11,13 +11,13 @@ v3现在包括了[post-dispatch hooks](../reference/hooks/overview.mdx)， [inte
 :::
 
 
-Hyperlane `Mailbox`智能合约公开了用于发送和接收链间消息的链上API。Hyperlane支持的每个链上都部署了一个“邮箱”合约。
+Hyperlane`Mailbox`智能合约公开了用于发送和接收链间消息的链上API。Hyperlane支持的每个链上都部署了一个“邮箱”合约。
 
-`Mailboxes` 网络促进了区块链之间的连接，开发人员可利用其创建链间应用程序，并将链间功能添加到其现有应用程序中。
+`Mailboxes`网络促进了区块链之间的连接，开发人员可利用其创建链间应用程序，并将链间功能添加到其现有应用程序中。
 
 ## 接口
 
-“IMailbox”接口公开了两个状态变化函数;' dispatch() '和' process() '，它们分别用于发送和接收消息。
+`IMailbox`接口公开了两个状态变化函数； `dispatch()`和`process()`，它们分别用于发送和接收消息。
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
@@ -39,7 +39,7 @@ interface IMailbox {
 
 要发送链间消息，开发人员需要调用`Mailbox.dispatch()`。
 
-该函数将消息内容、目标链ID和收件人地址作为参数。每条消息都作为叶子插入到由`Mailbox`存储的[增量默克尔树](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f)中。
+该函数将消息内容、目标链ID和收件人地址作为参数。每条消息都作为叶子插入到由`Mailbox`存储的[incremental merkle tree](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f)中。
 
 Hyperlane的权益证明协议使用该merkle树来验证欺诈证据。
 
@@ -53,6 +53,6 @@ Hyperlane的权益证明协议使用该merkle树来验证欺诈证据。
 
 :::info
 
-请参阅[' message .sol '](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)for)了解Hyperlane消息编码的更多详细信息
+请参阅[`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)了解Hyperlane消息编码的更多详细信息
 
 :::

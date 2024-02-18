@@ -4,11 +4,11 @@
 
 ## 配置layers
 
-1. ”默认部署“的基本配置在 [monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) 中，所有这些配置都会自动加载。
-2. 接下来将加载通过 `CONFIG_FILES` env var 传入的配置文件；该 env var 应该是一个以逗号分隔的 json 文件路径列表，加载顺序为从第一个到最后一个。
-3. 接下来将读取以 `HYP_` 为前缀的环境变量。
-4. `HYP_<AGENT>_` 前缀的环境变量将被读取并仅应用于当前代理。例如，`RELAYER`、`VALIDATOR` 和`SCRAPER` 只读取各自的前缀。
-5. 最后读取命令行参数
+1. ”默认部署“的基本配置在 [monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) 中，所有这些配置都会自动加载；
+2. 接下来将加载通过 `CONFIG_FILES` env var 传入的配置文件；该 env var 应该是一个以逗号分隔的 json 文件路径列表，加载顺序为从第一个到最后一个；
+3. 接下来将读取以 `HYP_` 为前缀的环境变量；
+4. `HYP_<AGENT>_` 前缀的环境变量将被读取并仅应用于当前代理。例如，`RELAYER`、`VALIDATOR` 和`SCRAPER` 只读取各自的前缀；
+5. 最后读取命令行参数。
 
 ## 命令行参数
 
@@ -37,7 +37,7 @@
 
 `HYP_` 和 `HYP_<AGENT>_` 是等效的前缀，唯一的区别在于加载顺序，它们可以引用配置文件中的所有配置值。
 
-env 名称将是这两个前缀之一，然后是配置值的大写路径组件的下划线分隔路径。
+env名称将是这两个前缀之一，然后是配置值的大写路径组件的下划线分隔路径。
 
 示例：
 
@@ -47,7 +47,7 @@ env 名称将是这两个前缀之一，然后是配置值的大写路径组件�
 
 ## 使用 Docker 配置文件
 
-在 Docker 中运行代理会增加额外的复杂性，因为配置文件需要从 Docker 容器内部访问。可以在[存储库](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config)中找到的基本配置已经是提供的 Docker 镜像的一部分，并且将默认加载所有配置文件。
+在Docker中运行代理会增加额外的复杂性，因为配置文件需要从Docker容器内部访问。可以在[the repo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config)中找到的基本配置已经是提供的 Docker 镜像的一部分，并且将默认加载所有配置文件。
 
 要挂载单个配置文件，可以使用标志 `--mount type=bind,source=$LOCAL_CONFIG_PATH,target=/config/$CONFIG_NAME,readonly`，然后将配置文件添加到 `CONFIG_FILES` 中，以便加载它。
 

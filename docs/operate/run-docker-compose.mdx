@@ -1,8 +1,8 @@
 # 使用 Docker Compose 运行
 
-有时，不依赖冗长的 Docker 命令也是不错的选择。使用 Docker compose 运行与使用原始 Docker 非常相似，你可以在 [Docker docs](https://docs.Docker.com/compose/compose-file/) 中找到完整的格式说明。
+有时，不依赖冗长的Docker命令也是不错的选择。使用Docker compose运行与使用原始Docker非常相似，你可以在[Docker docs](https://docs.Docker.com/compose/compose-file/)中找到完整的格式说明。
 
-这是一个运行验证器的 `docker-compose` 文件示例，应该能帮你完成大部分工作。
+这是一个运行验证器的`docker-compose`文件示例，应该能帮你完成大部分工作。
 
 ```json
 {
@@ -48,6 +48,6 @@ configs:
 
 上面有很多填充值，您需要用真实值更新这些填充值。
 
-您还可以指定多个服务，因此如果要运行多个验证器，可以在 `services` 下指定每个验证器。
+您还可以指定多个服务，因此如果要运行多个验证器，可以在`services`下指定每个验证器。
 
-要运行编译配置，请使用 `docker compose up` 和 `docker compose down` 进行清理。关于命令行的完整文档可以在 [docker 网站](https://docs.docker.com/engine/reference/commandline/compose/) 上找到。
+要运行编译配置，请使用`docker compose up`和`docker compose down`进行清理。关于命令行的完整文档可以在[docker 网站](https://docs.docker.com/engine/reference/commandline/compose/)上找到。

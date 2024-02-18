@@ -8,7 +8,7 @@ import RouterDiagram from '@site/src/diagrams/router.md'
 
 <RouterDiagram/>
 
-使用这种模式的开发人员可以继承`Router` mix-in合约。' Router '是一个[`MailboxClient`](./mailboxclient.mdx) ，它跟踪远程链上其他`Router` 合约的地址。这允许`Router` 直接向其他路由发送消息，而不必指定地址。它还允许`Router` 拒绝来自其他不受信任的发送者的消息。
+使用这种模式的开发人员可以继承`Router`mix-in合约。'Router'是一个[`MailboxClient`](./mailboxclient.mdx) ，它跟踪远程链上其他`Router`合约的地址。这允许`Router`直接向其他路由发送消息，而不必指定地址。它还允许`Router`拒绝来自其他不受信任的发送者的消息。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/Router.sol
 ```

@@ -3,9 +3,9 @@ import TabItem from '@theme/TabItem';
 
 # 代理密钥
 
-Hyperlane 代理（验证器和中继器）必须配置私钥才能运行。验证器使用私钥签署[message checkpoints](../reference/glossary.mdx#checkpoint)，中继器使用私钥签署传递信息的事务。
+Hyperlane代理（验证器和中继器）必须配置私钥才能运行。验证器使用私钥签署[message checkpoints](../reference/glossary.mdx#checkpoint)，中继器使用私钥签署传递信息的事务。
 
-Hyperlane 代理目前支持通过两种方式之一配置私钥。
+Hyperlane代理目前支持通过两种方式之一配置私钥。
 
 ## 1. 十六进制密钥
 
@@ -13,7 +13,7 @@ Hyperlane 代理目前支持通过两种方式之一配置私钥。
 
 :::warning
 
-不建议在生产环境中使用十六进制密钥。请使用 AWS KMS 密钥。
+不建议在生产环境中使用十六进制密钥。请使用AWS KMS密钥。
 
 :::
 
@@ -38,7 +38,7 @@ Private Key: 0x2958f0eb2ab71bbfb5ea1422835e20e488778b61e3c107f369572e2b53b578f9
 ```
   </TabItem>
   <TabItem value="privatekeys" label="Using privatekeys.pw">
-您可以访问 [https://privatekeys.pw/keys/ethereum/random](https://privatekeys.pw/keys/ethereum/random)，它会自动显示十六进制私钥及其地址的列表。
+您可以访问[https://privatekeys.pw/keys/ethereum/random](https://privatekeys.pw/keys/ethereum/random)，它会自动显示十六进制私钥及其地址的列表。
 
 :::warning
 
@@ -50,16 +50,16 @@ Private Key: 0x2958f0eb2ab71bbfb5ea1422835e20e488778b61e3c107f369572e2b53b578f9
 
 ## 2. AWS KMS
 
-由 AWS 生成并存储在 CloudHSM 中的密钥。这是生产代理，尤其是验证器的推荐设置。
+由AWS生成并存储在CloudHSM中的密钥。这是生产代理，尤其是验证器的推荐设置。
 
 ### 创建 IAM 用户
 
-该 IAM 用户将被授权使用稍后配置的 KMS 密钥签名。Hyperlane 代理在签署事务时将使用此身份。
+该IAM用户将被授权使用稍后配置的KMS密钥签名。Hyperlane代理在签署事务时将使用此身份。
 
-1. 访问 [AWS console](https://us-east-1.console.aws.amazon.com/iamv2/home) 中的 AWS 身份和访问管理 (IAM)；
-2. 在左侧 "Access management "下点击 "Users"；
+1. 访问[AWS console](https://us-east-1.console.aws.amazon.com/iamv2/home) 中的AWS身份和访问管理(IAM)；
+2. 在左侧"Access management"下点击"Users"；
 3. 点击蓝色的"Add users"按钮；
-4. 选择一个友好而具有关联性的用户名，比如 `hyperlane-validator-${chain_name}` 或 `hyperlane-relayer-${chain_name}`。此用户名将在将来的步骤中被引用，所以如果你选择了不同的用户名，请确保将来使用你的正确用户名；
+4. 选择一个友好而具有关联性的用户名，比如`hyperlane-validator-${chain_name}`或`hyperlane-relayer-${chain_name}`。此用户名将在将来的步骤中被引用，所以如果你选择了不同的用户名，请确保将来使用你的正确用户名；
 5. 点击 "Next"，您无需为用户分配任何权限；
 6. 点击“Create User”；
 7. 点击进入刚刚创建的用户；
@@ -74,8 +74,8 @@ Private Key: 0x2958f0eb2ab71bbfb5ea1422835e20e488778b61e3c107f369572e2b53b578f9
 
 您的代理将使用此密钥进行签名。
 
-1. 访问 AWS 控制台中的 AWS 密钥管理服务 (KMS)；
-2. 确保您处于要创建密钥的地区。这可以通过查看控制台右上角的区域，或查找 URL 子域中的名称来确认（例如，"us-west-2.console.aws.amazon.com "表示您在 "us-west-2 "区域中运行）；
+1. 访问AWS控制台中的AWS密钥管理服务(KMS)；
+2. 确保您处于要创建密钥的地区。这可以通过查看控制台右上角的区域，或查找URL子域中的名称来确认（例如，"us-west-2.console.aws.amazon.com "表示您在 "us-west-2 "区域中运行）；
 3. 点击左侧的“Customer managed keys”；
 4. 点击“Create key”；
 5. 选择“Asymmetric”密钥类型；

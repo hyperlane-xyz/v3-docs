@@ -1,4 +1,4 @@
-设置好部署器、验证器和中继器密钥后，就可以使用 Hyperlane CLI 将智能合约部署到本地和远程链上了。
+设置好部署器、验证器和中继器密钥后，就可以使用Hyperlane CLI将智能合约部署到本地和远程链上了。
 
 在本地链上，我们将进行部署：
 
@@ -12,20 +12,20 @@
 
 ### 设置
 
-首先，使用NPM 安装 [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli)。需要 [Node 16](https://nodejs.org/en/download) 或以上版本。以下命令将在你的机器上全局安装。请参阅 [package page](https://www.npmjs.com/package/@hyperlane-xyz/cli)了解临时安装或从源代码构建等其他方法。
+首先，使用NPM安装[Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli)。需要[Node 16](https://nodejs.org/en/download) 或以上版本。以下命令将在你的机器上全局安装。请参阅[package page](https://www.npmjs.com/package/@hyperlane-xyz/cli)了解临时安装或从源代码构建等其他方法。
 
 ```bash
 npm install -g @hyperlane-xyz/cli
 ```
 
-接下来，确定本地链和远程链需要哪些自定义链配置。任何已经包含在 Hyperlane SDK 中的链都不需要链配置（但如果想覆盖默认设置，可以选择使用）。
-运行以下命令查看默认 SDK 链：
+接下来，确定本地链和远程链需要哪些自定义链配置。任何已经包含在Hyperlane SDK中的链都不需要链配置（但如果想覆盖默认设置，可以选择使用）。
+运行以下命令查看默认SDK链：
 
 ```bash
 hyperlane chains list
 ```
 
-您可以按空格键选择链。对于需要自定义配置的链，可以使用 JSON 或 YAML 手动定义（请参阅 [配置示例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)），或使用以下命令创建：
+您可以按空格键选择链。对于需要自定义配置的链，可以使用JSON或YAML手动定义（请参阅 [配置示例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)），或使用以下命令创建：
 
 ```bash
 hyperlane config create chain
@@ -44,7 +44,7 @@ hyperlane config create ism
 
 ### 部署
 
-现在我们准备使用 `deploy core` 命令部署 Hyperlane 合约。为了支付交易费用，该命令将需要来自步骤 1 的合约部署者密钥，可以通过 `HYP_KEY` 环境变量或作为命令参数提供。
+现在我们准备使用`deploy core`命令部署Hyperlane合约。为了支付交易费用，该命令将需要来自步骤1的合约部署者密钥，可以通过`HYP_KEY`环境变量或作为命令参数提供。
 
 ```bash
 hyperlane deploy core \
@@ -58,6 +58,6 @@ hyperlane deploy core \
 
 ### 验证
 
-部署合同构件默认将写入 `artifacts/` 文件夹。部署程序将创建两个带时间戳的文件，即 `agent-config-{timestamp}.json` 和 `core-deployment-{timestamp}.json
+部署合同构件默认将写入`artifacts/`文件夹。部署程序将创建两个带时间戳的文件，即`agent-config-{timestamp}.json`和`core-deployment-{timestamp}.json`
 `core-deployment` 文件包含按链排列的核心合约地址。
-`agent-config` 文件包含下一步运行 Hyperlane 代理所需的数据。
+`agent-config` 文件包含下一步运行Hyperlane代理所需的数据。

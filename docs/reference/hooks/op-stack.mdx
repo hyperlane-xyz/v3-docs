@@ -14,7 +14,7 @@ optimistic和其他[OP Stack](https://stack.optimism.io/)聚合有自己的接�
 
 OPStackHook将messageId发送给L1CrossDomainMessenger，后者将其注册为带有ETH存款和消息数据的Optimism`TransactionDeposited`事件，该事件由rollup节点拾取。
 
-rollup节点调用预编译的合约 `L2CrossDomainMessenger`的relayMessage函数，该函数反过来调用配置的OptimismISM合约，在verifiedMessageId的映射中设置messageId到原始L1发送者(即，用户)。中继器只携带没有元数据的消息，等待Optimism节点选择并对Optimism节点进行存储写入，然后验证消息传递。
+rollup节点调用预编译的合约`L2CrossDomainMessenger`的relayMessage函数，该函数反过来调用配置的OptimismISM合约，在verifiedMessageId的映射中设置messageId到原始L1发送者(即，用户)。中继器只携带没有元数据的消息，等待Optimism节点选择并对Optimism节点进行存储写入，然后验证消息传递。
 
 ```mermaid
 flowchart TB

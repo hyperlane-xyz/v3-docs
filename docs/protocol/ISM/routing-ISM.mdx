@@ -2,7 +2,7 @@
 
 开发人员可以使用`RoutingISM`将消息验证委托给不同的ISM。这允许开发人员根据消息内容或应用程序上下文更改安全模型。
 
-该ISM根据消息的原始链简单地切换安全模型。一个简单的用例是为每个链使用不同的 [Multisig ISM](multisig-ISM.mdx)验证器集。
+该ISM根据消息的原始链简单地切换安全模型。一个简单的用例是为每个链使用不同的[Multisig ISM](multisig-ISM.mdx)验证器集。
 
 最终，你可以实现一个`DomainRoutingIsm`路由到不同的基于轻客户端的ISMs，这取决于在origin链上使用的共识协议的类型。
 

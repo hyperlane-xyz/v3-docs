@@ -21,7 +21,7 @@ flowchart LR
     IGP -. "value" .- Relayer
 ```
 
-为了方便起见， [relayer](../../operate/relayer/run-relayer.mdx) 监视已分发的消息，如果消息发送者在原始链上收到足够的付款，则代表消息发送者提交进程事务。我们称之为**链间燃料费支付**。
+为了方便起见，[relayer](../../operate/relayer/run-relayer.mdx)监视已分发的消息，如果消息发送者在原始链上收到足够的付款，则代表消息发送者提交进程事务。我们称之为**链间燃料费支付**。
 
 ```mermaid
 flowchart LR
@@ -71,7 +71,7 @@ $$
 
 ### 元数据
 
-这个钩子需要`StandardHookMetadata`的打包编码的元数据。关于如何传递元数据覆盖，请参阅邮箱Mailbox [dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) 。
+这个钩子需要`StandardHookMetadata`的打包编码的元数据。关于如何传递元数据覆盖，请参阅邮箱Mailbox[dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) 。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -146,7 +146,7 @@ bytes memory metadata = abi.encodePacked(
 
 ## 重试
 
-如果`handle`调用消耗的燃料费超过报价，中继器将不会提交进程事务。在这种情况下，可以使用`payForGas` 功能支付额外的gas。
+如果`handle`调用消耗的燃料费超过报价，中继器将不会提交进程事务。在这种情况下，可以使用`payForGas`功能支付额外的gas。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">

@@ -2,7 +2,7 @@
 
 Hyperlane由**Interchain Security Modules** (ISMs)保护。ISMs是一种智能合约，负责验证在目标链上传递的链间消息是否**实际发送**在原始链上。
 
-Hyperlane开发人员可以通过指定一个应用专用的ISM，**optionally** **override**  [Mailbox's](../mailbox.mdx)的默认ISM，他们可以根据自己的应用程序的需求来配置、组合和定制。
+Hyperlane开发人员可以通过指定一个应用专用的ISM，**optionally** **override**[Mailbox's](../mailbox.mdx)的默认ISM，他们可以根据自己的应用程序的需求来配置、组合和定制。
 
 ### 配置
 
@@ -12,7 +12,7 @@ Hyperlane定义了一套预先构建的ISMs。开发人员可以部署任何这�
 
 ### 组合
 
-ISMs就像“security [legos](https://en.wikipedia.org/wiki/Lego)”。开发人员可以混合和匹配不同的ISMs，以编码最适合他们需求的安全模型。
+ISMs就像“security[legos](https://en.wikipedia.org/wiki/Lego)”。开发人员可以混合和匹配不同的ISMs，以编码最适合他们需求的安全模型。
 
 例如，希望获得额外安全性的应用程序开发人员可以部署一个[Aggregation ISM](aggregation-ISM.mdx)，它需要由配置了Hyperlane社区验证器的[Multisig ISM](multisig-ISM.mdx) 和一个[Wormhole ISM](wormhole-ISM.mdx)进行验证，后者验证了[Wormhole](https://wormhole.com/)验证器集的quorum验证了消息。
 
@@ -24,7 +24,7 @@ ISMs是完全可定制的。开发人员可以编写自己的ISMs，根据应用
 
 ## 覆盖默认ISM
 
-应用程序开发者可以通过在应用程序中实现` isspecificesinterchainsecuritymodule `接口来覆盖默认的ISM。
+应用程序开发者可以通过在应用程序中实现`isspecificesinterchainsecuritymodule`接口来覆盖默认的ISM。
 
 具体来说，这个接口必须在实现`handle()`的智能合约中实现。
 
@@ -72,7 +72,7 @@ interface IInterchainSecurityModule {
 
 ### 验证
 
-ISMs必须实现的主要功能是`verify()`。[Mailbox](../ Mailbox .mdx)将在将消息传递给收件人之前调用`IInterchainSecurityModule.verify()`。如果`verify()`恢复或返回`false`，消息将不会被传递。
+ISMs必须实现的主要功能是`verify()`。[Mailbox](../mailbox.mdx)将在将消息传递给收件人之前调用`IInterchainSecurityModule.verify()`。如果`verify()`恢复或返回`false`，消息将不会被传递。
 
 `verify()`函数接受两个参数。
 
@@ -93,7 +93,7 @@ ISMs必须实现的第二个函数是`moduleType()`。这是用来通知[Relayer
 下面展示了在目标链上验证和交付链间消息的简化顺序图。
 
 :::info
-如果收件人没有实现` isspecificesinterchainsecuritymodule `或者`recipient.interchainSecurityModule()`返回`address(0)`，将使用[Mailbox](../mailbox.mdx)上配置的默认ISM来验证消息。
+如果收件人没有实现`isspecificesinterchainsecuritymodule`或者`recipient.interchainSecurityModule()`返回`address(0)`，将使用[Mailbox](../mailbox.mdx)上配置的默认ISM来验证消息。
 
 为了清晰起见，在序列图中省略了这一点。
 :::

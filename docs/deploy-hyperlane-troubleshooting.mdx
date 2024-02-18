@@ -1,10 +1,10 @@
-# Troubleshooting
+# 故障排除
 
 ## 链配置
 
-在您的工作目录中，可能会发现一个包含 `chains.yaml` 文件的 `config/` 文件夹。通过该 `chains.yaml` 配置文件，您可以描述链元数据，以便在 Hyperlane 部署或应用程序中使用。
+在您的工作目录中，可能会发现一个包含`chains.yaml` 文件的 `config/`文件夹。通过该`chains.yaml` 配置文件，您可以描述链元数据，以便在Hyperlane部署或应用程序中使用。
 
-您可以在此文件中为任何新链定义完整配置。可配置的元数据在此[配置示例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)中定义。您还可以在 [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts) 中找到链元数据模式。
+您可以在此文件中为任何新链定义完整配置。可配置的元数据在此[配置示例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)中定义。您还可以在 [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts)中找到链元数据模式。
 
 下面是两个本地anvil chains的配置示例：
 
@@ -41,9 +41,9 @@ sepolia:
 
 ### 重写 RPC URL
 
-您可以通过扩展核心链配置来覆盖 RPC 网址。
+您可以通过扩展核心链配置来覆盖RPC网址。
 
-在下面的示例中，你可以看到如何定义 RPC 数组，以及如何调整其中任何一个 RPC 的重试参数。
+在下面的示例中，你可以看到如何定义RPC数组，以及如何调整其中任何一个RPC的重试参数。
 
 ```yaml
 ---
@@ -64,7 +64,7 @@ sepolia:
 
 ### 覆盖交易设置
 
-事务重载是在形成事务请求时包含的任何属性。例如
+事务重载是在形成事务请求时包含的任何属性。例如：
 
 - `gasPrice`: number | string
 - `maxFeePerGas`: number | string
@@ -73,7 +73,7 @@ sepolia:
 - `type`: number
 - `ccipReadEnabled`: boolean
 
-在下面的示例中，我们使用的燃料价格为7gwei，对 nonce 进行了硬编码，并为基本费和优先费设置了最大值。
+在下面的示例中，我们使用的燃料价格为7gwei，对nonce进行了硬编码，并为基本费和优先费设置了最大值。
 
 ```yaml
 ---
@@ -85,7 +85,7 @@ sepolia:
     nonce: 1337
 ```
 
-:::警告
+:::warning
 
 如果要覆盖链配置中的 nonce，请确保在交易成功时更新该值。
 

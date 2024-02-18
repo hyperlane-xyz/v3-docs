@@ -9,42 +9,39 @@
 <table>
   <thead>
     <tr>
-      <th>Key Role</th>
-      <th>Description</th>
-      <th>Funding Needs</th>
+      <th>密钥角色</th>
+      <th>说明</th>
+      <th>资金需求</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Contract Deployer</td>
-      <td>32 byte hexadecimal private key</td>
-      <td>Funded on all the chains on which we need to deploy contracts.</td>
+      <td>合约部署者</td>
+      <td>32字节十六进制私钥</td>
+      <td>在我们需要部署合约的所有链上提供资金。</td>
     </tr>
     <tr>
-      <td>Validator Accounts</td>
+      <td>验证者账户</td>
       <td>
-        A list of validator addresses that will sign outbound messages from your
-        local chain. Just one validator works to get started quickly.
+          将对本地链中的出站消息进行签名的验证器地址列表。只需一个验证器就可以快速启动。
       </td>
       <td>
-        A small amount so validators can announce the location of their
-        signatures onchain with a one-time transaction
+          只需少量，这样验证者就可以通过一次性交易在链上公布他们的签名位置
       </td>
     </tr>
     <tr>
-      <td>Relayer Accounts</td>
+      <td>中继器账户</td>
       <td>
-        The single relayer you will operate requires an account on each chain it
-        will deliver messages to & from
+          您将操作的单个中继器需要在它将发送消息的每个链上都有一个帐户
       </td>
       <td>
-        The relayer must have a balance on all chains it's relaying between.
+          中继器必须在它所传递的所有链上持有余额。
       </td>
     </tr>
   </tbody>
 </table>
 
-有关如何生成密钥的说明，请参阅[agent keys](/docs/operate/set-up-agent-keys) 部分。部署程序密钥**must**是十六进制密钥，而验证器和中继程序密钥可以是十六进制或AWS KMS。
+有关如何生成密钥的说明，请参阅[agent keys](/docs/operate/set-up-agent-keys) 部分。部署程序密钥**必须**是十六进制密钥，而验证器和中继程序密钥可以是十六进制或AWS KMS。
 
 如果使用 [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil) 在本地网络上进行部署，请使用以下命令为新生成的帐户提供资金。 它使用预先注入资金的私钥之一将 1 ETH 转移到“$YOUR_TARGET_ADDRESS”环境变量中的地址。
 

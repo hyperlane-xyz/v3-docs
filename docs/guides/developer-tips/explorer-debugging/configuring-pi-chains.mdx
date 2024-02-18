@@ -1,16 +1,16 @@
 # 配置 PI 链
 
-Hyperlane 可以[无权限部署]（.../.../.../deploy-hyperlane.mdx）到任何链上，但 PI 链上的报文无法通过默认的 Hyperlane 代理识别。要查看 PI 链上消息的详细信息，首先要用该链的元数据配置资源管理器。
+Hyperlane 可以[permissionlessly deployed](../../../deploy-hyperlane.mdx)部署到任何链上，但PI链上的报文无法通过默认的Hyperlane代理识别。要查看PI链上消息的详细信息，首先要用该链的元数据配置资源管理器。
 
-首先，进入 [资源管理器设置页面](https://explorer.hyperlane.xyz/settings)。
+首先，进入[explorer's settings page](https://explorer.hyperlane.xyz/settings)。
 
 ![](../../../../static/img/explorer-debugging/explorer-settings.png)
 
-然后点击添加自定义链按钮。此时会出现一个模态窗口。输入 PI 链的配置。
+然后点击添加自定义链按钮。此时会出现一个模态窗口。输入PI链的配置。
 
-链配置模式是 Hyperlane SDK [ChainMetadata 模式](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21)的扩展，但增加了一个`contracts` 对象。目前只要求提供`mailbox`合约地址，但如果提供了更多地址，将来可能会启用更多功能。
+链配置模式是Hyperlane SDK [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21)的扩展，但增加了一个`contracts`对象。目前只要求提供`mailbox`合约地址，但如果提供了更多地址，将来可能会启用更多功能。
 
-如果提供了有效的基于 Etherscan 的区块资源管理器配置，Hyperlane Explorer 将利用它来查找所需的信息。如果没有，则会使用 RPC URL。请注意，使用 api 密钥（即使只是自由层密钥）的资源管理器运行速度更快、更可靠。
+如果提供了有效的基于Etherscan的区块资源管理器配置，Hyperlane Explorer将利用它来查找所需的信息。如果没有，则会使用RPC URL。请注意，使用api密钥（甚至只是免费的密钥）的资源管理器运行速度更快、更可靠。
 
 ![](../../../../static/img/explorer-debugging/explorer-add-custom-chain.png)
 
@@ -27,7 +27,7 @@ Hyperlane 可以[无权限部署]（.../.../.../deploy-hyperlane.mdx）到任何
 }
 ```
 
-**A chain config with a block explorer and block timings included:**
+**带有区块资源管理器和区块计时的链配置包括:**
 
 ```js
 {
@@ -68,6 +68,6 @@ Hyperlane 可以[无权限部署]（.../.../.../deploy-hyperlane.mdx）到任何
 }
 ```
 
-:::信息
-如果信息中链的来源或目的地 `domainId` 与其 `chainId` 不匹配，则必须在链配置中包含 `domainId` 字段。
+:::info
+如果消息中链的来源或目的地`domainId`与其`chainId`不匹配，则必须在链配置中包含`domainId`字段。
 :::

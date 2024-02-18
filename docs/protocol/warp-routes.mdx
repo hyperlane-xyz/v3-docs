@@ -14,7 +14,7 @@ v3现在包含了[post-dispatch hooks](../reference/hooks/overview.mdx)，其中
 
 Warp路由是Hyperlane对令牌桥接概念的演绎，允许你通过Hyperlane将任何类似ERC20或erc721的资产无需许可转移到任何链上。
 
-您可以将Warp Routes与Hyperlane部署相结合，在任何链上与其他已通过 Hyperlane 连接的链之间实现资金流动。
+您可以将Warp Routes与Hyperlane部署相结合，在任何链上与其他已通过Hyperlane连接的链之间实现资金流动。
 
 下面这张图简单地展示了创建Warp路由的流程，以及生成的资源。
 
@@ -22,10 +22,10 @@ Warp路由是Hyperlane对令牌桥接概念的演绎，允许你通过Hyperlane�
 
 ![Warp Route diagram/doodle](../../static/img/warpcontractdiagram.png)
 
-Warp Route 合约通过在起源链（又称抵押链）上锁定抵押代币，然后在目的链（合成链）上铸造warp代币，从而在链之间转移价值。
+Warp Route合约通过在起源链（又称抵押链）上锁定抵押代币，然后在目的链（合成链）上铸造warp代币，从而在链之间转移价值。
 
 用户可以随时通过将其warp好的代币转回抵押链来赎回被锁定的代币。
 
-与所有建立在 Hyperlane 基础上的应用程序一样，Warp Routes 可通过[Interchain Security Modules](../protocol/ISM/modular-security.mdx)自定义安全性。这样，Warp 路由部署者就可以配置和执行链间令牌必须遵守的自定义规则和约束。
+与所有建立在Hyperlane基础上的应用程序一样，Warp Routes可通过[Interchain Security Modules](../protocol/ISM/modular-security.mdx)自定义安全性。这样，Warp 路由部署者就可以配置和执行链间令牌必须遵守的自定义规则和约束。
 
-可以在任何一组部署了 Hyperlane 的链之间部署 Warp Routes。如果您想创建的 Warp Route 包含当前未部署 Hyperlane 的链，请自行 [deploy hyperlane](../deploy-hyperlane.mdx) ！
+可以在任何一组部署了Hyperlane的链之间部署Warp Routes。如果您想创建的Warp Route包含当前未部署Hyperlane的链，请自行 [deploy hyperlane](../deploy-hyperlane.mdx) ！

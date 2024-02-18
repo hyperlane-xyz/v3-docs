@@ -1,74 +1,74 @@
-# 部署一个Warp 路由
+# 部署一个Warp路由
 
 _创建一个跨链路由以管理您的代币_
 
-Warp 路由是一种 [路由器](../reference/libraries/router.mdx) 应用程序类型，需要在您希望支持的每条链上部署一个 `HypERC20` 或 `HypERC721` 代币合约。
+Warp 路由是一种[路由](../reference/libraries/router.mdx)应用程序类型，需要在您希望支持的每条链上部署一个`HypERC20`或`HypERC721`代币合约。
 
-:::信息
+:::info
 
-查看 [Warp 路由](/docs/reference/applications/warp-routes) 参考页面，了解有关 Warp 路由接口和安全性影响的更多信息。
+查看 [Warp 路由](/docs/reference/applications/warp-routes) 参考页面，了解有关Warp路由接口和安全性影响的更多信息。
 
 :::
 
-## 先决条件（Prerequisites）
+## 准备
 
 * [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli)
 * 用于合约交易签名的私钥
 
 ## 1. 配置
 
-### Warp 路由配置
+### Warp路由配置
 
-要部署路由，您将需要一个 Warp 路由配置文件。有效的配置将指定：
-* 这个 Warp 路由是为哪个链上的哪个代币创建的？
-* _可选：_ Hyperlane连接细节，包括[邮箱](../reference/messaging/messaging-interface.mdx)、[跨链燃料](../reference/hooks/interchain-gas.mdx)和[跨链安全模块](../reference/ISM/specify-your-ISM.mdx)的合约地址。
-* _可选：_ 代币标准 - 使用 ERC20 的可互换代币或使用 ERC721 的非同质化代币。默认为 ERC20。
+要部署路由，您将需要一个Warp路由配置文件。有效的配置将指定：
+* 这个Warp路由是为哪个链上的哪个代币创建的？
+* _可选：_ Hyperlane连接细节，包括[mailbox](../reference/messaging/messaging-interface.mdx)、[interchain gas](../reference/hooks/interchain-gas.mdx)和[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的合约地址。
+* _可选：_ 代币标准 - 使用ERC20的可互换代币或使用ERC721的非同质化代币。默认为ERC20。
 
-最简单的方法是使用 CLI 的 config 命令创建一个。
+最简单的方法是使用CLI的config命令创建一个。
 
 ```bash
 hyperlane config create warp
 ```
 
-:::提示
+:::tip
 
-如果您的配置看起来正确，现在可以直接跳转到 [第二步：部署](#2-deployment)。
+如果您的配置看起来正确，现在可以直接跳转到[Step 2: Deployment](#2-deployment)。
 或者查看下面的详细信息，了解如何手动定义您的配置。
 
 :::
 
-#### 基础（Base）
+#### 基础
 
-您的配置必须恰好有一个 `base` 条目。在这里，您将配置有关您正在创建 Warp 路由的代币的详细信息。
+您的配置必须恰好有一个`base`条目。在这里，您将配置有关您正在创建Warp路由的代币的详细信息。
 
 * **chainName**: 将此设置为您的代币存在的链。
-* **type**: 将其设置为 `TokenType.collateral` 以创建一个用于 ERC20/ERC721 代币的 Warp 路由，或者将其设置为 `TokenType.native` 以创建一个用于原生代币（例如以太币）的 Warp 路由。
-* **address:** 如果使用 `TokenType.collateral`，则为要创建路由的 ERC20/ERC721 合约的地址。
-* **isNft:** 如果对一个 ERC721 合约使用 `TokenType.collateral`，则设置为 `true`。
+* **type**: 将其设置为`TokenType.collateral`以创建一个用于ERC20/ERC721代币的Warp路由，或者将其设置为 `TokenType.native` 以创建一个用于原生代币（例如以太币）的Warp路由。
+* **address:** 如果使用`TokenType.collateral`，则为要创建路由的ERC20/ERC721合约的地址。
+* **isNft:** 如果对一个ERC721合约使用`TokenType.collateral`，则设置为`true`。
 
-#### 合成资产(Synthetics)
+#### 合成资产
 
-您的配置必须至少有一个 `synthetics` 条目。在这里，您将配置有关您的 Warp 路由支持的远程链的详细信息。
+您的配置必须至少有一个`synthetics`条目。在这里，您将配置有关您的Warp路由支持的远程链的详细信息。
 
 * **chainName:** 将此设置为您希望获得您代币的封装版本的链。
 
-#### 可选字段(Optional fields)
+#### 可选字段
 
-您可以在您的 `base` 和 `synthetics` 条目中指定以下可选值。如果未提供任何值，则将使用核心部署文件中的值，这些文件可能是您自己的（如果提供了）或[SDK的](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json)。
+您可以在您的`base`和`synthetics`条目中指定以下可选值。如果未提供任何值，则将使用核心部署文件中的值，这些文件可能是您自己的（如果提供了）或[SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json)。
 
-* **mailbox:** 用于发送和接收消息的[邮箱](../reference/messaging/messaging-interface.mdx)合约的地址
-* **interchainSecurityModule:** 用于验证跨链消息的[跨链安全模块](../reference/ISM/specify-your-ISM.mdx)的地址
-* **interchainGasPaymaster:** 用于支付交付跨链消息所需的燃料费用的[跨链燃料支付](../reference/hooks/interchain-gas.mdx)的地址
+* **mailbox:** 用于发送和接收消息的[mailbox](../reference/messaging/messaging-interface.mdx)合约的地址
+* **interchainSecurityModule:** 用于验证跨链消息的[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的地址
+* **interchainGasPaymaster:** 用于支付交付跨链消息所需的燃料费用的[interchain gas payments](../reference/hooks/interchain-gas.mdx)的地址
 
 #### 示例
 
-对于使用local anvil chains的最小 Warp 配置示例，请参阅 [`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml)。
+对于使用local anvil chains的最小Warp配置示例，请参阅[`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml)。
 
-### 链配置（Chain Config)
+### 链配置
 
-Warp 路由部署将需要关于其将与之交互的任何链的基本信息。如果目标链包括 Hyperlane SDK 中尚未包含的任何链，您必须为其指定链元数据。
+Warp路由部署需要关于其将与之交互的任何链的基本信息。如果目标链包括Hyperlane SDK中尚未包含的任何链，您必须为其指定链元数据。
 
-要查看 SDK 中包含哪些链，请运行以下命令：
+要查看SDK中包含哪些链，请运行以下命令：
 
 ```bash
 hyperlane chains list
@@ -80,21 +80,21 @@ hyperlane chains list
 hyperlane config create chain
 ```
 
-或者您可以手动定义配置。参见 [ChainMetadata type](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts#L62) 以查看其架构。您可以在 [`anvil-chains.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/anvil-chains.yaml) 中找到一个最小的示例。
+或者您可以手动定义配置。参见[ChainMetadata type](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts#L62)以查看其架构。您可以在[`anvil-chains.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/anvil-chains.yaml)中找到一个最小的示例。
 
 ## 2. 部署
 
-运行以下命令以启动 Warp 路由部署：
+运行以下命令以启动Warp路由部署：
 
 ```bash
 hyperlane deploy warp
 ```
 
-完成后，CLI 将创建两个新的 JSON 文件：`warp-deployment` 和 `warp-ui-token-config`。第一个文件仅包含新部署的 Warp 路由器合约的地址。第二个是 Warp UI 的配置文件，您可以在下一个可选步骤中使用。
+完成后，CLI将创建两个新的JSON文件：`warp-deployment` 和 `warp-ui-token-config`。第一个文件仅包含新部署的Warp路由器合约的地址。第二个是Warp UI的配置文件，您可以在下一个可选步骤中使用。
 
 ## 3. 测试
 
-您可以使用以下命令发起一次单个 wei 的测试转账：
+您可以使用以下命令发起一次单个wei的测试转账：
 
 ```bash
 hyperlane send transfer
@@ -113,4 +113,4 @@ Warp test transfer complete
 
 ## 4. (可选) Warp UI
 
-Warp UI 是一个用于与 Warp 路由交互的 DApp 模板。请参阅 [Warp UI 文档](./deploy-warp-route-UI.mdx) 了解设置方法的详细信息。
+Warp UI是一个用于与Warp路由交互的DApp模板。请参阅[Warp UI 文档](./deploy-warp-route-UI.mdx)了解设置方法的详细信息。

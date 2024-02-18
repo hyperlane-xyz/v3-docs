@@ -1,6 +1,6 @@
-# 开发指南(Implementation Guide)
+# 构建指南
 
-一个新链架构的 Hyperlane 实施由以下内容组成：
+一个新链架构的 Hyperlane构建由以下内容组成：
 
 1. [Contracts](#1-contracts): 公开应用程序开发人员用于发送和接收消息的接口
 2. [Agents](#2-agents): 通过添加安全性并中继消息来操作协议
@@ -8,16 +8,16 @@
 
 在开始之前，建议先查阅协议文档。
 
-## 1. Contracts
+## 1. contracts
 
-下面描述了 Hyperlane 协议的链上合约规范。它使用了 Solidity 类型以便熟悉，但所有内容都可以推广到其他语言。
+下面描述了Hyperlane协议的链上合约规范。它使用了Solidity类型以便熟悉，但所有内容都可以推广到其他语言。
 
-* `address` 应该解释为本地链的地址类型
-* `payable` 描述了一个允许调用者传递本地代币的函数
+* `address` ：应该解释为本地链的地址类型
+* `payable` ：描述了一个允许调用者传递本地代币的函数
 
 ### Message
 
-消息是 Hyperlane 协议使用的核心数据结构。它是一个紧凑的数据结构，包含了将消息从一个域路由到另一个域所需的所有信息。
+消息是Hyperlane协议使用的核心数据结构。它是一个紧凑的数据结构，包含了将消息从一个域路由到另一个域所需的所有信息。
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
@@ -50,7 +50,7 @@ struct Message {
 
 #### dispatch
 
-将消息分派到目标域和接收者。
+将消息分发到目标域和接收者。
 
 ```solidity
 function dispatch(
@@ -119,13 +119,13 @@ function handle(
 function interchainSecurityModule() returns (address);
 ```
 
-:::信息
+:::info
 
 实现了这三个合约后，您就可以达到第一个里程碑，即通过调用 `Mailbox` 的 `dispatch` 函数来向接收者发送消息，并判断接收者是否收到了消息，以模拟消息传输。参见[这里的 Foundry 测试案例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/Messaging.t.sol#L29)。
 
 :::
 
-### 跨链安全模块（Interchain Security Module）
+### Interchain Security Module
 
 跨链安全模块用于在消息被处理之前进行验证。
 
@@ -133,7 +133,7 @@ function interchainSecurityModule() returns (address);
 
 #### moduleType
 
-返回一个枚举，表示此 ISM 编码的安全模型的类型。
+返回一个枚举，表示此ISM编码的安全模型的类型。
 
 ```solidity
 enum ModuleType {
@@ -206,7 +206,7 @@ function getAnnouncedStorageLocations(
 
 #### Metadata
 
-要与中继器中的 MESSAGE_ID_MULTISIG 模块类型实现一起使用，元数据必须格式化如下：
+要与中继器中的MESSAGE_ID_MULTISIG模块类型实现一起使用，元数据必须格式化如下：
 
 * [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/isms/MessageIdMultisigIsmMetadata.sol)
 * [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism-metadata/src/main.sw)
@@ -226,7 +226,7 @@ struct MultisigMetadata {
 
 返回负责验证消息的验证者集合以及所需签名的数量
 
-_可以根据 _message 的内容进行更改_
+可以根据 _message_ 的内容进行更改
 
 ```solidity
 function validatorsAndThreshold(
@@ -242,7 +242,7 @@ function validatorsAndThreshold(
 
 :::info
 
-实现了 MultisigISM 后，您就可以达到第二个里程碑，即测试您的邮箱仅在接收者的 ISM 返回 true 后才处理。您可以使用一个 `TestISM` 来测试，您可以静态设置它来接受或拒绝任何消息。参见[这里的 Hardhat 测试案例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)。
+实现了MultisigISM后，您就可以达到第二个里程碑，即测试您的邮箱仅在接收者的ISM返回true后才处理。您可以使用一个 `TestISM` 来测试，您可以静态设置它来接受或拒绝任何消息。参见[Hardhat test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)。
 
 :::
 
@@ -255,9 +255,9 @@ function validatorsAndThreshold(
 
 #### payForGas
 
-将 msg.value 存入作为向目标链中继消息的支付。
+将msg.value存入作为向目标链中继消息的支付。
 
-_超额支付将导致向 refundAddress 退还本地令牌。调用者应注意这可能会产生重入问题。_
+超额支付将导致向refundAddress退还本地令牌。调用者应注意这可能会产生重入问题。
 
 ```solidity
 function payForGas(
@@ -290,7 +290,7 @@ event GasPayment(
 
 #### Message Indexing
 
-所有代理必须索引来自原始邮箱的消息。在 Solidity 邮箱中，我们[为每条分派的消息发出一个事件](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L125-L129)。其他链可能有不同的方式来呈现这些信息，但代理必须能够可靠地获取消息内容，并具有一致的顺序 - 请参见[消息索引器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs)特性。
+所有代理必须索引来自原始邮箱的消息。在Solidity邮箱中，我们[emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L125-L129)。其他链可能有不同的方式来呈现这些信息，但代理必须能够可靠地获取消息内容，并具有一致的顺序 - 请参见[message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs)特性。
 
 * [ethereum](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/chains/hyperlane-ethereum/src/mailbox.rs)
 
@@ -300,7 +300,7 @@ event GasPayment(
 
 #### Checkpoint
 
-验证者从邮箱产生称为检查点的认证，这些认证通过 Merkle 根对所有已分派的消息 ID 进行提交。
+验证者从邮箱产生称为检查点的认证，这些认证通过Merkle根对所有已分派的消息ID进行提交。
 
 ```rust
 pub struct Checkpoint {
@@ -349,7 +349,7 @@ pub struct CheckpointWithMessageId {
 
 #### Message Processor
 
-中继器将尝试在目标邮箱上处理消息（参见[消息处理器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)）。 如果
+中继器将尝试在目标邮箱上处理消息（参见[message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)）。 如果
 
 * 消息接收方 ISM 返回一个未知的模块类型
 * 模块类型已知，但元数据验证失败
@@ -372,7 +372,7 @@ pub struct CheckpointWithMessageId {
 5. 请注意，验证器观察到该消息在源链上布时，会创建签名，然后中继器通过在目标链上指定验证者的ISM适当地处理您的消息。
 
 
-查看[Rust代码库中的端到端测试](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)以获得灵感。
+查看[end-to-end test on the Rust codebase ](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)以获得灵感。
 
 :::
 

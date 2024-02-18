@@ -6,10 +6,10 @@
 :::
 
 :::note
-运行你自己的中继器涉及部署[IGP合同](../interchain-gas payment.mdx)，并在其中维护代币汇率和燃料费价格，以准确收取消息传输费用。因此，我们只建议在设置无需许可部署的网桥时这样做，而不是重用现有的网桥。
+运行你自己的中继器涉及部署[IGP contract](../interchain-gas-payment.mdx)，并在其中维护代币汇率和燃料费价格，以准确收取消息传输费用。因此，我们只建议在设置无需许可部署的网桥时这样做，而不是重用现有的网桥。
 :::
 
-中继器被配置为在两个或多个链之间中继消息。中继者观察原始[Mailbox](../mailbox.mdx)合约，监视新消息。当检测到新消息时，中继器查询目的链以确定消息接收者的[Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx)。
+中继器被配置为在两个或多个链之间中继消息。中继器观察原始[Mailbox](../mailbox.mdx)合约，监视新消息。当检测到新消息时，中继器查询目的链以确定消息接收者的[Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx)。
 
 然后，中继器负责收集该ISM所需的元数据。这可能因ISM而异，可能包括来自一个或多个[validators](./validators.mdx)、merkle证明、零知识证明等等的签名!
 
@@ -27,8 +27,8 @@
 2. 发件人/收件人黑名单。
 3. 接收[payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch)以处理目标链上的消息的能力。
 
-为了方便，Hyperlane将运行一个开源的可配置的中继代理，以rust二进制文件的形式实现。如果你想运行你自己的relayer，我们已经开源了[二进制文件](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer)。
+为了方便，Hyperlane将运行一个开源的可配置的中继代理，以rust二进制文件的形式实现。如果你想运行你自己的relayer，我们已经开源了源代码 [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer)。
 
 #### 错误处理
 
-当处理失败时，中继器将使用指数退避策略周期性地重试消息。目前，没有固定的最大重试次数，超过重试次数后，中继器将停止尝试处理消息。然而，这并不是无限期重试的保证，运营商不应将此作为服务水平协议(SLA)的依赖。
+当处理失败时，中继器将使用指数回滚策略周期性地重试消息。目前，没有固定的最大重试次数，超过重试次数后，中继器将停止尝试处理消息。然而，这并不是无限期重试的保证，运营商不应将此作为服务水平协议(SLA)的依赖。

@@ -32,7 +32,7 @@ import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
 Hyperlane只能向实现`handle`函数的智能合约传递消息。有关更多信息，请参阅 [receive a message](./receive.mdx) 文档。
 :::
 
-根据 [post-`dispatch` hook configuration](##post-dispatch-hook-config)，可能需要一些付款。更多信息请参阅 [`quoteDispatch`](#Quote-Dispatch)。
+根据[post-`dispatch` hook configuration](##post-dispatch-hook-config)，可能需要一些付款。更多信息请参阅 [`quoteDispatch`](#Quote-Dispatch)。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -42,7 +42,7 @@ Hyperlane只能向实现`handle`函数的智能合约传递消息。有关更多
 ```
 
 :::info
-为了与地址不同的虚拟机兼容，收件人地址被保留为`bytes32` 。为了方便起见，在[`TypeCasts` library](../libraries/typecasts.mdx) 中提供了以下实用程序。
+为了与地址不同的虚拟机兼容，收件人地址被保留为`bytes32`。为了方便起见，在[`TypeCasts` library](../libraries/typecasts.mdx) 中提供了以下实用程序。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/libs/TypeCasts.sol#L5-L8
 
@@ -85,7 +85,7 @@ bytes32 messageId = mailbox.dispatch{value: msg.value}(
 
 ## Quote Dispatch
 
-费用通常配置为支付IGP付款和协议费用。这包括目标链上的事务提交、安全配置和维护。要接收对应的`dispatch` 调用的报价，你可以查询`quoteDispatch`函数。
+费用通常配置为支付IGP付款和协议费用。这包括目标链上的事务提交、安全配置和维护。要接收对应的`dispatch`调用的报价，你可以查询`quoteDispatch`函数。
 
 ```mermaid
 flowchart TB
@@ -103,7 +103,7 @@ flowchart TB
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/Mailbox.sol#L149-L153
 ```
 
-引用的 `fee` 必须作为值传递给`dispatch` 调用，以确保它不会回滚。
+引用的`fee`必须作为值传递给`dispatch`调用，以确保它不会回滚。
 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
@@ -140,7 +140,7 @@ mailbox.dispatch{value: fee}(destination, recipient, body);
 />
 
 :::tip
-对`dispatch` 少付的金额将回滚，但多付的金额将退还给消息发送者。 这样，开发人员就可以跳过显式的`quoteDispatch`调用，转而使用具有超额值的`quoteDispatch`调用。
+对`dispatch`少付的金额将回滚，但多付的金额将退还给消息发送者。这样，开发人员就可以跳过显式的`quoteDispatch`调用，转而使用具有超额值的`quoteDispatch`调用。
 :::
 
 ## Post-Dispatch Hook 配置

@@ -4,11 +4,11 @@ description: Smarter interchain security models
 
 # 路由模块
 
-开发人员可以使用`RoutingISM` 将消息验证委托给不同的ISM。这允许开发人员根据消息内容或应用程序上下文更改安全模型&#x20；
+开发人员可以使用`RoutingISM`将消息验证委托给不同的ISM。这允许开发人员根据消息内容或应用程序上下文更改安全模型；
 
 ## 接口
 
-`RoutingISMs` 必须实现`IRoutingIsm`接口。
+`RoutingISMs`必须实现`IRoutingIsm`接口。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IRoutingIsm.sol
 ```
@@ -25,7 +25,7 @@ hyperlane-monorepo包含一个`RoutingISM`实现，`DomainRoutingIsm`，应用�
 
 hyperlane-monorepo包含一个抽象的`RoutingISM`实现，应用程序开发人员可以对其进行分叉。
 
-开发人员只需要实现 `route()` 函数。
+开发人员只需要实现`route()`函数。
 
 通过创建自定义实现，应用程序开发人员可以根据应用程序的需要定制`RoutingISM`提供的安全性。
 

@@ -4,7 +4,7 @@
 
 对于CCIP Read ISM要记住的一个警告是，它们确实引入了对外部(到区块链)但自托管的API的依赖。如果这对您的用例来说是一个困难的障碍，您可能需要考虑其他消息验证技术。
 
-在构建CCIP Read ISM之前，您有必要熟悉[CCIP Read规范](https://eips.ethereum.org/EIPS/eip-3668)。该规范描述了一种通用协议，允许EVM兼容链上的智能合约查询和消费链下数据。
+在构建CCIP Read ISM之前，您有必要熟悉[CCIP Read specification](https://eips.ethereum.org/EIPS/eip-3668)。该规范描述了一种通用协议，允许EVM兼容链上的智能合约查询和消费链下数据。
 
 ## 它是如何工作的
 
@@ -69,7 +69,7 @@ interface ICcipReadIsm is IInterchainSecurityModule {
 
 中继器会将这个`data`属性作为`metadata`参数传递给`Mailbox.Process ` (bytes metadata, bytes message)。
 
-请注意，在链式ISM的情况下，数据的接收方也充当验证ISM， `data`只是发送的原始交易，以提交具有相关签名的价格数据。`message`属性有些多余。
+请注意，在链式ISM的情况下，数据的接收方也充当验证ISM，`data`只是发送的原始交易，以提交具有相关签名的价格数据。`message`属性有些多余。
 
 ### 合约
 
@@ -77,7 +77,7 @@ interface ICcipReadIsm is IInterchainSecurityModule {
 
 - `getOffchainVerifyInfo`函数应该返回一个`OffchainLookup`错误，指示中继器查询给定的API端点。`OffchainLookup`错误允许提供一组API端点，因此你可以强制执行你想要的任何级别的冗余
 
-- `verify`必须获取提供的`metadata`并验证其合法性。同样，在为您自己的ISM开发此逻辑时，[ChainlinkISM实现](https://github.com/AlexBHarley/permissionless-chainlink-feeds/blob/main/apps/contracts/contracts/ChainlinkAggregator.sol#L114)可以是一个有用的参考点。
+- `verify`必须获取提供的`metadata`并验证其合法性。同样，在为您自己的ISM开发此逻辑时，[ChainlinkISM实现](https://github.com/AlexBHarley/permissionless-chainlink-feeds/blob/main/apps/contracts/contracts/ChainlinkAggregator.sol#L114)是一个非常棒的参考。
 
 下面是CCIP Read ISM的示例，其中ISM也是消息的接收者，根据链链接ISM。
 

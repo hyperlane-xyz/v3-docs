@@ -1,16 +1,16 @@
 import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
-# 部署一个用于您的 Warp 路由的用户界面
+# 部署一个用于您的Warp路由的用户界面
 
-在成功[部署了一个 Warp 路由](./deploy-warp-route.mdx)之后，您可能希望部署一个前端用户界面来促进跨链代币转账。您可以 fork [Hyperlane Warp UI 模板](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) 并根据您的需求进行定制。
+在成功[deployed a Warp Route](./deploy-warp-route.mdx)之后，您可能希望部署一个前端用户界面来促进跨链代币转账。您可以fork[Hyperlane Warp UI 模板](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template)并根据您的需求进行定制。
 
 ## 配置和定制用户界面
 
-请按照 [自定义说明](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) 中的说明，了解如何配置 UI 的代币和更改默认的品牌资产/主题。
+请按照[customization instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md)中的说明，了解如何配置UI的代币和更改默认的品牌资产/主题。
 
 ### 代币配置示例
 
-这是一个 Warp 路由的代币配置示例，连接到 Goerli 上的 WETH（链 ID 5）。您可以使用 Typescript、JSON 或 YAML 配置您的代币配置。
+这是一个Warp路由的代币配置示例，连接到Goerli上的WETH（链 ID 5）。您可以使用Typescript、JSON或YAML配置您的代币配置。
 
 ```typescript
 {
@@ -35,7 +35,7 @@ import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
 #### 链配置示例
 
-链元数据也可以根据需要进行配置。这些配置与 CLI 中用于任何部署或发送命令的配置相同（例如，来自[部署指南](../deploy-hyperlane.mdx)的配置）。
+链元数据也可以根据需要进行配置。这些配置与CLI中用于任何部署或发送命令的配置相同（例如，来自[deploy guide](../deploy-hyperlane.mdx)的配置）。
 
 ```typescript
 {
@@ -57,23 +57,23 @@ anvil1: {
 
 ### 部署用户界面
 
-由于用户界面是一个 Next.js 应用程序，您可以使用您喜欢的托管服务来托管它。我们推荐使用 [Vercel](https://vercel.com)，它与 Next.js 非常配合。[AWS Amplify](https://aws.amazon.com/amplify) 是另一个流行的选择。
+由于用户界面是一个Next.js应用程序，您可以使用您喜欢的托管服务来托管它。我们推荐使用 [Vercel](https://vercel.com)，它与Next.js兼容。[AWS Amplify](https://aws.amazon.com/amplify)是另一个流行的选择。
 
-* 注册 [Vercel](https://vercel.com/)
+* 注册[Vercel](https://vercel.com/)
 * 创建新项目
-* 将其连接到您的 Git 仓库
+* 将其连接到您的Git仓库
 * 点击部署！
 
 就是这样！现在您和您的用户可以使用该用户界面将代币从抵押链（collateral chain）发送到远程链，从一个远程链发送到另一个远程链，并从任何远程链发送回抵押链。
 
-### 返回燃料（Return gas）
+### 返回燃料
 
-像 Warp 路由这样的代币桥接器的一个常见问题是，用户可能会将诸如 USDC 的代币转移到新链上，但只在此之后才意识到他们没有本地的燃料代币将这些代币移动到任何地方，包括返回。
+像Warp路由这样的代币桥接器的一个常见问题是，用户可能会将诸如USDC的代币转移到新链上，但只在此之后才意识到他们没有本地的燃料代币将这些代币移动到任何地方，包括返回。
 
-除了在用户界面中警告用户确保他们拥有燃料之外，您还可以为他们提供一些本地燃料代币，以改善他们的初始体验。要实现这个水龙头，您可以修改 Warp 路由合约以持有一些本地代币的余额，并与接收者分享。此外，您还可以构建一个离线服务，该服务只需观察 [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) 并将本地燃料代币转移到接收者。
+除了在用户界面中警告用户确保他们拥有燃料之外，您还可以为他们提供一些本地燃料代币，以改善他们的初始体验。要实现这个水龙头，您可以修改Warp路由合约以持有一些本地代币的余额，并与接收者分享。此外，您还可以构建一个离线服务，该服务只需观察 [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) 并将本地燃料代币转移到接收者。
 
 
-:::提示
+:::tip
 
 <TypescriptSdkPlaceholder />
 

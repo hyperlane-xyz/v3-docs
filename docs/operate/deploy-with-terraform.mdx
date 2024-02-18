@@ -10,7 +10,7 @@
 
 ## 概览
 
-提供的 Terraform 有几个关键部分：
+提供的Terraform有几个关键部分：
 
 - IAM/KMS 模块：自动为您完成 [Agent Keys](set-up-agent-keys.mdx)配置。
 - S3 模块：自动为您完成 [AWS Signatures Bucket](validators/validator-signatures-aws.mdx) 配置。
@@ -61,9 +61,9 @@ graph LR
 
 ## 使用方法
 
-作为前提条件，您需要安装 Terraform，并使用您的凭据配置 AWS CLI。
+作为前提条件，您需要安装Terraform，并使用您的凭据配置AWS CLI。
 
-初始化 Terraform 状态：
+初始化Terraform状态：
 
 ```bash
 terraform init
@@ -81,7 +81,7 @@ terraform plan
 terraform apply
 ```
 
-要列出 KMS、IAM 或 S3 信息等输出，必须解析 JSON 输出：
+要列出KMS、IAM 或 S3信息等输出，必须解析JSON输出：
 
 ```bash
 terraform output -json
@@ -89,32 +89,32 @@ terraform output -json
 
 ## 模块
 
-Terraform 提供多个模块，您可以选择希望由 terraform 管理验证器设置的哪些部分。
+Terraform提供多个模块，您可以选择希望由terraform管理验证器设置的哪些部分。
 
 ### IAM / KMS
 
-iam_kms "模块会创建一个 IAM 用户和一个 KMS 密钥，用于安全签名操作。它还会设置 IAM 策略和附件，以授予使用 KMS 密钥和其他 AWS 服务（如 S3、EFS 和 ECS）所需的权限。
+`iam_kms`模块会创建一个IAM用户和一个KMS密钥，用于安全签名操作。它还会设置IAM策略和附件，以授予使用KMS密钥和其他AWS服务（如 S3、EFS 和 ECS）所需的权限。
 
 ### S3
 
-s3 "模块创建一个 S3 bucket，用于存储签名等与验证程序相关的数据。它还设置了管理访问和权限的存储策略，包括公共访问限制和版本管理。
+`s3`模块创建一个S3 bucket，用于存储签名等与验证程序相关的数据。它还设置了管理访问和权限的存储策略，包括公共访问限制和版本管理。
 
 ### EFS
 
-efs 模块定义了 EFS 文件系统和访问点，允许 Validator 应用程序存储和访问 EFS 上的数据。它还设置了一个挂载目标，用于将 EFS 文件系统连接到网络。
+`efs`模块定义了EFS文件系统和访问点，允许Validator应用程序存储和访问EFS上的数据。它还设置了一个挂载目标，用于将EFS文件系统连接到网络。
 
 :::note
-只有在使用 `validator` 模块时才需要该模块。
+只有在使用`validator`模块时才需要该模块。
 :::
 
 ### Validator
 
-`validator`模块使用上述所有功能整合 EFS、IAM/KMS 和 S3 配置。
+`validator`模块使用上述所有功能整合EFS、IAM/KMS和S3配置。
 
 此外，还有：
-- 创建新的 IAM 用户和相关角色以运行验证器。
-- 创建验证器可写入签名的 S3 bucket。
-- 创建 EFS 卷，以便在服务中持久保存数据。
+- 创建新的IAM用户和相关角色以运行验证器。
+- 创建验证器可写入签名的S3 bucket。
+- 创建EFS卷，以便在服务中持久保存数据。
 
 本模块还包括：
 - 定义一个运行验证器应用程序的ECS任务定义，包括容器定义、卷配置和日志记录。
@@ -122,7 +122,7 @@ efs 模块定义了 EFS 文件系统和访问点，允许 Validator 应用程序
 
 ## 主要配置
 
-根级配置为网络基础设施设置了 VPC、子网、互联网网关、NAT 网关、路由表和安全组。它还提供了使用 "验证器 "模块的示例。
+根级配置为网络基础设施设置了VPC、子网、互联网网关、NAT 网关、路由表和安全组。它还提供了使用"验证器"模块的示例。
 
 ```terraform
 module "your_validator_name" {
@@ -147,11 +147,11 @@ module "your_validator_name" {
 
 ### 输出
 
-根级别的 `outputs.tf` 从 `main.tf` 中配置的验证器中传递所有输出。**随着您添加、修改或删除验证器，您将需要更新此内容。**
+根级别的`outputs.tf`从`main.tf`中配置的验证器中传递所有输出。**随着您添加、修改或删除验证器，您将需要更新此内容。**
 
 ### 结构示例
 
-下图显示了 Validator ECS 集群如何融入顶级网络基础设施。
+下图显示了Validator ECS集群如何融入顶级网络基础设施。
 
 ```mermaid
 graph TD
@@ -193,7 +193,7 @@ graph TD
 
 ### PI 配置
 
-为 PI 链（如您自己部署的 Hyperlane）设置自定义配置值并非易事。
+为PI链（如您自己部署的Hyperlane）设置自定义配置值并非易事。
 目前，您可能只需传递一长串环境变量或命令行参数。
 
 ### 单个代理日志
