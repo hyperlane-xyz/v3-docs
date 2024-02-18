@@ -5,9 +5,9 @@ import { MultiLanguageExample } from "@site/src/components/InteractiveExample";
 
 import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
 
-# Send a message
+# 发送消息
 
-Contracts can send interchain messages by calling the `dispatch` function on the Mailbox.
+合约可以通过调用Mailbox上的`dispatch`函数来发送链间消息。
 
 <SimpleMessagingDiagram/>
 
@@ -26,13 +26,13 @@ Contracts can send interchain messages by calling the `dispatch` function on the
 
 ## Dispatch
 
-Calling this function dispatches a message to the destination domain and recipient.
+调用此函数将消息分发到目标域和收件人。
 
 :::warning
-Hyperlane can only deliver messages to smart contracts that implement the `handle` function. See the [receive a message](./receive.mdx) documentation for more information.
+Hyperlane只能向实现`handle`函数的智能合约传递消息。有关更多信息，请参阅 [receive a message](./receive.mdx) 文档。
 :::
 
-Depending on the [post-`dispatch` hook configuration](##post-dispatch-hook-config), some payment may be required. See the [`quoteDispatch`](#Quote-Dispatch) section for more information.
+根据 [post-`dispatch` hook configuration](##post-dispatch-hook-config)，可能需要一些付款。更多信息请参阅 [`quoteDispatch`](#Quote-Dispatch)。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -42,7 +42,7 @@ Depending on the [post-`dispatch` hook configuration](##post-dispatch-hook-confi
 ```
 
 :::info
-Recipient addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently. The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
+为了与地址不同的虚拟机兼容，收件人地址被保留为`bytes32` 。为了方便起见，在[`TypeCasts` library](../libraries/typecasts.mdx) 中提供了以下实用程序。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/libs/TypeCasts.sol#L5-L8
 
@@ -53,17 +53,17 @@ Recipient addresses are left-padded to `bytes32` for compatibility with virtual 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-### Examples
+### 示例
 
 <MultiLanguageExample
   solidity={({
@@ -85,7 +85,7 @@ bytes32 messageId = mailbox.dispatch{value: msg.value}(
 
 ## Quote Dispatch
 
-Fees are often configured to cover IGP payments as well as protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function.
+费用通常配置为支付IGP付款和协议费用。这包括目标链上的事务提交、安全配置和维护。要接收对应的`dispatch` 调用的报价，你可以查询`quoteDispatch`函数。
 
 ```mermaid
 flowchart TB
@@ -103,22 +103,22 @@ flowchart TB
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/Mailbox.sol#L149-L153
 ```
 
-The quoted `fee` must be passed as value to the `dispatch` call to ensure it does not revert.
+引用的 `fee` 必须作为值传递给`dispatch` 调用，以确保它不会回滚。
 
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-### Examples
+### 示例
 
 <MultiLanguageExample
   solidity={({
@@ -140,15 +140,15 @@ mailbox.dispatch{value: fee}(destination, recipient, body);
 />
 
 :::tip
-Underpayment to `dispatch` will revert but overpayment will be refunded to the message sender. This enables developers to skip explicit `quoteDispatch` calls in favor of `dispatch` calls with excess value.
+对`dispatch` 少付的金额将回滚，但多付的金额将退还给消息发送者。 这样，开发人员就可以跳过显式的`quoteDispatch`调用，转而使用具有超额值的`quoteDispatch`调用。
 :::
 
-## Post-Dispatch Hook Config
+## Post-Dispatch Hook 配置
 
-There are two hooks configured on a Mailbox
+在邮箱上配置了两个钩子：
 
-- `required`: invoked for all `dispatch` calls with value that covers the required fee
-- `default`: invoked (unless overriden) with remaining value after `required` hook
+- `required`: 所有`dispatch`都会调用，调用值为所需费用
+- `default`: 在`required`钩子之后用剩余值调用(除非被覆盖)
 
 ```mermaid
 flowchart LR
@@ -167,7 +167,7 @@ flowchart LR
 
 ### Required Hook
 
-To query the required hook configuration, you can call the `requiredHook` function.
+要查询所需的钩子配置，可以调用`requiredHook`函数。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -181,7 +181,7 @@ To query the required hook configuration, you can call the `requiredHook` functi
 
 ### Default Hook
 
-To query the default hook configuration, you can call the `defaultHook` function.
+要查询默认的钩子配置，可以调用 `defaultHook` 函数。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -193,4 +193,4 @@ To query the default hook configuration, you can call the `defaultHook` function
 </TabItem>
 </Tabs>
 
-To override the default hook with a custom hook in the `dispatch` call, see the [Hooks Reference](../hooks/overview.mdx).
+要在`dispatch` 调用中使用自定义钩子覆盖默认钩子，请参见[Hooks Reference](../hooks/overview.mdx)。
