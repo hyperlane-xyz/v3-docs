@@ -4,7 +4,7 @@ Everything you need to start running a Validator.
 
 :::tip
 
-Experienced operators may prefer to [deploy agents with Terraform](../deploy-with-terraform.mdx) instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
+Experienced operators may prefer to deploy agents with terraform instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
 
 :::
 
@@ -246,7 +246,7 @@ docker run \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
-  --reorgPeriod 20 \
+  --reorgPeriod 1 \
   --validator.region us-east-1 \
   --checkpointSyncer.region us-east-1 \
   --validator.type aws \
@@ -276,7 +276,7 @@ export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
-  --reorgPeriod 20 \
+  --reorgPeriod 1 \
   --validator.region us-east-1 \
   --checkpointSyncer.region us-east-1 \
   --validator.type aws \
