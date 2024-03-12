@@ -410,8 +410,6 @@ The Relayer may also require gas payment for a specific message ID on the origin
 
 ### Testing
 
-#### End-to-end
-
 Once you have implemented an MVP of the relayer, you should create an end-to-end test that:
 
 1. Spins up local origin and destination chains.
@@ -421,6 +419,12 @@ Once you have implemented an MVP of the relayer, you should create an end-to-end
 5. Observe that upon dispatch of a message of the origin chain, the validator observes the message, creates a signature and the relayer appropriately processes your message via the ISM that specifies the validator on the destination chain.
 
 See this [end-to-end test on the Rust codebase ](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)for inspiration.
+
+:::tip
+
+After validating the agents with local end-to-end tests, it is recommended that you also run end-to-end tests with real testnets.
+
+:::
 
 ## 3. Applications
 
