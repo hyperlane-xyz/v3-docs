@@ -1,52 +1,4 @@
 {
-    "basegoerli": {
-        "merkleRootMultisigIsmFactory": "0x6966b0E55883d49BFB24539356a2f8A673E02039",
-        "messageIdMultisigIsmFactory": "0x54148470292C24345fb828B003461a9444414517",
-        "aggregationIsmFactory": "0x589C201a07c26b4725A4A829d772f24423da480B",
-        "aggregationHookFactory": "0xDDcFEcF17586D08A5740B7D91735fcCE3dfe3eeD",
-        "routingIsmFactory": "0x33dB966328Ea213b0f76eF96CA368AB37779F065",
-        "proxyAdmin": "0x05Ea36Caee7d92C173334C9D97DcD39ABdCB2b69",
-        "mailbox": "0x58483b754Abb1E8947BE63d6b95DF75b8249543A",
-        "validatorAnnounce": "0x679Dc08cC3A4acFeea2f7CAFAa37561aE0b41Ce7",
-        "merkleTreeHook": "0x5821f3B6eE05F3dC62b43B74AB1C8F8E6904b1C8",
-        "storageGasOracle": "0x267B6B6eAf6790faE5D5E9070F28a9cE64CbF279",
-        "interchainGasPaymaster": "0x28B02B97a850872C4D33C3E024fab6499ad96564",
-        "aggregationHook": "0x168e606fE4A9c8d7F83a3aAA132E831f153e4bAa",
-        "protocolFee": "0xEe421285728284000ec6c6C55C6F9161faeFfa99",
-        "fallbackRoutingHook": "0x2C6dD6768E669EDB7b53f26067C1C4534862c3de"
-    },
-    "arbitrumgoerli": {
-        "merkleRootMultisigIsmFactory": "0x17D58eBb5Ea0E2d360c877E119FAef4C4052e6B9",
-        "messageIdMultisigIsmFactory": "0x922CeEe9e8832a047e6aD68Df4F079F271b73Ac3",
-        "aggregationIsmFactory": "0xC5Bb8CDD44B6c56695df45c7AA8012a97dD6ED13",
-        "aggregationHookFactory": "0x39a8711BF44165A2292Cb5cB43229659c2Bb11c9",
-        "routingIsmFactory": "0x735491727b9a1206E16AF4964aF68d5BB9122333",
-        "proxyAdmin": "0x00DFB81Bfc45fa03060b605273147F274ea807E5",
-        "mailbox": "0x13dABc0351407d5aAa0A50003a166A73b4febfDc",
-        "validatorAnnounce": "0x4a01EEBa1CC20F47A2e60aE4ec932051601FcB9e",
-        "merkleTreeHook": "0xf0A38e1eEA49dAc7968F470c3aA0BDE2565A5d80",
-        "storageGasOracle": "0xFc8229ADB46D96056A6e451Fb3c55d60FFeD056f",
-        "interchainGasPaymaster": "0x76189acFA212298d7022624a4633411eE0d2f26F",
-        "aggregationHook": "0xf852EB6b98d84A4296754043a56759a0Ae0E06df",
-        "protocolFee": "0x0358ba0D90ED2d90fB8cBb610F27C274D8077a0B",
-        "fallbackRoutingHook": "0xEdA6f85f4761A1f9e42FD40CA5a4E8Ce1C764015"
-    },
-    "optimismgoerli": {
-        "merkleRootMultisigIsmFactory": "0xAbC25d7daDD748948F5cC912A807b0f8FcBb56a9",
-        "messageIdMultisigIsmFactory": "0x7868B6026E36C4b6E2ca6a0CaBDb1A6D0CcC443B",
-        "aggregationIsmFactory": "0xf666A33C451E8371907aD22dd545E1678fCa1582",
-        "aggregationHookFactory": "0x00cE81F7B02e0673815a8b0A54e62AeabDE78685",
-        "routingIsmFactory": "0x1807e7d67F00393a49c445E367face82D65d86c7",
-        "proxyAdmin": "0x800b4be4Dc91E56DE934D9f16888d113eFf89Ebb",
-        "mailbox": "0xB5f021728Ea6223E3948Db2da61d612307945eA2",
-        "validatorAnnounce": "0x24D31e12E4d3bc2C46C994FcE0c828b218A1aeAb",
-        "merkleTreeHook": "0xFEe074B31B5B259eB3109737bE13D39B853b47b9",
-        "storageGasOracle": "0x4927C33299091033D935C15DE6b6073164e99BE0",
-        "interchainGasPaymaster": "0x02A7661273528EfF3d78CBE7CbD1a717b28B89fC",
-        "aggregationHook": "0x1C8A2588b8038BF9B7b1b60dD0EdF5b995A45599",
-        "protocolFee": "0x962e30F6A3ECDA85c7fa1FcF38cD04efA991Ee20",
-        "fallbackRoutingHook": "0xc775c748F8c9F5443151Fd989e8B61375657474d"
-    },
     "scrollsepolia": {
         "merkleRootMultisigIsmFactory": "0x275aCcCa81cAD931dC6fB6E49ED233Bc99Bed4A7",
         "messageIdMultisigIsmFactory": "0xeb6f11189197223c656807a83B0DD374f9A6dF44",
@@ -78,22 +30,6 @@
         "aggregationHook": "0xdBabD76358897E68E4964647C1fb8Bf524f5EFdB",
         "protocolFee": "0xC9D50584F08Bf6cCD1004d14c7062044b45E3b48",
         "fallbackRoutingHook": "0x3528B1aeF3a3d29E0eae90ad777A2b4A6a48aC3F"
-    },
-    "polygonzkevmtestnet": {
-        "merkleRootMultisigIsmFactory": "0xfc6e546510dC9d76057F1f76633FCFfC188CB213",
-        "messageIdMultisigIsmFactory": "0x275aCcCa81cAD931dC6fB6E49ED233Bc99Bed4A7",
-        "aggregationIsmFactory": "0xeb6f11189197223c656807a83B0DD374f9A6dF44",
-        "aggregationHookFactory": "0x16B710b86CAd07E6F1C531861a16F5feC29dba37",
-        "routingIsmFactory": "0x44b764045BfDC68517e10e783E69B376cef196B2",
-        "proxyAdmin": "0x666a24F62f7A97BA33c151776Eb3D9441a059eB8",
-        "mailbox": "0x598facE78a4302f11E3de0bee1894Da0b2Cb71F8",
-        "validatorAnnounce": "0x7914A3349107A7295Bbf2374db5A973d73D1b324",
-        "merkleTreeHook": "0x68311418D79fE8d96599384ED767d225635d88a8",
-        "storageGasOracle": "0x3707bc8C7342aA6f693bCe1Bd7671Fca146F7F0A",
-        "interchainGasPaymaster": "0xAD34A66Bf6dB18E858F6B686557075568c6E031C",
-        "aggregationHook": "0x0Fd2C6F0Ad45e766660b9fDebCF36a2AD69536D1",
-        "protocolFee": "0xddf4C3e791caCaFd26D7fb275549739B38ae6e75",
-        "fallbackRoutingHook": "0xBF2C366530C1269d531707154948494D3fF4AcA7"
     },
     "sepolia": {
         "merkleRootMultisigIsmFactory": "0x0a71AcC99967829eE305a285750017C4916Ca269",
@@ -142,22 +78,6 @@
         "merkleTreeHook": "0xc6cbF39A747f5E28d1bDc8D9dfDAb2960Abd5A8f",
         "validatorAnnounce": "0xf09701B0a93210113D175461b6135a96773B5465",
         "fallbackRoutingHook": "0x2670ED2EC08cAd135307556685a96bD4c16b007b"
-    },
-    "goerli": {
-        "merkleRootMultisigIsmFactory": "0x8e43aCfb338B137A3befd9b92BfD84E128adE0B8",
-        "messageIdMultisigIsmFactory": "0xDdB54502A8e2a31C48148C62A8a9E83a693d6173",
-        "aggregationIsmFactory": "0x8a176773d54292123d271FA0B9C7C8Def4c3a31b",
-        "aggregationHookFactory": "0x6bc243963f80AEa80948e8538bB114d4122DD9c5",
-        "routingIsmFactory": "0xd16c3f34d6A2e62185aC61f76F83D3AA1E969018",
-        "proxyAdmin": "0x0EdB3604D230963ecE9d83963164CFe2fDef576B",
-        "storageGasOracle": "0xeC34c715ee6d050b2172E8aF650Db779561266C1",
-        "interchainGasPaymaster": "0x0cD26594ea6c6526927C0F5225AC09F6288e7140",
-        "aggregationHook": "0x2dF77b3efe9B8f9aEDf7bFC86f40B048178d8116",
-        "protocolFee": "0x9293B8dAcA7933765de499C992B0Fa86Bb104b0f",
-        "merkleTreeHook": "0x28c294C61D3dE053462d2Cfa5d5f8c8D70605A59",
-        "mailbox": "0x49cfd6Ef774AcAb14814D699e3F7eE36Fdfba932",
-        "validatorAnnounce": "0x3c182AD9cA8A71bc107Ef440C2667E8360e1158E",
-        "fallbackRoutingHook": "0xd9E546CBB9577dC6346EdB40b24E86aE52487ab8"
     },
     "moonbasealpha": {
         "merkleRootMultisigIsmFactory": "0xA59Ba0A8D4ea5A5DC9c8B0101ba7E6eE6C3399A4",
