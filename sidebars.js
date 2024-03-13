@@ -29,6 +29,23 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Deploy a Warp Route",
+      link: {
+        type: "doc",
+        id: "guides/deploy-warp-route",
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Warp UI",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Deploy Hyperlane to a new chain",
       link: {
         type: "doc",
@@ -337,23 +354,6 @@ const sidebars = {
   ],
 
   guidesSidebar: [
-    {
-      type: "category",
-      label: "Deploy a Warp Route",
-      link: {
-        type: "doc",
-        id: "guides/deploy-warp-route",
-      },
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Warp UI",
-        },
-      ],
-    },
     {
       type: "doc",
       id: "guides/deploy-hyperlane-local-agents",

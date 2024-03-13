@@ -17,9 +17,9 @@ Check out the [Warp Route](/docs/reference/applications/warp-routes) reference p
 
 ## 1. Configuration
 
-### Warp Route config
+### Warp Route deployment config
 
-To deploy the route, you will need a Warp Route config file. A valid config will specify:
+To deploy the route, you will need a Warp Route deployment config file. A valid config will specify:
 * Which token, on which chain, is this Warp Route being created for?
 * _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](../reference/messaging/messaging-interface.mdx), [interchain gas](../reference/hooks/interchain-gas.mdx), and [interchain security modules](../reference/ISM/specify-your-ISM.mdx).
 * _Optional:_ The token standard - fungible tokens using ERC20 or NFTs using ERC721. Defaults to ERC20.
@@ -54,15 +54,17 @@ Your config must have at least one `synthetics` entry. Here you will configure d
 
 #### Optional fields
 
-You may specify the following optional values in your `base` and `synthetics` entries. If no values are provided, values from core deployment artifacts will be used, either yours (if provided) or the [SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json).
+You may specify the following optional values in your `base` and `synthetics` entries. If no values are provided, the deployer will attempt to pull these values from elsewhere. In the case of metadata (symbol, name decimals), it will query the contract. For addresses (mailbox, ISM) it will check the core deployment artifacts, either yours (if provided) or the [SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json).
 
+* **symbol:** The token symbol
+* **name:** The token name
+* **decimals:** The number of decimal places for the token
 * **mailbox:** The address of the the [mailbox](../reference/messaging/messaging-interface.mdx) contract to use to send and receive messages
 * **interchainSecurityModule:** The address of an [interchain security modules](../reference/ISM/specify-your-ISM.mdx) to verify interchain messages
-* **interchainGasPaymaster:** The address of a [interchain gas payments](../reference/hooks/interchain-gas.mdx) to pay for the gas needed to deliver interchain messages
 
 #### Example
 
-For a minimal Warp config example using local anvil chains, see [`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml).
+For a minimal Warp deployment config example using local anvil chains, see [`warp-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-deployment.yaml).
 
 ### Chain config
 

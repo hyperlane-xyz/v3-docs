@@ -10,26 +10,40 @@ Follow the [customization instructions](https://github.com/hyperlane-xyz/hyperla
 
 ### Token Config Example
 
-Here's an example of a token config for a Warp Route that connects WETH on Sepolia (chain ID 11155111). You can use Typescript, JSON, or YAML configs for your token configs.
+Here's an example config for a Warp Route that connects USDC on Sepolia to Alfajores. You can use Typescript, JSON, or YAML for your token configs.
 
 ```typescript
 {
-  // The chain ID of the base chain
-  chainId: 11155111,
-  // The address of the underlying token
-  address: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
-  // The address of the HypERC20Token contract
-  hypCollateralAddress: '0x145de8760021c4ac6676376691b78038d3DE9097',
-  // The type, either 'collateral' or 'native'
-  type: 'collateral'
-  // The base token name
-  name: 'Weth',
-  // The base token symbol
-  symbol: 'WETH',
-  // The base token decimals
-  decimals: 18,
-  // A path to a token logo image
-  logoURI: '/logos/weth.png'
+  tokens: [
+    {
+      // The ChainName of the token
+      chainName: 'sepolia',
+      // See https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/token/TokenStandard.ts
+      standard: TokenStandard.EvmHypCollateral,
+      // The token metadata (decimals, symbol, name)
+      decimals: 6,
+      symbol: 'USDC',
+      name: 'USD Coin',
+      // The router address
+      addressOrDenom: 'YOUR_ROUTER_ADDRESS_1',
+      // The address of the underlying collateral token
+      collateralAddress: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      // A path to a token logo image
+      logoURI: '/logos/usdc.png',
+      // The list of tokens this one is connected to
+      connections: [ { token: 'ethereum|alfajores|YOUR_ROUTER_ADDRESS_2' } ]
+    },
+    {
+      chainName: 'alfajores',
+      standard: TokenStandard.EvmHypSynthetic,
+      decimals: 6,
+      symbol: 'USDC',
+      name: 'USD Coin',
+      addressOrDenom: 'YOUR_ROUTER_ADDRESS_2',
+      logoURI: '/logos/weth.png',
+      connections: [ { token: 'ethereum|alfajores|YOUR_YOUR_ROUTER_ADDRESS_2' } ]
+    }
+  ]
 }
 ```
 
