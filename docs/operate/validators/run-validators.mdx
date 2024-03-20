@@ -187,7 +187,7 @@ import TabItem from "@theme/TabItem";
 首先下载 docker 映像：
 
 ```bash
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359
 ```
 
   </TabItem>
@@ -242,7 +242,7 @@ docker run \
   -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
   -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
   --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
@@ -272,7 +272,7 @@ export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
 # 运行验证器
 ./target/release/validator \
   --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \

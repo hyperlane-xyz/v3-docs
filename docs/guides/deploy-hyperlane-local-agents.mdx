@@ -192,7 +192,7 @@ softwareupdate --install-rosetta --agree-to-license
 现在您对配置验证器参数有了更多的了解，请拉取最新的Docker镜像：
 
 ```sh
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359
 ```
 
 在运行之前，请确保所有需要挂载的目录都存在。这可能需要创建 `hyperlane_db_validator_<your_chain_name>`，如果它尚不存在的话。
@@ -209,7 +209,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_validator_<your_chain_name>,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
@@ -338,7 +338,7 @@ softwareupdate --install-rosetta --agree-to-license
 如果您还没有拉取 Docker 镜像，请现在运行以下命令进行操作：
 
 ```sh
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359
 ```
 
 在运行之前，请确保所有需要挂载的目录都存在。如果尚不存在的话，可能需要创建 `hyperlane_db_relayer` 目录。
@@ -356,7 +356,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_relayer,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures,readonly \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains <chain_1_name>,<chain_2_name> \

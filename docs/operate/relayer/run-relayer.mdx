@@ -132,7 +132,7 @@ AWS KMS密钥可以被您的中继器用于签署交易。这是生产中继器�
 首先下载docker映像：
 
 ```bash
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359
 ```
 
   </TabItem>
@@ -187,7 +187,7 @@ docker run \
   -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
   -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
   --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains <chain_1_name>,<chain_2_name> \
@@ -209,7 +209,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane-validator-signatures-ethereum,target=/tmp/hyperlane-validator-signatures-ethereum,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3bb4d87-20240129-164519 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains ethereum,polygon,avalanche \

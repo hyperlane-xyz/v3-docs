@@ -113,21 +113,21 @@ Hyperlane可以[permissionlessly deployed](../../../deploy-hyperlane.mdx)到任�
 
 ```javascript
 const chainConfig = {
-  chainId: 5,
-  domainId: 5,
-  name: "goerli",
+  chainId: 11155111,
+  domainId: 11155111,
+  name: "sepolia",
   protocol: "ethereum",
   nativeToken: {
-    name "Goerli ETH",
-    symbol "GETH",
+    name "Sepolia ETH",
+    symbol "SETH",
     decimals 18
   },
   rpcUrls: [
     {
-      http: "https://rpc.ankr.com/eth_goerli"
+      http: "https://rpc.sepolia.org"
     },
     {
-      http: "https://eth-goerli.public.blastapi.io"
+      http: "https://eth-sepolia.public.blastapi.io	"
     }
   ],
   isTestnet: true,

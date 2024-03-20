@@ -17,12 +17,12 @@ Warp 路由是一种[路由](../reference/libraries/router.mdx)应用程序类�
 
 ## 1. 配置
 
-### Warp路由配置
+### Warp路由部署配置
 
-要部署路由，您将需要一个Warp路由配置文件。有效的配置将指定：
-* 这个Warp路由是为哪个链上的哪个代币创建的？
-* _可选：_ Hyperlane连接细节，包括[mailbox](../reference/messaging/messaging-interface.mdx)、[interchain gas](../reference/hooks/interchain-gas.mdx)和[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的合约地址。
-* _可选：_ 代币标准 - 使用ERC20的可互换代币或使用ERC721的非同质化代币。默认为ERC20。
+要部署路由，您需要一个Warp route部署配置文件。一个有效的配置将指定:
+* 这个Warp Route是为哪个链上的哪个令牌创建的?
+* _Optional:_ Hyperlane连接的详细信息，包括[mailbox](../reference/messaging/messaging-interface.mdx)、[interchain gas](../reference/hooks/interchain-gas.mdx)和[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的合同地址。
+* _Optional:_ 令牌标准-使用ERC20的可替换令牌或使用ERC721的nft。默认为ERC20。
 
 最简单的方法是使用CLI的config命令创建一个。
 
@@ -54,15 +54,17 @@ hyperlane config create warp
 
 #### 可选字段
 
-您可以在您的`base`和`synthetics`条目中指定以下可选值。如果未提供任何值，则将使用核心部署文件中的值，这些文件可能是您自己的（如果提供了）或[SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json)。
+你可以在`base`和` synaesthetics `条目中指定以下可选值。如果没有提供值，部署人员将尝试从其他地方提取这些值。在元数据(symbol，name decimals)的情况下，它将查询合同。对于地址(邮箱，ISM)，它将检查核心部署工件，无论是你的(如果提供)或[SDK's](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/environments/mainnet.json)。
 
+* **symbol:** 代币符号
+* **name:** 代币名称
+* **decimals:** 代币的小数点位数
 * **mailbox:** 用于发送和接收消息的[mailbox](../reference/messaging/messaging-interface.mdx)合约的地址
-* **interchainSecurityModule:** 用于验证跨链消息的[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的地址
-* **interchainGasPaymaster:** 用于支付交付跨链消息所需的燃料费用的[interchain gas payments](../reference/hooks/interchain-gas.mdx)的地址
+* **interchainSecurityModule:** 用于验证链间消息的[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的地址
 
 #### 示例
 
-对于使用local anvil chains的最小Warp配置示例，请参阅[`warp-tokens.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-tokens.yaml)。
+有关使用本地anvil链的最小Warp部署配置示例，请参阅[`warp-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-deployment.yaml)。
 
 ### 链配置
 

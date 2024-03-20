@@ -10,26 +10,40 @@ import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
 ### 代币配置示例
 
-这是一个Warp路由的代币配置示例，连接到Goerli上的WETH（链 ID 5）。您可以使用Typescript、JSON或YAML配置您的代币配置。
+下面是一个连接Sepolia的USDC到Alfajores的Warp Route的示例配置。你可以使用Typescript、JSON或YAML来进行令牌配置。
 
 ```typescript
 {
-  // 链ID
-  chainId: 5,
-  // 代币的地址
-  address: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
-  // HypERC20Token 合约的地址
-  hypCollateralAddress: '0x145de8760021c4ac6676376691b78038d3DE9097',
-  // 类型：可以是 'collateral' 或 'native'
-  type: 'collateral'
-  // 代币名称
-  name: 'Weth',
-  // 代币符号
-  symbol: 'WETH',
-  // 代币小数
-  decimals: 18,
-  // 代币LOGO路径
-  logoURI: '/logos/weth.png'
+  tokens: [
+    {
+      // The ChainName of the token
+      chainName: 'sepolia',
+      // See https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/token/TokenStandard.ts
+      standard: TokenStandard.EvmHypCollateral,
+      // The token metadata (decimals, symbol, name)
+      decimals: 6,
+      symbol: 'USDC',
+      name: 'USD Coin',
+      // The router address
+      addressOrDenom: 'YOUR_ROUTER_ADDRESS_1',
+      // The address of the underlying collateral token
+      collateralAddress: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      // A path to a token logo image
+      logoURI: '/logos/usdc.png',
+      // The list of tokens this one is connected to
+      connections: [ { token: 'ethereum|alfajores|YOUR_ROUTER_ADDRESS_2' } ]
+    },
+    {
+      chainName: 'alfajores',
+      standard: TokenStandard.EvmHypSynthetic,
+      decimals: 6,
+      symbol: 'USDC',
+      name: 'USD Coin',
+      addressOrDenom: 'YOUR_ROUTER_ADDRESS_2',
+      logoURI: '/logos/weth.png',
+      connections: [ { token: 'ethereum|alfajores|YOUR_YOUR_ROUTER_ADDRESS_2' } ]
+    }
+  ]
 }
 ```
 
