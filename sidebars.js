@@ -372,7 +372,7 @@ const sidebars = {
     {
       type: "doc",
       id: "guides/create-custom-hook-and-ism",
-      label: "Create your own hook and ISM",
+      label: "Create a Hook/ISM",
     },
     {
       type: "category",
