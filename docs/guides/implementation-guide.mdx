@@ -178,7 +178,7 @@ function interchainSecurityModule() returns (address);
 
 :::info
 
-After implementing these three contracts, you can reach your first milestone to test, mocking a message transfer, by calling a `Mailbox`'s `dispatch` function to send a message to a recipient and assert that the recipient received the message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/Messaging.t.sol#L29)
+After implementing these three contracts, you can reach your first milestone to test, mocking a message transfer, by calling a `Mailbox`'s `dispatch` function to send a message to a recipient and assert that the recipient received the message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Messaging.t.sol#L29)
 
 :::
 
@@ -314,7 +314,7 @@ function validatorsAndThreshold(
 
 :::info
 
-After implementing the MultisigISM, you reach the second milestone to test that your Mailbox only processes after a recipient's ISM returns true. You can test that with a `TestISM` that you can statically set to accept or reject any message. See a [Hardhat test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)
+After implementing the MultisigISM, you reach the second milestone to test that your Mailbox only processes after a recipient's ISM returns true. You can test that with a `TestISM` that you can statically set to accept or reject any message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Mailbox.t.sol#L282)
 
 :::
 
@@ -346,9 +346,22 @@ function payForGas(
 ) payable;
 ```
 
-#### DestinationGasConfigSet
+#### GasPayment
 
 Emitted when a payment is made for a message's gas costs.
+
+```solidity
+event GasPayment(
+    bytes32 messageId,
+    uint32 destinationDomain,
+    uint256 gasAmount,
+    uint256 payment
+);
+```
+
+#### DestinationGasConfigSet
+
+Emitted when the gas oracle for a remote domain is set.
 
 ```solidity
 event DestinationGasConfigSet(
@@ -358,22 +371,13 @@ event DestinationGasConfigSet(
 );
 ```
 
-### BenificiarySet
-
-Emitted when the beneficiary is set.
-
-```solidity
-event BeneficiarySet(address beneficiary);
-```
-
-
 ## 2. Agents
 
 Below describes the agent spec for a new chain implementation. The rust implementations hope to support all chains, but the spec is intended to be chain agnostic.
 
 #### Message Indexing
 
-All agents must index messages from the origin mailbox. In the solidity mailbox, we [emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L221-L222) dispatched. Other chains may have different ways of surfacing this information, but the agent must be able to get message content reliably and with consistent ordering -- see the [message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs) trait.
+All agents must index messages from the origin mailbox. In the solidity mailbox, we [emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/contracts/Mailbox.sol#L221-L222) dispatched. Other chains may have different ways of surfacing this information, but the agent must be able to get message content reliably and with consistent ordering -- see the [message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs) trait.
 
 * [ethereum](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/chains/hyperlane-ethereum/src/mailbox.rs)
 
@@ -432,7 +436,7 @@ Each module type implies a different metadata format for message verification to
 
 #### Message Processor
 
-The relayer will attempt to process messages on the destination mailbox (see [message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)). If
+The relayer will attempt to process messages on the destination mailbox (see [message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/rust/agents/relayer/src/msg/processor.rs#L25)). If
 
 * the message recipient ISM returns an unknown module type
 * module type is known but metadata fails to verify
