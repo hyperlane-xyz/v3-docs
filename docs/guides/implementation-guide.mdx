@@ -8,6 +8,17 @@ A Hyperlane implementation for a new chain architecture is comprised of the foll
 
 Before getting started here, it is recommended to review the protocol documentation.
 
+:::info
+
+If you would like to dive deeper, check out some of the Hyperlane implementations that are currently available:
+
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/sealevel)
+
+:::
+
 ## 1. Contracts
 
 Below describes the onchain contract spec for the Hyperlane protocol. It uses solidity types for familiarity but everything should be generalizable to other languages.
@@ -19,8 +30,10 @@ Below describes the onchain contract spec for the Hyperlane protocol. It uses so
 
 The message is the core data structure used by the Hyperlane protocol. It is a packed data structure that contains all the information needed to route a message from one domain to another.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/types/message.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/types/message.rs)
 
 ```solidity
 struct Message {
@@ -45,8 +58,20 @@ struct Message {
 
 The mailbox is the entrypoint for developers to send and receive messages from.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-mailbox/src/main.sw)
+* [Solidity Interface](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMailbox.sol)
+
+Implementations:
+
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-mailbox/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/contracts/core/mailbox/src/execute.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/mailbox/src/processor.rs)
+
+:::info
+
+In addition to default and custom hooks, Hyperlane v3 introduces the concept of a **Required Hook** that is used for post processing of ALL dispatches.
+
+:::
 
 #### dispatch
 
@@ -66,6 +91,44 @@ function dispatch(
 );
 ```
 
+Dispatches a message to the destination domain and recipient, and provides metadata for the default hook.
+
+```solidity
+function dispatch(
+    // Domain of destination chain
+    uint32 destination,
+    // Address of recipient on destination chain as bytes32
+    bytes32 recipient,
+    // Raw bytes content of message body
+    bytes body,
+    // Metadata used by the default post dispatch hook
+    bytes defaultHookMetadata
+) returns (
+    // The message ID inserted into the Mailbox's merkle tree
+    bytes32 messageId
+);
+```
+
+Dispatches a message to the destination domain and recipient, and provides metadata for a custom hook to use instead of the default.
+
+```solidity
+function dispatch(
+    // Domain of destination chain
+    uint32 destination,
+    // Address of recipient on destination chain as bytes32
+    bytes32 recipient,
+    // Raw bytes content of message body
+    bytes body,
+    // Metadata used by the custom post dispatch hook
+    bytes customHookMetadata,
+    // Custom hook to use instead of the default
+    IPostDispatchHook customHook
+) returns (
+    // The message ID inserted into the Mailbox's merkle tree
+    bytes32 messageId
+);
+```
+
 #### process
 
 Attempts to deliver `message` to its recipient. Verifies `message` via the recipient's ISM using the provided `metadata`.
@@ -79,28 +142,22 @@ function process(
 );
 ```
 
-#### count
+#### latestDispatchedId
 
-Returns the number of messages dispatched
-
-```solidity
-function count() public view returns (uint32);
-```
-
-#### root
-
-Returns root of merkle tree which contains all dispatched message IDs as leaves.
+Returns the latest dispatched message ID used for auth in post-dispatch hooks.
 
 ```solidity
-function root() public view returns (bytes32);
+function latestDispatchedId() public view returns (bytes32);
 ```
 
 ### Message Recipient
 
 A contract that wants to receive a message must expose the following handler.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMessageRecipient.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw#L109)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMessageRecipient.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/core/mod.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/message-recipient-interface/src/lib.rs)
 
 ```solidity
 function handle(
@@ -121,7 +178,7 @@ function interchainSecurityModule() returns (address);
 
 :::info
 
-After implementing these three contracts, you can reach your first milestone to test, mocking a message transfer, by calling a `Mailbox`'s `dispatch` function to send a message to a recipient and assert that the recipient received the message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/Messaging.t.sol#L29)
+After implementing these three contracts, you can reach your first milestone to test, mocking a message transfer, by calling a `Mailbox`'s `dispatch` function to send a message to a recipient and assert that the recipient received the message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Messaging.t.sol#L29)
 
 :::
 
@@ -129,7 +186,10 @@ After implementing these three contracts, you can reach your first milestone to 
 
 Interchain security modules are used to verify messages before they are processed.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IInterchainSecurityModule.sol)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IInterchainSecurityModule.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/ism/mod.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/interchain_security_module.rs)
 
 #### moduleType
 
@@ -137,13 +197,14 @@ Returns an enum that represents the type of security model encoded by this ISM.
 
 ```solidity
 enum ModuleType {
-    NULL,
+    UNUSED,
     ROUTING,
     AGGREGATION,
     LEGACY_MULTISIG,
     MERKLE_ROOT_MULTISIG,
     MESSAGE_ID_MULTISIG,
-    OPTIMISM
+    NULL, // used with relayer carrying no metadata
+    CCIP_READ
 }
 
 function moduleType() returns (ModuleType);
@@ -173,6 +234,11 @@ function verify(
 
 Validators announce their signature storage location so that the relayer can fetch and verify their signatures.
 
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IValidatorAnnounce.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/validator-announce/src/interface.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/core/va.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/validator-announce/src/instruction.rs)
+
 ### announce
 
 Announces a validator signature storage location
@@ -201,15 +267,21 @@ function getAnnouncedStorageLocations(
 
 Implements a security module that checks if the metadata provided to verify satisfies a quorum of signatures from a set of configured validators.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/AbstractMultisigIsm.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/AbstractMultisigIsm.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/ism/multisig.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/multisig-ism/src/interface.rs)
 
 #### Metadata
 
-To be used with the MESSAGE_ID_MULTISIG module type implementation in the relayer, the metadata must be formatted as follows:
+To be used with the `MESSAGE_ID_MULTISIG` module type implementation in the relayer.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/isms/MessageIdMultisigIsmMetadata.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism-metadata/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/libs/MessageIdMultisigIsmMetadata.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism-metadata/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/types/metadata.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/ism/multisig-ism-message-id/src/processor.rs)
+
+The metadata must be formatted as follows:
 
 ```solidity
 struct MultisigMetadata {
@@ -224,7 +296,7 @@ struct MultisigMetadata {
 
 #### validatorsAndThreshold
 
-Returns the set of validators responsible for verifying message and the number of signatures required
+Returns the set of validators responsible for verifying message and the number of signatures required.
 
 _Can change based on the content of _message_
 
@@ -242,7 +314,7 @@ function validatorsAndThreshold(
 
 :::info
 
-After implementing the MultisigISM, you reach the second milestone to test that your Mailbox only processes after a recipient's ISM returns true. You can test that with a `TestISM` that you can statically set to accept or reject any message. See a [Hardhat test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)
+After implementing the MultisigISM, you reach the second milestone to test that your Mailbox only processes after a recipient's ISM returns true. You can test that with a `TestISM` that you can statically set to accept or reject any message. See a [Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Mailbox.t.sol#L282)
 
 :::
 
@@ -250,8 +322,10 @@ After implementing the MultisigISM, you reach the second milestone to test that 
 
 The gas paymaster is used to pay for the gas required in message processing on the destination chain. This is not strictly required if the relayer is willing to subsidize message processing.
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/hooks/igp/InterchainGasPaymaster.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/contracts/igps/core/src)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/hyperlane-sealevel-igp/src/processor.rs)
 
 #### payForGas
 
@@ -272,15 +346,28 @@ function payForGas(
 ) payable;
 ```
 
-#### Gas Payment
+#### GasPayment
 
 Emitted when a payment is made for a message's gas costs.
 
 ```solidity
 event GasPayment(
     bytes32 messageId,
+    uint32 destinationDomain,
     uint256 gasAmount,
     uint256 payment
+);
+```
+
+#### DestinationGasConfigSet
+
+Emitted when the gas oracle for a remote domain is set.
+
+```solidity
+event DestinationGasConfigSet(
+    uint32 remoteDomain, // remote domain
+    address gasOracle,   // gas oracle
+    uint96 gasOverhead   // destination gas overhead
 );
 ```
 
@@ -290,7 +377,7 @@ Below describes the agent spec for a new chain implementation. The rust implemen
 
 #### Message Indexing
 
-All agents must index messages from the origin mailbox. In the solidity mailbox, we [emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L125-L129) dispatched. Other chains may have different ways of surfacing this information, but the agent must be able to get message content reliably and with consistent ordering -- see the [message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs) trait.
+All agents must index messages from the origin mailbox. In the solidity mailbox, we [emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/contracts/Mailbox.sol#L221-L222) dispatched. Other chains may have different ways of surfacing this information, but the agent must be able to get message content reliably and with consistent ordering -- see the [message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs) trait.
 
 * [ethereum](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/chains/hyperlane-ethereum/src/mailbox.rs)
 
@@ -315,7 +402,7 @@ pub struct Checkpoint {
 }
 ```
 
-Validators use the latest checkpoint method on the [mailbox trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/16146f0f03d0b0be67583cf16b22a3c50abdd977/rust/hyperlane-core/src/traits/mailbox.rs) to get the latest checkpoint from the mailbox and submit signatures to some highly available storage using the [checkpoint syncer trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/16146f0f03d0b0be67583cf16b22a3c50abdd977/rust/hyperlane-base/src/traits/checkpoint_syncer.rs).
+Validators use the latest checkpoint method on the [mailbox trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/mailbox.rs) to get the latest checkpoint from the mailbox and submit signatures to some highly available storage using the [checkpoint syncer trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-base/src/traits/checkpoint_syncer.rs).
 
 #### Checkpoint with Message ID
 
@@ -349,7 +436,7 @@ Each module type implies a different metadata format for message verification to
 
 #### Message Processor
 
-The relayer will attempt to process messages on the destination mailbox (see [message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)). If
+The relayer will attempt to process messages on the destination mailbox (see [message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/rust/agents/relayer/src/msg/processor.rs#L25)). If
 
 * the message recipient ISM returns an unknown module type
 * module type is known but metadata fails to verify
@@ -361,27 +448,33 @@ then the message will be kicked to an exponential backoff retry queue. The relay
 
 The Relayer may also require gas payment for a specific message ID on the origin chain before processing the message on the destination chain. To do this, they must have an IGP deployed with their address set as beneficiary and index gas payment events. See [gas payment enforcement trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/gas_payment/mod.rs). We recommend to start with no gas payment enforcement policy and then gradually support more restrictive ones.
 
-:::tip
+### Testing
 
-Once you implemented the MVP of the relayer, you can create an end-to-end test that
+Once you have implemented an MVP of the relayer, you should create an end-to-end test that:
 
-1. Spins up local origin and destination chain
-2. Deploys your contracts onto both
-3. Run validators for the origin chain
-4. Run a relayer between both chains
+1. Spins up local origin and destination chains.
+2. Deploys your contracts onto both chains.
+3. Run validators for the origin chain.
+4. Run a relayer between both chains.
 5. Observe that upon dispatch of a message of the origin chain, the validator observes the message, creates a signature and the relayer appropriately processes your message via the ISM that specifies the validator on the destination chain.
-
 
 See this [end-to-end test on the Rust codebase ](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)for inspiration.
 
-:::
+:::tip
 
+After validating the agents with local end-to-end tests, it is recommended that you also run end-to-end tests with real testnets.
+
+:::
 
 ## 3. Applications
 
 ### Warp Routes
 
 Token router application that routes tokens between domains on demand.
+
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity/contracts/token)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/tree/main/packages/interface/src/warp)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/hyperlane-sealevel-token/src/instruction.rs)
 
 #### transferRemote
 
