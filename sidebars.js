@@ -190,7 +190,7 @@ const sidebars = {
         },
       ],
     },
-   /**
+    /**
     {
       type: "category",
       label: "Typescript SDK",
@@ -343,7 +343,7 @@ const sidebars = {
         },
       ],
     },
-   /**
+    /**
 
     {
       type: "doc",
@@ -369,13 +369,11 @@ const sidebars = {
       id: "guides/implementation-guide",
       label: "Implementation Guide",
     },
-   /** generalize ccip-read-ism page into a create your own guide
     {
       type: "doc",
       id: "guides/create-custom-hook-and-ism",
-      label: "Create your own hook and ISM",
+      label: "Create a Hook/ISM",
     },
-    */
     {
       type: "category",
       label: "Developer Tips",
@@ -426,7 +424,7 @@ const sidebars = {
         },
       ],
     },
-       /**
+    /**
     {
       type: "category",
       label: "Ecosystems",

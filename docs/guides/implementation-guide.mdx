@@ -8,7 +8,18 @@
 
 在开始之前，建议先查阅协议文档。
 
-## 1. contracts
+:::info
+
+如果您想深入了解，请查看目前可用的一些 Hyperlane 实现：
+
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/sealevel)
+
+:::
+
+## 1. Contracts
 
 下面描述了Hyperlane协议的链上合约规范。它使用了Solidity类型以便熟悉，但所有内容都可以推广到其他语言。
 
@@ -19,8 +30,10 @@
 
 消息是Hyperlane协议使用的核心数据结构。它是一个紧凑的数据结构，包含了将消息从一个域路由到另一个域所需的所有信息。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/types/message.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/types/message.rs)
 
 ```solidity
 struct Message {
@@ -45,8 +58,20 @@ struct Message {
 
 邮箱是开发人员发送和接收消息的入口。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-mailbox/src/main.sw)
+* [Solidity Interface](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMailbox.sol)
+
+Implementations:
+
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-mailbox/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/contracts/core/mailbox/src/execute.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/mailbox/src/processor.rs)
+
+:::info
+
+In addition to default and custom hooks, Hyperlane v3 introduces the concept of a **Required Hook** that is used for post processing of ALL dispatches.
+
+:::
 
 #### dispatch
 
@@ -66,6 +91,44 @@ function dispatch(
 );
 ```
 
+Dispatches a message to the destination domain and recipient, and provides metadata for the default hook.
+
+```solidity
+function dispatch(
+    // Domain of destination chain
+    uint32 destination,
+    // Address of recipient on destination chain as bytes32
+    bytes32 recipient,
+    // Raw bytes content of message body
+    bytes body,
+    // Metadata used by the default post dispatch hook
+    bytes defaultHookMetadata
+) returns (
+    // The message ID inserted into the Mailbox's merkle tree
+    bytes32 messageId
+);
+```
+
+Dispatches a message to the destination domain and recipient, and provides metadata for a custom hook to use instead of the default.
+
+```solidity
+function dispatch(
+    // Domain of destination chain
+    uint32 destination,
+    // Address of recipient on destination chain as bytes32
+    bytes32 recipient,
+    // Raw bytes content of message body
+    bytes body,
+    // Metadata used by the custom post dispatch hook
+    bytes customHookMetadata,
+    // Custom hook to use instead of the default
+    IPostDispatchHook customHook
+) returns (
+    // The message ID inserted into the Mailbox's merkle tree
+    bytes32 messageId
+);
+```
+
 #### process
 
 尝试将 `message` 交付给其接收者。使用提供的 `metadata` 通过接收者的 ISM 验证 `message`。
@@ -79,28 +142,22 @@ function process(
 );
 ```
 
-#### count
+#### latestDispatchedId
 
-返回已发送的消息数量。
-
-```solidity
-function count() public view returns (uint32);
-```
-
-#### root
-
-返回包含所有已发送消息 ID 的 Merkle 树的根(root of merkle tree)。
+返回在派发后钩子中用于验证的最新派发信息 ID。
 
 ```solidity
-function root() public view returns (bytes32);
+function latestDispatchedId() public view returns (bytes32);
 ```
 
 ### Message Recipient
 
 想要接收消息的合约必须公开以下处理程序。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMessageRecipient.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw#L109)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMessageRecipient.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/core/mod.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/message-recipient-interface/src/lib.rs)
 
 ```solidity
 function handle(
@@ -121,7 +178,7 @@ function interchainSecurityModule() returns (address);
 
 :::info
 
-实现了这三个合约后，您就可以达到第一个里程碑，即通过调用 `Mailbox` 的 `dispatch` 函数来向接收者发送消息，并判断接收者是否收到了消息，以模拟消息传输。参见[这里的 Foundry 测试案例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/Messaging.t.sol#L29)。
+在实现了这三个契约之后，您可以到达要测试的第一个里程碑，通过调用 `Mailbox`的`dispatch` 函数将消息发送给接收者并判断接收者收到了消息，从而模拟消息传输。参见[Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Messaging.t.sol#L29)
 
 :::
 
@@ -129,7 +186,10 @@ function interchainSecurityModule() returns (address);
 
 跨链安全模块用于在消息被处理之前进行验证。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IInterchainSecurityModule.sol)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IInterchainSecurityModule.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/ism/mod.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/interchain_security_module.rs)
 
 #### moduleType
 
@@ -137,13 +197,14 @@ function interchainSecurityModule() returns (address);
 
 ```solidity
 enum ModuleType {
-    NULL,
+    UNUSED,
     ROUTING,
     AGGREGATION,
     LEGACY_MULTISIG,
     MERKLE_ROOT_MULTISIG,
     MESSAGE_ID_MULTISIG,
-    OPTIMISM
+    NULL, // used with relayer carrying no metadata
+    CCIP_READ
 }
 
 function moduleType() returns (ModuleType);
@@ -173,6 +234,11 @@ function verify(
 
 验证器公布其签名存储位置，以便中继器获取并验证其签名。
 
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IValidatorAnnounce.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/validator-announce/src/interface.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/core/va.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/validator-announce/src/instruction.rs)
+
 ### announce
 
 通知验证者签名存储位置
@@ -201,15 +267,21 @@ function getAnnouncedStorageLocations(
 
 实现一个安全模块，检查提供的元数据是否满足一组配置的验证者的签名法定数量。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/AbstractMultisigIsm.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/AbstractMultisigIsm.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/ism/multisig.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/multisig-ism/src/interface.rs)
 
 #### Metadata
 
-要与中继器中的MESSAGE_ID_MULTISIG模块类型实现一起使用，元数据必须格式化如下：
+与中继器中的 `MESSAGE_ID_MULTISIG` 模块类型实现一起使用。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/isms/MessageIdMultisigIsmMetadata.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism-metadata/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/libs/MessageIdMultisigIsmMetadata.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/multisig-ism-metadata/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/packages/interface/src/types/metadata.rs)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/ism/multisig-ism-message-id/src/processor.rs)
+
+元数据的格式必须如下所示:
 
 ```solidity
 struct MultisigMetadata {
@@ -224,7 +296,7 @@ struct MultisigMetadata {
 
 #### validatorsAndThreshold
 
-返回负责验证消息的验证者集合以及所需签名的数量
+返回负责验证消息的验证器集和所需签名的数量。
 
 可以根据 _message_ 的内容进行更改
 
@@ -242,7 +314,7 @@ function validatorsAndThreshold(
 
 :::info
 
-实现了MultisigISM后，您就可以达到第二个里程碑，即测试您的邮箱仅在接收者的ISM返回true后才处理。您可以使用一个 `TestISM` 来测试，您可以静态设置它来接受或拒绝任何消息。参见[Hardhat test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/mailbox.test.ts#L175)。
+在实现MultisigISM之后，您将到达第二个里程碑，以测试您的邮箱仅在收件人的ISM返回true后才进行处理。您可以使用`TestISM` 进行测试，您可以静态地将其设置为接受或拒绝任何消息。参见[Foundry test case here.](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Mailbox.t.sol#L282)
 
 :::
 
@@ -250,8 +322,10 @@ function validatorsAndThreshold(
 
 燃料支付器用于支付目的链上信息处理所需的燃料。如果中继者愿意补贴信息处理费用，则不一定需要这样做。
 
-* [Solidity Implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol)
-* [Sway Implementation](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/hooks/igp/InterchainGasPaymaster.sol)
+* [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/blob/main/contracts/igps/core/src)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/hyperlane-sealevel-igp/src/processor.rs)
 
 #### payForGas
 
@@ -272,15 +346,28 @@ function payForGas(
 ) payable;
 ```
 
-#### Gas Payment
+#### GasPayment
 
 当支付消息燃料费用时发出。
 
 ```solidity
 event GasPayment(
     bytes32 messageId,
+    uint32 destinationDomain,
     uint256 gasAmount,
     uint256 payment
+);
+```
+
+#### DestinationGasConfigSet
+
+Emitted when the gas oracle for a remote domain is set.
+
+```solidity
+event DestinationGasConfigSet(
+    uint32 remoteDomain, // remote domain
+    address gasOracle,   // gas oracle
+    uint96 gasOverhead   // destination gas overhead
 );
 ```
 
@@ -290,7 +377,7 @@ event GasPayment(
 
 #### Message Indexing
 
-所有代理必须索引来自原始邮箱的消息。在Solidity邮箱中，我们[emit an event for each message](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol#L125-L129)。其他链可能有不同的方式来呈现这些信息，但代理必须能够可靠地获取消息内容，并具有一致的顺序 - 请参见[message indexer](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs)特性。
+所有代理必须索引来自源邮箱的邮件。在solid邮箱中，我们为每一个已发送的消息(https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/contracts/Mailbox.sol#L221-L222)发出一个事件。其他链可能有不同的方式来显示这些信息，但是代理必须能够可靠地获得消息内容，并且具有一致的顺序——参见[消息索引器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/indexer.rs)特征。
 
 * [ethereum](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/chains/hyperlane-ethereum/src/mailbox.rs)
 
@@ -315,7 +402,7 @@ pub struct Checkpoint {
 }
 ```
 
-验证者使用邮箱特性中的最新检查点方法来从邮箱获取最新的检查点，并使用检查点同步器特性将签名提交到一些高可用存储中。
+验证器使用[邮箱trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-core/src/traits/mailbox.rs)上的最新检查点方法从邮箱获取最新的检查点，并使用[检查点同步器trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/hyperlane-base/src/traits/checkpoint_syncer.rs)将签名提交到一些高度可用的存储。
 
 #### Checkpoint with Message ID
 
@@ -349,7 +436,7 @@ pub struct CheckpointWithMessageId {
 
 #### Message Processor
 
-中继器将尝试在目标邮箱上处理消息（参见[message processor](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/processor.rs#L24)）。 如果
+中继器将尝试处理目标邮箱上的消息(参见[消息处理器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/rust/agents/relayer/src/msg/processor.rs#L25))。如果：
 
 * 消息接收方 ISM 返回一个未知的模块类型
 * 模块类型已知，但元数据验证失败
@@ -361,27 +448,33 @@ pub struct CheckpointWithMessageId {
 
 中继器在处理目标链上的消息之前，可能还需要在源链上为特定的消息ID支付燃料费用。为了实现这一点，他们必须部署一个 IGP（燃料支付）合约，并将其地址设置为受益者，然后索引燃料支付事件。请参阅[gas payment enforcement trait](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/agents/relayer/src/msg/gas_payment/mod.rs)。我们建议开始时不使用气体支付强制执行策略，然后逐步支持限制性更强的策略。
 
+### Testing
+
+一旦你实现了中继器的MVP，你应该创建一个端到端测试:
+
+1. 转换本地链和目的链。
+2. 将您的合约部署到两个链上。
+3. 运行起源链的验证器。
+4. 在两条链之间运行中继器。
+5. 请注意，在发送源链上的报文时，验证器会观察报文、创建签名，中继器会通过指定目的链上验证器的 ISM 适当处理报文。
+
+请参阅 [Rust 代码库的端到端测试 ](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)，从中获得启发。
+
 :::tip
 
-一旦您实现了中继器的MVP（最小可行产品），您可以创建一个端到端测试，
-
-1. 启动本地源链和目标链
-2. 将您的智能合约部署到两条链上
-3. 在源链上运行验证者
-4. 在两个链之间运行中继器
-5. 请注意，验证器观察到该消息在源链上布时，会创建签名，然后中继器通过在目标链上指定验证者的ISM适当地处理您的消息。
-
-
-查看[end-to-end test on the Rust codebase ](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/utils/run-locally/src/main.rs)以获得灵感。
+通过本地端到端测试验证代理后，建议您还通过真实测试网运行端到端测试。
 
 :::
-
 
 ## 3. Applications
 
 ### Warp Router
 
 令牌路由器应用程序，根据需要在不同域之间路由令牌。
+
+* [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity/contracts/token)
+* [CosmWasm](https://github.com/hyperlane-xyz/cosmwasm/tree/main/packages/interface/src/warp)
+* [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/hyperlane-sealevel-token/src/instruction.rs)
 
 #### transferRemote
 
