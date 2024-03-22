@@ -24,7 +24,9 @@ Warp 路由是一种[路由](../reference/libraries/router.mdx)应用程序类�
 * _Optional:_ Hyperlane连接的详细信息，包括[mailbox](../reference/messaging/messaging-interface.mdx)、[interchain gas](../reference/hooks/interchain-gas.mdx)和[interchain security modules](../reference/ISM/specify-your-ISM.mdx)的合同地址。
 * _Optional:_ 令牌标准-使用ERC20的可替换令牌或使用ERC721的nft。默认为ERC20。
 
-最简单的方法是使用CLI的config命令创建一个。
+
+最简单的方法是使用CLI的config命令创建一个:
+
 
 ```bash
 hyperlane config create warp
@@ -41,10 +43,13 @@ hyperlane config create warp
 
 您的配置必须恰好有一个`base`条目。在这里，您将配置有关您正在创建Warp路由的代币的详细信息。
 
+
 * **chainName**: 将此设置为您的代币存在的链。
 * **type**: 将其设置为`TokenType.collateral`以创建一个用于ERC20/ERC721代币的Warp路由，或者将其设置为 `TokenType.native` 以创建一个用于原生代币（例如以太币）的Warp路由。
 * **address:** 如果使用`TokenType.collateral`，则为要创建路由的ERC20/ERC721合约的地址。
 * **isNft:** 如果对一个ERC721合约使用`TokenType.collateral`，则设置为`true`。
+
+
 
 #### 合成资产
 
@@ -64,7 +69,9 @@ hyperlane config create warp
 
 #### 示例
 
+
 有关使用本地anvil链的最小Warp部署配置示例，请参阅[`warp-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-deployment.yaml)。
+
 
 ### 链配置
 
