@@ -41,7 +41,6 @@ hyperlane config create warp
 
 您的配置必须恰好有一个`base`条目。在这里，您将配置有关您正在创建Warp路由的代币的详细信息。
 
-<<<<<<< HEAD
 * **chainName**:将其设置为令牌所在的链
 * **type**: 
     - 将此设置为`TokenType. collateral` 为ERC20/ERC721令牌创建基本的Warp路由。
@@ -51,15 +50,6 @@ hyperlane config create warp
     - 如果使用`TokenType.collateral`为其创建路由的ERC20/ERC721合约的地址
     - 如果使用`TokenType.collateralVault`，用于存放抵押品的ERC4626保险库的地址
 * **isNft:** 如果使用`TokenType.collateral` 为ERC721合约，设置为`true`。
-=======
-
-* **chainName**: 将此设置为您的代币存在的链。
-* **type**: 将其设置为`TokenType.collateral`以创建一个用于ERC20/ERC721代币的Warp路由，或者将其设置为 `TokenType.native` 以创建一个用于原生代币（例如以太币）的Warp路由。
-* **address:** 如果使用`TokenType.collateral`，则为要创建路由的ERC20/ERC721合约的地址。
-* **isNft:** 如果对一个ERC721合约使用`TokenType.collateral`，则设置为`true`。
-
-
->>>>>>> efd555e68769802fbff928e5bd3df790a7a5479a
 
 #### 合成资产
 
@@ -79,13 +69,7 @@ hyperlane config create warp
 
 #### 示例
 
-<<<<<<< HEAD
 有关使用本地anvil 链的最小 Warp 部署配置示例，请参阅 [`warp-route-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-route-deployment.yaml) 。
-=======
-
-有关使用本地anvil链的最小Warp部署配置示例，请参阅[`warp-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-deployment.yaml)。
-
->>>>>>> efd555e68769802fbff928e5bd3df790a7a5479a
 
 ### 链配置
 
