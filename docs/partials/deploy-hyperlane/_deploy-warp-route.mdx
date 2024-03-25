@@ -12,7 +12,7 @@ Next, you can deploy the route. As before, the CLI will prompt for a core deploy
 hyperlane deploy warp --key $PRIVATE_KEY
 ```
 
-Once finished, the CLI will create two new JSON artifact files: `warp-deployment-{timestamp}.json` and `warp-ui-token-config-{timestamp}`. The first only contains the addresses of the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment-{timestamp}.json` and `warp-config-{timestamp}`. The first only contains the addresses of the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
 
 :::tip
 
@@ -22,4 +22,4 @@ Follow the detailed [**Deploy Warp Guide**](/docs/guides/deploy-warp-route) to l
 
 ### Deploy the Warp UI
 
-The Warp UI is a DApp template for interacting with Warp Routes. You can clone the [Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-ui-token-config.json` files from the previous steps to provide the UI with the information it needs. See the [**Deploy Warp UI guide**](/docs/guides/deploy-warp-route-UI) for step-by-step instructions.
+The Warp UI is a DApp template for interacting with Warp Routes. You can clone the [Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure and a new instance. In short, use the `chains.yaml` and `warp-config.json` files from the previous steps to provide the UI with the information it needs. See the [**Deploy Warp UI guide**](/docs/guides/deploy-warp-route-UI) for step-by-step instructions.

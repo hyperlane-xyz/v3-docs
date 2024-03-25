@@ -42,11 +42,11 @@ Or see below for details on how to define your config manually.
 Your config must have exactly one `base` entry. Here you will configure details about the token for which you are creating a Warp Route.
 
 * **chainName**: Set this equal to the chain on which your token exists
-* **type**: 
+* **type**:
     - Set this to `TokenType.collateral` to create a basic Warp Route for an ERC20/ERC721 token.
     - Set this to `TokenType.collateralVault` to create a yield-bearing Warp Route for an ERC20 token that deposits into an ERC4626 vault.
     - Set this to `TokenType.native` to create a Warp Route for a native token (e.g. ether)
-* **address:** 
+* **address:**
     - If using `TokenType.collateral`, the address of the ERC20/ERC721 contract for which to create a route
     - If using `TokenType.collateralVault`, the address of the ERC4626 vault to deposit collateral into
 * **isNft:** If using `TokenType.collateral` for an ERC721 contract, set to `true`.
@@ -97,7 +97,7 @@ Run the following command to initiate the Warp Route deployment:
 hyperlane deploy warp
 ```
 
-Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-ui-token-config`. The first contains just addresses for the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
+Once finished, the CLI will create two new JSON artifact files: `warp-deployment` and `warp-config`. The first contains just addresses for the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
 
 ## 3. Testing
 
