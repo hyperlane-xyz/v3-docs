@@ -45,6 +45,25 @@ exchangeRate = \frac{originGasTokenPrice}{destinationGasTokenPrice}
 originFee = exchangeRate * txCost
 $$
 
+## Destination Gas Config
+
+For each remote domain, you can set the domain gas config.
+
+```solidity
+struct DomainGasConfig {
+    IGasOracle gasOracle;
+    uint96 gasOverhead;
+}
+```
+
+### gasOracle
+
+The `gasOracle` is a contract containing the exchange rates between supported origin and destination chains.
+
+### gasOverhead
+
+The `gasOverhead` is the operational cost of processing a message on the destination chain. When returning a quote for the cost of dispatching a message, the IGP contract will add this `gasOverhead` to the `gasLimit`.
+
 ## Post Dispatch
 
 During the post-dispatch hook, the `InterchainGasPaymaster` contract will revert if payment is insufficient to cover the relayer's *anticipated* costs. The relayer will honor quotes from `dispatch` time.

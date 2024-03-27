@@ -1,58 +1,66 @@
 # Interchain gas payments
 
-:::caution
-
-This protocol overview is from our v2 contract version.
-
-v3 now includes [post-dispatch hooks](../reference/hooks/overview.mdx), with [interchain gas payments (IGP)](../reference/hooks/interchain-gas.mdx) as one of the required hooks.
-
-We are working to update it with the relevant content ASAP. In the meantime, see the fully [**updated v3 Reference**](../reference/messaging/messaging-interface.mdx) tab for the latest contract interfaces.
-
-:::
-
 Successful interchain messages require two transactions; one on the origin chain to send the message, and one on the destination chain to deliver the message.
 
 For convenience, Hyperlane provides an onchain interface on the origin chain that allows message senders to pay the [relayer](./agents/relayer.mdx) to deliver a message on the destination chain. This payment is called an interchain gas payment.
 
 ```mermaid
 flowchart LR
-    subgraph Origin
+    subgraph Origin Chain
       Sender
       M_O[(Mailbox)]
       IGP[InterchainGasPaymaster]
-      Sender -- "id = dispatch(message)" --> M_O
-      Sender -- "payForGas(id)\n{value: payment}" --> IGP
+      Sender -- "dispatch(...)\n{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
     end
 
     Relayer((Relayer))
 
-    M_O -. "emit Dispatch(message)" .-> Relayer
-    IGP -.- Relayer
+    M_O -. "indexing" .-> Relayer
+    IGP -. "value" .- Relayer
 
-    subgraph Destination
+    subgraph Destination Chain
       M_D[(Mailbox)]
+      M_D -- "handle(...)" --> Recipient
     end
 
-    Relayer -- "process(message)" --> M_D
-
-    style Sender fill:#efab17
-
-    click IGP https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol
+    Relayer -- "process{gasLimit}(...)" --> M_D
 ```
 
 ## InterchainGasPaymasters
 
-Interchain gas payments are facilitated by `InterchainGasPaymaster` (IGP) smart contract contracts.
+Interchain gas payments are facilitated by `InterchainGasPaymaster` (IGP) smart contracts.
 
-These contracts expose the [InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx), which allows users to pay the [relayer](./agents/relayer.mdx) with native tokens on the origin chain to cover the costs of delivering a message on the destination chain.
+These contracts expose the [InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx), which allow users to pay the [relayer](./agents/relayer.mdx) with native tokens on the origin chain to cover the costs of delivering a message on the destination chain.
 
 Each `InterchainGasPaymaster` contract corresponds to exactly one relayer. You can find addresses of the Abacus Works' relayer under [addresses](../reference/contract-addresses.mdx)
+
+### Gas limit
+
+The gas limit is the cost of calling `handle` on the destination chain for a given message. This can vary depending on message content and the logic of the handler.
+
+### Gas overhead
+
+The gas overhead is set as part of the destination gas configuration, along with the `gasOracle`:
+
+```solidity
+struct DomainGasConfig {
+    IGasOracle gasOracle;
+    uint96 gasOverhead;
+}
+```
+
+This corresponds to the operation cost of processing a message on the destination, irrespective of the message itself.
 
 ### Gas oracles
 
 In order to support the [InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx), IGP contracts may be configured with gas oracles, which are responsible for tracking remote token gas prices and exchange rates.
 
 This allows the `quoteGasPayment` function to provide an accurate quote for the price of gas on a remote chain, denominated in the local chain's native token.
+
+:::tip
+The `quoteGasPayment` function takes into account the `gasOverhead` for the destination chain when calculating its quote for delivering a message.
+:::
 
 Eventually, a relayer will be able to automatically update their gas oracles in order to ensure that their IGP always quotes a fair price for remote gas.
 
