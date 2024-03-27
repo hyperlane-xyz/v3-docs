@@ -81,7 +81,9 @@ uint256 quote = mailbox.quoteDispatch(destination, recipient, body);
 mailbox.dispatch{value: quote}(destination, recipient, body);
 ```
 
-Alternatively, any overpayment will be refunded so quoting is not strictly necessary but dispatch may revert if payment is insufficient.
+:::danger
+Dispatch may revert if payment is insufficient. If you are composing hooks together, **overpayment may not be refunded**.
+:::
 
 ```solidity
 mailbox.dispatch{value: msg.value}(destination, recipient, body);
