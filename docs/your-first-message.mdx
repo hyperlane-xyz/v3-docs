@@ -2,10 +2,7 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
 import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
-import {
-  CoreAddressesTable,
-  TestRecipientAddressesTable,
-} from "@site/src/components/AddressTable";
+import AddressTable from "@site/src/components/AddressTable";
 import MessageQuickstart from "@site/src/components/MessageQuickstart";
 
 # Send your first interchain message
@@ -44,10 +41,10 @@ Check the logs to see your message delivery!
 
 <details>
   <summary>Testnet `TestRecipient` Addresses</summary>
-  <TestRecipientAddressesTable />
+  <AddressTable environment="testnet" contract="testRecipient" />
 </details>
 
 <details>
   <summary>Testnet `Mailbox` Addresses</summary>
-  <CoreAddressesTable environment="testnet" contract="mailbox" />
+  <AddressTable environment="testnet" contract="mailbox" />
 </details>
