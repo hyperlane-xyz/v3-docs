@@ -139,8 +139,8 @@ mailbox.dispatch{value: fee}(destination, recipient, body);
 `}
 />
 
-:::tip
-Underpayment to `dispatch` will revert but overpayment will be refunded to the message sender. This enables developers to skip explicit `quoteDispatch` calls in favor of `dispatch` calls with excess value.
+:::danger
+Underpayment to `dispatch` will revert. If you are composing hooks together, overpayment **may not be refunded** to the message sender.
 :::
 
 ## Post-Dispatch Hook Config
