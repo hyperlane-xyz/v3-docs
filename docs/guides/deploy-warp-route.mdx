@@ -41,15 +41,15 @@ hyperlane config create warp
 
 您的配置必须恰好有一个`base`条目。在这里，您将配置有关您正在创建Warp路由的代币的详细信息。
 
-* **chainName**:将其设置为令牌所在的链
-* **type**: 
-    - 将此设置为`TokenType. collateral` 为ERC20/ERC721令牌创建基本的Warp路由。
+* **chainName**: 将其设置为令牌所在的链
+* **type**:
+    - 设置为`TokenType. collateral`为ERC20/ERC721代币创建一个基本的Warp Route。
     - 将此设置为`TokenType. collateralVault` 为存入ERC4626保险库的ERC20令牌创建一个承载收益的Warp Route。
-    - 将此设置为`TokenType.native` 为本地令牌(例如ether)创建Warp Route
-* **address:** 
-    - 如果使用`TokenType.collateral`为其创建路由的ERC20/ERC721合约的地址
-    - 如果使用`TokenType.collateralVault`，用于存放抵押品的ERC4626保险库的地址
-* **isNft:** 如果使用`TokenType.collateral` 为ERC721合约，设置为`true`。
+    - 将此设置为`TokenType. native` 为本地令牌(例如ether)创建Warp Route
+* **address:**
+    - 如果使用`TokenType. collateral`为其创建路由的ERC20/ERC721合约的地址
+    - 如果使用 `TokenType.collateralVault`，用于存放抵押品的ERC4626保险库的地址
+* **isNft:** 如果使用`TokenType. collateral` 为ERC721合约，设置为 `true`。
 
 #### 合成资产
 
@@ -97,7 +97,7 @@ hyperlane config create chain
 hyperlane deploy warp
 ```
 
-完成后，CLI将创建两个新的JSON文件：`warp-deployment` 和 `warp-ui-token-config`。第一个文件仅包含新部署的Warp路由器合约的地址。第二个是Warp UI的配置文件，您可以在下一个可选步骤中使用。
+完成后，CLI将创建两个新的JSON文件:`warp-deployment` 和`warp-config`。第一个只包含新部署的Warp路由合约的地址。第二个文件是用于Warp UI的配置文件，您可以将其用于下一个可选步骤。
 
 ## 3. 测试
 

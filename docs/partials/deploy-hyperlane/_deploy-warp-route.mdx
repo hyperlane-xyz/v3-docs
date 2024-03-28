@@ -12,7 +12,7 @@ hyperlane config create warp
 hyperlane deploy warp --key $PRIVATE_KEY
 ```
 
-完成后，CLI将创建两个新的JSON构件文件：`warp-deployment-{timestamp}.json`和`warp-ui-token-config-{timestamp}`。第一个文件只包含新部署的Warp路由器合约的地址。第二个是Warp UI的配置文件，可用于下一个可选步骤。
+完成后，CLI将创建两个新的JSON工件文件:`warp-deployment-{timestamp}. json` 和 `warp-config-{timestamp}`。第一个只包含新部署的Warp路由器合约的地址。第二个文件是用于Warp UI的配置文件，您可以将其用于下一个可选步骤。
 
 :::tip
 
@@ -22,4 +22,4 @@ hyperlane deploy warp --key $PRIVATE_KEY
 
 ### 部署 Warp UI
 
-Warp UI是用于与Warp Routes交互的DApp 模板。您可以克隆[Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) 并按照 CUSTOMIZE.md 中的说明配置新实例。简而言之，使用前面步骤中的 `chains.yaml` 和 `warp-ui-token-config.json` 文件为用户界面提供所需的信息。有关分步说明，请参阅 [**Deploy Warp UI guide**](/docs/guides/deploy-warp-route-UI) 。
+Warp UI是一个用于与Warp路由交互的DApp模板。你可以克隆[Warp UI仓库](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template)并按照CUSTOMIZE. md的说明操作来配置和一个新的实例。简而言之，使用`chains. yaml` 和 `warp-config. json` 文件来为UI提供所需的信息。请参阅[**Deploy Warp UI guide**](/docs/guides/ Deploy - Warp -route-UI)了解详细步骤。
