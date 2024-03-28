@@ -1,5 +1,4 @@
-import TestnetAddresses from "@site/static/addresses/testnet.json";
-import MainnetAddresses from "@site/static/addresses/mainnet.json";
+import { hyperlaneEnvironments } from "@hyperlane-xyz/sdk";
 
 type Props = {
   chains: string[];
@@ -41,7 +40,7 @@ export default function ChainDropdown({
 }
 
 export const TestnetChainDropdown = (props: Omit<Props, "chains">) =>
-  ChainDropdown({ chains: Object.keys(TestnetAddresses), ...props });
+  ChainDropdown({ chains: Object.keys(hyperlaneEnvironments.testnet), ...props });
 
 export const MainnetChainDropdown = (props: Omit<Props, "chains">) =>
-  ChainDropdown({ chains: Object.keys(MainnetAddresses), ...props });
+  ChainDropdown({ chains: Object.keys(hyperlaneEnvironments.mainnet), ...props });

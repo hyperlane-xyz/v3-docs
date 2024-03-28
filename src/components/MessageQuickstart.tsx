@@ -1,5 +1,6 @@
 import InteractiveExample from "./InteractiveExample";
-import testnetChainMetadata from "@site/static/chainmetadata/testnet.json";
+
+import { chainMetadata } from "@hyperlane-xyz/sdk";
 
 import CodeBlock from "@theme/CodeBlock";
 import Tabs from "@theme/Tabs";
@@ -15,13 +16,13 @@ export default function MessageQuickstart() {
       body,
       value,
     }) => {
-      const originRpc = testnetChainMetadata[originChain].rpcUrls[0].http;
-      const explorer = testnetChainMetadata[originChain]?.blockExplorers[0].url;
+      const originRpc = chainMetadata[originChain].rpcUrls[0].http;
+      const explorer = chainMetadata[originChain]?.blockExplorers[0].url;
       const url = new URL(explorer);
       // F3 is the third function in the contract
       const contract = `${explorer}/address/${mailbox}#writeProxyContract#F3`;
 
-      const destinationDomain = testnetChainMetadata[destinationChain].domainId;
+      const destinationDomain = chainMetadata[destinationChain].domainId;
 
       return (
         <Tabs>
