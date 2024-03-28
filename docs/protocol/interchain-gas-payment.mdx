@@ -50,7 +50,13 @@ struct DomainGasConfig {
 }
 ```
 
-This corresponds to the operation cost of processing a message on the destination, irrespective of the message itself.
+This corresponds to the operational cost of processing a message on the destination chain.
+
+:::note
+You should ensure the `gasOverhead` sufficiently covers the range of ISMs on your destination chain.
+
+As you can configure different ISMs for different message types, you may have different gas overheads for each ISM's `verify` function.
+:::
 
 ### Gas oracles
 
