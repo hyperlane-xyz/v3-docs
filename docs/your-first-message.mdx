@@ -4,7 +4,6 @@ import TabItem from "@theme/TabItem";
 import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
 import {
   CoreAddressesTable,
-  TestRecipientAddressesTable,
 } from "@site/src/components/AddressTable";
 import MessageQuickstart from "@site/src/components/MessageQuickstart";
 
@@ -44,7 +43,7 @@ Check the logs to see your message delivery!
 
 <details>
   <summary>Testnet `TestRecipient` Addresses</summary>
-  <TestRecipientAddressesTable />
+  <CoreAddressesTable environment="testnet" contract="testRecipient" />
 </details>
 
 <details>

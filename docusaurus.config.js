@@ -38,6 +38,7 @@ const config = {
   },
 
   plugins: [
+    'custom-loaders',
     [
       '@docusaurus/plugin-client-redirects',
       {

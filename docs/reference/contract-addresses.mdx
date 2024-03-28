@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import { CoreAddressesTable, TestRecipientAddressesTable } from '@site/src/components/AddressTable';
+import { CoreAddressesTable } from '@site/src/components/AddressTable';
 
 # Deployed Addresses
 
@@ -94,7 +94,7 @@ import { CoreAddressesTable, TestRecipientAddressesTable } from '@site/src/compo
 <Tabs groupId="environment">
 <TabItem value="testnet" label="Testnet">
 
-<TestRecipientAddressesTable/>
+<CoreAddressesTable environment="testnet" contract="testRecipient"/>
 
 </TabItem>
 </Tabs>

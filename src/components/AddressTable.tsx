@@ -1,8 +1,4 @@
-import testnetChainMetadata from "@site/static/chainmetadata/testnet.json";
-import mainnetChainMetadata from "@site/static/chainmetadata/mainnet.json";
-import TestRecipientAddresses from "@site/static/addresses/testrecipients.json";
-import TestnetAddresses from "@site/static/addresses/testnet.json";
-import MainnetAddresses from "@site/static/addresses/mainnet.json";
+import { hyperlaneEnvironments, chainMetadata } from "@hyperlane-xyz/sdk";
 
 export type Environment = "testnet" | "mainnet";
 
@@ -41,10 +37,7 @@ export default function AddressTable<K extends string>({
       <tbody>
         {Object.entries(addressesMap).map(([chain, addresses]) => {
           const address = addresses[contract];
-          const targetMetadata =
-            environment === "testnet"
-              ? testnetChainMetadata[chain]
-              : mainnetChainMetadata[chain];
+          const targetMetadata = chainMetadata[chain];
           const explorer = targetMetadata.blockExplorers[0].url;
           const url = new URL(explorer);
           return (
@@ -74,14 +67,7 @@ export default function AddressTable<K extends string>({
 export const CoreAddressesTable = ({ contract, environment }) =>
   AddressTable({
     addressesMap:
-      environment === "testnet" ? TestnetAddresses : MainnetAddresses,
+      environment === "testnet" ? hyperlaneEnvironments.testnet : hyperlaneEnvironments.mainnet,
     contract,
     environment,
-  });
-
-export const TestRecipientAddressesTable = () =>
-  AddressTable({
-    addressesMap: TestRecipientAddresses,
-    contract: "TestRecipient",
-    environment: "testnet",
   });
