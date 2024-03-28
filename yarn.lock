@@ -3703,22 +3703,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/core@npm:3.1.10":
-  version: 3.1.10
-  resolution: "@hyperlane-xyz/core@npm:3.1.10"
-  dependencies:
-    "@eth-optimism/contracts": "npm:^0.6.0"
-    "@hyperlane-xyz/utils": "npm:3.1.10"
-    "@openzeppelin/contracts": "npm:^4.9.3"
-    "@openzeppelin/contracts-upgradeable": "npm:^v4.9.3"
-  peerDependencies:
-    "@ethersproject/abi": "*"
-    "@ethersproject/providers": "*"
-    "@types/sinon-chai": "*"
-  checksum: 68dd64abc40abe5bdd74b5a5564403e7b5488e20dce2caa93fd6826c412b638bb7a8be1d460db732e4f6d1185e7d14b703c942ca55a82417d234d67f1c8cba5d
-  languageName: node
-  linkType: hard
-
 "@hyperlane-xyz/core@npm:3.9.0":
   version: 3.9.0
   resolution: "@hyperlane-xyz/core@npm:3.9.0"
@@ -3761,18 +3745,6 @@ __metadata:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
   checksum: c896326917d1e7862d4f45edce3fae38767eb6fa02e1cd32d8fb00421927c6610ce9ec0d17ec4d0c21a79be333ec10ef6f55ea86aa8957615c10007ac4ee7a54
-  languageName: node
-  linkType: hard
-
-"@hyperlane-xyz/utils@npm:3.1.10":
-  version: 3.1.10
-  resolution: "@hyperlane-xyz/utils@npm:3.1.10"
-  dependencies:
-    "@cosmjs/encoding": "npm:^0.31.3"
-    "@solana/web3.js": "npm:^1.78.0"
-    bignumber.js: "npm:^9.1.1"
-    ethers: "npm:^5.7.2"
-  checksum: 46d4fef5836ccd8bd0c571070cef9076eee672a174516d2dc6ec356e0d66b8b607ab4fa153f762c2f825e2b91e082fc7c77a8b5a58948aea1e1df6aba203c5ee
   languageName: node
   linkType: hard
 
@@ -10126,7 +10098,6 @@ __metadata:
     "@docusaurus/tsconfig": "npm:3.0.1"
     "@docusaurus/types": "npm:3.0.1"
     "@easyops-cn/docusaurus-search-local": "npm:^0.37.4"
-    "@hyperlane-xyz/core": "npm:3.1.10"
     "@hyperlane-xyz/sdk": "npm:3.9.0"
     "@mdx-js/react": "npm:^3.0.0"
     "@types/react": "npm:^18.2.37"

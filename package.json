@@ -20,7 +20,6 @@
     "@docusaurus/preset-classic": "3.0.1",
     "@docusaurus/theme-mermaid": "3.0.1",
     "@easyops-cn/docusaurus-search-local": "^0.37.4",
-    "@hyperlane-xyz/core": "3.1.10",
     "@hyperlane-xyz/sdk": "3.9.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
