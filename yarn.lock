@@ -7520,8 +7520,8 @@ __metadata:
 
 "custom-loaders@file:plugins/custom-loaders::locator=hyperlane-v3-docs%40workspace%3A.":
   version: 0.0.0
-  resolution: "custom-loaders@file:plugins/custom-loaders#plugins/custom-loaders::hash=9958c2&locator=hyperlane-v3-docs%40workspace%3A."
-  checksum: beff58ba7949bfc289cd2b09eac370f9ba32c02c53ca9de796022dcda17e09a1d1746d44f139c7450e9c772cf375f5a2da9c11f4b8c75f2c8cb0154d3d4a8676
+  resolution: "custom-loaders@file:plugins/custom-loaders#plugins/custom-loaders::hash=1849be&locator=hyperlane-v3-docs%40workspace%3A."
+  checksum: 02aa7789a3e6450b3de5f3ae74e59684774578969b4a0999b7f38da70b2010cd9b1bce9d4fb12800b603b2310ee2570620e340772109a53d161c0b78c15144e3
   languageName: node
   linkType: hard
 
