@@ -1,18 +1,18 @@
 # OP Stack Hook
 
-Optimism and other [OP Stack](https://stack.optimism.io/) rollups have their own interface for message passing between L1 and L2 called the `CrossDomainMessenger`. Messages passed via this interface benefit from the security of the rollup [settlement layer](https://stack.optimism.io/docs/understand/landscape/#execution).
+Optimism和其他[OP Stack](https://stack.optimism.io/) rollup有自己的接口，用于在L1和L2之间传递消息，称为“CrossDomainMessenger”。通过此接口传递的消息受益于rollup[结算层](https://stack.optimism.io/docs/understand/landscape/#execution)的安全性。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/optimism/ICrossDomainMessenger.sol#L15-L19
 ```
 
-To provide this security as an option in Hyperlane, we created a Hook and ISM combo that can be transparently configured to reuse the native OP Stack interface.
+为了在Hyperlane中提供这种安全性，我们创建了一个Hook和ISM组合，可以透明地配置以重用本机OP栈接口。
 
-See the [addresses](../contract-addresses.mdx) page for Hook and ISM addresses.
+请参阅 [addresses](../contract-addresses.mdx) 页面获取Hook和ISM地址。
 
-## How It Works
+## 它是如何工作的
 
-The OPStackHook sends the messageId to the L1CrossDomainMessenger which registers it as an Optimism `TransactionDeposited` event with ETH deposit and message data which gets picked up by the rollup node.
-The rollup node calls the precompiled contract `L2CrossDomainMessenger`'s relayMessage function which in turn makes calls configured OptimismISM contract, setting the messageId in the verifiedMessageId's mapping to the original L1 sender (ie. the user). The relayer carries just the message with no metadata, waiting for the Optimism node to pick and make a storage write to Optimism and the message delivery is then verified.
+OPStackHook将messageId发送给L1CrossDomainMessenger, L1CrossDomainMessenger将其注册为一个Optimism 的` transaction`事件，并将其与ETH deposit和由rollup节点拾取的消息数据一起使用。
+rollup节点调用预编译的合约' L2CrossDomainMessenger '的relayMessage函数，该函数反过来调用配置的OptimismISM合约，在verifiedMessageId的映射中设置messageId到原始L1发送者(即。用户)。中继器只携带没有元数据的消息，等待乐观节点选择并对乐观节点进行存储写入，然后验证消息传递。
 
 ```mermaid
 flowchart TB

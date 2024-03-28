@@ -1,41 +1,41 @@
-# Explorer
+# 资源管理器
 
-The [Hyperlane Explorer](https://explorer.hyperlane.xyz/) can be used to find messages on any network with a Hyperlane deployment. Drill down into messages for more details about their properties and status.
+[Hyperlane Explorer](https://explorer.hyperlane.xyz/) 可以用于查找任何部署了Hyperlane的链上的信息。深入了解信息，以获取有关其属性和状态的更多详细信息。
 
-Messages to/from [core chains](./reference/domains.mdx) will searchable by transaction hash, message ID, or sender/recipient address. For other chains, the explorer can be configured to search for messages by providing it a chain config.
+to/from[core chains](./reference/domains.mdx)的信息将可以通过交易哈希、信息ID或发送者/接收者地址进行搜索。对于其他链，可以通过提供链配置来配置资源管理器以搜索信息。
 
-### Searching for messages
+### 搜索信息
 
-The [Hyperlane Explorer](https://explorer.hyperlane.xyz/) supports searching for messages using any of the following values:
+[Hyperlane Explorer](https://explorer.hyperlane.xyz/) 支持使用以下任何值搜索邮件：
 
-- Hash of the transaction that initiated the message (origin tx)
-- Hash of the transaction that delivered message (destination tx)
-- Address of the account that sent the origin transaction
-- Address of the account that sent the destination transaction
-- Address of the message sender
-- Address of the message recipient
-- ID of the message
+- 发起消息的交易的哈希值（原始链的tx）
+- 传递消息的交易的哈希值（目标链tx）
+- 原始链交易的发送账户地址
+- 目标链交易的接收账户地址
+- 消息发送者地址
+- 消息接收者地址
+- 消息ID
 
-To search, enter your query into the top search bar. You can use the Origin Chain, Destination Chain, and Time filter options to narrow down your search.
+要进行搜索，请在顶部的搜索栏中输入您的查询。您可以使用 "原始链"、"目标链 "和 "时间 "过滤选项来缩小搜索范围。
 
 ![Explorer search bar](../static/img/explorersearchbar.png)
 
 :::info
 
-Note, by default the explorer will only find message on [core Hyperlane chains](./reference/domains.mdx).
+注意，默认情况下，资源管理器只能在[Hyperlane 核心链]（./reference/domains.mdx）上查找信息。
 
-To view messages send to and/or from other chains, see [configuring PI Chains](./guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx).
+要查看发送到其他链和/或来自其他链的信息，请参阅[配置 PI 链](./guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx)。
 
 :::
 
-### Permissionless Interoperability
+### 无需许可的互操作性
 
-The explorer UI and REST API can be configured to search for messages on any chain with a Hyperlane deployment. See [configuring PI Chains](./guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx) for details.
+可对资源管理器用户界面和REST API进行配置，以便在任何部署了Hyperlane的链上搜索信息。详情请参见[配置 PI 链](./guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx)。
 
-### Debugging Messages
+### 调试信息
 
-If you're trying to debug a problem with message delivery, the [explorer debugging](./guides/developer-tips/explorer-debugging.mdx) page has useful tips.
+如果您正在尝试调试信息传送问题，[explorer 调试](./guides/developer-tips/explorer-debugging.mdx)页面提供了有用的提示。
 
-### API Reference
+### 应用程序接口参考
 
-The explorer's data can be accessed programmatically via the [REST API](./guides/developer-tips/explorer-debugging/rest-api.mdx) or [GraphQL API](./guides/developer-tips/explorer-debugging/graphql-api.mdx). The REST API is recommended because it exposes a simpler interface for message data.
+可以通过[REST API](./guides/developer-tips/explorer-debugging/rest-api.mdx)或[GraphQL API](./guides/developer-tips/explorer-debugging/graphql-api.mdx)以编程方式访问资源管理器的数据。推荐使用REST API，因为它为信息数据提供了一个更简单的接口。

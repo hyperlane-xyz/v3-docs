@@ -5,13 +5,13 @@ import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
 
 # Mailbox
 
-Hyperlane's generalized message passing (GMP) interface is implemented as a smart contract called the Mailbox. This contract encodes and decodes [message headers](#message-headers), ensures global message [uniqueness](#uniqueness), and prevents [replay attacks](#replay-protection).
+Hyperlane的通用消息传递（GMP）接口是以一种名为邮箱（Mailbox）的智能合约的形式实现的。该合约对[message headers](#message-headers)进行编码和解码，确保全局消息的[uniqueness](#uniqueness)，并防止[replay attacks](#replay-protection)。
 
 <SimpleMessagingDiagram/>
 
-To [**send**](./send.mdx) interchain messages, call the `dispatch` function.
+To [**send**](./send.mdx) 跨链消息，调用`dispatch`函数。
 
-To [**receive**](./receive.mdx) interchain messages, implement the `handle` function.
+To [**receive**](./receive.mdx) 要实现链间消息，需要执行 `handle` 函数。
 
 <details>
 <summary>`IMailbox` Interface</summary>
@@ -26,22 +26,22 @@ To [**receive**](./receive.mdx) interchain messages, implement the `handle` func
 </Tabs>
 </details>
 
-## Message Headers
+## 信息头
 
-The Mailbox prepends message bodies with a header containing the following fields:
+邮箱在邮件正文前加上一个包含以下字段的标头：
 
-- `version`: The version of the Mailbox contract
-- `nonce`: A unique identifier for each message sent from a given Mailbox
-- `origin`: The domain of the origin chain
-- `sender`: The address of the sender on the origin chain
-- `destination`: The address of the destination chain
-- `recipient`: The address of the recipient on the destination chain
+- `version`: 邮箱合同的版本
+- `nonce`: 从给定邮箱发送的每个邮件的唯一标识符
+- `origin`: 原始链的域
+- `sender`: 原始链上发送方的地址
+- `destination`: 目标链的地址
+- `recipient`: 目标链上收件人的地址
 
-See the [`Message` library](../libraries/message.mdx) for more information on the message encoding.
+有关消息编码的更多信息，请参阅 [`Message` library](../libraries/message.mdx)。
 
-## Uniqueness
+## 独特性
 
-The `nonce` is a monotonically increasing integer for each message sent from a given Mailbox. It is incremented each time a message is dispatched to serve as a separator for otherwise identical messages.
+对于从给定邮箱发送的每个消息，`nonce`是一个单独递增的整数。它在每次发送消息时递增，作为其他相同消息的分隔符。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -52,21 +52,21 @@ The `nonce` is a monotonically increasing integer for each message sent from a g
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-The `messageId` is a globally unique message identifier, returned from the `dispatch` call, computed as the `keccak256` hash of the message (with headers).
+`messageId`是一个全局唯一的消息标识符，从`dispatch`调用返回，计算为消息的`keccak256`哈希值(带headers)。
 
 ## Replay Protection
 
-The Mailbox maintains a mapping of already delivered `messageId` values to prevent replay attacks. If a message is received with a `messageId` that has already been delivered, the message is rejected.
+邮箱维护一个已经传递的`messageId`值的映射，以防止重播攻击。如果接收到的消息包含已经发送的`messageId`，则会拒绝该消息。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -77,12 +77,12 @@ The Mailbox maintains a mapping of already delivered `messageId` values to preve
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>

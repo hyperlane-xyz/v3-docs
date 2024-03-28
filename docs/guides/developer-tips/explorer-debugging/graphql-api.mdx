@@ -1,14 +1,14 @@
 # GraphQL API
 
-The Hyperlane agents collect useful information about activity on the system, including all messages. That data can be queried via APIs. These APIs are currently available free of charge and without any required authentication. Connect your preferred GraphQL client or library to [https://api.hyperlane.xyz/v1/graphql](https://api.hyperlane.xyz/v1/graphql) to query data!
+Hyperlane代理收集系统活动的有用信息，包括所有消息。这些数据可通过应用程序接口（API）查询。这些应用程序接口目前免费提供，无需任何认证。将您喜欢的GraphQL客户端或库连接到 [https://api.hyperlane.xyz/v1/graphql](https://api.hyperlane.xyz/v1/graphql)，即可查询数据！
 
 :::info
-Note, the REST API is recommended over the GraphQL API because it exposes a simpler schema for message data.&#x20;
+请注意，推荐使用REST API而不是GraphQL API，因为它暴露了一个更简单的消息数据模式。
 :::
 
-### Example Query
+### 查询示例
 
-The following query will retrieve useful information about a message:
+下面的查询将检索一条信息的有用信息：
 
 ```graphql
 query MyQuery {
@@ -65,7 +65,7 @@ query MyQuery {
 }
 ```
 
-### GraphQL Schema Types
+### GraphQL 模式类型
 
 ```graphql
 type message_view {

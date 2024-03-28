@@ -5,18 +5,18 @@ import MessagingIsmDiagram from '@site/src/diagrams/messaging-isms.md';
 
 import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
 
-# Receive a message
+# 接收消息
 
-Contracts can receive interchain messages by implementing the `handle` function.
+合约可以通过实现`handle`函数来接收链间消息。
 
 <SimpleMessagingDiagram/>
 
 ## Handle
 
-This function is called by the `Mailbox` contract when a message is received.
+当收到消息时，该函数由`Mailbox`合约调用。
 
 :::danger
-To ensure only valid interchain messages are accepted, it is important to restrict [access control](#access-control) to the Mailbox address.
+为了确保只接受有效的链间消息，将[access control](#access-control)限制为邮箱地址是很重要的。
 :::
 
 <Tabs groupId="lang">
@@ -25,14 +25,14 @@ To ensure only valid interchain messages are accepted, it is important to restri
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMessageRecipient.sol#L5-L9
 ```
 
-**Parameters**
+**参数**
 
-- `origin`: Domain of origin chain
-- `sender`: Address of sender on origin chain as bytes32
-- `messageBody`: Raw bytes content of message body
+- `origin`: 原始链的域
+- `sender`: 发件人在原始链上的地址，以bytes32表示
+- `messageBody`: 消息体内容的原始字节
 
 :::info
-Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently. The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
+发送地址左填充为 `bytes32`，以兼容不同寻址的虚拟机。为了方便使用，[`TypeCasts` library](../libraries/typecasts.mdx)中提供了以下实用程序。
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/libs/TypeCasts.sol#L10-L13
 ```
 :::
@@ -40,21 +40,21 @@ Sender addresses are left-padded to `bytes32` for compatibility with virtual mac
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-### Access Control
+### 访问控制
 
-The `handle` function should be restricted to the Mailbox address if the contract should only accept calls from interchain messages.
+如果合约只接受链间消息的调用，`handle`函数应限制为邮箱地址。
 
-The following utility is provided in the [`MailboxClient` library](../libraries/mailboxclient.mdx) for convenience.
+为了方便使用， [`MailboxClient` library](../libraries/mailboxclient.mdx)中提供了以下实用程序。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -65,17 +65,17 @@ The following utility is provided in the [`MailboxClient` library](../libraries/
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-### Examples
+### 示例
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -86,23 +86,23 @@ The following utility is provided in the [`MailboxClient` library](../libraries/
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>
 
-## Verify
+## 验证
 
-When a message is received, the Mailbox will verify security with an [Interchain Security Module](../ISM/specify-your-ISM.mdx) before calling the message recipient's `handle`.
+当收到消息时，在调用消息收件人的`handle`之前，邮箱将使用[Interchain Security Module](../ISM/specify-your-ISM.mdx)验证安全性。
 
 ### Default Security
 
-To query the default ISM address, you can call the `defaultIsm` function.
+默认的ISM地址可以通过`defaultIsm`函数查询。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -113,9 +113,9 @@ To query the default ISM address, you can call the `defaultIsm` function.
 </TabItem>
 </Tabs>
 
-### Modular Security
+### 模块化安全
 
-To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages. The Mailbox will defer to this ISM when specified.
+为了利用Hyperlane的模块化安全性，消息接收者可以指定一个自定义的链间安全模块来**验证任何关于传入消息的内容**。当指定时，该邮箱将遵从此ISM。
 
 <MessagingIsmDiagram/>
 
@@ -128,12 +128,12 @@ To leverage Hyperlane's modular security, message recipients can specify a custo
 </TabItem>
 <TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 <TabItem value="sl" label="Sealevel">
 
-🚧 Coming soon! 🚧
+🚧 即将到来! 🚧
 
 </TabItem>
 </Tabs>

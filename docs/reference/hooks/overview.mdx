@@ -5,7 +5,7 @@ import { MultiLanguageExample } from "@site/src/components/InteractiveExample";
 
 # Post-Dispatch Hooks
 
-Post-dispatch hooks allow developers to configure additional origin chain behavior with message content dispatched via the Mailbox.
+Post-dispatch hooks允许开发人员配置额外的源链行为，通过邮箱分发消息内容。
 
 ```mermaid
 flowchart TB
@@ -19,7 +19,7 @@ flowchart TB
     end
 ```
 
-This allows developers to integrate third party/native bridges, make additional chain commitments, or require custom fees all while maintaining a consistent single-call Mailbox interface.
+这允许开发人员在维护一致的单次调用邮箱接口的同时，集成第三方/本地桥，作出额外的链承诺，或要求自定义费用。
 
 <details>
 <summary>`IPostDispatchHook` Interface</summary>
@@ -37,7 +37,7 @@ This allows developers to integrate third party/native bridges, make additional 
 
 ## Post Dispatch
 
-In addition to the `message` dispatched via the Mailbox, the `postDispatch` function receives a `metadata` parameter. The `metadata` parameter is passed from the `dispatch` call through the Mailbox unmodified. This allows developers to pass any context they wish through to the hook.
+除了通过邮箱发送的`message`之外，`postDispatch`函数还接收一个`metadata`参数。`metadata`参数从`dispatch`调用通过未修改的Mailbox传递。这允许开发人员将任何上下文传递给钩子。
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -49,12 +49,11 @@ In addition to the `message` dispatched via the Mailbox, the `postDispatch` func
 </TabItem>
 </Tabs>
 
-If the `postDispatch` function receives insufficient payment, it may revert.
+如果'postDispatch'函数收到的付款不足，它可能会回滚。
 
 ### Quote Dispatch (Fees)
 
-Fees are often charged in `postDispatch` to cover costs such as destination chain transaction submission and security provisioning. To receive a quote for a corresponding `postDispatch` call, you can query the `quoteDispatch` function.
-
+通常在`postDispatch`中收取费用，以支付目的地链交易提交和安全配置等成本。要接收相应`postDispatch`调用的报价，可以查询`quoteDispatch`函数。
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
 
@@ -65,7 +64,7 @@ Fees are often charged in `postDispatch` to cover costs such as destination chai
 </TabItem>
 </Tabs>
 
-The Mailbox has a `quoteDispatch` function that returns the aggregate fee required for a `dispatch` call to be successful.
+邮箱有一个`quoteDispatch` 函数，用于返回成功调用`dispatch`所需的总费用。
 
 ```mermaid
 flowchart TB
@@ -82,14 +81,14 @@ flowchart TB
     end
 ```
 
-Move to implementing a hook guide [here](../../guides/create-custom-hook-and-ism.mdx)
+转到实现钩子指南[这里](../../guides/create-custom-hook-and-ism.mdx)
 
-### Overridding default Hook Metadata
+### 覆盖默认钩子元数据
 
-To override the default metadata, there is a `dispatch` overload that takes an optional `metadata` parameter.
+为了覆盖默认的元数据，有一个`dispatch`重载，它接受一个可选的`metadata`参数。
 
 :::info
-Hooks currently expect metadata to be formatted with the [`StandardHookMetadata` library](../libraries/hookmetadata.mdx).
+Hooks目前期望使用[`StandardHookMetadata` library](../libraries/hookmetadata.mdx)格式化元数据。
 :::
 
 <Tabs groupId="lang">
@@ -102,7 +101,7 @@ Hooks currently expect metadata to be formatted with the [`StandardHookMetadata`
 </TabItem>
 </Tabs>
 
-The custom `metadata` will be passed to the required hook's `quoteDispatch` and `postDispatch` functions, before being passed to the default hook's `postDispatch` function.
+自定义的`metadata`将被传递给所需钩子的`quoteDispatch`和`postDispatch`函数，然后再传递给默认钩子的`postDispatch`函数。
 
 ```mermaid
 flowchart LR
@@ -119,7 +118,7 @@ flowchart LR
     end
 ```
 
-#### Examples
+#### 示例
 
 <details>
 <summary>`StandardHookMetadata` Library</summary>
@@ -155,9 +154,9 @@ mailbox.dispatch{value: msg.value}(
 `}
 />
 
-### Custom hook and metadata
+### 自定义钩子和元数据
 
-After implementing the above interfaces, you can override default hook along the hook metadata by using the overloaded `dispatch` call in our mailbox:
+在实现了上面的接口之后，你可以通过在我们的邮箱中重载的`dispatch`调用来覆盖钩子元数据中的默认钩子:
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -166,7 +165,7 @@ After implementing the above interfaces, you can override default hook along the
 
 ```
 
-### Examples
+### 示例
 
 <MultiLanguageExample
   solidity={({

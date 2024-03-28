@@ -1,96 +1,92 @@
-# Frequently Asked Questions
+# 常见问题解答
 
 <details>
-  <summary>**What is Hyperlane?**</summary>
+  <summary>**Hyperlane是什么？**</summary>
   <div>
-    <div>Hyperlane is the first universal and permissionless interoperability framework built for the modular blockchain stack.
-Anyone can [Deploy Hyperlane](./deploy-hyperlane.mdx) to any blockchain environment, whether it is a layer 1, rollup, or app-chain, allowing that chain to communicate seamlessly with any other chain on which Hyperlane has been deployed.</div>
+    <div>Hyperlane是为模块化区块链堆栈构建的第一个通用且无需许可的互操作层。任何人都可以无需许可地[deploy hyperlane](./deploy-hyperlane.mdx)到任何区块链环境中，无论是1层、Rollup还是应用链，都可以让该链与部署了Hyperlane的任何其他链进行无缝通信。</div>
   </div>
 </details>
 <details>
-  <summary>**What are the benefits of using Hyperlane for blockchain developers?**</summary>
+  <summary>**区块链开发者使用Hyperlane有什么好处？**</summary>
   <div>
-    <div>Hyperlane offers benefits for both blockchain and dapp developers.
-For blockchain developers, a Hyperlane deployment expands accessibility to users, assets, and valuable state from other connected blockchains on which Hyperlane has been deployed.
-For dapp developers, Hyperlane provides seamless connectivity across multiple blockchains, allowing developers to create interchain network effects and liquidity and users to interact with applications from their preferred chain.</div>
+    <div>Hyperlane为区块链和应用程序开发者都带来了好处。对于区块链开发者来说，Hyperlane的部署扩大了从其他已部署Hyperlane的区块链获取用户、资产和有价值状态的可能性。对于dapp开发者来说，Hyperlane提供了跨多个区块链的无缝连接，允许开发者创建跨链网络效应和流动性，用户能够从他们偏好的链上与应用程序进行交互。</div>
   </div>
 </details>
 <details>
-  <summary>**How is Hyperlane secured?**</summary>
+  <summary>**Hyperlane如何确保安全？**</summary>
   <div>
-    <div>Hyperlane is secured by its modular security stack featuring Interchain Security Modules (ISMs). Developers can configure various pre-built ISMs, compose them with each other, or even create custom ISMs based on their application's needs.
-A modular approach to security ensures that Hyperlane will continue to stay up to the latest industry advances in security models.</div>
+    <div>Hyperlane通过其模块化安全堆栈（具有链间安全模块（ISM））来确保安全。开发人员可以配置各种预置的 ISM，将它们相互组合，甚至根据应用程序的需要创建自定义的ISM。模块化的安全方法确保了Hyperlane在安全模型方面不断跟上行业的最新发展。</div>
   </div>
 </details>
 <details>
-  <summary>**Who are the Hyperlane validators?**</summary>
+  <summary>**谁是 Hyperlane 验证者？**</summary>
   <div>
-    <div>Hyperlane is secured with a modular security stack featuring ISMs. There is no protocol-enshrined security model, let alone validator set. That said, most Hyperlane deployments are configured with a Default ISM, which specifies the security model to use if the message recipient has not specified an ISM override.</div>
+    <div>Hyperlane采用以ISM为特色的模块化安全堆栈来确保安全。没有协议规定的安全模型，更没有验证程序集。尽管如此，大多数Hyperlane部署都配置有一个默认的ISM，该ISM指定了如果信息接收者未指定ISM覆盖时要使用的安全模型。</div>
   </div>
 </details>
 <details>
-  <summary>**What can I build with Hyperlane?**</summary>
+  <summary>**我可以用Hyperlane构建什么？**</summary>
   <div>
-    <div>Hyperlane's [Messaging interface](./reference/messaging/messaging-interface.mdx) allows dapp developers to send arbitrary bytes between smart contracts on different chains. This can be used to create interchain applications, dapps which span multiple chains. For inspiration, take a look at some of the pre-built applications built on top of Hyperlane, including: Warp Routes, which lets users move tokens from one chain to another; Interchain Accounts: which lets users make interchain function calls; Interchain Queries: which lets users make interchain view calls </div>
+    <div>Hyperlane的信息[Messaging interface](./reference/messaging/messaging-interface.mdx)允许dapp开发者在不同链上的智能合约之间发送任意字节。这可用于创建跨链应用程序，即跨越多个链的dapp。要想获得灵感，可以查看一些构建在Hyperlane之上的预构建应用程序，包括Warp Routes：允许用户将代币从一条链转移到另一条链；Interchain Accounts：允许用户进行跨链函数调用；Interchain Queries：允许用户进行跨链视图调用。</div>
   </div>
 </details>
 <details>
-  <summary>**Where is Hyperlane deployed?**</summary>
+  <summary>**Hyperlane在哪里部署？**</summary>
   <div>
-    <div>A list of known deployments can be found at the [contract addresses](./reference/contract-addresses.mdx) page</div>
+    <div>[contract addresses](./reference/contract-addresses.mdx)页面上有一份已部署的清单。</div>
   </div>
 </details>
 <details>
-  <summary>**What happens when I send a message on Hyperlane?**</summary>
+  <summary>**在 Hyperlane上发送信息时会发生什么？**</summary>
   <div>
-    <div>See the [send](./reference/messaging/send.mdx) and [receive](./reference/messaging/receive.mdx) pages for more details. In summary, an application calls the `dispatch()` function on the origin chain, inserting the message into the Mailbox's Merkle tree. A Hyperlane Relayer observes the dispatched messages and assemble metadata for the recipient's Interchain Security Module (ISM). A relayer delivers the message to the recipient by calling `Mailbox.process()`. The  verifies the message with the recipient’s ISM, and calls `recipient.handle()` to deliver the message.</div>
+    <div>详情请参阅[send](./reference/messaging/send.mdx) 和 [receive](./reference/messaging/receive.mdx) 页面。简而言之，一个应用程序在原始链上调用`dispatch()`函数，将信息插入邮箱的默克尔树中。Hyperlane中继观察到分发的信息，并为接收方的Interchain安全模块（ISM）组装元数据。中继器通过调用`Mailbox.process()`将信息传递给接收方。中继器接收方使用其ISM验证信息，并调用`recipient.handle()`来传递信息。</div>
   </div>
 </details>
 <details>
-  <summary>**How can I see the status of a message I have sent?**</summary>
+  <summary>**如何查看已发送信息的状态？**</summary>
   <div>
-    <div>Paste an address or transaction hash into the search bar of the [Hyperlane Message Explorer](./explorer.mdx) to view details about a message’s status and history. If the message has failed to send for some reason, there will be error messages indicating what may have gone wrong. See [Explorer Debugging](./guides/developer-tips/explorer-debugging.mdx) for more information on how to debug an undelivered message</div>
+    <div>在[Hyperlane Message Explorer](./explorer.mdx)的搜索栏中粘贴地址或交易哈希值，可查看信息的状态和历史详情。如果信息因某种原因发送失败，将提示可能出现的问题。有关如何调试未传递信息的更多信息，请参阅[Explorer Debugging](./guides/developer-tips/explorer-debugging.mdx)。</div>
   </div>
 </details>
 <details>
-  <summary>**Does sending interchain messages with Hyperlane mean live chat & text?**</summary>
+  <summary>**使用Hyperlane发送链间信息是否意味着实时聊天和短信？**</summary>
   <div>
-    <div>Hyperlane is a protocol designed to allow smart contracts on different chains to interact with each other. When we refer to message-passing, it’s the sending of arbitrary bytes between smart contracts rather than peer-to-peer or text messaging. There are several web3 projects that are suited to the chat use case; consider [XMTP](https://xmtp.org/), [Push](https://push.org/), or [Orbis](https://useorbis.com/) for this type of messaging.</div>
+    <div>Hyperlane是一种协议，旨在允许不同链上的智能合约相互交互。我们所说的信息传递是指在智能合约之间发送任意字节，而不是点对点或文本信息。有几个web3项目适合聊天用例；考虑使用 [XMTP](https://xmtp.org/)、[Push](https://push.org/) 或 [Orbis](https://useorbis.com/)，以实现这种类型的信息传递。</div>
   </div>
 </details>
 <details>
-  <summary>**Is Hyperlane a token bridge?**</summary>
+  <summary>**Hyperlane是代币桥吗?**</summary>
   <div>
-    <div>Not exactly. Hyperlane is a general message passing (GMP) protocol that allows communication between blockchains. Token bridges are just one of many types of applications that can be built on top of Hyperlane!</div>
+    <div>不完全是。Hyperlane是一种通用信息传递（GMP）协议，允许区块链之间进行通信。代币桥只是在Hyperlane基础上构建的多种应用之一！</div>
   </div>
 </details>
 <details>
-  <summary>**I’m a developer. How can my team build with Hyperlane?**</summary>
+  <summary>**我是一名开发人员。我的团队如何使用Hyperlane进行构建？**</summary>
   <div>
-    <div>If you’re reading this FAQ, you’ve found the docs which is a great place to start. That said, we know that questions arise during implementation, and we’re happy to help you on your way. The Hyperlane community is regularly active in the [Discord](http://discord.gg/hyperlane). Feedback from developers directly influences the product roadmap.</div>
+    <div>如果您正在阅读本常见问题解答，那么您已经找到了文档，这是一个很好的开始。尽管如此，我们知道在实施过程中会出现一些问题，我们很乐意在您使用过程中为您提供帮助。Hyperlane社区经常在 [Discord](http://discord.gg/hyperlane) 上保持活跃。开发人员的反馈会直接影响产品路线图。</div>
   </div>
 </details>
 <details>
-  <summary>**What is Abacus Works?**</summary>
+  <summary>**Abacus Works是什么？**</summary>
   <div>
-    <div>Abacus Works is the name of a legal identity working on Hyperlane. You may encounter some references to Abacus in older posts and repositories. Hyperlane rebranded from Abacus to Hyperlane in Fall 2022.</div>
+    <div>Abacus Works是从事Hyperlane开发的合法机构的名称。您可能会在较早的文章和资源库中遇到一些关于Abacus的引用。Hyperlane于2022年秋季从Abacus更名为Hyperlane。</div>
   </div>
 </details>
 <details>
-  <summary>**How can I join the Hyperlane community?**</summary>
+  <summary>**如何加入Hyperlane社区？**</summary>
   <div>
-    <div>You can join the [Discord](http://discord.gg/hyperlane) or follow Hyperlane [Twitter](http://twitter.com/hyperlane_xyz) where you can find a growing community of developers and enthusiasts to chat about the interchain future.</div>
+    <div>您可以加入[Discord](http://discord.gg/hyperlane)或关注Hyperlane [Twitter](http://twitter.com/hyperlane_xyz)，在这里您可以找到一个由开发人员和爱好者组成的不断壮大的社区，一起畅谈跨链的未来。</div>
   </div>
 </details>
 <details>
-  <summary>**I'm interested in working on Hyperlane, where can I see job openings?**</summary>
+  <summary>**我有兴趣在Hyperlane工作，在哪里可以看到职位空缺？**</summary>
   <div>
-    <div>Check out our open roles [here](https://www.hyperlane.xyz/crew).</div>
+    <div>查看我们的空缺职位[此处](https://www.hyperlane.xyz/crew)。</div>
   </div>
 </details>
 <details>
-  <summary>**How can I contribute to improve this documentation?**</summary>
+  <summary>**我如何才能为改进本文档做出贡献？**</summary>
   <div>
-    <div>You can make a PR to edit this documentation directly via the [docs repo](https://github.com/hyperlane-xyz).</div>
+    <div>您可以通过[docs repo](https://github.com/hyperlane-xyz)直接提交PR来编辑此文档。</div>
   </div>
 </details>

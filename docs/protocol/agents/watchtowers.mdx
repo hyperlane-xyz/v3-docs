@@ -1,17 +1,17 @@
 # Watchtowers
 
 :::warning
-`Watchtowers` are coming soon and are not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
+`Watchtowers`即将推出，但尚未实施。此页面仅供参考之用。细节可能会随着设计的成熟而改变。（翻译：守望者）
 :::
 
-[Validators](validators.mdx) are responsible for signing attestations of [Mailbox](../mailbox.mdx) state on the origin chain. These attestations can be consumed by [Interchain Security Modules](../../reference/ISM/specify-your-ISM.mdx) to prove the validity of interchain messages on the destination chain.
+[Validators](validators.mdx)负责对原始链上的[Mailbox](../mailbox.mdx)状态进行签名证明。这些证明可以被[Interchain Security Modules](../../reference/ISM/specify-your-ISM.mdx)使用来证明目标链上链间消息的有效性。
 
-But who watches them? Who makes sure they perform their role dutifully, without fault? The Watchtowers!
+但谁来监督他们？谁来确保他们尽职尽责，不出差错？Watchtowers
 
-Watchtowers are responsible for observing a [Mailbox](../mailbox.mdx) and validator signatures to detect if validators are attempting to censor or falsify messages. They are a permissionless agent by which the network protects against fraud.
+Watchtowers负责观察[Mailbox](../mailbox.mdx)和验证器签名，以检测验证器是否试图审查或伪造消息。它们是一个无授权的代理，通过它网络可以防止欺诈。
 
-If fraud is detected, the watchtower submits evidence to the origin chain, slashing the validator. Watchtowers earn a reward for successfully submitting evidence of fraud.
+如果检测到欺诈，Watchtowers会向原始链提交证据，砍掉验证器。成功提交欺诈证据的Watchtowers可以获得奖励。
 
-The presence of one or more watchtowers acts to deter misbehavior by validators.
+一个或多个Watchtowers的存在可以阻止验证者的不当行为。
 
-For convenience, Hyperlane will run an open source and configurable watchtower agent, implemented as a rust binary. Watchtowers will remain an open source and permissionless role. Applications could run watchtowers, but so could validators, relayers, and any other stakeholder in the Hyperlane ecosystem.
+为了方便，Hyperlane将运行一个开源的、可配置的watchtower代理，它以rust二进制文件的形式实现。Watchtowers仍将是一个开源和无许可的角色。应用程序可以运行Watchtowers，也可以运行验证器、中继器和Hyperlane生态系统中的任何其他利益相关者。

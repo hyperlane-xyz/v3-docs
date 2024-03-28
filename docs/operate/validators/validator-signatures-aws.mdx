@@ -1,48 +1,48 @@
-# AWS Signatures Bucket Setup
+# AWS签名存储设置
 
-Configure your signing key and S3 bucket
+配置签名密钥和S3存储
 
 :::info
 
-These instructions are for a production environment where Validator keys exist in AWS's Key Management Service and Validator signatures are posted publicly in an S3 bucket.
+这些说明适用于验证器密钥存在于AWS的密钥管理服务中、验证器签名公开发布在S3存储中的生产环境。
 
-If you're only intending to run a Validator for testing or development purposes, consider following the [local setup guide](../../guides/deploy-hyperlane-local-agents.mdx) instead.
+如果您只打算为测试或开发目的运行验证器，请考虑按照[local setup guide](../../guides/deploy-hyperlane-local-agents.mdx)进行操作。
 
 :::
 
-### 1. Create an AWS IAM user and KMS key
+### 1. 创建AWS IAM用户和KMS密钥
 
-Follow the instructions in [Agent Keys](../set-up-agent-keys.mdx) to generate an AWS IAM user and KMS key. You will use this user and key in the following steps.
+按照[Agent Keys](../set-up-agent-keys.mdx)中的说明生成AWS IAM用户和KMS密钥。您将在接下来的步骤中使用此用户和密钥。
 
-### 2. Create an S3 bucket
+### 2. 创建 S3 存储
 
-Your Validator will post their signatures to this bucket.
+您的验证者将把它们的签名发布到此存储中。
 
-1. Go to AWS's S3 in the AWS console.
-2. On the right, click the orange "Create Bucket" button
-3. Pick an informative bucket name, such as `hyperlane-validator-signatures-${validator_name}-${chain_name}`
-4. Consider choosing the same region as the KMS key you created in the previous step.
-5. Keep the recommended "ACLs disabled" setting for object ownership.
-6. Configure public access settings so that the relayer can read your signatures
-   1. Uncheck "Block all public access"
-   2. Check the first two options that block access via access control lists
-   3. Leave the last two options unchecked, we will be granting public read access via a bucket policy
-   4. Acknowledge that these settings may result in public access to your bucket
-7. The remaining default settings are fine, click the orange "Create bucket" button on the bottom
+1. 转到AWS控制台中的AWS S3；
+2. 在右侧点击橙色的"Create Bucket"按钮；
+3. 选择一个信息详实的bucket名称，例如`hyperlane验证器签名-${validator_name}-$｛chain_name｝`；
+4. 考虑选择与上一步创建的KMS密钥相同的区域；
+5. 保持对象所有权的推荐设置为“ACLs disabled”；
+6. 配置公共访问设置，以便中继器可以读取您的签名；
+1. 取消选中“Block all public access”；
+2. 勾选前两个选项，阻止通过访问控制列表进行访问；
+3. 不要勾选最后两个选项，我们将通过存储策略授予公共读取权限；
+4. 请注意，这些设置可能导致公众可以访问您的存储；
+11. 剩下的默认设置都可以，点击底部的橙色“Create bucket”按钮。
 
-### 3. Configure S3 bucket permissions
+### 3. 配置S3C存储权限
 
-Your Validator IAM user will need write permissions, and it should be publicly readable by the Relayer.
+您的验证器IAM用户将需要写入权限，并且应该可以通过中继器公开读取。
 
-1. Navigate back to "Identity and Access Management (IAM)" in the AWS console
-2. Under "IAM resources" you should see at least one "User", click into that
-3. Click on the name of the user that you provisioned earlier (e.g. `hyperlane-validator-${chain_name}`)
-4. Copy the "User ARN" to your clipboard, it should look something like `arn:aws:iam::791444913613:user/hyperlane-validator-${chain_name}`
-5. Navigate back to "S3" in the AWS console
-6. Click on the name of the bucket you just created
-7. Just under the name of the bucket, click "Permissions"
-8. Scroll down to "Bucket policy" and click "Edit"
-9. Enter the following contents. The Bucket ARN is shown just above where you enter the policy
+1. 请返回AWS控制台中的"Identity and Access Management (IAM)"页面；
+2. 在 "IAM resources" 下，您应该至少看到一个 "User"，点击进入该用户；
+3. 点击您之前配置的用户的名称（例如 `hyperlane-validator-${chain_name}`）；
+4. 将“User ARN”复制到剪贴板中，它应该类似于 `arn:aws:iam::791444913613:user/hyperlane-validator-${chain_name}`；
+5. 返回 AWS 控制台中的 "S3" 页面；
+6. 点击您刚刚创建的存储的名称；
+7. 在存储名称下方，点击 "Permissions"；
+8. 向下滚动到 "Bucket policy"，然后点击 "Edit"；
+9. 输入以下内容。Bucket ARN就显示在输入策略的上方。
 
 ```json
 {
@@ -77,6 +77,6 @@ Your Validator IAM user will need write permissions, and it should be publicly r
 
 :::tip
 
-Advanced users may consider using the [S3 terraform module](../deploy-with-terraform.mdx#iam--kms) instead to create the S3 bucket with the correct permissions.
+高级用户可以考虑使用[S3 terraform module](../deploy-with-terraform.mdx#iam--kms)来创建具有正确权限的S3存储。
 
 :::

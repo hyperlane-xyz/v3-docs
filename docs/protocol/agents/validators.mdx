@@ -1,14 +1,14 @@
-# Validators
+# 验证器
 
-Validators are responsible for observing the [Mailbox](../mailbox.mdx) contract and, if required, signing a merkle root to faciliate message transmission to remote chains.
+验证器负责观察 [Mailbox](../mailbox.mdx) 合约，如果需要，还会签署merkle根证书，以便将消息传输到远程链。
 
-Unlike many other protocols, Hyperlane does **not** have an enshrined validator set. Anyone is free to run their own validator, as long as the receiver contract specifies a [Multisig ISM](../ISM/multisig-ISM.mdx) that includes their validator.
+与许多其他协议不同，Hyperlane**没有**指定验证器集。任何人都可以自由地运行他们自己的验证器，只要接收者合约指定一个包含他们的验证器的 [Multisig ISM](../ISM/multisig-ISM.mdx) 。
 
 :::info
-Want to run a validator? Follow the [validators guide](../../operate/validators/run-validators.mdx).
+想运行验证器?请查看[validators guide](../../operate/validators/run-validators.mdx)。
 :::
 
-For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.  Once a root has achieved sufficient [finality](https://medium.com/mechanism-labs/finality-in-blockchain-consensus-d1f83c120a9a), validators are expected to sign it and post their signature to highly available storage so that it can be collected by a [relayer](./relayer.mdx).
+对于使用[Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx)的消息，验证器通过调用`MerkleTreeHook.latestCheckpoint()`来读取当前默克尔根。一旦根目录达到了足够的[finality](https://medium.com/mechanism-labs/finality-in-blockchain-consensus-d1f83c120a9a)，验证者就会对其进行签名并将其签名发布到高可用的存储中，以便它可以被[relayer](./relayer.mdx)收集。
 
 ```solidity
 /**
@@ -22,6 +22,6 @@ function latestCheckpoint()
   returns (bytes32 root, uint256 index);
 ```
 
-Validators that sign anything other than a finalized checkpoint risk compromising the safety of the protocol. If they are participating in proof of stake, this may result in their stake being slashed.
+如果验证器签名的不是最新的检查点，那么就有可能危及协议的安全性。如果他们参与权益证明，这可能会导致他们的权益被削减。
 
-Hyperlane is developing the validator as a binary implemented in Rust that can be easily run by anyone. Operationally, validators need to run this binary and have access to an RPC provider or node for the chain that they are validating for. We hope that the majority of Hyperlane validators will come from each chain's existing node operator community.
+Hyperlane正在将验证器开发为用Rust实现的二进制文件，任何人都可以轻松运行。从操作上讲，验证器需要运行这个二进制文件，并能够访问正在验证的链的RPC提供者或节点。我们希望大多数Hyperlane验证器将来自每个链现有的节点操作员社区。
