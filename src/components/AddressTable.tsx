@@ -3,7 +3,6 @@ import { hyperlaneEnvironments, chainMetadata } from "@hyperlane-xyz/sdk";
 export type Environment = "testnet" | "mainnet";
 
 type Props<K extends string> = {
-  addressesMap: Record<string, Record<K, string>>;
   contract: K;
   environment: Environment;
 };
@@ -20,7 +19,6 @@ export function camelToTitle(camelCaseString: string) {
 }
 
 export default function AddressTable<K extends string>({
-  addressesMap,
   contract,
   environment,
 }: Props<K>) {
@@ -35,14 +33,14 @@ export default function AddressTable<K extends string>({
         </tr>
       </thead>
       <tbody>
-        {Object.entries(addressesMap).map(([chain, addresses]) => {
+        {Object.entries(hyperlaneEnvironments[environment]).map(([chain, addresses]) => {
           const address = addresses[contract];
           const targetMetadata = chainMetadata[chain];
           const explorer = targetMetadata.blockExplorers[0].url;
           const url = new URL(explorer);
           return (
             <tr key={chain}>
-              <td>{capitalize(chain)}</td>
+              <td>{targetMetadata.displayName ?? capitalize(chain)}</td>
               <td>{targetMetadata.domainId}</td>
               <td>
                 <code>{address}</code>
@@ -63,11 +61,3 @@ export default function AddressTable<K extends string>({
     </table>
   );
 }
-
-export const CoreAddressesTable = ({ contract, environment }) =>
-  AddressTable({
-    addressesMap:
-      environment === "testnet" ? hyperlaneEnvironments.testnet : hyperlaneEnvironments.mainnet,
-    contract,
-    environment,
-  });

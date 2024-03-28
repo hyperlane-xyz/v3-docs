@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-import { CoreAddressesTable } from '@site/src/components/AddressTable';
+import AddressTable from '@site/src/components/AddressTable';
 
 # Deployed Addresses
 
@@ -9,12 +9,12 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="mainnet" label="Mainnet">
 
-<CoreAddressesTable environment="mainnet" contract="mailbox"/>
+<AddressTable environment="mainnet" contract="mailbox"/>
 
 </TabItem>
 <TabItem value="testnet" label="Testnet">
 
-<CoreAddressesTable environment="testnet" contract="mailbox"/>
+<AddressTable environment="testnet" contract="mailbox"/>
 
 </TabItem>
 </Tabs>
@@ -24,12 +24,12 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="mainnet" label="Mainnet">
 
-<CoreAddressesTable environment="mainnet" contract="interchainGasPaymaster"/>
+<AddressTable environment="mainnet" contract="interchainGasPaymaster"/>
 
 </TabItem>
 <TabItem value="testnet" label="Testnet">
 
-<CoreAddressesTable environment="testnet" contract="interchainGasPaymaster"/>
+<AddressTable environment="testnet" contract="interchainGasPaymaster"/>
 
 </TabItem>
 </Tabs>
@@ -39,12 +39,12 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="mainnet" label="Mainnet">
 
-<CoreAddressesTable environment="mainnet" contract="storageGasOracle"/>
+<AddressTable environment="mainnet" contract="storageGasOracle"/>
 
 </TabItem>
 <TabItem value="testnet" label="Testnet">
 
-<CoreAddressesTable environment="testnet" contract="storageGasOracle"/>
+<AddressTable environment="testnet" contract="storageGasOracle"/>
 
 </TabItem>
 </Tabs>
@@ -54,12 +54,12 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="mainnet" label="Mainnet">
 
-<CoreAddressesTable environment="mainnet" contract="merkleTreeHook"/>
+<AddressTable environment="mainnet" contract="merkleTreeHook"/>
 
 </TabItem>
 <TabItem value="testnet" label="Testnet">
 
-<CoreAddressesTable environment="testnet" contract="merkleTreeHook"/>
+<AddressTable environment="testnet" contract="merkleTreeHook"/>
 
 </TabItem>
 </Tabs>
@@ -69,12 +69,12 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="mainnet" label="Mainnet">
 
-<CoreAddressesTable environment="mainnet" contract="validatorAnnounce"/>
+<AddressTable environment="mainnet" contract="validatorAnnounce"/>
 
 </TabItem>
 <TabItem value="testnet" label="Testnet">
 
-<CoreAddressesTable environment="testnet" contract="validatorAnnounce"/>
+<AddressTable environment="testnet" contract="validatorAnnounce"/>
 
 </TabItem>
 </Tabs>
@@ -84,7 +84,7 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="mainnet" label="Mainnet">
 
-<CoreAddressesTable environment="mainnet" contract="proxyAdmin"/>
+<AddressTable environment="mainnet" contract="proxyAdmin"/>
 
 </TabItem>
 </Tabs>
@@ -94,7 +94,7 @@ import { CoreAddressesTable } from '@site/src/components/AddressTable';
 <Tabs groupId="environment">
 <TabItem value="testnet" label="Testnet">
 
-<CoreAddressesTable environment="testnet" contract="testRecipient"/>
+<AddressTable environment="testnet" contract="testRecipient"/>
 
 </TabItem>
 </Tabs>
