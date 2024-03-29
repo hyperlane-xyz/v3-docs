@@ -139,8 +139,8 @@ mailbox.dispatch{value: fee}(destination, recipient, body);
 `}
 />
 
-:::tip
-对`dispatch`少付的金额将回滚，但多付的金额将退还给消息发送者。这样，开发人员就可以跳过显式的`quoteDispatch`调用，转而使用具有超额值的`quoteDispatch`调用。
+:::danger
+对`dispatch`的付款不足将回滚。如果你将钩子组合在一起，超额支付可能不会被退还给消息发送者。
 :::
 
 ## Post-Dispatch Hook 配置

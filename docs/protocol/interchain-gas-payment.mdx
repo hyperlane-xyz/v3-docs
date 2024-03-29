@@ -1,52 +1,62 @@
 # 链间燃料费支付
 
-:::caution
-
-本协议概述来自我们的v2合约版本。
-
-v3现在包含了[post-dispatch hooks](../reference/hooks/overview.mdx)，其中[interchain gas payments (IGP)](../reference/hooks/interchain-gas.mdx)是必需的钩子之一。
-
-我们正在努力尽快更新相关内容。与此同时，请参阅完整的[**updated v3 Reference**](../reference/messaging/messaging-interface.mdx)选项卡以获取最新的合约接口。
-
-:::
-
-成功的链间消息需要两次交易;一个在源链上，用于发送消息，另一个在目标链上，用于传递消息。
+成功的链间消息需要两个事务;一个在源链上发送消息，另一个在目的链上传递消息。
 
 为了方便起见，Hyperlane在原始链上提供了一个onchain接口，允许消息发送者向[relayer](./agents/relayer.mdx)支付费用，以便在目的链上传递消息。这种付款称为链间燃料费付款。
 
 ```mermaid
 flowchart LR
-    subgraph Origin
+    subgraph Origin Chain
       Sender
       M_O[(Mailbox)]
       IGP[InterchainGasPaymaster]
-      Sender -- "id = dispatch(message)" --> M_O
-      Sender -- "payForGas(id)\n{value: payment}" --> IGP
+      Sender -- "dispatch(...)\n{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
     end
 
     Relayer((Relayer))
 
-    M_O -. "emit Dispatch(message)" .-> Relayer
-    IGP -.- Relayer
+    M_O -. "indexing" .-> Relayer
+    IGP -. "value" .- Relayer
 
-    subgraph Destination
+    subgraph Destination Chain
       M_D[(Mailbox)]
+      M_D -- "handle(...)" --> Recipient
     end
 
-    Relayer -- "process(message)" --> M_D
-
-    style Sender fill:#efab17
-
-    click IGP https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol
+    Relayer -- "process{gasLimit}(...)" --> M_D
 ```
 
 ## InterchainGasPaymasters
 
-`InterchainGasPaymaster`（IGP）智能合约为链间天然气支付提供了便利。
+区块链间的燃料费支付由`InterchainGasPaymaster` (IGP)智能合约实现。
 
-这些合约公开了[InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx)，它允许用户用原始链上的本地令牌向 [relayer](./agents/relayer.mdx) 支付在目标链上传递消息的成本。
+这些合约公开了[InterchainGasPaymaster接口](./ reference/hooks/interchain-gas.mdx)，它允许用户使用原始链上的本地令牌向[relayer](./agents/relayer.mdx)支付在目的链上传递消息的成本。
 
 每个`interchainingaspaymaster`合约只对应一个中继器。您可以在[addresses](../reference/contract-addresses.mdx)下找到Abacus Works中继器的地址。
+
+### Gas limit
+
+gas限制是为给定消息在目标链上调用`handle`的成本。这取决于消息内容和处理程序的逻辑。
+
+### Gas overhead
+
+gas开销与 `gasOracle`一起被设置为目标gas配置的一部分:
+
+```solidity
+struct DomainGasConfig {
+    IGasOracle gasOracle;
+    uint96 gasOverhead;
+}
+```
+
+这对应于在目标链上处理消息的操作成本。
+
+:::note
+您应该确保`gasOverhead` 足够覆盖目标链上的ISMs范围。
+
+由于您可以为不同的消息类型配置不同的ISMs，因此对于每个ISM的`verify`功能，您可能有不同的燃料开销。
+:::
 
 ### Gas oracles
 
@@ -54,7 +64,11 @@ flowchart LR
 
 这允许`quoteGasPayment`函数为远程链上的燃料价格提供准确的报价，以本地链的本地令牌计价。
 
-最终，中继将能够自动更新他们的燃料费oracle，以确保他们的IGP始终为远程天然气报价公平。
+:::tip
+`quoteGasPayment` 函数在计算发送消息的报价时，会考虑目标链的 `gasOverhead` 。
+:::
+
+最终，中继器将能够自动更新他们的燃料费预言机，以确保他们的IGP实现远程燃料报价公平。
 
 ## Trust assumptions
 

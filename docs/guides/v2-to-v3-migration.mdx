@@ -81,7 +81,9 @@ uint256 quote = mailbox.quoteDispatch(destination, recipient, body);
 mailbox.dispatch{value: quote}(destination, recipient, body);
 ```
 
-或者，任何超额支付都将退款，因此报价并不是绝对必要的，但如果支付不足，派发可能会回滚。
+:::danger
+如果付款不足，dispatch可能会导致回滚。如果你正在组合钩子，超额付款可能不会退还。 **超额付款可能不会退还**.
+:::
 
 ```solidity
 mailbox.dispatch{value: msg.value}(destination, recipient, body);
