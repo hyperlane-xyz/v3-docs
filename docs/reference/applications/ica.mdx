@@ -1,12 +1,8 @@
----
-description: Call any arbitrary existing contract on a remote chain
----
+# Interchain Account Interface
 
-# InterchainAccount API
+Developers can use the **Interchain Account** interface to create and control an account on a remote chain from their local chain.
 
-Developers can use the **InterchainAccount** API to create and control an account on a remote chain from their local chain.
-
-Unlike the general message passing, which requires recipients to implement a specific interface, the InterchainAccount API allows developers to interact with any remote contract.
+Unlike general message passing, which requires recipients to implement a specific interface, Interchain Accounts (ICAs) allow developers to interact with _any remote_ contract.
 
 ## Overview
 
@@ -48,7 +44,7 @@ flowchart TB
 
 ```
 
-InterchainAccount API (ICA for short) allows you to make a remote call from chain A to chain B using **InterchainAccountRouter** (hereby referred to as router). How this works under the hood is as following:
+Interchain Accounts allow you to make a remote call from chain A to chain B using the router (`**InterchainAccountRouter**`). Here's how it works:
 
 - We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the determinstic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you which serves as a proxy for your cross-chain calls. You can do it yourself too [here](#computing-addresses).
 
@@ -60,7 +56,7 @@ InterchainAccount API (ICA for short) allows you to make a remote call from chai
 
 - The router then performs a multicall on the ICA address which in turn makes the desired arbitary call on chainB.
 
-The InterchainAccount API assigns every `(uint32 origin, address owner, address remoteRouter, address remoteISM)` tuple a unique interchain account (ICA) address. The sender owns that ICA on the destination chain, and can direct it to make arbitrary function calls via the `InterchainAccountRouter.callRemote()` endpoint.
+The Interchain Account interface assigns every `(uint32 origin, address owner, address remoteRouter, address remoteISM)` tuple a unique ICA address. The sender owns that ICA on the destination chain, and can direct it to make arbitrary function calls via the `InterchainAccountRouter.callRemote()` endpoint.
 
 On many chains, you are able to use the defaults that are set by the owner of the router contract. See the [#overrides](#overrides) section to see how to make calls to any chain.
 
@@ -88,7 +84,7 @@ interface IInterchainAccountRouter {
 
 :::tip
 
-Want to use `InterchainAccountRouter` out of the box? Please refer to [addresses](../contract-addresses.mdx#interchainaccountrouter)
+Use `InterchainAccountRouter` out of the box - ICA routers have already been deployed to core chains. Please refer to [addresses](../contract-addresses.mdx#interchainaccountrouter). Try using the `callRemote` method to do a call via your wallet's interchain account.
 
 :::
 
@@ -125,7 +121,7 @@ uint32 ethereumDomain = 1;
 IInterchainAccountRouter(0xabc...).callRemote(ethereumDomain, [swapCall]);
 ```
 
-### Computing addresses
+### Determine addresses
 
 It may be useful to know the remote address of your ICA before sending a message. For example, you may want to first fund the address with tokens. The `getRemoteInterchainAccount` function can be used to get the address of an ICA given the destination chain and owner address.
 
@@ -150,7 +146,7 @@ address myRemoteIca = IInterchainAccountRouter(...).getRemoteInterchainAccount(
 
 ## Overrides
 
-The InterchainAccounts API allows developers to override the default chains and security models configured in the `InterchainAccountRouter`.
+Interchain Accounts allow developers to override the default chains and security models configured in the `InterchainAccountRouter`.
 
 This can be useful for developers who wish to:
 
