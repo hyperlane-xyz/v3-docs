@@ -40,14 +40,22 @@ The Mailbox will call `verify` before delivering a message to its recipient. If 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L21
 ```
 
-This is used to signal to the Relayer how to encode `_metadata`. ISMs **must** return one of the supported module types.
+This is used to signal to the Relayer how to encode `_metadata`. ISMs **must** return one of the supported module types:
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
 ```
 
+:::note
+
+To accomplish this, all ISM contracts are initialized with a `moduleType` constant state variable.
+This public state is branched on by the Relayer in order to determine the recipient's ISM and the respective required metadata for that ISM.
+For more information on module Types and their metadata formats, see [Protocol](/docs/protocol/ISM/modular-security.mdx#module-type).
+
+:::
+
 ## Specifying an ISM
 
-To specify the ISM they would like to use, developers implement the `ISpecifiesInterchainSecurityModule` interface in any contract that receives interchain messages via `handle()`. 
+To specify the ISM they would like to use, developers implement the `ISpecifiesInterchainSecurityModule` interface in any contract that receives interchain messages via `handle()`.
 
 ```solidity
 interface ISpecifiesInterchainSecurityModule {

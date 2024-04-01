@@ -1,3 +1,40 @@
 # Multisig ISM
 
 The `MultisigISM` is one of the most commonly used ISM types. These ISMs verify that `m` of `n` [Validators](../agents/validators.mdx) have attested to the validity of a particular interchain message.
+
+## Multisig Module Types
+
+Based on the following module types, the relayer will encode the appropriately formatted metadata:
+
+```solidity
+enum Types {
+    ...
+    MERKLE_ROOT_MULTISIG,
+    MESSAGE_ID_MULTISIG,
+    ...
+}
+```
+
+For the aforementioned module Types, the following metadata formats are satisfied by the relayer for use by the ISMs:
+
+### MessageIdMultisigIsmMetadata
+
+```solidity
+Format of metadata:
+[   0:  32] Origin merkle tree address
+[  32:  64] Signed checkpoint root
+[  64:  68] Signed checkpoint index
+[  68:????] Validator signatures (length := threshold * 65)
+```
+
+### MerkleRootMultisigIsmMetadata
+
+```solidity
+Format of metadata:
+[   0:  32] Origin merkle tree address
+[  32:  36] Index of message ID in merkle tree
+[  36:  68] Signed checkpoint message ID
+[  68:1092] Merkle proof
+[1092:1096] Signed checkpoint index (computed from proof and index)
+[1096:????] Validator signatures (length := threshold * 65)
+```
