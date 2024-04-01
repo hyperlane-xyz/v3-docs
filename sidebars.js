@@ -188,6 +188,11 @@ const sidebars = {
           id: "reference/applications/warp-routes",
           label: "Warp Routes",
         },
+        {
+          type: "doc",
+          id: "reference/applications/ica",
+          label: "InterchainAccount",
+        },
       ],
     },
     /**
