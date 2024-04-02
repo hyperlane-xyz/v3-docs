@@ -1,3 +1,44 @@
 # Multisig ISM
 
 The `MultisigISM` is one of the most commonly used ISM types. These ISMs verify that `m` of `n` [Validators](../agents/validators.mdx) have attested to the validity of a particular interchain message.
+
+## Multisig Module Types
+
+Based on the following module types, the relayer will encode the appropriately formatted metadata:
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
+```
+
+For the aforementioned module types, the following metadata formats are satisfied by the relayer for use by the ISMs:
+
+### MessageIdMultisigIsmMetadata
+
+#### Type: `Types.MESSAGE_ID_MULTISIG`
+
+#### Format of metadata:
+- `1st component (len == 32 bytes): Origin merkle tree address`
+- `2nd component (len == 32 bytes): Signed checkpoint root`
+- `3rd component (len == 4 bytes): Signed checkpoint index`
+- `4th component (len == threshold * 65 bytes): Validator signatures`
+
+{/* ```mermaid
+block-beta
+    columns 4
+    a["[32 bytes] Origin merkle tree address"]:2 b["[32 bytes] Signed checkpoint root"]:2
+    c["[4 bytes] Signed checkpoint index"]:1
+    block:group:3
+        d["[65 bytes] Validator signatures"] e["[65 bytes] Validator signatures"] f["[65 bytes] Validator signatures"]
+    end
+``` */}
+
+### MerkleRootMultisigIsmMetadata
+
+#### Type: `Types.MERKLE_ROOT_MULTISIG`
+
+#### Format of metadata:
+- `1st component (len == 32 bytes) Origin merkle tree address`
+- `2nd component (len == 4 bytes) Index of message ID in merkle tree`
+- `3rd component (len == 32 bytes) Signed checkpoint message ID`
+- `4th component (len == 1024 bytes) Merkle proof`
+- `5th component (len == 4 bytes) Signed checkpoint index (computed from proof and index)`
+- `6th component (len == threshold * 65 bytes): Validator signatures`
