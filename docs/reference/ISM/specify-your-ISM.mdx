@@ -47,9 +47,9 @@ This is used to signal to the Relayer how to encode `_metadata`. ISMs **must** r
 
 :::note
 
-To accomplish this, all ISM contracts are initialized with a `moduleType` constant state variable.
-This public state is branched on by the Relayer in order to determine the recipient's ISM and the respective required metadata for that ISM.
-For more information on module Types and their metadata formats, see [Protocol](/docs/protocol/ISM/modular-security.mdx#module-type).
+To accomplish this, all ISM contracts implement the ISM interface, which requires `moduleType` to be defined.
+This public state is branched on by the Relayer in order to determine the required metadata for that ISM.
+For more information on module types and their metadata formats, see [Protocol](/docs/protocol/ISM/modular-security.mdx#module-type).
 
 :::
 
