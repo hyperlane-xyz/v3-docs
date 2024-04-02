@@ -54,7 +54,7 @@ Interchain Accounts allow you to make a remote call from **Chain A** to **Chain 
 
 - After decoding the calls, the **Chain B** router checks if the computed address is already deployed or not. If not, we deploy the _OwnableMulticall_ contract.
 
-- The router then performs a multicall on the ICA address which in turn makes the desired arbitary call on chainB.
+- The router then performs a multicall on the ICA address, which in turn makes the desired arbitary call on **Chain B**.
 
 The Interchain Account interface assigns every `(uint32 origin, address owner, address remoteRouter, address remoteISM)` tuple a unique ICA address. The sender owns that ICA on the destination chain, and can direct it to make arbitrary function calls via the `InterchainAccountRouter.callRemote()` endpoint.
 
