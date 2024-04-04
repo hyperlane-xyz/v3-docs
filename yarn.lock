@@ -7499,8 +7499,8 @@ __metadata:
 
 "custom-loaders@file:plugins/custom-loaders::locator=hyperlane-v3-docs%40workspace%3A.":
   version: 0.0.0
-  resolution: "custom-loaders@file:plugins/custom-loaders#plugins/custom-loaders::hash=1849be&locator=hyperlane-v3-docs%40workspace%3A."
-  checksum: 02aa7789a3e6450b3de5f3ae74e59684774578969b4a0999b7f38da70b2010cd9b1bce9d4fb12800b603b2310ee2570620e340772109a53d161c0b78c15144e3
+  resolution: "custom-loaders@file:plugins/custom-loaders#plugins/custom-loaders::hash=d26af3&locator=hyperlane-v3-docs%40workspace%3A."
+  checksum: 6e32f9c856730d3b375ab2728f6ed55a2502160ff887309bcb8039e6806ad2f959c16a90f3a0be5b38b793324e87f06ea6a903ad4a40718173e100faddfc5db4
   languageName: node
   linkType: hard
 
@@ -9228,6 +9228,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fs-monkey@npm:^1.0.4":
+  version: 1.0.5
+  resolution: "fs-monkey@npm:1.0.5"
+  checksum: 815025e75549fb1ac6c403413b82fd631eded862ae27694a515c0f666069e95874ab34e79c33d1b3b8c87d1e54350d5e4262090d0aa5bd7130143cbc627537e4
+  languageName: node
+  linkType: hard
+
 "fs.realpath@npm:^1.0.0":
   version: 1.0.0
   resolution: "fs.realpath@npm:1.0.0"
@@ -10119,6 +10126,7 @@ __metadata:
     clsx: "npm:^2.0.0"
     custom-loaders: "file:plugins/custom-loaders"
     node-polyfill-webpack-plugin: "npm:^3.0.0"
+    pino-webpack-plugin: "npm:^2.0.0"
     prism-react-renderer: "npm:^2.1.0"
     raw-loader: "npm:^4.0.2"
     react: "npm:^18.2.0"
@@ -11614,6 +11622,15 @@ __metadata:
   dependencies:
     fs-monkey: "npm:^1.0.3"
   checksum: 56d85a1e6f808218096c17160eb7db694559a6307b76134e48a4927b7f3a3963941f2d86bac34f681cb16fc9d5010f0b7b42523c9b647451887be285a2348ea3
+  languageName: node
+  linkType: hard
+
+"memfs@npm:^3.4.12":
+  version: 3.5.3
+  resolution: "memfs@npm:3.5.3"
+  dependencies:
+    fs-monkey: "npm:^1.0.4"
+  checksum: 038fc81bce17ea92dde15aaa68fa0fdaf4960c721ce3ffc7c2cb87a259333f5159784ea48b3b72bf9e054254d9d0d0d5209d0fdc3d07d08653a09933b168fbd7
   languageName: node
   linkType: hard
 
@@ -13417,6 +13434,17 @@ __metadata:
   version: 6.2.2
   resolution: "pino-std-serializers@npm:6.2.2"
   checksum: 8f1c7f0f0d8f91e6c6b5b2a6bfb48f06441abeb85f1c2288319f736f9c6d814fbeebe928d2314efc2ba6018fa7db9357a105eca9fc99fc1f28945a8a8b28d3d5
+  languageName: node
+  linkType: hard
+
+"pino-webpack-plugin@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "pino-webpack-plugin@npm:2.0.0"
+  dependencies:
+    memfs: "npm:^3.4.12"
+  peerDependencies:
+    webpack: ^5.61.0
+  checksum: 91a0a57e0f7b6902f3593a1840e3bf91d5781226348fcb71c40f18830299d32ac3f6281ee7493e3bfbab5c32a4a58417469b25c01fee202e68cf562c3e8f5f4b
   languageName: node
   linkType: hard
 

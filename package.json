@@ -25,6 +25,7 @@
     "clsx": "^2.0.0",
     "custom-loaders": "file:plugins/custom-loaders",
     "node-polyfill-webpack-plugin": "^3.0.0",
+    "pino-webpack-plugin": "^2.0.0",
     "prism-react-renderer": "^2.1.0",
     "raw-loader": "^4.0.2",
     "react": "^18.2.0",
