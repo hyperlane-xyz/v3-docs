@@ -331,7 +331,9 @@ The gas paymaster is used to pay for the gas required in message processing on t
 
 Deposits msg.value as a payment for the relaying of a message to its destination chain.
 
-_Overpayment will result in a refund of native tokens to the refundAddress. Callers should be aware that this may present reentrancy issues._
+:::warning
+Although you can specify a `refundAddress`, overpayment **may not be refunded** to the message sender if you are composing hooks together.
+:::
 
 ```solidity
 function payForGas(

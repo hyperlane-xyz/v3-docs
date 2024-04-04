@@ -78,16 +78,6 @@ We recommend developers benchmark their [`handle` implementations](../messaging/
 
 If you expect the `handle` function to consume more than this default, you should override the [default `gasLimit` in metadata](#metadata).
 
-### Refunds
-
-If the message sender pays more than the hook quotes, the contract will refund the difference. If none is specified, the refund address will default to the message sender. This allows senders to skip explicit `quoteDispatch` calls.
-
-:::warning
-Refunds can present a risk of [reentrancy](https://www.certik.com/resources/blog/3K7ZUAKpOr1GW75J2i0VHh-what-is-a-reentracy-attack). Special care should be taken to ensure safety against reentrancy exploits.
-:::
-
-Refunds are only made if payment is greater than the quote. Refunds **are not** made if delivery requires less gas than what was paid. If a refund is unsuccessful, the `payForGas` call will revert. To specify a different refund address, override the [default `refundAddress` in metadata](#metadata).
-
 ### Metadata
 
 This hook expects metadata in a **packed encoding** of `StandardHookMetadata`. See the Mailbox [dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) for how to pass metadata overrides.
