@@ -1,3 +1,44 @@
 # Multisig ISM
 
-`MultisigISM` 是最常用的符号类型之一。这些ISMs验证了`n`个[Validators](../agents/validators.mdx) 中的`m`个验证了特定链间消息的有效性。
+ `MultisigISM`是最常用的ISM类型之一。这些ISMs验证 `m` 中的`n`个 [Validators](. /agents/ Validators .mdx)已经证明了特定链间消息的有效性。
+
+## Multisig Module Types
+
+基于以下模块类型，中继器将对适当格式的元数据进行编码:
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
+```
+
+对于上述模块类型，中继器满足以下元数据格式，供ISMs使用:
+
+### MessageIdMultisigIsmMetadata
+
+#### Type: `Types.MESSAGE_ID_MULTISIG`
+
+#### Format of metadata:
+- `1st component (len == 32 bytes): Origin merkle tree address`
+- `2nd component (len == 32 bytes): Signed checkpoint root`
+- `3rd component (len == 4 bytes): Signed checkpoint index`
+- `4th component (len == threshold * 65 bytes): Validator signatures`
+
+{/* ```mermaid
+block-beta
+    columns 4
+    a["[32 bytes] Origin merkle tree address"]:2 b["[32 bytes] Signed checkpoint root"]:2
+    c["[4 bytes] Signed checkpoint index"]:1
+    block:group:3
+        d["[65 bytes] Validator signatures"] e["[65 bytes] Validator signatures"] f["[65 bytes] Validator signatures"]
+    end
+``` */}
+
+### MerkleRootMultisigIsmMetadata
+
+#### Type: `Types.MERKLE_ROOT_MULTISIG`
+
+#### Format of metadata:
+- `1st component (len == 32 bytes) Origin merkle tree address`
+- `2nd component (len == 4 bytes) Index of message ID in merkle tree`
+- `3rd component (len == 32 bytes) Signed checkpoint message ID`
+- `4th component (len == 1024 bytes) Merkle proof`
+- `5th component (len == 4 bytes) Signed checkpoint index (computed from proof and index)`
+- `6th component (len == threshold * 65 bytes): Validator signatures`

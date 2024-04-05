@@ -331,7 +331,9 @@ function validatorsAndThreshold(
 
 将msg.value存入作为向目标链中继消息的支付。
 
-超额支付将导致向refundAddress退还本地令牌。调用者应注意这可能会产生重入问题。
+:::warning
+虽然你可以指定一个 `refundAddress`，但如果你将钩子组合在一起，那么超额支付可能不会被退还给消息发送者。
+:::
 
 ```solidity
 function payForGas(

@@ -88,7 +88,13 @@ ISMs必须实现的主要功能是`verify()`。[Mailbox](../mailbox.mdx)将在�
 
 ISMs必须实现的第二个函数是`moduleType()`。这是用来通知[Relayer](../agents/relayer.mdx) 在`_metadata`中包含什么。ISMs **必须**返回支持的一种模块类型。
 
-## 序列图
+:::tip
+
+有关可用模块类型及其各自元数据的更多信息，请访问本节中概述的ISM文档，例如[Multisig ISM](./multisig-ISM.mdx)。
+
+:::
+
+## Sequence diagram
 
 下面展示了在目标链上验证和交付链间消息的简化顺序图。
 

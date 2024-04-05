@@ -40,14 +40,22 @@ _`_message` 由正在验证的Hyperlane消息组成。ISMs可以使用它来检�
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L21
 ```
 
-这是用来通知中继器如何编码 `_metadata`。ISMs **必须**返回一个支持的模块类型。
+用于向中继器发出如何对`_metadata`进行编码的信号。ISM**必须**返回支持的模块类型之一：
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
 ```
 
-## 指定ISM
+:::note
 
-为了指定他们想要使用的ISM，开发人员在任何通过`handle()`接收链间消息的合约中实现`ISpecifiesInterchainSecurityModule`接口。
+为了实现这一目标，所有 ISM 合约都要实现 ISM 接口，而 ISM 接口要求定义`moduleType`。
+中继器对该类型进行分支，以确定 ISM 所需的元数据。
+有关模块类型及其元数据格式的更多信息，请参阅[Protocol](/docs/protocol/ISM/modular-security.mdx#module-type)。
+
+:::
+
+## Specifying an ISM
+
+要指定想要使用的 ISM，开发者可以在任何通过`handle()`接收链间消息的合约中实现`ISpecifiesInterchainSecurityModule` 接口。
 
 ```solidity
 interface ISpecifiesInterchainSecurityModule {

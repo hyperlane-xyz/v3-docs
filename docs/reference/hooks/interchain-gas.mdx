@@ -78,17 +78,7 @@ The `gasOverhead` is the operational cost of processing a message on the destina
 
 如果你希望 `handle` 函数消耗超过这个默认值，你应该覆盖[default `gasLimit` in metadata](#metadata)。
 
-### 退款
-
-如果消息发送方支付的金额超过钩子报价，合同将退还差额。如果没有指定，退款地址将默认为消息发送方。这允许发送方跳过显式的`quoteDispatch` 调用。
-
-:::warning
-退款可能存在[reentrancy](https://www.certik.com/resources/blog/3K7ZUAKpOr1GW75J2i0VHh-what-is-a-reentracy-attack)。应特别注意确保安全，防止再入漏洞。
-:::
-
-只有在付款金额大于报价的情况下才会退款。如果发送所需的燃料费比已支付的燃料费少，则**不会**退款。如果退款不成功，`payForGas`调用将回滚。要指定不同的退款地址，请覆盖[default `refundAddress` in metadata](#metadata)。
-
-### 元数据
+### Metadata
 
 这个钩子需要`StandardHookMetadata`的打包编码的元数据。关于如何传递元数据覆盖，请参阅邮箱Mailbox[dispatch overloads](../messaging/send.mdx#overriding-default-hook-metadata) 。
 
