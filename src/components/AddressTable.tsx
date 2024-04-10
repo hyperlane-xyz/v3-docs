@@ -1,4 +1,9 @@
-import { hyperlaneEnvironments, chainMetadata } from "@hyperlane-xyz/sdk";
+import {
+  chainAddresses,
+  chainMetadata,
+  CoreMainnets,
+  CoreTestnets,
+} from "@hyperlane-xyz/registry";
 
 export type Environment = "testnet" | "mainnet";
 
@@ -13,15 +18,20 @@ export function capitalize(str: string) {
 
 export function camelToTitle(camelCaseString: string) {
   // Add a space before each uppercase letter and trim the resulting string
-  const spacedString = camelCaseString.replace(/([A-Z])/g, ' $1').trim();
+  const spacedString = camelCaseString.replace(/([A-Z])/g, " $1").trim();
 
-  return spacedString.split(' ').map((word: string) => capitalize(word)).join(' ');
+  return spacedString
+    .split(" ")
+    .map((word: string) => capitalize(word))
+    .join(" ");
 }
 
 export default function AddressTable<K extends string>({
   contract,
   environment,
 }: Props<K>) {
+  const chainNames = environment === "mainnet" ? CoreMainnets : CoreTestnets;
+
   return (
     <table>
       <thead>
@@ -33,8 +43,9 @@ export default function AddressTable<K extends string>({
         </tr>
       </thead>
       <tbody>
-        {Object.entries(hyperlaneEnvironments[environment]).map(([chain, addresses]) => {
-          const address = addresses[contract];
+        {chainNames.map((chain) => {
+          const address = chainAddresses[chain]?.[contract];
+          if (!address) return null;
           const targetMetadata = chainMetadata[chain];
           const explorer = targetMetadata.blockExplorers[0].url;
           const url = new URL(explorer);
