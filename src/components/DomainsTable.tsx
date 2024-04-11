@@ -1,4 +1,8 @@
-import { hyperlaneEnvironments, chainMetadata } from "@hyperlane-xyz/sdk";
+import {
+  CoreMainnets,
+  CoreTestnets,
+  chainMetadata,
+} from "@hyperlane-xyz/registry";
 import { capitalize } from "./AddressTable";
 
 export type Environment = "testnet" | "mainnet";
@@ -7,9 +11,8 @@ type Props = {
   environment: Environment;
 };
 
-export default function DomainsTable({
-  environment,
-}: Props) {
+export default function DomainsTable({ environment }: Props) {
+  const chainNames = environment === "mainnet" ? CoreMainnets : CoreTestnets;
   return (
     <table>
       <thead>
@@ -19,8 +22,9 @@ export default function DomainsTable({
         </tr>
       </thead>
       <tbody>
-        {Object.keys(hyperlaneEnvironments[environment]).map((chain) => {
+        {chainNames.map((chain) => {
           const targetMetadata = chainMetadata[chain];
+          if (!targetMetadata) return null;
           return (
             <tr key={chain}>
               <td>{targetMetadata.displayName ?? capitalize(chain)}</td>
