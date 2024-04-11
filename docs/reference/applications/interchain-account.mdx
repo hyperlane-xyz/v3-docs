@@ -30,7 +30,7 @@ flowchart TB
     M_O -. "relay" .- M_D
     M_D -- "handle(origin, router, \n[sender, recipient, call])" --> A_D
     A_D == "interchainAccount(origin, sender)" ==> SenderAccount
-    SenderAccount -- "call(data)" --> Recipient
+    SenderAccount -- "call" --> Recipient
 
     click A_O https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/InterchainAccountRouter.sol
     click A_D https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/InterchainAccountRouter.sol
@@ -117,6 +117,36 @@ Call swapCall = Call({
 });
 uint32 ethereumDomain = 1;
 IInterchainAccountRouter(0xabc...).callRemote(ethereumDomain, [swapCall]);
+```
+
+### Typescript Usage
+
+We also have Typescript tooling to easily deploy ICA accounts and call `callRemote` on the origin chain:
+
+```typescript
+const localChain = 'ethereum';
+const signer = <YOUR_SIGNER>;
+const localRouter: InterchainAccountRouter = InterchainAccountRouter__factory.connect(<ICA_ROUTER_ADDRESS>, signer);
+const recipientAddress = <EXAMPLE_ADDRESS>; // use your own address here
+const recipientF = new TestRecipient__factory.connect(recipientAddress, signer); // use your own contract here
+const fooMessage = "Test";
+const data = recipient.interface.encodeFunctionData("fooBar", [1, fooMessage]);
+
+const call = {
+  to: recipientAddress,
+  data,
+  value: BigNumber.from("0"),
+};
+const quote = await local["quoteGasPayment(uint32)"](
+  multiProvider.getDomainId(remoteChain)
+);
+
+const config: AccountConfig = {
+  origin: localChain,
+  owner: signer.address,
+  localRouter: localRouter.address,
+};
+await app.callRemote(localChain, remoteChain, [call], config);
 ```
 
 ### Determine addresses
