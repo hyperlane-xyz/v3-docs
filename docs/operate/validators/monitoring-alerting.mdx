@@ -8,4 +8,8 @@ If running as a Docker image, make sure to port-forward the metrics endpoint por
 
 :::
 
-We also provide a mostly-ready-to-go Grafana dashboard to get you started, you can find the source and instructions for importing it under [tools/grafana](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/tools/grafana). If you want to use your own, the `hyperlane_latest_checkpoint` is the most critical metric in both the `phase="validator_observed"` and `phase="validator_processed"` dimension. It should gradually increase and the two should never really be out of sync.
+## Metrics
+ 
+- the `hyperlane_latest_checkpoint` is the most critical metric in both the `phase="validator_observed"` and `phase="validator_processed"` dimension. It should gradually increase and the two should never really be out of sync.
+- another useful metric is `hyperlane_block_height` which indicates the blockheight of the rpc node the validator is connected to
+
