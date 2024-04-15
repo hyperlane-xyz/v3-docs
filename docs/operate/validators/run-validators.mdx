@@ -104,12 +104,12 @@ As a recap - before running a production Validator you need to ensure you have:
 
 Like the local setup, there are a few base arguments you should provide when configuring your Validator.
 
-| Parameter                                  | Description                                                                                             |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `--db`                                     | Path for writing persistent data to disk.                                                               |
-| `--originChainName`                        | Name of the chain being validated. For example: `ethereum`.                                             |
-| `--chains.[originChainName].customRpcUrls` | Override the default RPC URLs used by the Validator for your origin chain.                              |
-| `--reorgPeriod`                            | Number of block confirmations the Validator needs to wait for before signing the `Mailbox` merkle root. |
+| Parameter                                        | Description                                                                                             |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `--db`                                           | Path for writing persistent data to disk.                                                               |
+| `--originChainName`                              | Name of the chain being validated. For example: `ethereum`.                                             |
+| `--chains.[originChainName].customRpcUrls`       | Override the default RPC URLs used by the Validator for your origin chain.                              |
+| `--chains.[originChainName].blocks.reorgPeriod`  | Number of block confirmations the Validator needs to wait for before signing the `Mailbox` merkle root. |
 
 :::info
 
