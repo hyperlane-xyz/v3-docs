@@ -42,6 +42,33 @@ hyperlane config create ism
 
 When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
 
+### Dry Run
+
+Prior to executing a deployment, you may now execute a dry-run via `--dry-run`, `-dr`, or `-d` to ensure that the deployment will be successful.
+This will not deploy any contracts, but you will be able to see all the contracts that will be deployed, along with the generated artifacts at `$OUT_DIR/dry-run_*`.
+
+In addition to validating your upcoming deployment, you can provide the address of the EOA you intend to deploy with via `--key` or `-k`.
+This will ensure you have approximately enough funds to complete the deployment, without providing access to your private key to pay for transactions.
+Additionally, gas usage statistics will be displayed in your console to provide insight into the cost of deployment.
+
+:::note
+
+In order to execute a dry-run, you will need an Anvil node running in a separate terminal instance.
+To spin up an Anvil node, run `anvil`.
+For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book.getfoundry.sh/anvil/).
+
+:::
+
+```bash
+hyperlane deploy core --dry-run \
+    --targets chain1,... \ # one of the chains you want to bridge between
+    --chains $CHAIN_CONFIG_FILE \  # path to chains.yaml config e.g. ./configs/chains.yaml
+    --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
+    --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # (optional) in case you want to reuse contracts you've already predeployed
+    --out $OUT_DIR \ # (optional) deployment contract artifacts; defaults to /artifacts
+    --key $YOUR_DEPLOYER_ADDRESS # (optional) your account address to be impersonated via Anvil; can also be provided via HYP_KEY env variable
+```
+
 ### Deploy
 
 We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
@@ -52,8 +79,8 @@ hyperlane deploy core \
     --chains $CHAIN_CONFIG_FILE \  # path to chains.yaml config e.g. ./configs/chains.yaml
     --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
     --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # (optional) in case you want to reuse contracts you've already predeployed
-    --out $OUT_DIR \ # (optional) deployment contract artifacts
-    --key $YOUR_DEPLOYER_PRIVATE_KEY
+    --out $OUT_DIR \ # (optional) deployment contract artifacts; defaults to /artifacts
+    --key $YOUR_DEPLOYER_PRIVATE_KEY # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
 ```
 
 ### Verify
