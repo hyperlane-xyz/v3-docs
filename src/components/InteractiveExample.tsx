@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { TestnetChainDropdown } from "./ChainDropdown";
 
+import {
+  chainAddresses,
+  chainMetadata,
+  CoreTestnets,
+} from "@hyperlane-xyz/registry";
 import CodeBlock from "@theme/CodeBlock";
-import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
-import { chainMetadata, hyperlaneEnvironments, testnetChainsMetadata } from "@hyperlane-xyz/sdk";
+import Tabs from "@theme/Tabs";
 
 function hexLeftPad(s: string, bytes = 32) {
   if (s.startsWith("0x")) {
@@ -31,16 +35,18 @@ type Props = {
 };
 
 export default function InteractiveExample(props: Props) {
-  const [originChain, setOriginChain] = useState(testnetChainsMetadata[0].name);
-  const [destinationChain, setDestinationChain] = useState(testnetChainsMetadata[1].name);
+  const [originChain, setOriginChain] = useState<string>(CoreTestnets[0]);
+  const [destinationChain, setDestinationChain] = useState<string>(
+    CoreTestnets[1]
+  );
   const [body, setBody] = useState("Hello, world");
 
   const originDomain = chainMetadata[originChain].domainId;
   const destinationDomain = chainMetadata[destinationChain].domainId;
 
-  const mailbox = hyperlaneEnvironments.testnet[originChain]?.mailbox;
-  const merkleTreeHook = hyperlaneEnvironments.testnet[originChain]?.merkleTreeHook;
-  const recipient = hyperlaneEnvironments.testnet[originChain]?.testRecipient;
+  const mailbox = chainAddresses[originChain]?.mailbox;
+  const merkleTreeHook = chainAddresses[originChain]?.merkleTreeHook;
+  const recipient = chainAddresses[originChain]?.testRecipient;
 
   const paddedRecipient = hexLeftPad(recipient);
 

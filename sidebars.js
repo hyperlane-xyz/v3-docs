@@ -190,7 +190,7 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "reference/applications/ica",
+          id: "reference/applications/interchain-account",
           label: "Interchain Accounts",
         },
       ],

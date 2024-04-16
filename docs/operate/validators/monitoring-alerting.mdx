@@ -8,4 +8,8 @@ Validators在由参数`--metrics`指定的端口号上公开指标。默认情�
 
 :::
 
-我们还提供了一个准备就绪的Grafana仪表板，可帮助您快速入门，您可以在[tools/grafana](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/tools/grafana)下找到源代码和导入说明。如果您想使用自己的仪表板，则`hyperlane_latest_checkpoint`是两个最关键的度量值，分别为`phase="validator_observed"`和`phase="validator_processed"`。它应该会逐渐增加，而且这两个值不应该出现不同步的情况。
+## Metrics
+ 
+- “`hyperlane_latest_checkpoint` 是 `phase="validator_observed"` 和 `phase="validator_processed"` 这两个维度中最关键的指标。它应该逐渐增加，并且这两者不应该出现明显的不同步。”
+- 另一个有用的指标是 `hyperlane_block_height`，它表示验证者连接到的 RPC 节点的区块高度。
+

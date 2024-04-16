@@ -1,10 +1,10 @@
 import InteractiveExample from "./InteractiveExample";
 
-import { chainMetadata } from "@hyperlane-xyz/sdk";
+import { chainMetadata } from "@hyperlane-xyz/registry";
 
 import CodeBlock from "@theme/CodeBlock";
-import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 export default function MessageQuickstart() {
   return InteractiveExample({
@@ -33,7 +33,8 @@ export default function MessageQuickstart() {
             </CodeBlock>
             Send the message:
             <CodeBlock language="shell">
-              hyperlane send message --origin {originChain} --destination {destinationChain}
+              hyperlane send message --origin {originChain} --destination{" "}
+              {destinationChain}
             </CodeBlock>
           </TabItem>
           <TabItem value="cast" label="Cast">
@@ -63,7 +64,11 @@ export default function MessageQuickstart() {
               <li>
                 Fill in value: <code>{value}</code>, destination:{" "}
                 <code>{destinationDomain}</code>, recipient:{" "}
-                <code>{paddedRecipient}</code>, and message the hex representation of "{body}". For example if you have <code>cast</code> installed, <code>cast --from-utf8 "Hello, world"</code> returns <code>0x48656c6c6f2c20776f726c64</code>.
+                <code>{paddedRecipient}</code>, and message the hex
+                representation of "{body}". For example if you have{" "}
+                <code>cast</code> installed,{" "}
+                <code>cast --from-utf8 "Hello, world"</code> returns{" "}
+                <code>0x48656c6c6f2c20776f726c64</code>.
               </li>
               <li>
                 Click the <code>Write</code> button to submit the transaction!

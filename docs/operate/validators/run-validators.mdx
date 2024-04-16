@@ -104,12 +104,12 @@ import TabItem from "@theme/TabItem";
 
 与本地设置一样，在配置Validator时也需要提供一些基本参数。
 
-| 参数                                        | 说明                                                                                                     |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `--db`                                     | 将持久数据写入磁盘的路径。                                                                                   |
-| `--originChainName`                        | 正在验证的链的名称。例如：`ethereum`。                                                                       |
-| `--chains.[originChainName].customRpcUrls` | 覆盖验证器对您的原始链使用的默认RPC URL。                                                                     |
-| `--reorgPeriod`                            | 验证器在签署`Mailbox`默克尔根之前需要等待的区块确认数量。                                                            |
+| Parameter                                        | Description                                                                                             |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `--db`                                           | 将持久数据写入磁盘的路径。                                                               |
+| `--originChainName`                              | 正在验证的链的名称。例如:`ethereum`。                                          |
+| `--chains.[originChainName].customRpcUrls`       | 覆盖验证器为您的源链使用的默认RPC url。                              |
+| `--chains.[originChainName].blocks.reorgPeriod`  | 验证器在对 `Mailbox` merkle root签名之前需要等待的块确认次数。 |
 
 :::info
 
