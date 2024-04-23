@@ -321,10 +321,10 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "protocol/economic-security",
+          id: "protocol/ISM/economic-security",
           label: "Economic Security",
         },
-        ],
+      ],
     },
     {
       type: "category",
