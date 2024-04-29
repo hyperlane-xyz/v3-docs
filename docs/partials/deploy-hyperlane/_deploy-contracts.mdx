@@ -42,7 +42,33 @@ hyperlane config create ism
 
 在被询问关于多重签名类型时，选择`message id ism`。在这个指南的背景下，我们将使用 1/1 多重签名，因此选择一个阈值为 `1`，并输入您的密钥地址。
 
-### 部署
+### Dry Run
+
+在执行部署之前，您可以通过`--dry-run`、 `-dr`或者 `-d` 执行dry-run，以确保部署成功，并提供部署的燃料费成本分析。
+这不会部署任何合约，但您将能够看到将部署的所有合约，以及在 `$OUT_DIR/dry-run_*`处生成的构建。
+
+除了验证即将进行的部署之外，您还可以通过 `--key` 或者 `-k`提供您打算部署的EOA的地址。
+这将确保您有大约足够的资金来完成部署，而无需提供访问您的私钥来支付交易。
+此外，燃料使用统计数据将显示在控制台中，以便深入了解部署成本。
+:::note
+
+为了执行一次试运行，你需要在一个单独的终端实例中运行一个Anvil节点。
+要启动Anvil节点，请运行 `anvil`。
+有关Anvil和安装的更多信息，请查看[Foundry's Anvil docs](https://book.getfoundry.sh/anvil/)。
+
+:::
+
+```bash
+hyperlane deploy core --dry-run \
+    --targets chain1,... \ # one of the chains you want to bridge between
+    --chains $CHAIN_CONFIG_FILE \  # path to chains.yaml config e.g. ./configs/chains.yaml
+    --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
+    --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # (optional) in case you want to reuse contracts you've already predeployed
+    --out $OUT_DIR \ # (optional) deployment contract artifacts; defaults to /artifacts
+    --key $YOUR_DEPLOYER_ADDRESS # (optional) your account address to be impersonated via Anvil; can also be provided via HYP_KEY env variable
+```
+
+### Deploy
 
 现在我们准备使用`deploy core`命令部署Hyperlane合约。为了支付交易费用，该命令将需要来自步骤1的合约部署者密钥，可以通过`HYP_KEY`环境变量或作为命令参数提供。
 
@@ -52,8 +78,8 @@ hyperlane deploy core \
     --chains $CHAIN_CONFIG_FILE \  # path to chains.yaml config e.g. ./configs/chains.yaml
     --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
     --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # (optional) in case you want to reuse contracts you've already predeployed
-    --out $OUT_DIR \ # (optional) deployment contract artifacts
-    --key $YOUR_DEPLOYER_PRIVATE_KEY
+    --out $OUT_DIR \ # (optional) deployment contract artifacts; defaults to /artifacts
+    --key $YOUR_DEPLOYER_PRIVATE_KEY # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
 ```
 
 ### 验证

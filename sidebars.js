@@ -319,6 +319,11 @@ const sidebars = {
           id: "protocol/ISM/wormhole-ISM",
           label: "Wormhole ISM",
         },
+        {
+          type: "doc",
+          id: "protocol/ISM/economic-security",
+          label: "Economic Security",
+        },
       ],
     },
     {
@@ -348,14 +353,6 @@ const sidebars = {
         },
       ],
     },
-    /**
-
-    {
-      type: "doc",
-      id: "protocol/economic-security",
-      label: "Economic Security",
-    },
-    */
   ],
 
   guidesSidebar: [
