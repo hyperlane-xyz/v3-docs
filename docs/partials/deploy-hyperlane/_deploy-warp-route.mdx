@@ -1,25 +1,25 @@
-Once messages are being delivered, you can optionally deploy a [Warp Route](/docs/reference/applications/warp-routes). Warp is toolkit for permissionlessly bridging tokens between any chains. The routes can use native currencies (like `Eth`), or ERC20 tokens (like `USDC`).
+一旦消息被传送，您可以选择部署一个[Warp Route](/docs/reference/applications/warp-routes)。Warp 是一个工具包，用于在任何链之间无需许可的桥接代币。路由可以使用本地货币（如 `Eth`）或 ERC20 代币（如 `USDC`）。
 
-To begin, create a new route config.
+首先，创建一个新的路由配置：
 
 ```bash
 hyperlane config create warp
 ```
 
-Next, you can deploy the route. As before, the CLI will prompt for a core deployment artifacts file.
+接下来，就可以部署路由了。与之前一样，CLI 会提示您提供核心部署构件文件：
 
 ```bash
 hyperlane deploy warp --key $PRIVATE_KEY
 ```
 
-Once finished, the CLI will create two new JSON artifact files: `warp-deployment-{timestamp}.json` and `warp-config-{timestamp}`. The first only contains the addresses of the newly deployed Warp router contracts. The second is a config file for the Warp UI, which you can use for the next optional step.
+完成后，CLI将创建两个新的JSON工件文件:`warp-deployment-{timestamp}. json` 和 `warp-config-{timestamp}`。第一个只包含新部署的Warp路由器合约的地址。第二个文件是用于Warp UI的配置文件，您可以将其用于下一个可选步骤。
 
 :::tip
 
-Follow the detailed [**Deploy Warp Guide**](/docs/guides/deploy-warp-route) to learn more about the underlying concepts and how to set up your Warp Route to transfer tokens.
+请参阅详细的[**Deploy Warp Guide**](/docs/guides/deploy-warp-route)了解更多基本概念以及如何设置Warp路由以传输令牌。
 
 :::
 
-### Deploy the Warp UI
+### 部署 Warp UI
 
-The Warp UI is a DApp template for interacting with Warp Routes. You can clone the [Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and follow the instructions in CUSTOMIZE.md to configure a new instance. In short, use the `chains.yaml` and `warp-config.json` files from the previous steps to provide the UI with the information it needs. See the [**Deploy Warp UI guide**](/docs/guides/deploy-warp-route-UI) for step-by-step instructions.
+Warp UI是一个用于与Warp路由交互的DApp模板。您可以克隆[Warp UI repo](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template)并按照自定义中的说明进行操作CUSTOMIZE. md新实例。简而言之，使用`chains. yaml` and `warp-config. json` 文件，为UI提供所需的信息。参见[**部署Warp UI指南**](/docs/guides/ Deploy - Warp -route-UI)的分步说明。

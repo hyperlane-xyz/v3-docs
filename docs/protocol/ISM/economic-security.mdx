@@ -1,30 +1,29 @@
-# Economic Security
+# 生态安全
 
 :::info
 
-Hyperlane is committed to making fraud costly. Staking and slashing are coming soon and are not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
+Hyperlane致力于让欺诈行为付出高昂代价。 Staking和slashing很快就会公布。此页面仅供参考之用。细节可能会随着设计的成熟而改变。
 
 :::
 
-Staking and slashing allow economic security to be added to ISMs that rely on validator signatures, including [Multisig ISM](multisig-ISM.mdx) and Optimistic ISM.
+Staking和slashing允许生态安全被添加到依赖验证者签名的ISMs中，包括[Multisig ISM](multisig-ISM.mdx)和Optimistic ISM。
 
-Hyperlane validators can optionally participate in Hyperlane's staking protocol. Later, if these validators attempt to falsify or censor interchain messages, their stake, and any stake delegated to them, can be slashed.
+Hyperlane验证器可以选择参与Hyperlane的质押协议。之后，如果这些验证者试图伪造或审查链间消息，他们的权益，以及任何委托给他们的权益，都可以被削减。
 
-[Interchain Security Modules](modular-security.mdx) that depend on signatures from these validators benefit from the additional economic security provided by staking and slashing.
+依赖于这些验证者签名的[Interchain Security Modules](modular-security.mdx)可以从质押和削减提供的额外经济安全性中获益。
 
-### Verifiable fraud proofs
 
-Unlike many other interchain communication protocols, Hyperlane's slashing protocol uses **verifiable fraud proofs**.
+### 可验证的欺诈证明
 
-This means that the Hyperlane protocol is able to verify whether or not a validator signed a fraudulent checkpoint without any participation from trusted parties.
+与许多其他链间通信协议不同，Hyperlane的削减协议使用了**可验证的欺诈证据**。
 
-This is possible because the stake put up by validators lives on the **same chain** as the state (i.e. the Mailbox merkle root) that they're attesting to. The slashing smart contract can compare the validator signature with the latest root, and do some complicated merkle tree manipulation to confirm whether or not the checkpoint signed by the validator was fraudulent.
+这意味着Hyperlane协议能够在没有可信方参与的情况下验证验证者是否签署了欺诈检查点。
 
-In many other interchain communication protocols, it is common for a validator's stake to live on a **different chain** than the chain from which an interchain message originated.
+这是可能的，因为验证者提出的权益与他们所证明的状态(即邮箱默克尔根)在同一条链上。削减智能合约可以将验证器签名与最新根进行比较，并执行一些复杂的默克尔树操作，以确认验证器签署的检查点是否具有欺诈性。
 
-What this means is that in order for a fraudulent validator to have their stake slashed, the same message passing protocol must relay a message to the chain where the stake lives. You can see the problem with this right? The same validator set where fraud occurred is the mechanism by which evidence of that fraud is delivered, what could go wrong?
+在许多其他链间通信协议中，验证者的权益通常存在于与链间消息来源不同的链上。
 
-Hyperlane doesn't want to allow for that possibility, thus in Hyperlane validators must keep their bonded stake on the origin chain for which they are validating. This means fraud proofs are trustlessly verifiable. The record of fraud that is examined for slashing exists in the same environment as the stake to be slashed, leaving no room for error with the process of fraud proofs.
+Hyperlane不希望允许这种可能性，因此在Hyperlane中，验证者必须将其绑定的权益保留在他们正在验证的原始链上。这意味着欺诈证明是不可信的。被审查的欺诈记录与被削减的质押存在于同一环境中，在欺诈证明过程中没有任何错误的余地。
 
 ### EigenLayer AVS
-Hyperlane will be available as an EigenLayer AVS at launch, see this blog post for more information on [design](https://medium.com/hyperlane/modular-economic-security-bridge-disaster-insurance-5b837f366a6a).
+Hyperlane将在发布时作为EigenLayer AVS提供，更多信息请参阅这篇博客文章[design](https://medium.com/hyperlane/modular-economic-security-bridge-disaster-insurance-5b837f366a6a)。

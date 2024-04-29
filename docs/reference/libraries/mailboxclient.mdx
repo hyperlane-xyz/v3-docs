@@ -1,14 +1,14 @@
-# `MailboxClient` Library
+# `MailboxClient` 库
 
-Inheriting from [`MailboxClient`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/solidity/contracts/MailboxClient.sol) is a simple way to ensure your contract knows where to send or receive interchain messages to or from.
+继承自[`MailboxClient`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/solidity/contracts/MailboxClient.sol)是一种简单的方法，可以确保您的合约知道在何处发送或从何处接收链间消息。
 
-This mix-in contract maintains a pointers to the three contracts Hyperlane developers may need to interact with:
+该mix-in合约维护着指向 Hyperlane 开发人员可能需要与之交互的三个合约的指针：
 
 1. [`Mailbox`](../messaging/messaging-interface.mdx) (required)
 2. [`IPostDispatchHook`](../hooks/interchain-gas.mdx) (optional)
 3. [`IInterchainSecurityModule`](../ISM/specify-your-ISM.mdx) (optional)
 
-`MailboxClient` exposes functions that allow subclasses to easily send messages to the `Mailbox` via the `mailbox` storage variable, and permission message delivery via the `onlyMailbox` modifier.
+`MailboxClient`公开了允许子类通过`mailbox`储变量轻松发送消息到`Mailbox`的函数，并通过`onlyMailbox`修饰符允许消息传递。
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/MailboxClient.sol
 ```

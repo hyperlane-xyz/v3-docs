@@ -8,9 +8,9 @@ description: A list of common terms in the Hyperlane protocol
 
 ## Agent
 
-Hyperlane [agents](../protocol/agents/relayer.mdx) are off-chain actors that read and write Hyperlane smart contract state.
+Hyperlane[agents](../protocol/agents/relayer.mdx)是读取和写入Hyperlane智能合约状态的链外参与者。
 
-Example agents include [validators](../protocol/agents/validators.mdx) and the [relayer](../protocol/agents/relayer.mdx).
+代理的例子包括[validators](../protocol/agents/validators.mdx) 和[relayer](../protocol/agents/relayer.mdx)。
 
 
 
@@ -18,7 +18,7 @@ Example agents include [validators](../protocol/agents/validators.mdx) and the [
 
 ## Aggregation ISM
 
-The [Aggregation ISM](../reference/ISM/aggregation-ISM-interface.mdx) is a type of interchain security module that aggregates security from many [ISMs](../reference/ISM/specify-your-ISM.mdx) by requiring that `m` of `n` ISMs verify a particular interchain message.
+[Aggregation ISM](../reference/ISM/aggregation-ISM-interface.mdx)是一种链间安全模块，它通过要求' n '个ISMs中的' m '来验证特定的链间消息，从而聚合来自多个 [ISMs](../reference/ISM/specify-your-ISM.mdx)的安全性。
 
 
 
@@ -26,9 +26,9 @@ The [Aggregation ISM](../reference/ISM/aggregation-ISM-interface.mdx) is a type 
 
 ## Checkpoint
 
-A checkpoint is a (merkle root, index) tuple, corresponding to the state of the [mailbox](glossary.mdx#mailbox) incremental merkle tree at a particular point in time.
+检查点是一个(默克尔根，索引)元组，对应于[mailbox](glossary.mdx#mailbox)增量默克尔树在特定时间点的状态。
 
-Checkpoints signatures by [Validators](glossary.mdx#validator) are used in [Multisig ISMs](glossary.mdx#multisig-ism).
+[Validators](glossary.mdx#validator) 的检查点签名在[Multisig ISMs](glossary.mdx#multisig-ism)中使用。
 
 
 
@@ -36,9 +36,9 @@ Checkpoints signatures by [Validators](glossary.mdx#validator) are used in [Mult
 
 ## Collateral chain
 
-For a [Warp Route](glossary.mdx#warp-route), the chain on which the [collateral token](glossary.mdx#collateral-token) is deposited into the Warp Route.
+对于[Warp Route](glossary.mdx#warp-route)， [collateral token](glossary.mdx#collateral-token)存放到Warp Route的链。
 
-Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
+阅读更多关于如何 [deploy a Warp Route](../guides/deploy-warp-route.mdx)。
 
 
 
@@ -46,9 +46,9 @@ Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
 
 ## Collateral token
 
-For a [Warp Route](glossary.mdx#warp-route), the token which is deposited on the [collateral chain](glossary.mdx#collateral-chain) to create a wrapped token on a remote [synthetic chain](glossary.mdx#synthetic-chain).
+对于[Warp Route](glossary.mdx#warp-route)，存放于[collateral chain](glossary.mdx#collateral-chain)上的令牌在远程 [synthetic chain](glossary.mdx#synthetic-chain)上创建包装令牌。
 
-Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
+阅读更多关于如何[deploy a Warp Route](../guides/deploy-warp-route.mdx)。
 
 
 
@@ -56,7 +56,7 @@ Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
 
 ## Default ISM
 
-The [interchain security module](glossary.mdx#interchain-security-module) that will be used to verify inbound messages if the message recipient has not specified their own ISM.
+如果消息接收者没有指定自己的ISM，则将使用[interchain security module](glossary.mdx#interchain-security-module) 来验证入站消息。
 
 
 
@@ -64,9 +64,9 @@ The [interchain security module](glossary.mdx#interchain-security-module) that w
 
 ## Domain
 
-A unique identifier for a particular chain, used by the Hyperlane protocol to determine message origin and destination.
+Hyperlane协议用于确定消息来源和目的地的特定链的唯一标识符。
 
-May be the same as the EVM chain ID, but isn't always. See [domains](domains/) for a list of known Hyperlane domain IDs.
+可能与EVM链ID相同，但并不总是如此。请参阅 [domains](domains/) 获取已知Hyperlane域id的列表。
 
 
 
@@ -74,11 +74,11 @@ May be the same as the EVM chain ID, but isn't always. See [domains](domains/) f
 
 ## Interchain accounts (ICA)
 
-A [middleware](glossary.mdx#middleware) smart contract that allows users to make interchain smart contract calls.
+一个[middleware](glossary.mdx#middleware)允许用户进行链间智能合约调用的智能合约。
 
-For example, DAOs can use interchain accounts to own contracts on remote chains.
+例如，dao可以使用链间帐户来拥有远程链上的合约。
 
-See Interchain Accounts for more information.
+有关更多信息，请参阅跨链帐户。
 
 
 
@@ -86,9 +86,9 @@ See Interchain Accounts for more information.
 
 ## Interchain gas paymaster
 
-A smart contract deployed by a [relayer](glossary.mdx#relayer) that accepts payments on an origin chain for message delivery on destination chains.
+由[relayer](glossary.mdx#relayer) 部署的智能合约，它在源链上接受支付，以便在目标链上交付消息。
 
-See [interchain gas payments](../protocol/interchain-gas-payment.mdx) for more information
+参见 [interchain gas payments](../protocol/interchain-gas-payment.mdx)了解更多信息
 
 
 
@@ -96,11 +96,11 @@ See [interchain gas payments](../protocol/interchain-gas-payment.mdx) for more i
 
 ## Interchain queries (IQS)
 
-A [middleware](glossary.mdx#middleware) smart contract that allows users to make interchain view calls.
+一个[middleware](glossary.mdx#middleware)允许用户进行链间视图调用的智能合约。
 
-For example, smart contracts can use interchain queries to look up oracle exchange rates or token balances from a remote chain.
+例如，智能合约可以使用链间查询来从远程链上查找oracle汇率或代币余额。
 
-See Interchain Queries (IQS) for more information.
+参见Interchain Queries (IQS)了解更多信息。
 
 
 
@@ -108,9 +108,9 @@ See Interchain Queries (IQS) for more information.
 
 ## Interchain security module
 
-[Interchain Security Module](./ISM/specify-your-ISM.mdx) (ISMs) are smart contracts that provide security to Hyperlane's interchain [mailbox](./messaging/messaging-interface.mdx).
+[Interchain Security Module](./ISM/specify-your-ISM.mdx) (ISMs)是为Hyperlane的链间[mailbox](./messaging/messaging-interface.mdx)提供安全保障的智能合约。
 
-ISMs are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
+ISMs负责验证在目的链上传递的链间信息是否**实际发送**在原始链上。
 
 
 
@@ -118,7 +118,7 @@ ISMs are responsible for verifying that interchain messages being delivered on t
 
 ## Mailbox
 
-Arguably the most important Hyperlane smart contract, the [mailbox](./messaging/messaging-interface.mdx) exposes an interface that developers can use to [send](./messaging/send.mdx) and [receive](./messaging/receive.mdx) interchain messages.
+可以说是Hyperlane最重要的智能合约，[mailbox](./messaging/messaging-interface.mdx) 公开了一个接口，开发人员可以使用它来 [send](./messaging/send.mdx)和 [receive](./messaging/receive.mdx) 链间消息。
 
 
 
@@ -126,9 +126,9 @@ Arguably the most important Hyperlane smart contract, the [mailbox](./messaging/
 
 ## Middleware
 
-A smart contract that sends and receives messages, and exposes a developer facing API. Developers are expected use this API instead of interacting directly with the [mailbox](glossary.mdx#mailbox).
+发送和接收消息的智能合约，并公开面向开发人员的API。开发人员应该使用这个API，而不是直接与[mailbox](glossary.mdx#mailbox)交互。
 
-Example middlewares include [interchain-accounts-ica](glossary.mdx#interchain-accounts-ica) and [interchain-queries-iqs](glossary.mdx#interchain-queries-iqs)
+示例中间件包括 [interchain-accounts-ica](glossary.mdx#interchain-accounts-ica) 和[interchain-queries-iqs](glossary.mdx#interchain-queries-iqs)
 
 
 
@@ -136,7 +136,7 @@ Example middlewares include [interchain-accounts-ica](glossary.mdx#interchain-ac
 
 ## Multisig ISM
 
-The [multisig ISM](./ISM/multisig-ISM-interface.mdx) is a type of [interchain security module](glossary.mdx#interchain-security-module) that uses `m` of `n` [validator](glossary.mdx#validator) signatures in order to verify a particular interchain message.
+[multisig ISM](./ISM/multisig-ISM-interface.mdx)多重签名 ISM 是一个链间安全模块[interchain security module](glossary.mdx#interchain-security-module) ，它使用来自 n 个验证器[validator](glossary.mdx#validator)中的 m 个验证器的签名来验证特定的链间消息。
 
 
 
@@ -144,9 +144,9 @@ The [multisig ISM](./ISM/multisig-ISM-interface.mdx) is a type of [interchain se
 
 ## Relayer
 
-The [relayer](../operate/relayer/run-relayer.mdx) is a Hyperlane [agents](glossary.mdx#agent) responsible for delivering messages from their origin chain(s) to their destination chain(s).
+[relayer](../operate/relayer/run-relayer.mdx)是一个Hyperlane[agents](glossary.mdx#agent)，负责将消息从源链传递到目标链。
 
-Relayers are untrusted, and anyone can operate a relayer.
+中继器是不可信的，任何人都可以操作中继器。
 
 
 
@@ -154,9 +154,9 @@ Relayers are untrusted, and anyone can operate a relayer.
 
 ## Routing ISM
 
-The Routing ISM is a type of [interchain security module](glossary.mdx#interchain-security-module) that defers to a different ISM depending on the message being delivered.
+路由ISM是一种[interchain security module](glossary.mdx#interchain-security-module)，根据所传递的消息交由不同的ISM管理。
 
-For example, a Routing ISM could use a different ISM depending on the origin chain from which the message was sent.
+例如，Routing ISM可以根据发送消息的源链使用不同的ISM。
 
 
 
@@ -164,9 +164,9 @@ For example, a Routing ISM could use a different ISM depending on the origin cha
 
 ## Synthetic chain
 
-For a [Warp Route](glossary.mdx#warp-route), a chain on which wrapped tokens are minted. These wrapped tokens are backed by [collateral tokens](glossary.mdx#collateral-token) that have been locked on the [collateral chain](glossary.mdx#collateral-chain).
+对于[Warp Route](glossary.mdx#warp-route)，在其上生成包装令牌的链。这些包装的令牌由 [collateral tokens](glossary.mdx#collateral-token)支持，这些令牌已被锁定在 [collateral chain](glossary.mdx#collateral-chain)上。
 
-Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
+阅读更多关于如何[deploy a Warp Route](../guides/deploy-warp-route.mdx)。
 
 
 
@@ -174,9 +174,9 @@ Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
 
 ## Validator
 
-[Validators](../operate/validators/run-validators.mdx) are a Hyperlane [agents](glossary.mdx#agent) responsible for attesting to messages sent from an origin chain.
+[Validators](../operate/validators/run-validators.mdx) 是一个Hyperlane [agents](glossary.mdx#agent) ，负责验证从源链发送的消息。
 
-[Multisig ISMs](glossary.mdx#multisig-ism) use validator signatures to provide security for inbound messages.
+[Multisig ISMs](glossary.mdx#multisig-ism) 使用验证器签名为入站消息提供安全性。
 
 
 
@@ -184,6 +184,6 @@ Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
 
 ## Warp Route
 
-[Warp Routes](applications/warp-routes.mdx#overview) are Hyperlane's take on the concept of token bridging, allowing you to permissionlessly transfer any ERC20-like asset to any chain via Hyperlane.
+[Warp Routes](applications/warp-routes.mdx#overview)是Hyperlane对令牌桥接概念的采用，允许您通过Hyperlane无许可地将任何类似erc20的资产转移到任何链上。
 
-Read more about how to [deploy a Warp Route](../guides/deploy-warp-route.mdx).
+阅读更多关于如何[deploy a Warp Route](../guides/deploy-warp-route.mdx)。

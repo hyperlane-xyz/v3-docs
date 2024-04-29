@@ -1,13 +1,13 @@
 # Optimistic ISM
 
-Prioritizing safety over liveness
+把安全放在活跃性之上
 
 :::warning
-`OptimisticISM` is coming soon and is not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
+`OptimisticISM`即将到来。此页面仅供参考之用。细节可能会随着设计的成熟而改变。
 :::
 
-The `OptimisticISM` encodes the optimistic verification security model pioneered by [Optics](https://docs.celo.org/protocol/bridge/optics) and adopted by [Synapse](https://docs.synapseprotocol.com/synapse-interchain-network-sin/synapse-interchain-network/deep-dive-optimistic-pos), [Nomad](https://docs.nomad.xyz/the-nomad-protocol/verification-mechanisms/optimistic-verification), and [Connext](https://blog.connext.network/optimistic-bridges-fb800dc7b0e0).
+`OptimisticISM`编码了由[Optics](https://docs.celo.org/protocol/bridge/optics)开创并被[Synapse](https://docs.synapseprotocol.com/synapse-interchain-network-sin/synapse-interchain-network/deep-dive-optimistic-pos)、[Nomad](https://docs.nomad.xyz/the-nomad-protocol/verification-mechanisms/optimistic-verification)和[Connext](https://blog.connext.network/optimistic-bridges-fb800dc7b0e0)采用的optimistic验证安全模型。
 
-`OptimisticISMs` rely on a fraud window after message verification, during which `m` of `n` **watchers** configured on the `OptimisticISM` have an opportunity to flag messages as fraudulent, preventing them from being delivered to their recipient.
+`OptimisticISM`依赖于消息验证后的欺诈窗口，在此期间，配置在`OptimisticISM`上的`m`个**观察者**有机会将消息标记为欺诈，阻止它们发送给收件人。
 
-**This security model prioritizes safety over liveness;** the increased message latency allows for the addition of a second layer of security, the watchers, without significant increases in gas costs.
+**这种安全模型将安全性置于活跃性之上**，增加的消息延迟允许添加第二层安全，即侦听器，而不会显著增加燃料成本。

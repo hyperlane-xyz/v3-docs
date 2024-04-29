@@ -1,32 +1,32 @@
-# Modular Security
+# 模块化的安全
 
-Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
+Hyperlane由**Interchain Security Modules** (ISMs)保护。ISMs是一种智能合约，负责验证在目标链上传递的链间消息是否**实际发送**在原始链上。
 
-Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx)'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
+Hyperlane开发人员可以通过指定一个应用专用的ISM，**optionally** **override**[Mailbox's](../mailbox.mdx)的默认ISM，他们可以根据自己的应用程序的需求来配置、组合和定制。
 
-### Configure
+### 配置
 
-Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
+Hyperlane定义了一套预先构建的ISMs。开发人员可以部署任何这些“现成的”合约，并使用自己的参数配置它们。
 
-For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
+例如，希望增加链间安全主权的应用程序开发人员可以部署一个[Multisig ISM](multisig-ISM.mdx)，其中配置了来自他们自己社区的验证器。
 
-### Compose
+### 组合
 
-ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
+ISMs就像“security[legos](https://en.wikipedia.org/wiki/Lego)”。开发人员可以混合和匹配不同的ISMs，以编码最适合他们需求的安全模型。
 
-For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [Wormhole ISM](wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
+例如，希望获得额外安全性的应用程序开发人员可以部署一个[Aggregation ISM](aggregation-ISM.mdx)，它需要由配置了Hyperlane社区验证器的[Multisig ISM](multisig-ISM.mdx) 和一个[Wormhole ISM](wormhole-ISM.mdx)进行验证，后者验证了[Wormhole](https://wormhole.com/)验证器集的quorum验证了消息。
 
-### Customize
+### 自定义
 
-ISMs are fully customizable. Developers can write their own ISMs, tailoring them to the needs of their application.
+ISMs是完全可定制的。开发人员可以编写自己的ISMs，根据应用程序的需要进行调整。
 
-For example, application developers can build ISMs that adjust security models based on message content. High value and infrequent messages (e.g. governance) could be verified by a security model that prioritizes safety over latency and gas costs. Lower value and more frequent messages could be verified by a security model that prioritizes latency and gas costs over safety.
+例如，应用程序开发人员可以构建基于消息内容调整安全模型的ISMs。高价值和不频繁的消息(例如治理)可以通过安全模型进行验证，该模型将安全性优先于延迟和gas成本。更低的值和更频繁的消息可以通过将延迟和gas成本置于安全性之上的安全模型进行验证。
 
-## Overriding the default ISM
+## 覆盖默认ISM
 
-Application developers can override the default ISM by implementing the `ISpecifiesInterchainSecurityModule` interface in their application.
+应用程序开发者可以通过在应用程序中实现`isspecificesinterchainsecuritymodule`接口来覆盖默认的ISM。
 
-Specifically, this interface must be implemented in the same smart contract that implements `handle()`.
+具体来说，这个接口必须在实现`handle()`的智能合约中实现。
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
@@ -40,9 +40,9 @@ interface ISpecifiesInterchainSecurityModule {
 }
 ```
 
-# General Interface
+# 通用接口
 
-ISMs must implement the `IInterchainSecurityModel()` interface. This interface consists of two functions.
+ISMs必须实现`IInterchainSecurityModel()`接口。该接口由两个函数组成。
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
@@ -70,38 +70,38 @@ interface IInterchainSecurityModule {
 }
 ```
 
-### Verify
+### 验证
 
-The primary function that ISMs must implement is `verify()`. The [Mailbox](../mailbox.mdx) will call `IInterchainSecurityModule.verify()` before delivering a message to its recipient. If `verify()` reverts or returns `false`, the message will not be delivered.
+ISMs必须实现的主要功能是`verify()`。[Mailbox](../mailbox.mdx)将在将消息传递给收件人之前调用`IInterchainSecurityModule.verify()`。如果`verify()`恢复或返回`false`，消息将不会被传递。
 
-The `verify()` function takes two parameters.
+`verify()`函数接受两个参数。
 
-The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
+第一个是`_metadata`，由[Relayer](../agents/relayer.mdx)提供的任意字节组成。通常，这些字节是特定于ISM的。例如，对于[Multisig ISM](multisig-ISM.mdx)， `_metadata`必须包含验证者签名。
 
-The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
+第二个是`_message`，由正在验证的Hyperlane消息组成。ISMs可以使用它来检查正在验证的消息的详细信息。例如，[Multisig ISM](multisig-ISM.mdx)可以根据消息的原始链更改验证器集。
 
 :::warning
-See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
+有关传递给`verify()`的Hyperlane消息格式的更多信息，请参阅[` message .sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)库。
 :::
 
-### Module type
+### 模块类型
 
-The secondary function that ISMs must implement is `moduleType()`. This is used to signal to the [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
+ISMs必须实现的第二个函数是`moduleType()`。这是用来通知[Relayer](../agents/relayer.mdx) 在`_metadata`中包含什么。ISMs **必须**返回支持的一种模块类型。
 
 :::tip
 
-For more information on the available module types and their respective metadata, please visit the ISM docs outlined in this section, e.g. [Multisig ISM](./multisig-ISM.mdx).
+有关可用模块类型及其各自元数据的更多信息，请访问本节中概述的ISM文档，例如[Multisig ISM](./multisig-ISM.mdx)。
 
 :::
 
 ## Sequence diagram
 
-The following shows a simplified sequence diagram of an interchain message being verified and delivered on the destination chain.
+下面展示了在目标链上验证和交付链间消息的简化顺序图。
 
 :::info
-If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the [Mailbox](../mailbox.mdx) will be used to verify the message.
+如果收件人没有实现`isspecificesinterchainsecuritymodule`或者`recipient.interchainSecurityModule()`返回`address(0)`，将使用[Mailbox](../mailbox.mdx)上配置的默认ISM来验证消息。
 
-This is omitted from the sequence diagram for clarity.
+为了清晰起见，在序列图中省略了这一点。
 :::
 
 ```mermaid

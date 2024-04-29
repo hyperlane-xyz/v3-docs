@@ -1,25 +1,25 @@
-# Deploy with Terraform
+# 使用 Terraform 进行部署
 
-For those more familiar with deploying to AWS through infrastructure-as-code tools such as Terraform, we provide an [**example configuration in Github**](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/terraform) designed to set up the necessary infrastructure for a Hyperlane Validator on AWS. It automates the creation of resources such as ECS clusters, VPCs, subnets, and security groups required for running a Validator agent.
+对于那些更熟悉通过基础设施即代码工具（如Terraform）部署到AWS的人来说，我们在Github上提供了一个示例配置，旨在为在AWS上设置Hyperlane验证器所需的基础设施。它自动创建了诸如ECS集群、VPC、子网和安全组等资源，这些资源对于运行验证器代理是必需的。
 
 :::caution
 
-The configuration provided is intended to only be an _example_ of running a Validator for a core supported network. You may have to modify the Validator module to support more advanced configurations. It is recommended to test thoroughly before using this setup in a production environment.
+提供的配置仅用作在核心支持的网络上运行验证器的示例。您可能需要修改验证器模块以支持更高级的配置。建议在将此设置用于生产环境之前进行彻底测试。
 
 :::
 
-## Overview
+## 概览
 
-The provided terraform has a few key parts:
+提供的Terraform有几个关键部分：
 
-- IAM/KMS module: automatically completes [Agent Keys](set-up-agent-keys.mdx) configuration for you.
-- S3 module: automatically completes [AWS Signatures Bucket](validators/validator-signatures-aws.mdx) configuration for you.
-- EFS module: sets up a persistent volume that can be mounted to the Validator.
-- Validator module: uses the above modules to run an instance of a Validator.
-- `global.tf`: top-level networking configuration for a cluster that Validators can run in.
-- `main.tf`: configures Validators for deployment.
+- IAM/KMS 模块：自动为您完成 [Agent Keys](set-up-agent-keys.mdx)配置。
+- S3 模块：自动为您完成 [AWS Signatures Bucket](validators/validator-signatures-aws.mdx) 配置。
+- EFS 模块：设置可挂载到验证器的持久卷。
+- 验证器模块：使用上述模块运行验证器实例。
+- `global.tf`: Validators可以运行在其中的集群的顶层网络配置。
+- `main.tf`: 配置验证器以进行部署。
 
-The diagram below shows how it fits together.
+下面的图表显示了它们如何相互配合。
 
 ```mermaid
 graph LR
@@ -59,70 +59,70 @@ graph LR
 
 ```
 
-## Usage
+## 使用方法
 
-As a prerequisite, you need to have Terraform installed and the AWS CLI configured with your credentials.
+作为前提条件，您需要安装Terraform，并使用您的凭据配置AWS CLI。
 
-To initialize the terraform state:
+初始化Terraform状态：
 
 ```bash
 terraform init
 ```
 
-To generate the plan of infrastructure changes:
+制定基础设施变更计划：
 
 ```bash
 terraform plan
 ```
 
-To preview and apply the infrastructure changes:
+预览和应用基础架构变更：
 
 ```bash
 terraform apply
 ```
 
-To list the outputs such as KMS, IAM or S3 information, you will have to parse the JSON output:
+要列出KMS、IAM 或 S3信息等输出，必须解析JSON输出：
 
 ```bash
 terraform output -json
 ```
 
-## Modules
+## 模块
 
-Several modules exist so you can choose which parts of the Validator setup you would like managed by terraform.
+Terraform提供多个模块，您可以选择希望由terraform管理验证器设置的哪些部分。
 
 ### IAM / KMS
 
-The `iam_kms` module creates an IAM user and a KMS key for secure signing operations. It also sets up IAM policies and attachments to grant the necessary permissions for using the KMS key and other AWS services, such as S3, EFS and ECS later on.
+`iam_kms`模块会创建一个IAM用户和一个KMS密钥，用于安全签名操作。它还会设置IAM策略和附件，以授予使用KMS密钥和其他AWS服务（如 S3、EFS 和 ECS）所需的权限。
 
 ### S3
 
-The `s3` module creates an S3 bucket for storing Validator-related data, such as signatures. It also sets bucket policies to manage access and permissions, including public access restrictions and versioning.
+`s3`模块创建一个S3 bucket，用于存储签名等与验证程序相关的数据。它还设置了管理访问和权限的存储策略，包括公共访问限制和版本管理。
 
 ### EFS
 
-The `efs` module defines an EFS file system and access point, allowing the Validator application to store and access data on EFS. It also sets up a mount target for connecting the EFS file system to the network.
+`efs`模块定义了EFS文件系统和访问点，允许Validator应用程序存储和访问EFS上的数据。它还设置了一个挂载目标，用于将EFS文件系统连接到网络。
 
 :::note
-This module is only required when using the `validator` module.
+只有在使用`validator`模块时才需要该模块。
 :::
 
 ### Validator
 
-The `validator` module uses all of the above to integrate the EFS, IAM/KMS, and S3 configurations.
+`validator`模块使用上述所有功能整合EFS、IAM/KMS和S3配置。
 
-In addition to:
-- Creating a new IAM user and relevant roles to run a Validator.
-- Creating an S3 bucket that a Validator can write signatures to.
-- Creating an EFS volume to persist data in the service.
+此外，还有：
+- 创建新的IAM用户和相关角色以运行验证器。
+- 创建验证器可写入签名的S3 bucket。
+- 创建EFS卷，以便在服务中持久保存数据。
 
-This module also:
-- Defines an ECS task definition for running the Validator application, including container definitions, volume configurations, and logging.
-- Creates an ECS service to manage the deployment and scaling of the Validator tasks.
+本模块还包括：
+- 定义一个运行验证器应用程序的ECS任务定义，包括容器定义、卷配置和日志记录。
+- 创建一个ECS服务来管理验证器任务的部署和扩展。
 
-## Main Configuration
+## 主要配置
 
-The root level configuration sets up a VPC, subnets, internet gateway, NAT gateway, route tables, and security groups for network infrastructure. It also provides example usage of the `validator` module.
+根级配置为网络基础设施设置了VPC、子网、互联网网关、NAT 网关、路由表和安全组。它还提供了使用"验证器"模块的示例。
 
 ```terraform
 module "your_validator_name" {
@@ -145,13 +145,13 @@ module "your_validator_name" {
 }
 ```
 
-### Outputs
+### 输出
 
-The root-level `outputs.tf` passes forward all outputs from the Validators configured in `main.tf`. **You will have to update this as you add, modify or remove Validators.**
+根级别的`outputs.tf`从`main.tf`中配置的验证器中传递所有输出。**随着您添加、修改或删除验证器，您将需要更新此内容。**
 
-### Example architecture
+### 结构示例
 
-The diagram below shows how the Validator ECS cluster fits into the top-level network infrastructure.
+下图显示了Validator ECS集群如何融入顶级网络基础设施。
 
 ```mermaid
 graph TD
@@ -189,17 +189,17 @@ graph TD
     EIP -- Connects to --> Internet
 ```
 
-## Known issues
+## 已知问题
 
-### PI configuration
+### PI 配置
 
-It is non-trivial to set custom configuration values for PI chains, such as ones you've deployed Hyperlane to yourself.
-Currently you may have to just pass a long list of environment variables or command line arguments.
+为PI链（如您自己部署的Hyperlane）设置自定义配置值并非易事。
+目前，您可能只需传递一长串环境变量或命令行参数。
 
-### Individual agent logs
+### 单个代理日志
 
-Currently all agents log to the same log group - `DefaultLogGroup`. To separate them per agent, you may have to adjust the log group name and update the agent's log policy with the new group name.
+目前，所有代理都登录到同一个日志组 - `DefaultLogGroup`。要按代理将它们分开，可能需要调整日志组名称，并用新的组名称更新代理的日志策略。
 
-### Relayer module
+### 中继器模块
 
-The docker image supports running both types of agents. Therefore, if you choose to do so, you can use the Validator module as a starting point for a new Relayer module.
+Docker镜像支持运行两种类型的代理。因此，如果您选择这样做，您可以将验证器模块作为新中继模块的起点。

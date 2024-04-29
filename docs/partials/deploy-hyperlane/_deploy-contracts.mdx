@@ -1,61 +1,60 @@
-Once you have set up deployer, validator, and relayer keys it's time to use the Hyperlane CLI to deploy smart contracts to the local and remote chains.
+设置好部署器、验证器和中继器密钥后，就可以使用Hyperlane CLI将智能合约部署到本地和远程链上了。
 
-On the local chain, we will deploy:
+在本地链上，我们将进行部署：
 
-- The core contracts, including a [Mailbox](/docs/reference/messaging/messaging-interface) that can be used to send and receive messages.
+- 核心合约，包括可用于发送和接收信息的[Mailbox](/docs/reference/messaging/messaging-interface)。
 
-On all chains, we will deploy:
+我们在所有链将进行部署：
 
-- A Multisig ISM that can be used to verify inbound messages from the other local & remote chains.
-- An `InterchainGasPaymaster`, which can be used to pay our relayer for delivering interchain messages.
-- A `TestRecipient`, which we will send messages to, in order to test that everything is working correctly.
+- 可用于验证来自其他本地和远程链的入站消息的 Multisig ISM。
+- `InterchainGasPaymaster`可用于支付中继器传递链间消息的费用。
+- `TestRecipient`我们将向其发送信息，以测试一切工作是否正常。
 
-### Setup
+### 设置
 
-First, install the [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli) from NPM. [Node 16](https://nodejs.org/en/download) or newer is required. The following command will install it globally on your machine. See the [package page](https://www.npmjs.com/package/@hyperlane-xyz/cli) for alternatives such as temporary install or building from source.
+首先，使用NPM安装[Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli)。需要[Node 16](https://nodejs.org/en/download) 或以上版本。以下命令将在你的机器上全局安装。请参阅[package page](https://www.npmjs.com/package/@hyperlane-xyz/cli)了解临时安装或从源代码构建等其他方法。
 
 ```bash
 npm install -g @hyperlane-xyz/cli
 ```
 
-Next, determine what custom chain configs you will need for your local and remote chains. Any chains that are already included in the Hyperlane SDK won't need a chain config (but can optionally have one if you want to override default settings).
-Run the following to see the default SDK chains:
+接下来，确定本地链和远程链需要哪些自定义链配置。任何已经包含在Hyperlane SDK中的链都不需要链配置（但如果想覆盖默认设置，可以选择使用）。
+运行以下命令查看默认SDK链：
 
 ```bash
 hyperlane chains list
 ```
 
-You can press space to select your chains. For any chains that need custom configs, you can define them manually using JSON or YAML (see [example config](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)), or create them with the following command:
+您可以按空格键选择链。对于需要自定义配置的链，可以使用JSON或YAML手动定义（请参阅 [配置示例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)），或使用以下命令创建：
 
 ```bash
 hyperlane config create chain
 ```
 
-Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM).
+现在CLI将知道如何与所有链进行交互，但它还需要知道如何配置链间安全模块（ISM）。
 
 
-To create a multisig ISM configs, you can define it manually using JSON or YAML (see [example config here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/cli/examples/multisig-ism.yaml)), or create it with the following command:
+要创建多个ISM配置，您可以使用JSON或YAML手动定义它，请参阅此处[example config here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/cli/examples/multisig-ism.yaml))，或使用以下命令创建它：
 
 ```bash
 hyperlane config create ism
 ```
 
-When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
+在被询问关于多重签名类型时，选择`message id ism`。在这个指南的背景下，我们将使用 1/1 多重签名，因此选择一个阈值为 `1`，并输入您的密钥地址。
 
 ### Dry Run
 
-Prior to executing a deployment, you can execute a dry-run via `--dry-run`, `-dr`, or `-d` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment.
-This will not deploy any contracts, but you will be able to see all the contracts that will be deployed, along with the generated artifacts at `$OUT_DIR/dry-run_*`.
+在执行部署之前，您可以通过`--dry-run`、 `-dr`或者 `-d` 执行dry-run，以确保部署成功，并提供部署的燃料费成本分析。
+这不会部署任何合约，但您将能够看到将部署的所有合约，以及在 `$OUT_DIR/dry-run_*`处生成的构建。
 
-In addition to validating your upcoming deployment, you can provide the address of the EOA you intend to deploy with via `--key` or `-k`.
-This will ensure you have approximately enough funds to complete the deployment, without providing access to your private key to pay for transactions.
-Additionally, gas usage statistics will be displayed in your console to provide insight into the cost of deployment.
-
+除了验证即将进行的部署之外，您还可以通过 `--key` 或者 `-k`提供您打算部署的EOA的地址。
+这将确保您有大约足够的资金来完成部署，而无需提供访问您的私钥来支付交易。
+此外，燃料使用统计数据将显示在控制台中，以便深入了解部署成本。
 :::note
 
-In order to execute a dry-run, you will need an Anvil node running in a separate terminal instance.
-To spin up an Anvil node, run `anvil`.
-For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book.getfoundry.sh/anvil/).
+为了执行一次试运行，你需要在一个单独的终端实例中运行一个Anvil节点。
+要启动Anvil节点，请运行 `anvil`。
+有关Anvil和安装的更多信息，请查看[Foundry's Anvil docs](https://book.getfoundry.sh/anvil/)。
 
 :::
 
@@ -71,7 +70,7 @@ hyperlane deploy core --dry-run \
 
 ### Deploy
 
-We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
+现在我们准备使用`deploy core`命令部署Hyperlane合约。为了支付交易费用，该命令将需要来自步骤1的合约部署者密钥，可以通过`HYP_KEY`环境变量或作为命令参数提供。
 
 ```bash
 hyperlane deploy core \
@@ -83,8 +82,8 @@ hyperlane deploy core \
     --key $YOUR_DEPLOYER_PRIVATE_KEY # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
 ```
 
-### Verify
+### 验证
 
-Deployment contract artifacts will be written to to the `artifacts/` folder by default. The deployer will create two timestamped files, `agent-config-{timestamp}.json` and `core-deployment-{timestamp}.json`
-The `core-deployment` file contains the addresses of core contracts, organized by chain.
-The `agent-config` file contains the data needed to run Hyperlane agents for the next step.
+部署合同构件默认将写入`artifacts/`文件夹。部署程序将创建两个带时间戳的文件，即`agent-config-{timestamp}.json`和`core-deployment-{timestamp}.json`
+`core-deployment` 文件包含按链排列的核心合约地址。
+`agent-config` 文件包含下一步运行Hyperlane代理所需的数据。

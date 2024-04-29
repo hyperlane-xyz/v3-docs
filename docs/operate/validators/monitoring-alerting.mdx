@@ -1,15 +1,15 @@
-# Monitoring & Alerting
+# 监控 & 警报
 
-Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen.
+Validators在由参数`--metrics`指定的端口号上公开指标。默认情况下为端口`9090`，但可以自定义任何有效的端口。
 
 :::info
 
-If running as a Docker image, make sure to port-forward the metrics endpoint port. For, instance, to forward port 9090 on the local port 80, add the following flag to your `docker run` command: `-p 9090:80`
+如果你使用Docker镜像来运行，请确保将指标端口进行端口转发。例如，要将宿主机上的端口80转发到Docker容器内部的端口9090，你可以在docker run命令中添加以下标志：-p 9090:80。
 
 :::
 
 ## Metrics
  
-- the `hyperlane_latest_checkpoint` is the most critical metric in both the `phase="validator_observed"` and `phase="validator_processed"` dimension. It should gradually increase and the two should never really be out of sync.
-- another useful metric is `hyperlane_block_height` which indicates the blockheight of the rpc node the validator is connected to
+- “`hyperlane_latest_checkpoint` 是 `phase="validator_observed"` 和 `phase="validator_processed"` 这两个维度中最关键的指标。它应该逐渐增加，并且这两者不应该出现明显的不同步。”
+- 另一个有用的指标是 `hyperlane_block_height`，它表示验证者连接到的 RPC 节点的区块高度。
 
