@@ -10,10 +10,10 @@ Metadata and artifacts for deployments done by the Hyperlane core team will be a
 https://github.com/hyperlane-xyz/hyperlane-registry
 
 However, community members are encouraged to add their own deployments to this default registry. The steps to contribute are as follows:
-- Fork and clone the registry repository
-- Use the CLI and set the `--registry` flag to the local path of the cloned repository
-- Execute your commands as needed
-- Push your changes to your fork and create a pull request
+1. Fork and clone the registry repository
+2. Use the CLI and set the `--registry` flag to the local path of the cloned repository
+3. Execute your commands as needed
+4. Push your changes to your fork and create a pull request
 
 ## Custom registries
 
@@ -24,4 +24,38 @@ The CLI has two command line arguments for configuring the registry it uses:
 - The `--overrides` flag sets an optional additional path which can be useful for forcing specific overrides of the default data, for example to use a different RPC URL in a chain's metadada.
 
 For more information see the [CLI reference page](/docs/reference/cli.mdx).
+
+## Usage (Javascript)
+
+### Install
+
+```sh
+# With npm
+npm install @hyperlane-xyz/registry
+# Or with yarn
+yarn add @hyperlane-xyz/registry
+```
+
+### Get Content
+
+#### Via the package (static)
+
+The simplest way to access the registry data would be to import the desired parts directly from the package:
+
+```ts
+// Via the base package
+import { ethereum, ethereumAddresses } from '@hyperlane-xyz/registry';
+// Or via sub-exports for more optimal bundles if your bundler allows it
+import { metadata, addresses } from '@hyperlane-xyz/registry/chains/ethereum';
+```
+
+#### Via the utilities (dynamic)
+
+If you need to ensure you have the latest data, registry content can be fetched on-the-fly with the `GithubRegistry` class.
+
+```ts
+import { GithubRegistry } from '@hyperlane-xyz/registry';
+const registry = new GithubRegistry();
+const chainMetadata = await registry.getMetadata();
+```
 
