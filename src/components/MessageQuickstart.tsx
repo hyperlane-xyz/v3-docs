@@ -33,7 +33,8 @@ export default function MessageQuickstart() {
             </CodeBlock>
             Send the message:
             <CodeBlock language="shell">
-              hyperlane send message --origin {originChain} --destination{" "}
+              hyperlane send message --origin {originChain} --destination --body
+              "{body}""
               {destinationChain}
             </CodeBlock>
           </TabItem>

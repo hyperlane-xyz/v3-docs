@@ -1,8 +1,16 @@
 # Troubleshooting
 
+## Logging
+
+Logging levels and formats can be configured for Hyperlane tooling using the following two environment variables:
+- `LOG_LEVEL`: The log level to filter to. Defaults to `info`. Choices: `debug | info | warn | error | off`
+- `LOG_FORMAT`: The format of the log output. Defaults to `pretty`. Choices: `pretty | json`
+
+The [Hyperlane CLI](/docs/reference/cli.mdx) also allows configuring logging via the `--log` and `--verbosity` flags.
+
 ## Chain configuration
 
-Within your working directory, you may find a `config/` folder containing a `chains.yaml` file. This `chains.yaml` configuration file allows you to describe chain metadata for use in Hyperlane deployments or apps.
+Within your working directory, you may find a `chains/` yaml files organized by chain name. These `metadata.yaml` files describe the information needed to use the chain in Hyperlane deployments and apps.
 
 You can define a full configuration for any new chain in this file. The metadata that can be configured is defined in this [example configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml). You can also find the chain metadata schema at [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
 

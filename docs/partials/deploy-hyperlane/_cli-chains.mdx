@@ -1,0 +1,15 @@
+The deployment will require basic information about any chains it will be interacting with. If the target chains are not already in the [Hyperlane Registry](https://github.com/hyperlane-xyz/hyperlane-registry), you must specify chain metadata for them. See the [CLI reference](/docs/reference/cli.mdx) for details.
+
+To see what chains are in the currently known, run the following command:
+
+```bash
+hyperlane chains list
+```
+
+To create a chain metadata config for any other chains, run the following command:
+
+```bash
+hyperlane config create chain
+```
+
+Or you can define the config manually. See the [ChainMetadata type](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts#L62) for its schema. See [chain-config.yaml](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml) for an example.

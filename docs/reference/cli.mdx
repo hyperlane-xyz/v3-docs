@@ -1,0 +1,49 @@
+# Hyperlane CLI
+
+## Overview
+
+The Hyperlane CLI is the official command-line tool for deploying Hyperlane contracts to new chains. It also includes utilities for interacting with deployed contracts and registries.
+
+The published version is available [on NPM](https://www.npmjs.com/package/@hyperlane-xyz/cli). The source is available [on Github in the monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/typescript/cli).
+
+## Setup
+
+:::tip
+
+ [Node 18](https://nodejs.org/en/download) or newer is required
+
+:::
+
+To install the CLI globally, use the `npm install -g` command. This will the `hyperlane` command available anywhere in your terminal.
+
+```bash
+# Install with NPM
+npm install -g @hyperlane-xyz/cli
+# Or uninstall old versions
+npm uninstall -g @hyperlane-xyz/cli
+```
+
+Alternatively, for running individual commands, you can use `npx` or `dlx`:
+
+```bash
+# Run via NPM's npx command
+npx @hyperlane-xyz/cli
+# Or via Yarn's dlx command
+yarn dlx @hyperlane-xyz/cli
+```
+
+## Usage
+
+To view a list of the available commands and their arguments, run `hyperlane --help`.
+
+A few common command options include:
+- `--version`: Display your current installed version of the CLI
+- `--registry`: Set the registry URI to use for chain metadata and contract addresses
+- `--overrides`: Set an additional path for overrides to the default registry data
+-- `log`: Set the log format for the CLI (defaults to pretty)
+-- `verbosity`: Set the log level for the CLI (defaults to info)
+-- `key`: Set the key to use for signing transactions (defaults to the HYP_KEY env var)
+
+## Registries
+
+By default, the CLI will pull chain metadata and contract addresses from the [default Hyperlane Registry](https://github.com/hyperlane-xyz/hyperlane-registry) but will write new configs and deployments to your local filesystem. For more information see the [Registries page](/docs/reference/registries.mdx).

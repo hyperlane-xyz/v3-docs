@@ -1,0 +1,27 @@
+# Hyperlane Registries
+
+## Overview
+
+Hyperlane can be deployed to anywhere by anyone. But for those deployments to be useful, their details must be well known. Registries are collections of chain metadata, contract addresses, and other useful information for interacting with Hyperlane contracts and tools. There is a [default registry](https://github.com/hyperlane-xyz/hyperlane-registry) maintained by the Hyperlane core team. The [CLI](/docs/reference/cli.mdx), the [Explorer](https://explorer.hyperlane.xyz), and other tools can use registry data. 
+
+## Default registry
+
+Metadata and artifacts for deployments done by the Hyperlane core team will be available here:
+https://github.com/hyperlane-xyz/hyperlane-registry
+
+However, community members are encouraged to add their own deployments to this default registry. The steps to contribute are as follows:
+- Fork and clone the registry repository
+- Use the CLI and set the `--registry` flag to the local path of the cloned repository
+- Execute your commands as needed
+- Push your changes to your fork and create a pull request
+
+## Custom registries
+
+As long as the registry conforms to the same layout and file schemas as the default registry, any Github repository URL or local file path can be used instead.
+
+The CLI has two command line arguments for configuring the registry it uses:
+- The `--registry` flag sets the primary registry and uses the default Github registry if not set
+- The `--overrides` flag sets an optional additional path which can be useful for forcing specific overrides of the default data, for example to use a different RPC URL in a chain's metadada.
+
+For more information see the [CLI reference page](/docs/reference/cli.mdx).
+
