@@ -35,7 +35,7 @@ interface IMailbox {
 
 This is a departure from the existing [interchain gas payment](../reference/hooks/interchain-gas.mdx) and [hook](../reference/hooks/overview.mdx) interfaces but should be almost entirely backwards compatible. Mirroring the [interchain security modules](../reference/ISM/specify-your-ISM.mdx) pre-handle lifecycle hook, the architectural change is introducing post-dispatch lifecycle hooks which receive authenticated message content from the mailbox and perform some additional task, like paying interchain gas to the relayer or using a different transport layer.
 
-![v3 hook diagram](../../static/img/v3-hook-diagram.png)
+![v3 hook diagram](/img/v3-hook-diagram.png)
 
 The mailbox will have a required hook needed by the protocol and a default hook that can be overridden by the message sender, further modularizing the mailbox interface. We expect the required hook to include enforcing protocol fees. These hooks will be governable, enabling Mailbox operators to add message-specific capabilities as default or required behavior incrementally without mutating message content. This mirrors default ISM governance and post-dispatch hook behavior should reflect requirements of the message destination’s ISM, default or otherwise.
 
@@ -98,7 +98,7 @@ mailbox.dispatch{value: msg.value}(destination, recipient, body, opStackHook);
 
 #### Permissionless Interoperability Composition
 
-![permissionless interop composition](../../static/img/permissionless-composition.png)
+![permissionless interop composition](/img/permissionless-composition.png)
 
 ## Implementation Guide
 
