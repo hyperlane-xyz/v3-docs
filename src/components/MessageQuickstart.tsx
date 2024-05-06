@@ -33,9 +33,8 @@ export default function MessageQuickstart() {
             </CodeBlock>
             Send the message:
             <CodeBlock language="shell">
-              hyperlane send message --origin {originChain} --destination --body
-              "{body}""
-              {destinationChain}
+              hyperlane send message --origin {originChain} --destination{" "}
+              {destinationChain} --body "{body}""
             </CodeBlock>
           </TabItem>
           <TabItem value="cast" label="Cast">
