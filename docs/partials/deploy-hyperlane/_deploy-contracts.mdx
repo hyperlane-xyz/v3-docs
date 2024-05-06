@@ -38,12 +38,11 @@ When asked about the multisig type, choose `message id ism`. In the context of t
 
 ### Dry Run
 
-Prior to executing a deployment, you can execute a dry-run via `--dry-run`, `-dr`, or `-d` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment.
-This will not deploy any contracts, but you will be able to see all the contracts that will be deployed, along with the generated artifacts at `$OUT_DIR/dry-run_*`.
+Prior to executing a deployment, you can execute a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment.
+This will not deploy any contracts, but you a list of all the deployed contracts that will be will be displayed.
 
 In addition to validating your upcoming deployment, you can provide the address of the EOA you intend to deploy with via `--key` or `-k`.
 This will ensure you have approximately enough funds to complete the deployment, without providing access to your private key to pay for transactions.
-Additionally, gas usage statistics will be displayed in your console to provide insight into the cost of deployment.
 
 :::note
 
@@ -54,13 +53,12 @@ For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book
 :::
 
 ```bash
-hyperlane deploy core --dry-run \
-    --targets chain1,... \ # one of the chains you want to bridge between
-    --chains $CHAIN_CONFIG_FILE \  # path to chains.yaml config e.g. ./configs/chains.yaml
+hyperlane deploy core --dry-run chain1 \
+    --targets chain1 \ # one of the chains you want to bridge between
     --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
-    --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # (optional) in case you want to reuse contracts you've already predeployed
-    --out $OUT_DIR \ # (optional) deployment contract artifacts; defaults to /artifacts
-    --key $YOUR_DEPLOYER_ADDRESS # (optional) your account address to be impersonated via Anvil; can also be provided via HYP_KEY env variable
+    --key $YOUR_DEPLOYER_ADDRESS # (optional) your account address to be impersonated via Anvil; defaults to the HYP_KEY env variable
+    --registry # (optional) path to your primary registry; defaults to the Hyperlane github registry \
+    --overrides # (optional) path to a override registry; defaults to the local ./ path
 ```
 
 ### Deploy
@@ -70,15 +68,14 @@ We're now ready to use the `deploy core` command to deploy the Hyperlane contrac
 ```bash
 hyperlane deploy core \
     --targets chain1,chain2,... \ # all the chains you want to bridge between
-    --chains $CHAIN_CONFIG_FILE \  # path to chains.yaml config e.g. ./configs/chains.yaml
     --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
-    --artifacts $PREDEPLOYED_ARTIFACT_FILE \ # (optional) in case you want to reuse contracts you've already predeployed
-    --out $OUT_DIR \ # (optional) deployment contract artifacts; defaults to /artifacts
     --key $YOUR_DEPLOYER_PRIVATE_KEY # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
+    --registry # (optional) path to your primary registry; defaults to the Hyperlane github registry \
+    --overrides # (optional) path to a override registry; defaults to the local ./ path
 ```
 
 ### Verify
 
-Deployment contract artifacts will be written to to the `artifacts/` folder by default. The deployer will create two timestamped files, `agent-config-{timestamp}.json` and `core-deployment-{timestamp}.json`
-The `core-deployment` file contains the addresses of core contracts, organized by chain.
-The `agent-config` file contains the data needed to run Hyperlane agents for the next step.
+Deployment contract artifacts will be written to the configured registries. By default, you'll find the new addresses in the local directory you ran the command from (e.g. `./chains/chain1/addresses.yaml`).
+
+The deployment will also generate a Hyperlane Agent config, which is written to `./configs/agent.json` by default but can be configured with the `--agent` flag.
