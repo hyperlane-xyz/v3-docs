@@ -246,6 +246,16 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "reference/registries",
+      label: "Registries",
+    },
+    {
+      type: "doc",
+      id: "reference/cli",
+      label: "CLI",
+    },
+    {
+      type: "doc",
       id: "reference/glossary",
       label: "Glossary",
     },
@@ -357,15 +367,38 @@ const sidebars = {
 
   guidesSidebar: [
     {
+      type: "category",
+      label: "Explorer Debugging",
+      link: {
+        type: "doc",
+        id: "guides/explorer/explorer-debugging",
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/explorer/configuring-pi-chains",
+          label: "Configuring PI Chains",
+        },
+        {
+          type: "doc",
+          id: "guides/explorer/rest-api",
+          label: "REST API",
+        },
+        {
+          type: "doc",
+          id: "guides/explorer/graphql-api",
+          label: "GraphQL API",
+        },
+      ]
+    },
+    {
       type: "doc",
       id: "guides/deploy-hyperlane-local-agents",
       label: "Deploy Hyperlane with Local Agents",
     },
-    {
-      type: "doc",
-      id: "guides/v2-to-v3-migration",
-      label: "v2 to v3 Migration",
-    },
+
     {
       type: "doc",
       id: "guides/implementation-guide",
@@ -388,33 +421,6 @@ const sidebars = {
           label: "Unit Testing",
         },
         {
-          type: "category",
-          label: "Explorer Debugging",
-          link: {
-            type: "doc",
-            id: "guides/developer-tips/explorer-debugging",
-          },
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/developer-tips/explorer-debugging/configuring-pi-chains",
-              label: "Configuring PI Chains",
-            },
-            {
-              type: "doc",
-              id: "guides/developer-tips/explorer-debugging/rest-api",
-              label: "REST API",
-            },
-            {
-              type: "doc",
-              id: "guides/developer-tips/explorer-debugging/graphql-api",
-              label: "GraphQL API",
-            },
-          ],
-        },
-        {
           type: "doc",
           id: "guides/latencies",
           label: "Latencies",
@@ -425,6 +431,11 @@ const sidebars = {
           label: "Token Faucets",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "guides/v2-to-v3-migration",
+      label: "v2 to v3 Migration",
     },
     /**
     {

@@ -5,7 +5,7 @@ Visit the Explorer at [https://explorer.hyperlane.xyz](https://explorer.hyperlan
 Then paste a sender/recipient address or a transaction hash into the top search field. All matching messages will be shown in the result list. Click the row for more details.
 
 <figure>
-![](../../../static/img/explorer-debugging/explorer-search.png)
+![](/img/explorer-debugging/explorer-search.png)
 <figcaption>Retrieving a transaction in the Hyperlane Explorer.</figcaption>
 </figure>
 
@@ -14,7 +14,7 @@ Then paste a sender/recipient address or a transaction hash into the top search 
 You'll know that a message failed to process because the message status near the top of the page will show as "Error" and the upper right section of the page will specify a reason why the message wasn't able to be processed.
 
 <figure>
-![](../../../static/img/explorer-debugging/tx-failing.png)
+![](/img/explorer-debugging/tx-failing.png)
 <figcaption>Failed transaction from Alfajores to Base Goerli.</figcaption>
 </figure>
 
@@ -40,7 +40,7 @@ EVM addresses (`address`) must be left-padded with zeroes to be compliant. Refer
 If gas estimation of the message recipient's `IMessageRecipient.handle()` function fails, [relayers](../../protocol/agents/relayer.mdx) will not be able to deliver the message. Relayers will continue to estimate gas for message delivery, as state changes may allow for successful delivery of a previously undeliverable message.
 
 <figure>
-![](../../../static/img/explorer-debugging/call-revert-exception.png)
+![](/img/explorer-debugging/call-revert-exception.png)
 <figcaption>Example exception of a transaction signed by validators but unprocessable by the relayer.</figcaption>
 </figure>
 

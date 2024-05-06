@@ -107,9 +107,9 @@ Action: `search-messages`, Parameter (1 required):
 
 - `query`: address or hash to search (string)
 
-### APIs for Permissionless Interoperability chains&#x20;
+### APIs for Permissionless Interoperability chains
 
-Hyperlane can be [permissionlessly deployed](../../../deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, query the `search-pi-messages` action. The search requires a chain config in the request body. Note, this same functionality is also available in the [explorer UI](../../../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx).
+Hyperlane can be [permissionlessly deployed](/docs/deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, query the `search-pi-messages` action. The search requires a chain config in the request body. Note, this same functionality is also available in the [explorer UI](/docs/guides/explorer/configuring-pi-chains.mdx).
 
 ```javascript
 const chainConfig = {
@@ -150,4 +150,4 @@ const data = await response.json();
 
 #### Chain Config Schema
 
-The chain config schema is an extension of the Hyperlane SDK's [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/consts/chainMetadata.ts#L21) but with a `contracts` object added. See [Configuring PI Chains](../../../guides/developer-tips/explorer-debugging/configuring-pi-chains.mdx) for more details about this config object.
+The chain config schema is an extension of the Hyperlane [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts) but with a `contracts` object added. See [Configuring PI Chains](/docs/guides/explorer/configuring-pi-chains.mdx) for more details about this config object.

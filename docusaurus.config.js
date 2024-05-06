@@ -303,22 +303,22 @@ const config = {
             ]
           },
           {
-            to: '/docs/guides/developer-tips/explorer-debugging',
+            to: '/docs/guides/explorer/explorer-debugging',
             from: [
               '/docs/build-with-hyperlane/troubleshooting',
               '/docs/build-with-hyperlane/explorer/observability'
             ]
           },
           {
-            to: '/docs/guides/developer-tips/explorer-debugging/configuring-pi-chains',
+            to: '/docs/guides/explorer/configuring-pi-chains',
             from: ['/docs/build-with-hyperlane/explorer/configuring-pi-chains']
           },
           {
-            to: '/docs/guides/developer-tips/explorer-debugging/rest-api',
+            to: '/docs/guides/explorer/rest-api',
             from: ['/docs/build-with-hyperlane/explorer/rest-api']
           },
           {
-            to: '/docs/guides/developer-tips/explorer-debugging/graphql-api',
+            to: '/docs/guides/explorer/graphql-api',
             from: ['/docs/build-with-hyperlane/explorer/graphql-api']
           },
           {
