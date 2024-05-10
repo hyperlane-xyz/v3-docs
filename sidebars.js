@@ -391,7 +391,12 @@ const sidebars = {
           id: "guides/explorer/graphql-api",
           label: "GraphQL API",
         },
-      ]
+      ],
+    },
+    {
+      type: "doc",
+      id: "guides/avs-operator-guide",
+      label: "AVS operator guide",
     },
     {
       type: "doc",
