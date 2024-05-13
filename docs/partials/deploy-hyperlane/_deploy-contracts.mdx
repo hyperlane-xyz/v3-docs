@@ -36,12 +36,12 @@ hyperlane config create ism
 
 When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
 
-### Dry Run
+### Dry Run a Core Deployment
 
-Prior to executing a deployment, you can execute a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment. This will not execute any transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
+Prior to executing a deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
 
-In addition to validating your upcoming deployment, you can provide the address of the EOA you intend to deploy with via `--key` or `-k`.
-This will ensure you have approximately enough funds to complete the deployment, without providing access to your private key to pay for transactions.
+In addition to validating your upcoming deployment, you can optionally provide the address of the EOA you intend to deploy with via `--from-address` or `-f`.
+This will ensure you have approximately enough funds to complete the deployment.
 
 :::note
 
@@ -53,10 +53,9 @@ For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book
 
 ```bash
 hyperlane deploy core --dry-run chain1 \
-    --targets chain1 \ # one of the chains you want to bridge between
     --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
-    --key $YOUR_DEPLOYER_ADDRESS # (optional) your account address to be impersonated via Anvil; defaults to the HYP_KEY env variable
-    --registry # (optional) path to your primary registry; defaults to the Hyperlane github registry \
+    --from-address $YOUR_DEPLOYER_ADDRESS \ # (optional) your account address to be impersonated via Anvil; defaults to the HYP_KEY env variable
+    --registry \ # (optional) path to your primary registry; defaults to the Hyperlane github registry
     --overrides # (optional) path to a override registry; defaults to the local ./ path
 ```
 
@@ -68,8 +67,8 @@ We're now ready to use the `deploy core` command to deploy the Hyperlane contrac
 hyperlane deploy core \
     --targets chain1,chain2,... \ # all the chains you want to bridge between
     --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
-    --key $YOUR_DEPLOYER_PRIVATE_KEY # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
-    --registry # (optional) path to your primary registry; defaults to the Hyperlane github registry \
+    --key $YOUR_DEPLOYER_PRIVATE_KEY \ # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
+    --registry \ # (optional) path to your primary registry; defaults to the Hyperlane github registry
     --overrides # (optional) path to a override registry; defaults to the local ./ path
 ```
 
