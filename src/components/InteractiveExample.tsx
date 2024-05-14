@@ -39,7 +39,7 @@ export default function InteractiveExample(props: Props) {
   const [destinationChain, setDestinationChain] = useState<string>(
     CoreTestnets[1]
   );
-  const [body, setBody] = useState("Hello, world");
+  const [body, setBody] = useState("Hello, world);
 
   const originDomain = chainMetadata[originChain].domainId;
   const destinationDomain = chainMetadata[destinationChain].domainId;
