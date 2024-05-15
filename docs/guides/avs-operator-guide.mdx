@@ -1,0 +1,83 @@
+# Hyperlane AVS Operator Guide
+
+Hyperlane validators are extremely lightweight off-chain agents responsible for observing the [Mailbox](../protocol/mailbox.mdx) on the source chain contract and, if required, signing a merkle root to faciliate message transmission to remote chains.
+
+### Node requirements
+
+- Operating System: Windows, MacOS, Linux
+- CPU: 1
+- Memory: 1 GiB
+- Disk: ? GiB
+- Expected Network Utilization:
+  - Total download bandwidth usage: 1 Mbps
+  - Upload bandwidth usage: 1 Mbps
+
+### Protocol SLA
+
+Anyone can join Hyperlane as a validator, i.e., there's no defacto validator set. You can start attesting to messages from your chain but you'll only be rewarded if you are picked by an ISM deployer for verification. Similarily, you can only get slashed by the said ISM deployer if you enroll into their Challenger.
+
+Because of the permissionless nature, Hyperlane wouldn't be slashing for liveness but you can still be penalised by not being selected in an ISM's validator set and losing out of rewards.
+
+Hence, the protocol SLA will be vary from challenger to challenger.
+
+### IRemoteChallenger
+
+Hyperlane embodies permissionless interoperibility. In this spirit, the application developer should be able to configure gurantees for economic security for her application. This means programmable challenge conditions and window to slash.
+The `IRemoteChallenger` interfaces exposes an API for this purpose:
+
+```solidity
+interface IRemoteChallenger {
+    /// @notice Returns the number of blocks that must be mined before a challenge can be handled
+    /// @return The number of blocks that must be mined before a challenge can be handled
+    function challengeDelayBlocks() external view returns (uint256);
+
+    /// @notice Handles a challenge for an operator
+    /// @param operator The address of the operator
+    function handleChallenge(address operator) external;
+}
+```
+
+This configuration should be immutable and accessible for any AVS operator to view and opt into. `handleChallneger` implicitly encodes how you expect the challenge from the source chain (say Arbitrum) is delivered to Ethereum Mainnet where the AVS contracts and the IRemoteChallenger live. For Arbitrum, it can be the rollup's native bridge and for another L1, it can be a committee-based solution. Our interface is challenger method agnostic to allow for flexibility in this design area. A reasonable `challengeDelayBlocks` would be slightly longer than in a week in the case of using the native bridge.
+
+As an operator, you are expected to review the different `IRemoteChallenger` contracts and assess their risk and rewards. If interested, you can enroll into one or multiple challengers directly from the `HyperlaneServiceManager` contract or using our CLI:
+
+```bash
+cast send --private-key <PRIVATE_KEY> $SERVICE_MANAGER "enrollIntoChallenger(address)" <CHALLENGER_ADDRESS> --rpc-url <RPC_URL>
+```
+
+NOTE: The IRemoteChallenger implementations are not yet live in production.
+
+## Register your operator
+
+:::warning
+
+There is a distinction between the operator key and the AVS signing key. The operator key is meant for just interacting with the AVS contracts whereas the AVS signing key is used for active operations which in our case will be signing checkpoints with a Hypelane validator. As on May 15th, 2024. Eigenlayer doesn't support attesting to an AVS signing key while registering as an operator but that will be changing in short order. More details about the keys [here](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/key-management/intro#operator-keys).
+
+:::
+
+For registering your operator to Hyperlane AVS, you can register your operator key generated using Eignelayer CLI by creating an EIP-191 compliant signature and submitting it via our CLI:
+
+```bash
+ hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> --chain holesky --key <PRIVATE_KEY_FOR_SENDING_TX>
+```
+
+Note: PRIVATE_KEY_FOR_SENDING_TX can be any third-party key and doesn't need to be operator key.
+
+### Deregistering your operator
+
+```bash
+ hyperlane avs deregister --operatorKeyPath <PATH_TO_OPERATOR_KEY> --chain holesky
+```
+
+### Payments
+
+Coming soon
+
+### Contracts deployment
+
+| Name                                                                                                                                                                              | Proxy                                                                                                                           | Implementation                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| [`AVSDirectory`](https://github.com/Layr-Labs/eigenlayer-contracts/blob/testnet-holesky/src/contracts/core/AVSDirectory.sol)                                                      | [`0x055733000064333CaDDbC92763c58BF0192fFeBf`](https://holesky.etherscan.io/address/0x055733000064333CaDDbC92763c58BF0192fFeBf) | [`0xEF5BA995Bc7722fd1e163edF8Dc09375de3d3e3a`](https://holesky.etherscan.io/address/0xEF5BA995Bc7722fd1e163edF8Dc09375de3d3e3a) |
+| [`ProxyAdmin`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/transparent/ProxyAdmin.sol)                                                     |                                                                                                                                 | [`0x6e7b29cb2a7617405b4d30c6f84bbd51b4bb4be8`](https://holesky.etherscan.io/address/0x1784be6401339fc0fedf7e9379409f5c1bfe9dda) |
+| [`ECDSAStakeRegistry`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/ECDSAStakeRegistry.sol)           | [`0x275aCcCa81cAD931dC6fB6E49ED233Bc99Bed4A7`](https://holesky.etherscan.io/address/0x275aCcCa81cAD931dC6fB6E49ED233Bc99Bed4A7) | [`0xfc6e546510dc9d76057f1f76633fcffc188cb213`](https://holesky.etherscan.io/address/0xfc6e546510dc9d76057f1f76633fcffc188cb213) |
+| [`HyperlaneServiceManager`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/HyperlaneServiceManager.sol) | [`0x16B710b86CAd07E6F1C531861a16F5feC29dba37`](https://holesky.etherscan.io/address/0x16B710b86CAd07E6F1C531861a16F5feC29dba37) | [`0xeb6f11189197223c656807a83b0dd374f9a6df44`](https://holesky.etherscan.io/address/0xeb6f11189197223c656807a83b0dd374f9a6df44) |
