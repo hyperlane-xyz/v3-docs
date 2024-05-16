@@ -1,5 +1,13 @@
 # Hyperlane AVS
 
+### Protocol SLA
+
+Anyone can join Hyperlane as a validator, i.e., there's no defacto validator set. You can start attesting to messages from your chain but you'll only be rewarded if you are picked by an ISM deployer for verification. Similarily, you can only get slashed by the said ISM deployer if you enroll into their Challenger.
+
+Because of the permissionless nature of the protocol, Hyperlane wouldn't be slashing for liveness but you can still be penalized by not being selected in an ISM's validator set and losing out on rewards.
+
+Hence, the protocol SLA may vary from challenger to challenger.
+
 ### IRemoteChallenger
 
 Hyperlane embodies permissionless interoperability. In this spirit, an application developer should be able to configure gurantees for economic security for their application. This means challenge conditions and slashing windows should be programmable.

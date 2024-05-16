@@ -2,28 +2,9 @@
 
 Hyperlane validators are extremely lightweight off-chain agents responsible for observing the [Mailbox](../protocol/mailbox.mdx) on the source chain contract and, if required, signing a merkle root to faciliate message transmission to remote chains.
 
-### Node requirements
-
-- Operating System: Linux/macOS (arm/64)
-- CPU: 1
-- Memory: 1 GiB
-- Disk: ? GiB
-- Expected Network Utilization:
-  - Total download bandwidth usage: 1 Mbps
-  - Upload bandwidth usage: 1 Mbps
-
 ### Prerequisites
 
 - Install the `@hyperlane-xyz/cli` package versioned `3.12.0` or later. Follow instructions for installation [here](https://docs.hyperlane.xyz/docs/reference/cli).
-- `rustc` version `1.72.1` or later for validator.
-
-### Protocol SLA
-
-Anyone can join Hyperlane as a validator, i.e., there's no defacto validator set. You can start attesting to messages from your chain but you'll only be rewarded if you are picked by an ISM deployer for verification. Similarily, you can only get slashed by the said ISM deployer if you enroll into their Challenger.
-
-Because of the permissionless nature of the protocol, Hyperlane wouldn't be slashing for liveness but you can still be penalized by not being selected in an ISM's validator set and losing out on rewards.
-
-Hence, the protocol SLA may vary from challenger to challenger.
 
 ## Register your operator
 
@@ -38,14 +19,8 @@ To register with Hyperlane, operators must first register as an operator on the 
 Next, to register your operator to Hyperlane AVS, you can register your operator key (generated via EigenLayer CLI) by creating an ECDSA signature and submitting it via the Hyperlane CLI:
 
 ```bash
- hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> --chain holesky --key <PRIVATE_KEY_FOR_SENDING_TX>
+ hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> --chain holesky --key <HYP_KEY>
 ```
-
-:::note
-
-PRIVATE_KEY_FOR_SENDING_TX can be any third-party key and doesn't need to be operator key.
-
-:::
 
 ### Running the validator
 
@@ -60,17 +35,3 @@ The supported endpoints are:
 | **GET /eigen/node/health**                | for node health                            |
 | **GET /eigen/node/services**              | for a list of services the node is running |
 | **GET /eigen/node/`{service_id}`/health** | for health of a specific service           |
-
-### Deregistering your operator
-
-To deregister from the operator, you can use the following command:
-
-```bash
- hyperlane avs deregister --operatorKeyPath <PATH_TO_OPERATOR_KEY> --chain holesky
-```
-
-:::note
-
-As the operator key is used for interacting with the AVS contracts, you don't need a --key param for a separate key.
-
-:::
