@@ -268,6 +268,11 @@ const sidebars = {
       label: "Overview",
     },
     {
+      type: "doc",
+      id: "protocol/avs",
+      label: "AVS",
+    },
+    {
       type: "category",
       label: "Mailbox",
       link: {

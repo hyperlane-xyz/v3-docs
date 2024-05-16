@@ -1,0 +1,39 @@
+# Hyperlane AVS
+
+### IRemoteChallenger
+
+Hyperlane embodies permissionless interoperability. In this spirit, an application developer should be able to configure gurantees for economic security for their application. This means challenge conditions and slashing windows should be programmable.
+The `IRemoteChallenger` interface exposes an API for this purpose:
+
+```solidity
+interface IRemoteChallenger {
+    /// @notice Returns the number of blocks that must be mined before a challenge can be handled
+    /// @return The number of blocks that must be mined before a challenge can be handled
+    function challengeDelayBlocks() external view returns (uint256);
+
+    /// @notice Handles a challenge for an operator
+    /// @param operator The address of the operator
+    function handleChallenge(address operator) external;
+}
+```
+
+This configuration should be immutable and accessible for any AVS operator to view and opt into. The `handleChallenge` function explicitly encodes how you expect the challenge from the source chain (say Arbitrum) is delivered to Ethereum Mainnet where the AVS contracts and the `IRemoteChallenger` live.
+
+For Arbitrum, it can be the rollup's native bridge and for another L1, it can be a committee-based solution. Our interface is challenger implementation agnostic to allow for flexibility in this design area. A reasonable `challengeDelayBlocks` would be slightly longer than a week, in the case of using a rollup's native bridge.
+
+As an operator, you are expected to review the different `IRemoteChallenger` contracts and assess their risk and rewards. If interested, you can enroll into one or multiple challengers directly from the `HyperlaneServiceManager` contract or using our CLI:
+
+:::note
+
+The IRemoteChallenger implementations are not yet live in production.
+
+:::
+
+### Contracts deployment
+
+| Name                                                                                                                                                                              | Proxy                                                                                                                           | Implementation                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| [`AVSDirectory`](https://github.com/Layr-Labs/eigenlayer-contracts/blob/testnet-holesky/src/contracts/core/AVSDirectory.sol)                                                      | [`0x055733000064333CaDDbC92763c58BF0192fFeBf`](https://holesky.etherscan.io/address/0x055733000064333CaDDbC92763c58BF0192fFeBf) | [`0xEF5BA995Bc7722fd1e163edF8Dc09375de3d3e3a`](https://holesky.etherscan.io/address/0xEF5BA995Bc7722fd1e163edF8Dc09375de3d3e3a) |
+| [`ProxyAdmin`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/transparent/ProxyAdmin.sol)                                                     |                                                                                                                                 | [`0x6e7b29cb2a7617405b4d30c6f84bbd51b4bb4be8`](https://holesky.etherscan.io/address/0x1784be6401339fc0fedf7e9379409f5c1bfe9dda) |
+| [`ECDSAStakeRegistry`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/ECDSAStakeRegistry.sol)           | [`0x275aCcCa81cAD931dC6fB6E49ED233Bc99Bed4A7`](https://holesky.etherscan.io/address/0x275aCcCa81cAD931dC6fB6E49ED233Bc99Bed4A7) | [`0xfc6e546510dc9d76057f1f76633fcffc188cb213`](https://holesky.etherscan.io/address/0xfc6e546510dc9d76057f1f76633fcffc188cb213) |
+| [`HyperlaneServiceManager`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/HyperlaneServiceManager.sol) | [`0x16B710b86CAd07E6F1C531861a16F5feC29dba37`](https://holesky.etherscan.io/address/0x16B710b86CAd07E6F1C531861a16F5feC29dba37) | [`0xeb6f11189197223c656807a83b0dd374f9a6df44`](https://holesky.etherscan.io/address/0xeb6f11189197223c656807a83b0dd374f9a6df44) |
