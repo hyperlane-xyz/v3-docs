@@ -4,7 +4,7 @@ Hyperlane validators are extremely lightweight off-chain agents responsible for 
 
 ### Prerequisites
 
-- Install the `@hyperlane-xyz/cli` package versioned `3.12.2` or later. Follow instructions for installation [here](https://docs.hyperlane.xyz/docs/reference/cli).
+- Install the `@hyperlane-xyz/cli` package versioned `3.13.0` or later with `npm install -g @hyperlane-xyz/cli`. Follow more detailed instructions for installation [here](https://docs.hyperlane.xyz/docs/reference/cli).
 
 ## Register your operator
 
@@ -30,9 +30,8 @@ You can monitor Eigenlayer specific endpoints via the `--metrics` port you speci
 
 The supported endpoints are:
 
-| Endpoint                                  | Description                                |
-| ----------------------------------------- | ------------------------------------------ |
-| **GET /eigen/node**                       | for node info                              |
-| **GET /eigen/node/health**                | for node health                            |
-| **GET /eigen/node/services**              | for a list of services the node is running |
-| **GET /eigen/node/`{service_id}`/health** | for health of a specific service           |
+| Endpoint                     | Description                                |
+| ---------------------------- | ------------------------------------------ |
+| **GET /eigen/node**          | for node info                              |
+| **GET /eigen/node/health**   | for node health                            |
+| **GET /eigen/node/services** | for a list of services the node is running |
