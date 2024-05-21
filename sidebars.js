@@ -401,7 +401,7 @@ const sidebars = {
     {
       type: "doc",
       id: "guides/avs-operator-guide",
-      label: "AVS operator guide",
+      label: "AVS Operator Guide",
     },
     {
       type: "doc",
