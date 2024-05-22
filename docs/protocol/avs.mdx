@@ -1,5 +1,81 @@
 # Hyperlane AVS
 
+Welcome to the Hyperlane AVS documentation. This guide will help you understand the Hyperlane's AVS (Active Validator Service) module built on top of Eigenlayer, the ethereum restaking protocol.
+
+The AVS module uniquely enables economic security within the Hyperlane protocol with minimum cost to bootstrap a new validator network for each chain it supports. This is achieved by leveraging the shared pool of stake that can secure outbound messages from and between rollups. The main stakeholders in this process are:
+
+- **Operators** - Eigenlayer operators who opt out the Hyperlane AVS service and start validating outbound messages from the chain specified.
+- **Stakers** - Eigenlayer stakers who delegate their stake to the operators to secure the network.
+- **Hyperlane applications** - Applications that want to economically secure their messages across chains and are willing to pay for the service.
+
+## Architecture
+
+```mermaid
+classDiagram
+namespace Contracts {
+  class AVSDirectory {
+    avsOperatorStatus: address => OperatorAVSRegistrationStatus
+    registerOperatorToAVS(operator, signature)
+    deregisterOperatorFromAVS()
+  }
+  class ECDSAStakeRegistry {
+    quorum: (IStrategy[], multiplier)
+
+    registerOperatorWithSignature(operator, signature)
+    updateQuorumConfig(quorum, operators[])
+  }
+  class IServiceManager {
+    <<interface>>
+
+    registerOperatorToAVS(operator,signature)
+    deregisterOperatorFromAVS(operator)
+  }
+  class HyperlaneServiceManager {
+    enrolledChallengers: address => IRemoteChallenger
+
+    enrollIntoChallengers(IRemoteChallenger[])
+    startUnenrollment(IRemoteChallenger[])
+    completeUnenrollment(address[])
+  }
+  class IRemoteChallenger {
+    <<interface>>
+
+    challengeDelayBlocks()
+    handleChallenge(avsSigningKey)
+  }
+  class ISlasher {
+    <<interface>>
+
+    freezeOperator(operator)
+  }
+  class IStrategy {
+    <<interface>>
+
+    deposit(token,amt)
+    withdraw(token,amt)
+  }
+
+  class StrategyManager {
+    depositIntoStrategy()
+  }
+}
+
+
+ECDSAStakeRegistry..>IServiceManager
+ECDSAStakeRegistry..>IStrategy
+HyperlaneServiceManager..>ECDSAStakeRegistry
+HyperlaneServiceManager..> IRemoteChallenger
+HyperlaneServiceManager..> ISlasher
+
+HyperlaneServiceManager..>AVSDirectory
+StrategyManager..>IStrategy: transferFrom
+
+
+IServiceManager<|--HyperlaneServiceManager: implements
+
+
+```
+
 ### Protocol SLA
 
 Anyone can join Hyperlane as a validator, i.e., there's no defacto validator set. You can start attesting to messages from your chain but you'll only be rewarded if you are picked by an [ISM](./ISM/modular-security.mdx) deployer for verification. Similarily, you can only get slashed by the said ISM deployer if you enroll into their Challenger.
