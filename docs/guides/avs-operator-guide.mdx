@@ -4,7 +4,7 @@ Hyperlane validators are extremely lightweight off-chain agents responsible for 
 
 ### Prerequisites
 
-- Install the `@hyperlane-xyz/cli` package versioned `3.13.0` or later with `npm install -g @hyperlane-xyz/cli`. Follow more detailed instructions for installation [here](https://docs.hyperlane.xyz/docs/reference/cli).
+- Install the `@hyperlane-xyz/cli` package versioned `3.20.0-alpha` with `npm install -g @hyperlane-xyz/cli@3.20.0-alpha`. Follow more detailed instructions for installation [here](https://docs.hyperlane.xyz/docs/reference/cli).
 
 ## Register your operator
 
@@ -24,7 +24,8 @@ Next, to register your operator to Hyperlane AVS, you can register your operator
 
 ### Running the validator
 
-Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator.
+
+Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator on any chain you prefer (Holesky will be the simplest). Make sure your KMS key will have funds on that chain to announce itself.
 
 You can monitor Eigenlayer specific endpoints via the `--metrics` port you specified in the validator configuration. Read more about the example endpoints and what should be expected [here](https://docs.eigenlayer.xyz/eigenlayer/avs-guides/spec/api/).
 
