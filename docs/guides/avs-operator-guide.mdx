@@ -10,20 +10,21 @@ Hyperlane validators are extremely lightweight off-chain agents responsible for 
 
 :::warning
 
-There is a distinction between the operator key and the AVS signing key. The operator key is meant for just interacting with the AVS contracts whereas the AVS signing key is used for active operations, which in our case will be signing checkpoints with a Hyperlane Validator. As of May 15th 2024, EigenLayer doesn't support attesting to an AVS signing key while registering as an operator but that will be changing in short order. You can read more details about the keys [here](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/key-management/intro#operator-keys).
+There is a distinction between the operator key and the AVS signing key. The operator key is meant for just interacting with the AVS contracts whereas the AVS signing key is used for active operations, which in our case will be signing checkpoints with a Hyperlane validator.
 
 :::
 
-To register with Hyperlane, operators must first register as an operator on the Eigenlayer smart contracts on Holesky testnet. You can follow Eigenlayer's instructions [here](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) (only need the ECDSA key).
+To register with Hyperlane, operators must first register their operating key as an operator on the Eigenlayer smart contracts on Holesky testnet. You can follow Eigenlayer's instructions [here](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) (only need the ECDSA key).
 
 Next, to register your operator to Hyperlane AVS, you can register your operator key (generated via EigenLayer CLI) by creating an ECDSA signature and submitting it via the Hyperlane CLI:
 
 ```bash
- hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> --chain holesky --key <HYP_KEY>
+ hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> \
+    --chain holesky --key <HYP_KEY> \
+    --avsSigningKey <AVS_SIGNING_KEY>
 ```
 
 ### Running the validator
-
 
 Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator on any chain you prefer (Holesky will be the simplest). Make sure your KMS key will have funds on that chain to announce itself.
 
