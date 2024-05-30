@@ -4,6 +4,7 @@
 
 Hyperlane validators are extremely lightweight off-chain agents responsible for observing the [Mailbox](../protocol/mailbox.mdx) on the source chain contract and, if required, signing a merkle root to faciliate message transmission to remote chains. Learn more about the AVS protocol design [here](../protocol/avs.mdx).
 
+
 ## 0. Prerequisites
 
 Install the latest version of the `@hyperlane-xyz/cli` package with `npm install -g @hyperlane-xyz/cli`. Follow more detailed instructions for installation [here](https://docs.hyperlane.xyz/docs/reference/cli).
@@ -42,6 +43,6 @@ Next, to register your operator to Hyperlane AVS, you can register your operator
 
 :::success
 
-After receiving confirmation from the CLI, you would have successfully registered on the AVS and Hyperlane message receivers can now leverage your validators signatures for security. You can also support many chains with the same AVS signing key if you're running the operator for different chains.
+You can confirm you are registered by checking under the operator's section on EigenLayer's UI for Holesky [here](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab). Once confirmed, any Hyperlane message receiver can now leverage your validators signatures for security. You can also support many chains with the same AVS signing key if you're running the operator for different chains.
 
 :::

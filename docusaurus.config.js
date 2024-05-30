@@ -482,7 +482,7 @@ const config = {
               },
               {
                 label: "Twitter",
-                href: "https://twitter.com/Hyperlane_xyz",
+                href: "https://twitter.com/hyperlane",
               },
             ],
           },
