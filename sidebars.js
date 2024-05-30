@@ -272,7 +272,6 @@ const sidebars = {
       id: "protocol/protocol-overview",
       label: "Overview",
     },
-
     {
       type: "category",
       label: "Mailbox",
