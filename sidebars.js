@@ -272,11 +272,7 @@ const sidebars = {
       id: "protocol/protocol-overview",
       label: "Overview",
     },
-    {
-      type: "doc",
-      id: "protocol/avs",
-      label: "AVS",
-    },
+
     {
       type: "category",
       label: "Mailbox",
@@ -345,6 +341,11 @@ const sidebars = {
           label: "Economic Security",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "protocol/avs",
+      label: "AVS",
     },
     {
       type: "category",

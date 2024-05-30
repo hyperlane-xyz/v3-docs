@@ -4,11 +4,46 @@
 
 Welcome to the Hyperlane AVS documentation. This guide will help you understand the Hyperlane's AVS (Active Validator Service) module built on top of Eigenlayer, the Ethereum restaking protocol.
 
-The AVS module uniquely enables economic security within the Hyperlane protocol with minimum cost to bootstrap a new validator network for each chain it supports. This is achieved by leveraging the shared pool of stake that can secure outbound messages from and between rollups. The main stakeholders in this process are:
+Hyperlane currently employs a Proof of Authority model for security, in which a trusted group of validators are chosen to maintain [security](./ISM/multisig-ISM.mdx). However, if any validator signs erroneously or with malicious intent, there are no repercussions, as these validators have no economic stake. This is the gap that the AVS module is designed to address.
+
+```mermaid
+flowchart TB
+    subgraph Ethereum
+      Staker
+      Operator
+      EL[Eigenlayer]
+      H_AVS[Hyperlane AVS]
+      CH1[Challenger1]
+      CH2[Challenger2]
+      CH3[Challenger3]
+
+      Operator -- "(de)register()" --> H_AVS
+      Staker -- "deposit(operator)" --> EL
+
+      H_AVS <-..-> EL
+      CH1 -. "handleChallenge(operator)" .-> H_AVS
+      CH2 -. "handleChallenge(operator)" .-> H_AVS
+      CH3 -. "handleChallenge(operator)" .-> H_AVS
+
+      style H_AVS fill: #FF0099
+      style EL fill: #1a0c6d
+      style CH1 fill: #006400
+      style CH2 fill: #006400
+      style CH3 fill: #006400
+    end
+```
+
+The AVS module uniquely enables [economic security](./ISM/economic-security.mdx) within the Hyperlane protocol with minimum cost to bootstrap a new validator network for each chain it supports. This is achieved by leveraging the shared pool of stake that can secure outbound messages from and between rollups. The main stakeholders in this process are:
 
 - **Operators** - Eigenlayer operators who opt into the Hyperlane AVS service and start validating outbound messages from the chain(s) specified.
 - **Stakers** - Eigenlayer stakers who delegate their stake to the operators to secure the network.
 - **Hyperlane applications** - Applications that want to economically secure their messages across chains and are willing to pay for the service.
+
+:::note
+
+Since both slashing and reward payments aren't live yet, registration and operation does not mean that the signatures actually secure messages until setup in an ISM.
+
+:::
 
 ### Architecture
 
@@ -79,7 +114,9 @@ The above class diagram describes the architecture of the current AVS module con
 
 ### IRemoteChallenger
 
-Operators on Hyperlane have the flexibility to operate on their chosen chain(s), making the AVS module adaptable to any chain or challenger. However, this flexibility may result in the absence of a universally accepted 'canonical' source of truth for slashing on the Mainnet. Embracing the ethos of permissionless interoperability, we believe that application developers should have the ability to define their own source of truth and establish guarantees for their application's economic security. This includes the ability to program challenge conditions and slashing windows. To facilitate this level of customization, we have introduced the `IRemoteChallenger` interface.
+Operators on Hyperlane have the flexibility to operate on their chosen chain(s), making the AVS module adaptable to any chain or challenger. However, this flexibility may result in the absence of a universally accepted 'canonical' source of truth for slashing on the Mainnet. This is due to the fact that fraud can only be proven on the origin chain, and so there needs to be a way to transmit that information to the chain on which the stake lives.
+
+Embracing the ethos of permissionless interoperability, we believe that application developers should have the ability to define their own source of truth and establish guarantees for their application's economic security. This includes the ability to program challenge conditions and slashing windows. To facilitate this level of customization, we have introduced the `IRemoteChallenger` interface which mostly will be wrapped as an ISM itself with a stronger but slower security setup.
 
 ```solidity
 interface IRemoteChallenger {
@@ -95,7 +132,7 @@ interface IRemoteChallenger {
 
 This configuration should be immutable and accessible for any AVS operator to view and opt into. The `handleChallenge` function explicitly encodes how you expect the challenge from the source chain (say Arbitrum) is delivered to Ethereum Mainnet where the AVS contracts and the `IRemoteChallenger` live.
 
-For Arbitrum, it can be the rollup's native bridge and for another L1, it can be a committee-based solution. Our interface is challenger implementation agnostic to allow for flexibility in this design area. A reasonable `challengeDelayBlocks` would be slightly longer than a week, in the case of using a rollup's native bridge.
+For Arbitrum, it can be the rollup's native bridge and for another L1, it can be a committee-based solution. Our interface is challenger implementation agnostic to allow for flexibility in this design area. This allows for us to reuse the existing hook-ISMs setup by calling `handleChallenge()` once `ism.verify()` is successful on the L1. A reasonable `challengeDelayBlocks` would be slightly longer than a week in the case of using a rollup's native bridge.
 
 As an operator, you are expected to review the different `IRemoteChallenger` contracts and assess their risk and rewards. If interested, you can enroll into one or multiple challengers directly from the `HyperlaneServiceManager` contract.
 
@@ -124,7 +161,7 @@ HSM->>AVSDirectory: registerOperatorToAVS(operator,operatorSignature)
 Operator->>HSM: enrollForChallengers(challenger[])
 ```
 
-We need operators to enroll into specific challengers to allow for permissionless slashing by any ISM deployers. As an operator, you can inspect every remote challenger and choose for yourself which ones you want to opt into depending on risk vs reward. This also means Abacus Works won't be the bottleneck for adding challengers for different rollup stacks. The operators will be able to unenroll after the unenrollment delay blocks has passed.
+Operators need to enroll into specific challengers to allow for economic security with permissionless slashing. As an operator, you can inspect every remote challenger and choose for yourself which ones you want to opt into depending on risk. This also means there is no centralized permissioning or whitelisting that would be the bottleneck for adding challengers for different rollup stacks. The operators will be able to unenroll after the unenrollment delay blocks has passed.
 
 ### Workflow for deregistering
 
@@ -169,34 +206,6 @@ StrategyManager->>DelegationManager: increaseDelegatedShares
 
 In Eigenlayer's design, staker funds are safeguarded as they are not made accessible to the AVS until slashing is activated. This ensures that no funds are at risk prematurely. Additionally, this design does not allow users to selectively opt into the Hyperlane AVS alone, as staking is managed through the StrategyManager and directed towards a specific operator.
 
-### Workflow for reading stake from an ISM
-
-```mermaid
-sequenceDiagram
-  box Destination Chain
-    participant EconomicISM
-  end
-
-  actor StakeOracle
-
-  box Ethereum L1
-    participant ECDSAStakeRegistry
-    participant DelegationManager
-  end
-
-  StakeOracle->>ECDSAStakeRegistry: quorum().strategies
-  StakeOracle->>DelegationManager: getOperatorShares(operator, strategies)
-  StakeOracle->>EconomicISM: updateStake()
-```
-
-Stake weight given to different operators will be determined by the aggregate stake delegated to them on the L1. There's several ways of obtaining this but the most straightforward way will be to use the native L1->L2 bridge if the destination chain is a rollup.
-
-:::note
-
-The EconomicISM is not yet live in production and the above sequence diagram can change based on the final implementation.
-
-:::
-
 ### Workflow for slashing
 
 ```mermaid
@@ -227,14 +236,6 @@ The slashing mechanism is designed to be permissionless and flexible. The `IRemo
 Both the challenger and slasher contracts are not yet live in production. This sequence diagram can change based on the final implementation.
 
 :::
-
-### Protocol SLA
-
-Anyone can join Hyperlane as a validator, i.e., there's no defacto validator set. You can start attesting to messages from your chain but you'll only be rewarded if you are picked by an [ISM](./ISM/modular-security.mdx) deployer for verification. Similarily, you can only get slashed by the said ISM deployer if you enroll into their Challenger.
-
-Because of the permissionless nature of the protocol, Hyperlane wouldn't be slashing for liveness but you can still be penalized by not being selected in an ISM's validator set and losing out on rewards.
-
-Hence, the protocol SLA may vary from challenger to challenger.
 
 ### Contracts deployment
 
