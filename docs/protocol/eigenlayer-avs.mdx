@@ -2,7 +2,7 @@
 
 ### Overview
 
-Welcome to the Hyperlane AVS documentation. This guide will help you understand the Hyperlane's AVS (Active Validator Service) module built on top of Eigenlayer, the Ethereum restaking protocol.
+Welcome to the Hyperlane AVS documentation. This guide will help you understand the Hyperlane's AVS (Active Validator Service) module built atop EigenLayer, the Ethereum restaking protocol.
 
 Hyperlane currently employs a Proof of Authority model for security, in which a trusted group of validators are chosen to maintain [security](./ISM/multisig-ISM.mdx). However, if any validator signs erroneously or with malicious intent, there are no repercussions, as these validators have no economic stake. This is the gap that the AVS module is designed to address.
 
@@ -11,7 +11,7 @@ flowchart TB
     subgraph Ethereum
       Staker
       Operator
-      EL[Eigenlayer]
+      EL[EigenLayer]
       H_AVS[Hyperlane AVS]
       CH1[Challenger1]
       CH2[Challenger2]
@@ -35,13 +35,13 @@ flowchart TB
 
 The AVS module uniquely enables [economic security](./ISM/economic-security.mdx) within the Hyperlane protocol with minimum cost to bootstrap a new validator network for each chain it supports. This is achieved by leveraging the shared pool of stake that can secure outbound messages from and between rollups. The main stakeholders in this process are:
 
-- **Operators** - Eigenlayer operators who opt into the Hyperlane AVS service and start validating outbound messages from the chain(s) specified.
-- **Stakers** - Eigenlayer stakers who delegate their stake to the operators to secure the network.
-- **Hyperlane applications** - Applications that want to economically secure their messages across chains and are willing to pay for the service.
+- **Operators** - EigenLayer operators who opt into the Hyperlane AVS service and start validating outbound messages from the chain(s) specified
+- **Stakers** - EigenLayer stakers who delegate their stake to the operators to secure the network
+- **Applications** - Applications leveraging Hyperlane seeking to economically secure their messages across chains
 
-:::note
+:::caution
 
-Since both slashing and reward payments aren't live yet, registration and operation does not mean that the signatures actually secure messages until setup in an ISM.
+Slashing and reward payments are not enabled yet for EigenLayer. In addition to the AVS, signatures & validation must be set up in an ISM.
 
 :::
 
@@ -112,7 +112,7 @@ IServiceManager<..HyperlaneServiceManager
 
 The above class diagram describes the architecture of the current AVS module contracts. Crucially, it describes the _"metaAVS"_ design pattern which we support with the `IRemoteChallenger` interface.
 
-### IRemoteChallenger
+### `IRemoteChallenger`
 
 Operators on Hyperlane have the flexibility to operate on their chosen chain(s), making the AVS module adaptable to any chain or challenger. However, this flexibility may result in the absence of a universally accepted 'canonical' source of truth for slashing on the Mainnet. This is due to the fact that fraud can only be proven on the origin chain, and so there needs to be a way to transmit that information to the chain on which the stake lives.
 
@@ -144,7 +144,7 @@ The IRemoteChallenger implementations are not yet live in production.
 
 ### Workflow for registering
 
-Prerequisite: operator has to be registered as an Eigenlayer Operator (through their CLI)
+Prerequisite: operator has to be registered as an EigenLayer Operator (through their CLI)
 
 ```mermaid
 sequenceDiagram
@@ -204,7 +204,7 @@ StrategyManager->>Strategy1: token.transferFrom(sender, strategy, amount)
 StrategyManager->>DelegationManager: increaseDelegatedShares
 ```
 
-In Eigenlayer's design, staker funds are safeguarded as they are not made accessible to the AVS until slashing is activated. This ensures that no funds are at risk prematurely. Additionally, this design does not allow users to selectively opt into the Hyperlane AVS alone, as staking is managed through the StrategyManager and directed towards a specific operator.
+In EigenLayer's design, staker funds are safeguarded as they are not made accessible to the AVS until slashing is activated. This ensures that no funds are at risk prematurely. Additionally, this design does not allow users to selectively opt into the Hyperlane AVS alone, as staking is managed through the StrategyManager and directed towards a specific operator.
 
 ### Workflow for slashing
 
@@ -233,11 +233,11 @@ The slashing mechanism is designed to be permissionless and flexible. The `IRemo
 
 :::note
 
-Both the challenger and slasher contracts are not yet live in production. This sequence diagram can change based on the final implementation.
+Both the challenger and slasher contracts are not yet live in production. This sequence diagram may change based on the final implementation.
 
 :::
 
-### Contracts deployment
+### Contract deployment
 
 | Name                                                                                                                                                                              | Proxy                                                                                                                           | Implementation                                                                                                                  |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
