@@ -10,7 +10,11 @@ Install the latest version of the `@hyperlane-xyz/cli` package with `npm install
 
 ## 1. Running the validator
 
-Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator on any chain you prefer (Holesky will be the simplest). Make sure your KMS key will have funds on that chain to announce itself.
+Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator on any chain you prefer (Holesky will be the simplest). You can also easily generalize for other storage providers like [GCP](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156) and Azure, or other key management solutions.
+
+Make sure your KMS key will have funds on that chain to announce itself.
+
+### Monitoring
 
 You can monitor EigenLayer specific endpoints via the `--metrics` port you specified in the validator configuration. Read more about the example endpoints and what should be expected [here](https://docs.eigenlayer.xyz/eigenlayer/avs-guides/spec/api/).
 
