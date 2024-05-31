@@ -30,9 +30,9 @@ There is a distinction between the operator key and the AVS signing key. The ope
 
 ## 3. Register your operator
 
-To register with the Hyperlane AVS, operators must first register their operating key as an operator on the EigenLayer smart contracts on Holesky testnet. You can follow EigenLayer's instructions [here](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) (only need the ECDSA key).
+First, make sure you're registered with your operator key [as an EigenLayer operator](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) on Holesky. You'll only need the ECDSA key.
 
-Next, to register your operator to Hyperlane AVS, you can register your operator key (generated via EigenLayer CLI) by creating an ECDSA signature and submitting it with the AVS sigining key (validator address from the previous step) via the Hyperlane CLI:
+Next, to register your operator to Hyperlane AVS, you can register your operator key (generated via the EigenLayer CLI) by creating an ECDSA signature and submitting it along with the AVS signing key (the validator address from above) with the Hyperlane CLI:
 
 ```bash
  hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> \
@@ -40,8 +40,14 @@ Next, to register your operator to Hyperlane AVS, you can register your operator
     --avsSigningKey <AVS_SIGNING_KEY>
 ```
 
+Your AVS signing key can be used across multiple validators and doesn't require additional registration for each. If you use different AVS signing keys for each validator, you'll need to register each as an operator.
+
 :::success
 
-You can confirm you are registered by checking under the operator's section on EigenLayer's UI for Holesky [here](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab). Once confirmed, any Hyperlane message receiver can now leverage your validators signatures for security. You can also support many chains with the same AVS signing key if you're running the operator for different chains.
+Congrats on registering with the Hyperlane AVS!
+
+You can confirm you are registered by checking under the operator's section on EigenLayer's UI for Holesky [here](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab). 
+
+Once confirmed, any Hyperlane message receiver can now leverage your validators signatures for security. You can also support many chains with the same AVS signing key if you're running the operator for different chains.
 
 :::
