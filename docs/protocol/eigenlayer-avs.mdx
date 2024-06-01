@@ -41,7 +41,7 @@ The AVS module uniquely enables [economic security](./ISM/economic-security.mdx)
 
 :::caution
 
-Slashing and reward payments are not enabled yet for EigenLayer. In addition to the AVS, signatures & validation must be set up in an ISM.
+Slashing and reward payments are not enabled yet for EigenLayer. In addition to the AVS, signatures & validation must be set up in an [Interchain Security Module (ISM)](./ISM/multisig-ISM.mdx).
 
 :::
 
@@ -116,7 +116,9 @@ The above class diagram describes the architecture of the current AVS module con
 
 Operators on Hyperlane have the flexibility to operate on their chosen chain(s), making the AVS module adaptable to any chain or challenger. However, this flexibility may result in the absence of a universally accepted 'canonical' source of truth for slashing on the Mainnet. This is due to the fact that fraud can only be proven on the origin chain, and so there needs to be a way to transmit that information to the chain on which the stake lives.
 
-Embracing the ethos of permissionless interoperability, we believe that application developers should have the ability to define their own source of truth and establish guarantees for their application's economic security. This includes the ability to program challenge conditions and slashing windows. To facilitate this level of customization, we have introduced the `IRemoteChallenger` interface which mostly will be wrapped as an ISM itself with a stronger but slower security setup.
+Embracing the ethos of permissionless interoperability, we believe that application developers should have the ability to define their own source of truth and establish guarantees for their application's economic security. This includes the ability to program challenge conditions and slashing windows. 
+
+To enable this level of customization, we have introduced the `IRemoteChallenger` interface.  The `handleChallenge` function will only be invoked if `ism.verify()` successfully executes on the L1 originating from the chain where the fraudulent signature was detected. As mentioned above, it's critical to set up robust security measures for this underlying ISM.
 
 ```solidity
 interface IRemoteChallenger {
