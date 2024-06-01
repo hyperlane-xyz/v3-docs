@@ -342,6 +342,11 @@ const sidebars = {
       ],
     },
     {
+      type: "doc",
+      id: "protocol/eigenlayer-avs",
+      label: "EigenLayer AVS",
+    },
+    {
       type: "category",
       label: "Agents",
       link: {
