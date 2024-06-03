@@ -377,6 +377,11 @@ const sidebars = {
 
   guidesSidebar: [
     {
+      type: "doc",
+      id: "guides/deploy-hyperlane-local-agents",
+      label: "Deploy Hyperlane with Local Agents",
+    },
+    {
       type: "category",
       label: "Explorer Debugging",
       link: {
@@ -410,19 +415,13 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "guides/deploy-hyperlane-local-agents",
-      label: "Deploy Hyperlane with Local Agents",
+      id: "guides/create-custom-hook-and-ism",
+      label: "Create a Hook/ISM",
     },
-
     {
       type: "doc",
       id: "guides/implementation-guide",
       label: "Implementation Guide",
-    },
-    {
-      type: "doc",
-      id: "guides/create-custom-hook-and-ism",
-      label: "Create a Hook/ISM",
     },
     {
       type: "category",
