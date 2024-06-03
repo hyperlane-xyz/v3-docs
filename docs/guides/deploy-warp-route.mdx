@@ -24,7 +24,7 @@ Check out the [Warp Route](/docs/reference/applications/warp-routes) reference p
 To deploy the route, you will need a Warp Route deployment config file. A valid config will specify:
 * Which token, on which chain, is this Warp Route being created for?
 * _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](/docs/reference/messaging/messaging-interface.mdx), [interchain gas](/docs/reference/hooks/interchain-gas.mdx), and [interchain security modules](/docs/reference/ISM/specify-your-ISM.mdx).
-* _Optional:_ The token standard - fungible tokens using ERC20 or NFTs using ERC721. Note that ERC721 support is experimental and some Hyperlane tooling won't work for NFTs yet.
+* _Optional:_ The token standard - this includes fungible tokens using ERC20 or NFTs using ERC721, as well as ERC4626 yield-bearing tokens. _Note:_ ERC721 support is experimental and some Hyperlane tooling won't work for NFTs yet.
 
 The easiest way to create one is with the CLI's config command:
 
