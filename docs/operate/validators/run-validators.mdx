@@ -271,9 +271,6 @@ export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
 
 # run the Validator
 ./target/release/validator \
-  --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:3adc0e9-20240319-152359 \
-  ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
   --reorgPeriod 1 \
@@ -284,7 +281,7 @@ export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
   --validator.id alias/hyperlane-validator-signer-<your_chain_name> \
   --chains.<your_chain_name>.signer.id alias/hyperlane-validator-signer-<your_chain_name> \
   --checkpointSyncer.type s3 \
-  --checkpointSyncer.bucket hyperlane-validator-signatures-<your_chain_name> \
+  --checkpointSyncer.bucket hyperlane-validator-signatures-<your_chain_name>
 ```
 
   </TabItem>
