@@ -146,7 +146,7 @@ const config: AccountConfig = {
   owner: signer.address,
   localRouter: localRouter.address,
 };
-await app.callRemote(localChain, remoteChain, [call], config);
+await localRouter.callRemote(localChain, remoteChain, [call], config);
 ```
 
 ### Determine addresses
