@@ -4,6 +4,8 @@
 
 Hyperlane validators are extremely lightweight off-chain agents responsible for observing the [Mailbox](../protocol/mailbox.mdx) on the source chain contract and, if required, signing a merkle root to faciliate message transmission to remote chains. Learn more about the AVS protocol design [here](../protocol/eigenlayer-avs.mdx).
 
+As you follow this guide, you'll run a Hyperlane validator on [**any of the chains**](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains) the protocol is live on, including Arbitrum, Optimism, BSC, Base, Blast, Linea, Mode, and Polygon. After that you'll link your validator with your EigenLayer Operator by interacting with the AVS contract on Holesky.
+
 
 ## 0. Prerequisites
 
@@ -11,7 +13,7 @@ Install the latest version of the `@hyperlane-xyz/cli` package with `npm install
 
 ## 1. Running the validator
 
-Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator on **[any chain](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains) within the Hyperlane network**. You can also easily generalize for other storage providers like [GCP](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156) and Azure, or other key management solutions.
+Follow the validator guide [here](../operate/validators/run-validators.mdx) with the AWS setup to run the validator on [any chain](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains) within the Hyperlane network. You can also easily generalize for other storage providers like [GCP](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156) and Azure, or other key management solutions.
 
 Ensure that your KMS key has funds on that chain to announce itself.
 
@@ -45,7 +47,7 @@ Next, to register your operator to Hyperlane AVS, you can register your operator
     --avsSigningKey <AVS_SIGNING_KEY>
 ```
 
-Your AVS signing key can be used across multiple validators and doesn't require additional registration for each. If you use different AVS signing keys for each validator, you'll need to register each as an operator.
+Your AVS signing key can be reused across multiple validators and doesn't require additional registration for each. If you use different AVS signing keys for each validator, you'll need to register each as an operator.
 
 :::success
 
@@ -53,6 +55,6 @@ Congrats on registering with the Hyperlane AVS!
 
 You can confirm you are registered by checking under the operator's section on EigenLayer's UI for Holesky [here](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab). 
 
-Once confirmed, any Hyperlane message receiver can now leverage your validators signatures for security. You can also support many chains with the same AVS signing key if you're running the operator for different chains.
+Once confirmed, any Hyperlane message receiver can now leverage your validators signatures for security.
 
 :::
