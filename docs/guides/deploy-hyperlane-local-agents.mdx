@@ -191,7 +191,7 @@ softwareupdate --install-rosetta --agree-to-license
 Now that you understand more about configuring validator arguments, pull the latest docker image:
 
 ```sh
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
 ```
 
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_validator_<your_chain_name>` if it does not exist yet.
@@ -339,7 +339,7 @@ softwareupdate --install-rosetta --agree-to-license
 If you haven't already pulled the Docker image, do this now by running:
 
 ```sh
-docker pull gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
 ```
 
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
