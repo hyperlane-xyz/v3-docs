@@ -8,9 +8,13 @@ After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route
 
 Follow the [customization instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) for details on how to configure the UI's tokens and change the default branding assets/theme.
 
-### Token Config Example
+## Registry
 
-Here's an example config for a Warp Route that connects USDC on Sepolia to Alfajores. You can use Typescript, JSON, or YAML for your token configs.
+By default, the app will use the canonical Hyperlane registry published on NPM. To use use a different registry, you can set a URL using the `NEXT_PUBLIC_REGISTRY_URL` environment variable.
+
+### Warp Route Config Example
+
+Here's an example config for a Warp Route that connects USDC on Sepolia to Alfajores. You can use Typescript or YAML for your route configs.
 
 ```typescript
 {
@@ -71,7 +75,7 @@ anvil1: {
 
 ### Deploy the UI
 
-Since the UI is a Next.js app, you can use your favorite hosting service to host it. We recommend [Vercel](https://vercel.com), which works very well with Next. [AWS Amplify](https://aws.amazon.com/amplify) is another popular option.
+Since the UI is a Next.js app, you can use your favorite hosting service to host it. We recommend [Vercel](https://vercel.com), which works well with Next. [AWS Amplify](https://aws.amazon.com/amplify) is another popular option.
 
 * Sign up for [Vercel](https://vercel.com/)
 * Create a new project
