@@ -41,7 +41,7 @@ There is a distinction between the operator key and the AVS signing key. The ope
 
 First, make sure you're registered with your operator key [as an EigenLayer operator](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) on Holesky. You'll only need the ECDSA key.
 
-Next, to register your operator to Hyperlane AVS, you can register your operator key (generated via the EigenLayer CLI) by creating an ECDSA signature and submitting it along with the AVS signing key (the validator address from above) with the Hyperlane CLI:
+Next, to register your operator to Hyperlane AVS, you can use the Hyperlane CLI. Register your operator key (generated via the EigenLayer CLI) by creating an ECDSA signature and submitting it along with the AVS signing key, which is your Hyperlane validator address from above (not a private key).
 
 ```bash
  hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> \
