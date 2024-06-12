@@ -129,10 +129,14 @@ The recommended installation method for a production environment is using a Dock
 <Tabs groupId="docker">
   <TabItem value="docker" label="Docker image">
 
-First download the docker image:
+First download the docker image (on Linux/Apple Silicon):
 
 ```bash
+<<<<<<< Updated upstream
 docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+=======
+docker pull gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048 --platform linux/amd64
+>>>>>>> Stashed changes
 ```
 
   </TabItem>
