@@ -166,11 +166,12 @@ Note that the Relayer **must** be configured with `--allowLocalCheckpointSyncers
 </TabItem>
 <TabItem value="production-setup" label="Production Setup (AWS)">
 
-| Argument                    | Description                                                 |
-| --------------------------- | ----------------------------------------------------------- |
-| `--checkpointSyncer.type`   | Set to `s3`.                                                |
-| `--checkpointSyncer.bucket` | The AWS S3 bucket name.                                     |
-| `--checkpointSyncer.region` | The region of your AWS S3 bucket. For example: `us-east-1`. |
+| Argument                    | Description                                                           |
+| --------------------------- | --------------------------------------------------------------------- |
+| `--checkpointSyncer.type`   | Set to `s3`.                                                          |
+| `--checkpointSyncer.bucket` | The AWS S3 bucket name.                                               |
+| `--checkpointSyncer.region` | The region of your AWS S3 bucket. For example: `us-east-1`.           |
+| `--checkpointSyncer.folder` | A folder name to use for this validator, can be the name of the chain |
 
 </TabItem>
 </Tabs>
@@ -254,7 +255,8 @@ docker run \
   --validator.id alias/hyperlane-validator-signer-<your_chain_name> \
   --chains.<your_chain_name>.signer.id alias/hyperlane-validator-signer-<your_chain_name> \
   --checkpointSyncer.type s3 \
-  --checkpointSyncer.bucket hyperlane-validator-signatures-<your_chain_name> \
+  --checkpointSyncer.bucket hyperlane-validator-signatures-<your_name> \
+  --checkpointSyncer.folder <your_chain_name> \
 ```
 
   </TabItem>
