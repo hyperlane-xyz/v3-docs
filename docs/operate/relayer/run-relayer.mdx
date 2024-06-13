@@ -132,7 +132,7 @@ The recommended installation method for a production environment is using a Dock
 First download the docker image:
 
 ```bash
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040
 ```
 
   </TabItem>
@@ -187,7 +187,7 @@ docker run \
   -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
   -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
   --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains <chain_1_name>,<chain_2_name> \
@@ -209,7 +209,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane-validator-signatures-ethereum,target=/tmp/hyperlane-validator-signatures-ethereum,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
-  gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains ethereum,polygon,avalanche \
