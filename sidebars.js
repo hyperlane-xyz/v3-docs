@@ -19,6 +19,11 @@ const sidebars = {
   getstartedSidebar: [
     {
       type: "doc",
+      id: "guides/deploy",
+      label: "Deploy Hyperlane",
+    },
+    {
+      type: "doc",
       id: "intro",
       label: "Choosing Hyperlane",
     },
