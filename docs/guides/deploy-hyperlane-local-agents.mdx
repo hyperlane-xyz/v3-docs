@@ -191,7 +191,7 @@ softwareupdate --install-rosetta --agree-to-license
 Now that you understand more about configuring validator arguments, pull the latest docker image:
 
 ```sh
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040
 ```
 
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_validator_<your_chain_name>` if it does not exist yet.
@@ -209,7 +209,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_validator_<your_chain_name>,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures \
-  gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
@@ -339,7 +339,7 @@ softwareupdate --install-rosetta --agree-to-license
 If you haven't already pulled the Docker image, do this now by running:
 
 ```sh
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040
 ```
 
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
@@ -357,7 +357,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_relayer,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures,readonly \
-  gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains <chain_1_name>,<chain_2_name> \
