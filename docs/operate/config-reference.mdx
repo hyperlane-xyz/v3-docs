@@ -1455,6 +1455,43 @@ export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
 </TabItem>
 </Tabs>
 
+## checkpointsyncer.folder
+
+**Description:** Folder in the S3 bucket
+
+**Requires:** `checkpointsyncer.type = "s3"`
+
+**Optional:** No (iff conditions are met)
+
+**Agents:** Validator
+
+**Type:** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--checkpointSyncer.folder signatures-ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+```sh
+export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "checkpointsyncer": {
+        "type": "s3",
+        "folder": "signatures-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
 ## checkpointsyncer.region
 
 **Description:** S3 bucket region
