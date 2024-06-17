@@ -85,9 +85,10 @@ import TabItem from "@theme/TabItem";
 
 ## Guide
 
-We strongly encourage you to follow the [local agents guide](../../guides/deploy-hyperlane-local-agents.mdx) to understand how to configure and run a Validator locally.
-
 :::info
+
+
+If you're an deploying Hyperlane to a new chain, follow the [local agents guide](../../guides/deploy-hyperlane-local-agents.mdx) to understand how to configure and run a Validator locally. This is not necessary if you're only operating a validator.
 
 The local agent setup shows how you can run a Validator on your _local machine_, which is **only for testing and development purposes**. This also means that signatures from local Validators are only able to be accessed by a locally run Relayer.
 
@@ -166,11 +167,12 @@ Note that the Relayer **must** be configured with `--allowLocalCheckpointSyncers
 </TabItem>
 <TabItem value="production-setup" label="Production Setup (AWS)">
 
-| Argument                    | Description                                                 |
-| --------------------------- | ----------------------------------------------------------- |
-| `--checkpointSyncer.type`   | Set to `s3`.                                                |
-| `--checkpointSyncer.bucket` | The AWS S3 bucket name.                                     |
-| `--checkpointSyncer.region` | The region of your AWS S3 bucket. For example: `us-east-1`. |
+| Argument                    | Description                                                           |
+| --------------------------- | --------------------------------------------------------------------- |
+| `--checkpointSyncer.type`   | Set to `s3`.                                                          |
+| `--checkpointSyncer.bucket` | The AWS S3 bucket name.                                               |
+| `--checkpointSyncer.region` | The region of your AWS S3 bucket. For example: `us-east-1`.           |
+| `--checkpointSyncer.folder` | A folder name to use for this validator, can be the name of the chain |
 
 </TabItem>
 </Tabs>
@@ -187,7 +189,7 @@ The recommended installation method for a production environment is using a Dock
 First download the docker image:
 
 ```bash
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040
 ```
 
   </TabItem>
@@ -242,7 +244,7 @@ docker run \
   -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
   -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
   --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:36e9a2e-20240607-155048 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:d347d86-20240613-182040 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
@@ -254,7 +256,8 @@ docker run \
   --validator.id alias/hyperlane-validator-signer-<your_chain_name> \
   --chains.<your_chain_name>.signer.id alias/hyperlane-validator-signer-<your_chain_name> \
   --checkpointSyncer.type s3 \
-  --checkpointSyncer.bucket hyperlane-validator-signatures-<your_chain_name> \
+  --checkpointSyncer.bucket hyperlane-validator-signatures-<your_name> \
+  --checkpointSyncer.folder <your_chain_name> \
 ```
 
   </TabItem>
