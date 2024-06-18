@@ -4,7 +4,7 @@ This website is built using [Docusaurus 3](https://docusaurus.io/), a modern sta
 
 ## Generated Content
 
-The `static` directory includes generated content. Please ask @yorhodes for assistance if you need to update this content.
+The `static` directory includes generated content. Please ask [@yorhodes](https://github.com/yorhodes) for assistance if you need to update this content.
 
 Most of this is simply serialized content from `@hyperlane-xyz` NPM packages (see `devDependencies`). Eventually this should be part of the build process.
 
