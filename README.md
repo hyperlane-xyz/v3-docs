@@ -11,6 +11,7 @@ Most of this is simply serialized content from `@hyperlane-xyz` NPM packages (se
 ### Installation
 
 ```
+$ yarn install
 $ yarn
 ```
 
