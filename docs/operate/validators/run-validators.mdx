@@ -70,7 +70,7 @@ Operating a Validator for Polygon mainnet requires access to an archive node. Th
 - A secure signing key
 
   - Validators use this key to sign the `Mailbox`'s latest merkle root. Securing this key is important. If it is compromised, attackers can attempt to falsify messages, causing the Validator to be slashed.
-  - The Hyperlane Validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys for testing. 
+  - The Hyperlane Validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys for testing. See more under [agent keys](../set-up-agent-keys.mdx).
 
 - Publicly readable storage
 
@@ -167,7 +167,7 @@ This is the same as the local configuration for the checkpoint signer.
 | `--chains.${originChainName}.signer.id`   | The alias of your Validator's AWS KMS key, prefixed with `alias/`. For example: `alias/hyperlane-validator-signer-${originChainName}`. |
 
 </TabItem>
-<TabItem value="production-setup-cosmos" label="Signer Setup (Cosmos)">
+<TabItem value="production-setup-cosmos" label="Production Setup (Cosmos)">
 
 | Argument                                    | Description                                                                                                                            |
 | -----------------------------------------   | -------------------------------------------------------------------------------------------------------------------------------------- |
