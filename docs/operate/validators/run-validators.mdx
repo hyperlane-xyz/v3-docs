@@ -124,7 +124,7 @@ Of course, you can also provide the path to additional configuration files as a 
 
 These configurations requirements differ depending on which environment you are setting up.
 
-**Base Validator configuration**
+**Checkpoint signer configuration**
 
 <Tabs groupId="production-setup">
 <TabItem value="local-setup" label="Local Setup">
@@ -132,7 +132,7 @@ These configurations requirements differ depending on which environment you are 
 | Argument                                | Description                                                                                                                                  |
 | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--validator.key`                       | Your Validator's private key, which is used to sign merkle roots.                                                                            |
-| `--chains.${localChainName}.signer.key` | Your Validator's private key, which will be used to submit a transaction on chain that publicly announce your Validator's checkpoint syncer. |
+| `--chains.${localChainName}.signer.key` | Your Validator's private key, which will be used to submit a transaction onchain that publicly announces your Validator's checkpoint syncer. |
 
 </TabItem>
 <TabItem value="production-setup" label="Production Setup (AWS)">
@@ -142,8 +142,38 @@ These configurations requirements differ depending on which environment you are 
 | `--validator.region`                      | The region of your AWS KMS key. For example: `us-east-1`.                                                                              |
 | `--validator.type`                        | Set to the `aws` literal.                                                                                                              |
 | `--validator.id`                          | The alias of your Validator's AWS KMS key, prefixed with `alias/`. For example: `alias/hyperlane-validator-signer-${originChainName}`. |
-| `--chains.${originChainName}.signer.type` | Set to the `aws` literal.                                                                                                              |
+
+</TabItem>
+</Tabs>
+
+**Transaction signer configuration**
+
+The key configured in this step needs a small amount of funds to send the initial announcement transaction.
+
+<Tabs groupId="signer-setup">
+<TabItem value="local-setup" label="Local Setup (EVM)">
+This is the same as the local configuration for the checkpoint signer.
+
+| Argument                                | Description                                                                                                                                  |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--chains.${localChainName}.signer.key` | Your Validator's private key, which will be used to submit a transaction onchain that publicly announces your Validator's checkpoint syncer. |
+
+</TabItem>
+<TabItem value="production-setup" label="Production Setup (EVM)">
+
+| Argument                                  | Description                                                                                                                            |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `--chains.${originChainName}.signer.type` | Set to the `aws` literal.                                                                                                       |
 | `--chains.${originChainName}.signer.id`   | The alias of your Validator's AWS KMS key, prefixed with `alias/`. For example: `alias/hyperlane-validator-signer-${originChainName}`. |
+
+</TabItem>
+<TabItem value="production-setup-cosmos" label="Production Setup (Cosmos)">
+
+| Argument                                    | Description                                                                                                                            |
+| -----------------------------------------   | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `--chains.${originChainName}.signer.type`   | Set to the `cosmosKey` literal.                                                                                                              |
+| `--chains.${originChainName}.signer.prefix` | Set to the prefix literal associated with the chain's address format. Example: `osmo`.                                                                                                              |
+| `--chains.${originChainName}.key`           | Your Validator's hex private key, which will be used to submit a transaction onchain that publicly announces your Validator's checkpoint syncer. |
 
 </TabItem>
 </Tabs>
