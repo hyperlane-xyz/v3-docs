@@ -44,12 +44,12 @@ Or see below for details on how to define your config manually.
 Your config consist of a map of chain names to deployment configs. Each config sets details about the token for which you are creating a Warp Route.
 
 * **type**:
-    - Set this to `collateral` to create a basic Warp Route for an ERC20/ERC721 token.
-    - Set this to `collateralVault` to create a yield-bearing Warp Route for an ERC20 token that deposits into an ERC4626 vault.
+    - Set this to `collateral` to create a basic Warp Route for an ERC20/ERC721 token
+    - Set this to `collateralVault` to create a yield-bearing Warp Route for an ERC20 token that deposits into an existing ERC4626 vault
     - Set this to `native` to create a Warp Route for a native token (e.g. ether)
 * **address:**
     - If using `collateral`, the address of the ERC20/ERC721 contract for which to create a route
-    - If using `collateralVault`, the address of the ERC4626 vault to deposit collateral into
+    - If using `collateralVault`, the address of the existing ERC4626 vault to deposit collateral into
 * **isNft:** If using `collateral` for an ERC721 contract, set to `true`.
 
 #### Optional fields
