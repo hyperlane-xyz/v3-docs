@@ -31,29 +31,5 @@ For example, a custom implementation could vary the number of signatures require
 
 ### Example
 
-```solidity
-import {TokenMessage} from "solidity/contracts/token/libs/TokenMessage.sol";
-
-function validatorsAndThreshold(
-	bytes calldata _message
-) public view returns (address[] memory, uint8) {
-	using TokenMessage for bytes;
-	// ...
-	uint256 memory tokenAmount = _message.amount();
-	if (tokenAmount < firstThreshold) {
-		// ... `addresses` ...
-		return (
-			addresses,
-			firstThresholdValidatorsNumber
-		);
-	} else if (tokenAmount < secondThreshold) {
-		// ... `addresses` ...
-		return (
-			addresses,
-			secondThresholdValidatorsNumber
-		);
-	} else ... {...}
-}
-
-// ...
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/token/examples/rateLimitedMultisigIsm.sol
 ```
