@@ -1,113 +1,338 @@
-import TerminologyPartial from "/docs/partials/deploy-hyperlane/_terminology.mdx";
-import SetupKeysPartial from "/docs/partials/deploy-hyperlane/_setup-keys.mdx";
-import DeployContractsPartial from "/docs/partials/deploy-hyperlane/_deploy-contracts.mdx";
-import SendTestMessagesPartial from "/docs/partials/deploy-hyperlane/_send-test-messages.mdx";
-
-# Get Started
-
-Hyperlane can be deployed by anyone to any chain.
-This guide covers sending your first interchain message from a new EVM chain. If you'd like to deploy to a Cosmos appchain, follow this [community-submitted guide](https://github.com/many-things/cw-hyperlane/blob/25a31818e9bf909875ab091f3884ee71bd25814f/DEPLOYMENT.md).
-
-By the end of this guide you will have deployed and configured your Mailbox smart contract and off-chain agents, allowing developers to send interchain messages to and from your chain.
-
-:::note
-
-This guide has been specifically made to demonstrate how to connect a chain that _already has Hyperlane on it_ to a new chain that does _not_ have Hyperlane.
-
-:::
-
-<TerminologyPartial />
-
-## Overview
-
-There are five steps in this guide:
-
-1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayer.
-2. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-3. [<b>Run validators and relayer </b>](#3-run-validators-relayer) using [Kurtosis](https://cloud.kurtosis.com). Validators provide the signatures needed for the Interchain Security Modules you deployed in step 2. The relayer will deliver messages between chains you deployed contracts to.
-4. [<b>Send a test message</b>](#4-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains
-5. [<b>Deploy a warp route</b>](#5-optional-deploy-a-warp-route) to send token value, not just messages, across chains
-
-## Getting Started
-
-## 1. Set up keys
-
-<SetupKeysPartial />
-
-## 2. Deploy contracts
-
-<DeployContractsPartial />
-
-## 3. Run validators and relayer
-
-:::note
-
-This section covers how to 1-click deploy agents using a third party. To run the Hyperlane agent binaries yourself, follow the [Local Agents guide](guides/deploy-hyperlane-local-agents.mdx).
-
-:::
-
-We've partnered with [Kurtosis](https://www.kurtosis.com/) to provide a single-click validator and relayer deployment in the cloud. You'll receive a one-month trial during which your validator and relayer run in Kurtosis Cloud for free. After your trial ends, you'll need to either run your validator and relayer yourself or purchase a Kurtosis Cloud subscription.
-
-To get started, use the `deploy kurtosis-agents` command to generate a link for configuring your Kurtosis deployment.
-
-```bash
-hyperlane deploy kurtosis-agents
-```
-
-Follow the prompts and then click on the Kurtosis Cloud link output by the command.
-
-If this is your first time using Kurtosis Cloud, you'll need to sign in with Google and Kurtosis will provision a remote cloud instance for your validator and relayer in roughly 2 minutes.
-
-![Get excited](/img/kurtosis-get-excited.png)
-
-A prefilled configuration screen will pop up with all your relayer and validator information from Steps 1 and 2.
-
-:::note
-
-If you are having issues deploying agents on Kurtosis Cloud through the CLI, you can manually enter this information by:
-
-1. Signing into [Kurtosis Cloud](https://cloud.kurtosis.com/).
-1. Clicking `Run` on the [Hyperlane Package](https://cloud.kurtosis.com/gateway/ips/18-206-3-164/ports/9711/catalog/github.com%2Fkurtosis-tech%2Fhyperlane-package).
-1. Filling in the configuration modal.
-
-:::
-
-The last step will be to input your `Validator Key` from Step 2. The screenshots below show an example prefilled configuration.
-
-:::warning
-
-The Kurtosis team is still building the secrets functionality of Kurtosis Cloud, so for now do not enter any sensitive information (e.g. your private keys) into Kurtosis! Only testing and non-sensitive values should be used.
-
-:::
-
-![Example Configuration One](/img/kurtosis-example-config-one.png)
-
-![Example Configuration Two](/img/kurtosis-example-config-two.png)
-
-Click `Run` to deploy your relayer and validator!
-
-Once the configuration finishes executing successfully, you'll see a green check mark. Congratulations! You've now deployed your own relayer and validator with Kurtosis!
-
-![Success](/img/kurtosis-success.png)
-
-You can see information about your relayer and validator deployment, including logs, by navigating to the `Overview` tab.
-
-![Enclave Overview](/img/kurtosis-enclave-overview.png)
-
-![Validator Logs](/img/kurtosis-validator-logs.png)
-
-For issues with Kurtosis, please file an [issue on the Kurtosis Github repository](https://github.com/kurtosis-tech/kurtosis/issues/new/choose). For questions or discussion, use the [Github Discussions section of the Kurtosis repository](https://github.com/kurtosis-tech/kurtosis/discussions/new?category=q-a) or visit [the Kurtosis Discord server](https://discord.com/invite/jJFG7XBqcY).
+# Deploy Hyperlane to a new chain
 
 :::info
+This guide will help you deploy Hyperlane to your new chain as quickly as possible. This includes the core mailbox and ISM contracts as well as warp route contracts for assets you’re bridging
 
-Kurtosis offers a one-month free trial of Kurtosis Cloud for running your relayer and validator, but when your trial expires you'll need to add a payment method to continue running your Hyperlane deployment. View subscription prices [here](https://kurtosis.com/pricing) and payment method information [here](https://cloud.kurtosis.com/payment-method).
+The guide is intended for testing - by the end you’ll be able to pass messages between your custom chain and any other in the Hyperlane network.
+
+To go to production, ensure you’ve successfully pushed a registry PR (the last step) and reach back over telegram and we can add your custom chain to the core chains we have in the CLI and relay for.
+
+**Feel free to leave a comment or question anywhere on this doc.**
 
 :::
 
-## 4. Send test messages
+## Pre-Requisites: Chain Metadata & Funded Wallet
 
-<SendTestMessagesPartial />
+Anyone can begin this quickstart guide once they have the following artifacts & assets available:
+- A new, custom, or pre-existing network of your choice, including the following metadata:
+    - A chain name, e.g. `ethereum`
+    - A chain ID, e.g. `1`
+    - A RPC URL, e.g. `https://eth.llamarpc.com`
+- A deployer wallet/EOA private key or seed phrase
+    - This EOA should be funded on your custom chain and any chain you will be passing messages to & from
+- The Hyperlane CLI npm package installed (see below)
 
-## 5. (Optional) Deploy a Warp Route
+## 1) Install the Hyperlane CLI
+
+To install the Hyperlane CLI npm package globally, run:
+
+```bash
+npm i -g @hyperlane-xyz/cli
+```
+
+Verify the expected version is installed via:
+
+```bash
+hyperlane --version
+```
+
+To view a list of all available command, run:
+
+```bash
+hyperlane --help
+```
+
+## 2) Registry: add your custom chain
+
+Let’s create a custom chain config, run:
+
+```bash
+hyperlane registry init
+```
+
+Follow the prompts to set up your RPC URL, chain name, and chain ID. Setting up block or gas properties is optional. Once successful, you should see this output:
+
+```tsx
+Skipping updating chain yourchain at github registry
+Now updating chain yourchain at filesystem registry at $HOME/.hyperlane
+Done updating chain yourchain at filesystem registry
+```
+
+Now, under `$HOME/.hyperlane/chains` you will find a new folder named with your custom chain’s name, and a file named `metadata.yaml` within that folder.
+
+<details> 
+  <summary>
+    Example content of this config at `$HOME/.hyperlane/chains/yourchain/metadata.yaml` :
+  </summary>
+
+   ```yaml
+    # yaml-language-server: $schema=../schema.json
+    name: yourchain
+    chainId: 171717
+    domainId: 171717
+    protocol: ethereum
+    rpcUrls:
+      - http: https://hyper-lane-docs.rpc.caldera.xyz/http
+    nativeToken:
+      name: Ether
+      symbol: ETH
+      decimals: 18
+    ```
+</details>
+
+## 3) Core: configure & deploy your custom chain’s core contracts
+
+Next, let’s configure, deploy and test your custom chain’s core contracts.
+
+### Initialize configuration
+
+1. From your local environment, source the private key or seed phrase of your funded deployer address via `HYP_KEY`. For example: `export HYP_KEY='<YOUR_PRIVATE_KEY>'`
+2. Verify your `HYP_KEY` is sourced correctly via `echo $HYP_KEY`
+3. From the same instance, run:
+    
+  ```bash
+  hyperlane core init
+  ```
+<details>
+  <summary>
+    After successfully creating a new core deployment config, you can find it in a file named `core-config.yaml` within  `./configs`
+  </summary>
+  
+  ```yaml
+  owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  defaultIsm:
+    type: trustedRelayerIsm
+    relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  defaultHook:
+    type: merkleTreeHook
+  requiredHook:
+    owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+    type: protocolFee
+    beneficiary: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+    maxProtocolFee: "100000000000000000"
+    protocolFee: "0"
+  ```
+    
+</details>
+
+
+### Deploy contracts
+
+Continuing in the same instance with your `HYP_KEY` sourced, run:
+
+```bash
+hyperlane core deploy
+```
+
+Use the arrows and enter to select your custom chain from the bottom of the mainnet list. 
+It will take about five minutes for all contracts to deploy.
+<details> 
+  <summary>
+    Under `$HOME/.hyperlane/chains` you will find a new folder named with your custom chain’s name, and a file named `addresses.yaml` within that folder
+  </summary>
+  ```yaml
+    staticMerkleRootMultisigIsmFactory: "0x6906cb4741d3E2322E9f9aA645DfC8AB6F122c47"
+    staticMessageIdMultisigIsmFactory: "0x3CE97a32d9C8294691cBd2baC09B078EDa75c429"
+    staticAggregationIsmFactory: "0x81f969fDBF48278Ce09685Ce48e03388B6785aF4"
+    staticAggregationHookFactory: "0x3d864A3c25F61E3c3A7d02e980453A6E1f0a92A6"
+    domainRoutingIsmFactory: "0xC4c01f7B03f0fFa77A0265C600dEF7Ad28BCa5A2"
+    proxyAdmin: "0xABb7175d5F123172E7B7Fa467CC9fE4C2FEdb942"
+    mailbox: "0x5F58d75A9caDE4e2b191313223978dF049f93b81"
+    interchainAccountRouter: "0x43c0745b0dE9Cb780816a24ddE63d79Ca99B5dE8"
+    interchainAccountIsm: "0x9C96dC8f4257413225d6B5C47d1afbafc39B269F"
+    validatorAnnounce: "0xE3bd39BF92DB385dE6313D6070b035bD934378CB"
+    testRecipient: "0xa58462b1943Be1469Ed58db690C78583BA34Fd2E"
+    ```
+</details>
+    
+### Send test message
+
+In the same instance, run:
+
+```bash
+hyperlane send message --relay
+```
+
+Currently core self-relay only works from **an existing origin chain** (e.g. Fuji) **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
+
+:::note
+**🎉 Congrats! You have successfully sent a message to your custom chain**
+:::
+
+## 4) Warp Route: configure & deploy your custom chain’s warp route contracts
+
+Now that you have a Hyperlane mailbox and core contracts on your chain, it’s time to set up ERC-20 token bridging between your chain and any other Hyperlane chain.
+
+### Initialize configuration
+
+1. In the same funded instance, run:
+    
+    ```bash
+    hyperlane warp init
+    ```
+    
+2. Select the chains you want to set up a warp route between, e.g.  `yourchain, fuji`
+3. Select the token type you want to support for each
+    1. Select `native` if you want to use the native gas token of that chain, e.g. ETH
+    2. Select `synthetic` 
+        1. `synthetic` warp routes allows you to lock the token as collateral on one chain and mint a synthetic on another.
+        2. You can also select `collateralVault` to use an ERC-4626 vault as collateral - this enables you to create yield-bearing bridged tokens.
+
+  <details> 
+  <summary>
+    If successful, under `./configs` you will see the following valid warp route config in file named `warp-route-deployment.yaml`
+  </summary>
+  ```yaml
+  yourchain:
+    isNft: false
+    type: native
+    owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+    mailbox: "0x5F58d75A9caDE4e2b191313223978dF049f93b81"
+    interchainSecurityModule:
+      type: staticAggregationIsm
+      modules:
+        - type: trustedRelayerIsm
+          relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+        - owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+          type: defaultFallbackRoutingIsm
+          domains: {}
+      threshold: 1
+  fuji:
+    isNft: false
+    type: native
+    owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+    mailbox: "0x5b6CFf85442B851A8e6eaBd2A4E4507B5135B3B0"
+    interchainSecurityModule:
+      type: staticAggregationIsm
+      modules:
+        - type: trustedRelayerIsm
+          relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+        - owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+          type: defaultFallbackRoutingIsm
+          domains: {}
+      threshold: 1
+  ```
+</details>
+    
+
+### Deploy contracts
+
+Continuing, run and confirm the deployment:
+
+```bash
+hyperlane warp deploy
+```
+
+<details> 
+  <summary>
+    Example output for your warp route config
+  </summary>
+
+  Under `$HOME/.hyperlane/deployments/warp_routes/` you will find a new folder named with your custom or other chain’s native token name, and two files named `otherchain-yourchain-addresses.yaml` & `otherchain-yourchain-config.yaml` within that folder
+    
+    1. Example contents of this config at `$HOME/.hyperlane/deployments/warp_routes/AVAX/fuji-yourchain-addresses.yaml` based on the above examples:
+        
+        ```yaml
+        yourchain:
+          native: "0x205A5d97111abe0C53C0459cF37013F16Ff67889"
+        fuji:
+          synthetic: "0x3924C4E264085f2f832bE5a65A42995A726BdFBf"
+        ```
+        
+    2. Example contents of this config at `$HOME/.hyperlane/deployments/warp_routes/AVAX/fuji-yourchain-config.yaml` based on the above examples:
+        
+        ```yaml
+        # yaml-language-server: $schema=../schema.json
+        tokens:
+          - chainName: yourchain
+            standard: EvmHypNative
+            totalSupply: 0
+            name: Ether
+            symbol: ETH
+            decimals: 18
+            isNft: false
+            type: native
+            owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+            mailbox: "0x5F58d75A9caDE4e2b191313223978dF049f93b81"
+            interchainSecurityModule:
+              type: staticAggregationIsm
+              modules:
+                - type: trustedRelayerIsm
+                  relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+                - owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+                  type: defaultFallbackRoutingIsm
+                  domains: {}
+              threshold: 1
+            addressOrDenom: "0x205A5d97111abe0C53C0459cF37013F16Ff67889"
+            connections:
+              - token: ethereum|fuji|0x3924C4E264085f2f832bE5a65A42995A726BdFBf
+          - chainName: fuji
+            standard: EvmHypSynthetic
+            totalSupply: 0
+            name: Ether
+            symbol: ETH
+            decimals: 18
+            isNft: false
+            type: synthetic
+            owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+            mailbox: "0x5b6CFf85442B851A8e6eaBd2A4E4507B5135B3B0"
+            interchainSecurityModule:
+              type: staticAggregationIsm
+              modules:
+                - type: trustedRelayerIsm
+                  relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+                - owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+                  type: defaultFallbackRoutingIsm
+                  domains: {}
+              threshold: 1
+            addressOrDenom: "0x3924C4E264085f2f832bE5a65A42995A726BdFBf"
+            connections:
+              - token: ethereum|yourchain|0x205A5d97111abe0C53C0459cF37013F16Ff67889
+        ```
+</details>
+        
+
+:::note
+**💸 Well done, a Hyperlane warp route is now deployed to your custom chain.**
+:::
+
+### Send test message
+
+Run a command that includes your warp route config:
+
+```bash
+hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/TOKEN/corechain-yourchain-config.yaml
+```
+
+You can test in either direction between where you have the warp route set. However, if you deployed `native` and `synthetic` warp routes, you must select the origin with the `native` route deployed.
+
+## 5) Submit to Registry: ensure your custom configs & deployments are available in the registry
+
+If you want other chains to connect with you as well as to take this to production with Abacus Works, make a registry PR.
+
+1. Navigate to your local instance of the registry and commit changes
+
+```bash
+cd ~/.hyperlane && git init && git add . && git commit
+```
+
+1. Sync local registry with canonical registry
+
+```bash
+git remote add canonical git@github.com:hyperlane-xyz/hyperlane-registry.git
+git pull canonical main --rebase
+```
+
+1. Push local registry to github fork and submit a PR
+
+:::note
+**🏅 Congrats! You have successfully deployed Hyperlane to your chain and added your work to the Hyperlane registry**
+
+**Thank you for contributing to the future of permissionless interop 🫡**
+
+**Feel free to leave a comment or question anywhere on this doc**
+:::
+
+## 6) (Optional) Deploy a Warp Route
 
 To connect tokens using your new Hyperlane deployment, see the [Warp Route deployment guide](/docs/guides/deploy-warp-route.mdx).
