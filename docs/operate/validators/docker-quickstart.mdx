@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Production quickstart with docker and AWS
+# Production quickstart with docker and AWS on mainnet
 
 ## 1. Install CLI
 
@@ -72,17 +72,15 @@ The script at the following repo will allow you to query this address: [https://
 </TabItem>
 </Tabs>
 
-First, make sure you're registered with your operator key [as an EigenLayer operator](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) on Mainnet or Holesky . You'll only need the ECDSA key.
+First, make sure you're registered with your operator key [as an EigenLayer operator](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration) on Mainnet. You'll only need the ECDSA key.
 
 Next, to register your operator to Hyperlane AVS, you can use the Hyperlane CLI. Register your operator key (generated via the EigenLayer CLI) by creating an ECDSA signature and submitting it along with the AVS signing key, which is your Hyperlane validator address from above (not a private key).
 
 ```bash
  hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> \
-    --chain <AVS_NETWORK> \
+    --chain ethereum \
     --avsSigningKeyAddress <AVS_SIGNING_ADDRESS>
 ```
-
-The `AVS_NETWORK` is the network you're registering on, which can be `ethereum` or `holesky`.
 
 Your AVS signing key can be reused across multiple validators and doesn't require additional registration for each. If you use different AVS signing keys for each validator, you'll need to register each as an operator.
 
@@ -151,7 +149,7 @@ Your Validator IAM user will need write permissions, and it should be publicly r
 
 ### Create a directory for each chain you wish to validate
 
-For example, create an ethereum directory and create config.json and docker-compose.yml
+For example, create an ethereum directory and create config.json, docker-compose.yml, and .env
 ```bash
 mkdir -p ethereum/hyperlane_db && \
 touch ethereum/config.json ethereum/docker-compose.yml ethereum/.env
