@@ -7,8 +7,6 @@ The guide is intended for testing - by the end you’ll be able to pass messages
 
 To go to production, ensure you’ve successfully pushed a registry PR (the last step) and reach back over telegram and we can add your custom chain to the core chains we have in the CLI and relay for.
 
-**Feel free to leave a comment or question anywhere on this doc.**
-
 :::
 
 ## Pre-Requisites: Chain Metadata & Funded Wallet
@@ -62,7 +60,7 @@ Now, under `$HOME/.hyperlane/chains` you will find a new folder named with your 
 
 <details> 
   <summary>
-    Example content of this config at `$HOME/.hyperlane/chains/yourchain/metadata.yaml` :
+    Example content of this config at `$HOME/.hyperlane/chains/yourchain/metadata.yaml`
   </summary>
 
    ```yaml
@@ -153,7 +151,7 @@ In the same instance, run:
 hyperlane send message --relay
 ```
 
-Currently core self-relay only works from **an existing origin chain** (e.g. Fuji) **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
+Currently core self-relay only works from **an existing origin chain** (holesky is recommended) **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
 
 :::note
 **🎉 Congrats! You have successfully sent a message to your custom chain**
@@ -171,7 +169,7 @@ Now that you have a Hyperlane mailbox and core contracts on your chain, it’s t
     hyperlane warp init
     ```
     
-2. Select the chains you want to set up a warp route between, e.g.  `yourchain, fuji`
+2. Select the chains you want to set up a warp route between, e.g.  `yourchain, holesky`
 3. Select the token type you want to support for each
     1. Select `native` if you want to use the native gas token of that chain, e.g. ETH
     2. Select `synthetic` 
@@ -197,7 +195,7 @@ Now that you have a Hyperlane mailbox and core contracts on your chain, it’s t
           type: defaultFallbackRoutingIsm
           domains: {}
       threshold: 1
-  fuji:
+  holesky:
     isNft: false
     type: native
     owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
@@ -230,16 +228,16 @@ hyperlane warp deploy
 
   Under `$HOME/.hyperlane/deployments/warp_routes/` you will find a new folder named with your custom or other chain’s native token name, and two files named `otherchain-yourchain-addresses.yaml` & `otherchain-yourchain-config.yaml` within that folder
     
-    1. Example contents of this config at `$HOME/.hyperlane/deployments/warp_routes/AVAX/fuji-yourchain-addresses.yaml` based on the above examples:
+    1. Example contents of this config at `$HOME/.hyperlane/deployments/warp_routes/AVAX/holesky-yourchain-addresses.yaml` based on the above examples:
         
         ```yaml
         yourchain:
           native: "0x205A5d97111abe0C53C0459cF37013F16Ff67889"
-        fuji:
+        holesky:
           synthetic: "0x3924C4E264085f2f832bE5a65A42995A726BdFBf"
         ```
         
-    2. Example contents of this config at `$HOME/.hyperlane/deployments/warp_routes/AVAX/fuji-yourchain-config.yaml` based on the above examples:
+    2. Example contents of this config at `$HOME/.hyperlane/deployments/warp_routes/AVAX/holesky-yourchain-config.yaml` based on the above examples:
         
         ```yaml
         # yaml-language-server: $schema=../schema.json
@@ -265,8 +263,8 @@ hyperlane warp deploy
               threshold: 1
             addressOrDenom: "0x205A5d97111abe0C53C0459cF37013F16Ff67889"
             connections:
-              - token: ethereum|fuji|0x3924C4E264085f2f832bE5a65A42995A726BdFBf
-          - chainName: fuji
+              - token: ethereum|holesky|0x3924C4E264085f2f832bE5a65A42995A726BdFBf
+          - chainName: holesky
             standard: EvmHypSynthetic
             totalSupply: 0
             name: Ether
@@ -329,8 +327,6 @@ git pull canonical main --rebase
 **🏅 Congrats! You have successfully deployed Hyperlane to your chain and added your work to the Hyperlane registry**
 
 **Thank you for contributing to the future of permissionless interop 🫡**
-
-**Feel free to leave a comment or question anywhere on this doc**
 :::
 
 ## 6) (Optional) Deploy a Warp Route
