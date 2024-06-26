@@ -158,11 +158,17 @@ touch ethereum/config.json ethereum/docker-compose.yml ethereum/.env
 ### Edit config.json
 
 `customRpcUrls` are a comma separated list of performant RPC endpoints for the chain you wish to support, we recommend using paid providers to avoid rate limiting
+
 `signer.region` and `validator.region` should be adjusted to your AWS region
+
 `signer.id` and `validator.id` should be adjusted to your AWS KMS id you configured in step 3, prefixed with `alias/`
+
 `originchainname` should reflect the chain 
+
 `checkpointsyncer.bucket` should reflect the name of the S3 bucket
+
 `checkpointsyncer.folder` is the name of the folder the validator will use within the bucket (you may use the same bucket for multiple validators, but ensure each folder name is unique per validator)
+
 `reorgperiod` may be different for each chain [**find the reorgperiods**](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains)
 
 ```json
