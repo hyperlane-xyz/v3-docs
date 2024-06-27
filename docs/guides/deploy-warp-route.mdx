@@ -29,7 +29,7 @@ To deploy the route, you will need a Warp Route deployment config file. A valid 
 The easiest way to create one is with the CLI's config command:
 
 ```bash
-hyperlane config create warp
+hyperlane warp init
 ```
 
 :::tip
@@ -88,7 +88,7 @@ For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book
 :::
 
 ```bash
-hyperlane deploy warp --dry-run chain1 \
+hyperlane warp deploy --dry-run chain1 \
     --from-address $YOUR_DEPLOYER_ADDRESS \ # (optional) your account address to be impersonated via Anvil; defaults to the HYP_KEY env variable
     --overrides # (optional) path to a override registry; defaults to the local ./ path
 ```
@@ -98,7 +98,7 @@ hyperlane deploy warp --dry-run chain1 \
 Run the following command to initiate the Warp Route deployment:
 
 ```bash
-hyperlane deploy warp
+hyperlane warp deploy
 ```
 
 Once finished, the CLI will create two new artifact files: `[CHAIN_NAMES]-addresses.yaml` and `[CHAIN_NAMES]-config.yaml`. The first contains just addresses for the newly deployed Warp router contracts. The second is a config file which can be used with the CLI and Warp UI to interact with the new Warp Route.
