@@ -1349,13 +1349,14 @@ export HYP_VALIDATOR_REGION="us-east-1"
 
 ## checkpointsyncer.type
 
-**Description:** Defines the method of syncing checkpoints
+**Description:** Defines the method of syncing checkpoints. `s3` stands for AWS S3, `localStorage` for local disk storage, and `gp` for Google Cloud Storage. For Google Cloud, the rest of the configuration
+is only set via the two environment variables [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/3bb9d0a767086edd04494f8200447ad84035bfc9/rust/hyperlane-base/src/settings/checkpoint_syncer.rs#L74) (the `service_account_key` and `user_secret`).
 
 **Optional:** No
 
 **Agents:** Validator
 
-**Type:** `Enum ("localStorage" | "s3")`
+**Type:** `Enum ("localStorage" | "s3" | "gp")`
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
