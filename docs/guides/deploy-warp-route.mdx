@@ -72,7 +72,7 @@ For a minimal Warp deployment config example using local anvil chains, see [`war
 
 ## 2. Deployment
 
-### Dry Run a Warp Deployment
+### Dry Run a Warp Deployment (Optional)
 
 Prior to executing a warp deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the warp deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
 
@@ -101,31 +101,25 @@ Run the following command to initiate the Warp Route deployment:
 hyperlane warp deploy
 ```
 
-Once finished, the CLI will create two new artifact files: `[CHAIN_NAMES]-addresses.yaml` and `[CHAIN_NAMES]-config.yaml`. The first contains just addresses for the newly deployed Warp router contracts. The second is a config file which can be used with the CLI and Warp UI to interact with the new Warp Route.
+Once finished, the CLI will create two new artifact files: `otherchain-yourchain-addresses.yaml` and `otherchain-yourchain-config.yaml` under `$HOME/.hyperlane/deployments/warp_routes/`. 
+
+The first file contains addresses for the newly deployed Warp Route contracts. The second is a config file which can be used with the CLI and Warp UI to interact with the new Warp Route.
 
 ## 3. Testing
 
 You can initiate a test transfer of a single wei with the following command:
 
 ```bash
-hyperlane warp send --warp YOUR_NEW_CONFIG_FILE.yaml
+hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/TOKEN/corechain-yourchain-config.yaml
 ```
 
-If everything goes well, you should see the output similar to the following:
-
-```
-Waiting for message delivery on destination chain
-Waiting for message delivery on destination chain
-Waiting for message delivery on destination chain
-Message delivered on destination chain!
-Confirmed balance increase
-Warp test transfer complete
-```
+You can test in either direction between where you have the warp route set. However, if you deployed `native` and `synthetic` warp routes, you must select the origin with the `native` route deployed. By default, the amount sent is `1` of the smallest unit of the token.
 
 :::tip
 
-**Next Step**
+**Next Steps**
 
-Use the Hyperlane Warp UI app template for interacting with Warp Routes. Continue on to the [Warp UI docs](/docs/guides/deploy-warp-route-UI.mdx) for details on how to set it up.
+- If you are following the [Deploy Warp Route](/docs/deploy-hyperlane#3-warp-route) guide, and want other chains to connect with you as well as to take this to production with Abacus Works, follow the [Submit to Registry](/docs/deploy-hyperlane#4-submit-to-registry) guide.
 
+- If you want interact with Warp Routes using a UI. Continue on to the [Warp UI docs](/docs/guides/deploy-warp-route-UI.mdx) for details on how to set it up.
 :::
