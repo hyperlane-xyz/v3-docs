@@ -29,23 +29,6 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Deploy a Warp Route",
-      link: {
-        type: "doc",
-        id: "guides/deploy-warp-route",
-      },
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Warp UI",
-        },
-      ],
-    },
-    {
-      type: "category",
       label: "Deploy Hyperlane to a new chain",
       link: {
         type: "doc",
@@ -58,6 +41,23 @@ const sidebars = {
           type: "doc",
           id: "deploy-hyperlane-troubleshooting",
           label: "Troubleshooting",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deploy a Warp Route",
+      link: {
+        type: "doc",
+        id: "guides/deploy-warp-route",
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Warp UI",
         },
       ],
     },
@@ -376,11 +376,7 @@ const sidebars = {
   ],
 
   guidesSidebar: [
-    {
-      type: "doc",
-      id: "guides/deploy-hyperlane-local-agents",
-      label: "Deploy Hyperlane with Local Agents",
-    },
+
     {
       type: "category",
       label: "Explorer Debugging",
