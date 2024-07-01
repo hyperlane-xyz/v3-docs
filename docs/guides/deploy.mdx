@@ -1,0 +1,87 @@
+# Deploy Hyperlane Quickstart
+
+## 1) Install
+
+
+```bash
+npm i -g @hyperlane-xyz/cli@4.0.0-beta
+```
+
+## 2) Chain
+
+### Configure
+
+Follow the prompts in
+```bash
+hyperlane config create chain
+```
+
+This will output to the `~/.hyperlane/chains` folder.
+
+## 3) Core
+
+### Configure
+
+Follow the prompts in
+```bash
+hyperlane core configure
+```
+
+### Deploy 
+
+Deploy a Hyperlane core instance to your chain
+```bash
+hyperlane core deploy
+```
+
+### Test
+
+Send a test message from some chain to your new chain
+```bash
+hyperlane send message --relay --origin <SOME_CHAIN> --destination <YOUR_CHAIN_NAME>
+```
+
+## 4) Warp Route
+
+### Configure
+
+Follow the prompts in
+
+```bash
+hyperlane warp configure
+```
+### Deploy
+
+Deploy the configured warp route
+```bash
+hyperlane warp deploy
+```
+### Test
+
+Send a test transfer on your warp route
+```bash
+hyperlane warp send --relay
+```
+
+## 5) Registry
+
+### Commit
+
+Navigate to your local registry and commit changes
+
+```bash
+cd ~/.hyperlane && git init && git add . && git commit
+```
+
+### Sync
+
+Sync your local registry with the canonical registry
+
+```bash
+git remote add canonical git@github.com:hyperlane-xyz/hyperlane-registry.git
+git pull canonical main --rebase
+```
+
+### Push
+
+Push local registry to github fork and submit a PR.
