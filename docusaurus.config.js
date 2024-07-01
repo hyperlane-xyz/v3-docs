@@ -11,7 +11,7 @@ const darkCodeTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Hyperlane v3 Docs",
+  title: "Hyperlane Docs",
   tagline: "Permissionless Interoperability, Modular Security",
   favicon: "img/favicon.ico",
 
@@ -286,13 +286,6 @@ const config = {
             from: [
               '/docs/resources/domains',
               '/docs/resources/domains/permissionless-domain-identifiers'
-            ],
-          },
-          {
-            to: '/docs/guides/v2-to-v3-migration',
-            from: [
-              '/docs/resources/coming-soon-hyperlane-v3',
-              '/docs/build-with-hyperlane/guides/v2-migration-guide',
             ],
           },
           {

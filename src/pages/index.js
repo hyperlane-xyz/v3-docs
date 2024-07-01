@@ -18,7 +18,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/intro">
-            Discover Hyperlane v3
+            Discover Hyperlane
           </Link>
         </div>
       </div>
