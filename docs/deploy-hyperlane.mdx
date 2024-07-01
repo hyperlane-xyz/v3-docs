@@ -49,7 +49,17 @@ Now, under `$HOME/.hyperlane/chains` you will find a new folder named with your 
     ```
 </details>
 
-## 2) Core
+In addition to the CLI generated config above, you should also edit in the block explorer url.
+
+```yaml
+blockExplorers:
+  - apiUrl: https://explorer.yourchain.com/api
+    family: etherscan
+    name: Chainscan
+    url: https://explorer.yourchain.com
+```
+
+## 3) Core: configure & deploy your custom chain’s core contracts
 
 Next, let’s configure, deploy and test your custom chain’s core contracts.
 
@@ -140,25 +150,27 @@ Continue on to the [Deploy a Warp Route](/docs/guides/deploy-warp-route.mdx) doc
 
 ## 4) Submit to Registry
 
-If you want other chains to connect with you as well as to take this to production with Abacus Works, make a registry PR.
+If you want other chains to connect with you as well as to take this to production with Abacus Works, make a registry PR. 
 
-1. Navigate to your local instance of the registry and commit changes
+Before doing so, make sure you lint the yaml file as well as add a `logo.svg` file inside the folder.
+
+First, navigate to your local instance of the registry and commit changes
 
 ```bash
 cd ~/.hyperlane && git init && git add . && git commit
 ```
 
-2. Sync local registry with canonical registry
+Then, sync local registry with canonical registry
 
 ```bash
 git remote add canonical git@github.com:hyperlane-xyz/hyperlane-registry.git
 git pull canonical main --rebase
 ```
 
-3. Push local registry to github fork and submit a PR
+Finally, push local registry to github fork and submit a PR. Please include a [changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) in your PR.
 
 :::note
-**🏅 Congrats! You have successfully deployed Hyperlane to your chain and added your work to the Hyperlane registry**
+**Congrats! You have successfully deployed Hyperlane to your chain and added your work to the Hyperlane registry**
 
-**Thank you for contributing to the future of permissionless interop 🫡**
+Thank you for contributing to the future of permissionless interop 🫡
 :::
