@@ -3541,35 +3541,36 @@ __metadata:
   linkType: hard
 
 "@hyperlane-xyz/core@npm:^3.11.0":
-  version: 3.11.0
-  resolution: "@hyperlane-xyz/core@npm:3.11.0"
+  version: 3.16.0
+  resolution: "@hyperlane-xyz/core@npm:3.16.0"
   dependencies:
     "@eth-optimism/contracts": "npm:^0.6.0"
-    "@hyperlane-xyz/utils": "npm:3.11.0"
+    "@hyperlane-xyz/utils": "npm:3.16.0"
     "@layerzerolabs/lz-evm-oapp-v2": "npm:2.0.2"
     "@openzeppelin/contracts": "npm:^4.9.3"
     "@openzeppelin/contracts-upgradeable": "npm:^v4.9.3"
+    fx-portal: "npm:^1.0.3"
   peerDependencies:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
     "@types/sinon-chai": "*"
-  checksum: bd5c31756e4b195f205f6edb316278482b52a779f0ec23eabb1db1b3f520e94044a462885d3bed3c2c6994e94614a8bf86b9b5a27d6dd65c7ddcd31f2cd1b56a
+  checksum: 99cfa0be22e7cb26eb66d094fd39630fdfbfa19afcd227c018409901097a7a57c40c0677d0bb5ec1a7b25d94321b4f0861829fecaab36730d26e293ea6f96353
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/registry@npm:1.0.7":
-  version: 1.0.7
-  resolution: "@hyperlane-xyz/registry@npm:1.0.7"
+"@hyperlane-xyz/registry@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@hyperlane-xyz/registry@npm:2.2.0"
   dependencies:
     yaml: "npm:^2"
     zod: "npm:^3.21.2"
-  checksum: cd48680e178f82d35d41e4915d36040d14b2ec3a151409dafaf9602ef2cec365ffd97544a1d9d8a41f197e66382dcf4dee25a78ed004c50ccb1859ed3edbb975
+  checksum: 33099c5989618ddc1311edf225f1cdbe52dd825c6d80b70cd9b65584d36982a932a9a0275cab71f91631fd45fc7ae1323dec4460e9ae15118eb18e11e1256c17
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/utils@npm:3.11.0":
-  version: 3.11.0
-  resolution: "@hyperlane-xyz/utils@npm:3.11.0"
+"@hyperlane-xyz/utils@npm:3.16.0":
+  version: 3.16.0
+  resolution: "@hyperlane-xyz/utils@npm:3.16.0"
   dependencies:
     "@cosmjs/encoding": "npm:^0.31.3"
     "@solana/web3.js": "npm:^1.78.0"
@@ -3577,7 +3578,7 @@ __metadata:
     ethers: "npm:^5.7.2"
     pino: "npm:^8.19.0"
     yaml: "npm:^2.4.1"
-  checksum: 94e80a9fac336d1387cc2c337cc029f85bcb28e3021fadb0310ae2aa31406ea394288b44da76790384a5caeed9421346461f5db9538fc4f65efda90144ad68e4
+  checksum: bba2dfd758b79d51a4521e9c64fa7a3f13f27fce81f6f2a7232a3c121a8e3b3fdfbf08059a1da2332ef9dfea1260f44dc1e8d332402d1f8523c6d6b655fe6817
   languageName: node
   linkType: hard
 
@@ -4022,7 +4023,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:^4.9.3":
+"@openzeppelin/contracts@npm:^4.2.0, @openzeppelin/contracts@npm:^4.9.3":
   version: 4.9.6
   resolution: "@openzeppelin/contracts@npm:4.9.6"
   checksum: f834b000778f634a260ed5507827cc67c0922557a1f57e1d76cf7ace061fea171aaf16640ba2e54fd7ed2cc629a9d706bc671a9692d2bb9a9469ea6154de6e8c
@@ -8421,6 +8422,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fx-portal@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "fx-portal@npm:1.0.3"
+  dependencies:
+    "@openzeppelin/contracts": "npm:^4.2.0"
+  checksum: a44d3203e3c8539333bb0fc54c51feb0ef72d0a3d2e41256405caa5906b87eaae5ec3cb95479197387a0889dfb0b2ea0847800729ab61719a65b0db4741f56e4
+  languageName: node
+  linkType: hard
+
 "gensync@npm:^1.0.0-beta.2":
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
@@ -9173,7 +9183,7 @@ __metadata:
     "@docusaurus/types": "npm:3.0.1"
     "@easyops-cn/docusaurus-search-local": "npm:^0.37.4"
     "@hyperlane-xyz/core": "npm:^3.11.0"
-    "@hyperlane-xyz/registry": "npm:1.0.7"
+    "@hyperlane-xyz/registry": "npm:2.2.0"
     "@mdx-js/react": "npm:^3.0.0"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"
