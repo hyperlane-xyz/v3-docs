@@ -164,7 +164,9 @@ This is the same as the local configuration for the checkpoint signer.
 | Argument                                  | Description                                                                                                                            |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `--chains.${originChainName}.signer.type` | Set to the `aws` literal.                                                                                                       |
+| `--chains.${originChainName}.signer.region`   | The region of your AWS KMS key. For example: `us-east-1`. |
 | `--chains.${originChainName}.signer.id`   | The alias of your Validator's AWS KMS key, prefixed with `alias/`. For example: `alias/hyperlane-validator-signer-${originChainName}`. |
+
 
 </TabItem>
 <TabItem value="production-setup-cosmos" label="Production Setup (Cosmos)">
