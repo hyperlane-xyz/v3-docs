@@ -74,11 +74,6 @@ For a minimal Warp deployment config example using local anvil chains, see [`war
 
 ### Dry Run a Warp Deployment (Optional)
 
-Prior to executing a warp deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the warp deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
-
-In addition to validating your upcoming warp deployment, you can optionally provide the address of the EOA you intend to deploy with via `--from-address` or `-f`.
-This will ensure you have approximately enough funds to complete the warp deployment.
-
 :::note
 
 In order to execute a dry-run, you will need an Anvil node running in a separate terminal instance.
@@ -86,6 +81,11 @@ To spin up an Anvil node, run `anvil`.
 For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book.getfoundry.sh/anvil/).
 
 :::
+
+Prior to executing a warp deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the warp deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
+
+In addition to validating your upcoming warp deployment, you can optionally provide the address of the EOA you intend to deploy with via `--from-address` or `-f`.
+This will ensure you have approximately enough funds to complete the warp deployment.
 
 ```bash
 hyperlane warp deploy --dry-run chain1 \
