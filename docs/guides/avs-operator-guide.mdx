@@ -52,13 +52,19 @@ The `AVS_NETWORK` is the network you're registering on, which can be `ethereum` 
 
 Your AVS signing key can be reused across multiple validators and doesn't require additional registration for each. If you use different AVS signing keys for each validator, you'll need to register each as an operator.
 
+### Confirming registration
+
+To confirm you are registed on mainnet, run `hyperlane avs check --chain ethereum` or `holesky` using the Hyperlane CLI and see if your validator address is there. This query may take a few minutes to complete.
+
+Additionally, you can search your address under the `operatorRegistry` function [on Etherscan](https://etherscan.io/address/0x272CF0BB70D3B4f79414E0823B426d2EaFd48910#readProxyContract#F12) or check on EigenLayer's UI for [Ethereum](https://app.eigenlayer.xyz/avs/0xe8e59c6c8b56f2c178f63bcfc4ce5e5e2359c8fc) or [Holesky](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab).
+
+Once confirmed, any Hyperlane message receiver can now leverage your validator signatures for security.
+
 :::success
 
 Congrats on registering with the Hyperlane AVS!
 
-You can confirm you are registered on mainnet by entering your address under the `operatorRegistry` function [**here**](https://etherscan.io/address/0x272CF0BB70D3B4f79414E0823B426d2EaFd48910#readProxyContract#F12). Additionally, you can check you are registered on Holesky by checking under the operator's section on EigenLayer's UI for Holesky [here](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab).
-
-Once confirmed, any Hyperlane message receiver can now leverage your validators signatures for security.
+Now any Hyperlane message receiver can now leverage your validator signatures, helping secure rollup interop.
 
 :::
 
