@@ -7,7 +7,7 @@ import TabItem from "@theme/TabItem";
 
 ## Overview
 
-Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](../protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
+Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](../../protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
 
 This signature is stored and made publicly available (e.g. in a S3 bucket), which is then used by the offchain Relayer and Interchain Security Modules onchain. Validators are _not_ networked together and do not need to reach consensus; they also do not regularly submit onchain transactions.
 
@@ -17,7 +17,7 @@ As you follow this guide, you can run a Hyperlane validator on any of the existi
 ## Validator Requirements
 
 - An RPC node
-  - Validators make simple view calls to read merkle roots from the [Mailbox](../../../protocol/mailbox.mdx) contract on the chain they are validating for.
+  - Validators make simple view calls to read merkle roots from the [Mailbox](../../protocol/mailbox.mdx) contract on the chain they are validating for.
 
 :::caution
 
@@ -62,7 +62,7 @@ As a recap - before running a production Validator you need to ensure you have:
 
 :::tip
 
-Experienced operators may prefer to [deploy agents with terraform](../../run-docker-compose.mdx) instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
+Experienced operators may prefer to [deploy agents with terraform](.././run-docker-compose.mdx) instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
 
 :::
 
