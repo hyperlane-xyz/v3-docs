@@ -325,11 +325,6 @@ const sidebars = {
           label: "CCIP-Read ISM",
         },
         {
-          type: "doc",
-          id: "protocol/ISM/economic-security",
-          label: "Economic Security",
-        },
-        {
           type: "category",
           label: "Third-party ISMs",
           collapsible: true,
@@ -370,9 +365,19 @@ const sidebars = {
       ],
     },
     {
-      type: "doc",
-      id: "protocol/eigenlayer-avs",
-      label: "EigenLayer AVS",
+      type: "category",
+      label: "Economic Security",
+      link: {
+        type: "doc",
+        id: "protocol/economic-security/economic-security",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "protocol/economic-security/eigenlayer-avs",
+          label: "EigenLayer AVS",
+        },
+      ]
     },
     {
       type: "category",

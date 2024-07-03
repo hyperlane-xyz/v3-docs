@@ -231,7 +231,7 @@ const config = {
             from: ['/docs/protocol/sovereign-consensus'],
           },
           {
-            to: '/docs/protocol/ISM/economic-security',
+            to: '/docs/protocol/economic-security',
             from: ['/docs/protocol/proof-of-stake'],
           },
           {
