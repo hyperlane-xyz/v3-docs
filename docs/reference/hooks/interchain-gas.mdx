@@ -38,11 +38,11 @@ flowchart LR
 Because messages can trigger arbitrary code execution, the relayer must meter the [`handle` call](../messaging/receive.mdx#handle) with a `gasLimit` to charge appropriately at message dispatch time.
 
 $$
-txCost = gasPrice * gasLimit
+destinationTxCost = destinationGasPrice * gasLimit
 \\[5pt]
 exchangeRate = \frac{originGasTokenPrice}{destinationGasTokenPrice}
 \\[5pt]
-originFee = exchangeRate * txCost
+originFee = exchangeRate * destinationTxCost
 $$
 
 ## Destination Gas Config

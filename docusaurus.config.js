@@ -255,11 +255,11 @@ const config = {
             from: ['/docs/protocol/sovereign-consensus/routing-ism'],
           },
           {
-            to: '/docs/protocol/ISM/optimistic-ISM',
+            to: '/docs/protocol/ISM/third-party-ISMs/optimistic-ISM',
             from: ['/docs/protocol/sovereign-consensus/optimistic-ism'],
           },
           {
-            to: '/docs/protocol/ISM/wormhole-ISM',
+            to: '/docs/protocol/ISM/third-party-ISMs/wormhole-ISM',
             from: ['/docs/protocol/sovereign-consensus/wormhole-ism'],
           },
           {
