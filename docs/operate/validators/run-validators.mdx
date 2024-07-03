@@ -298,11 +298,11 @@ If your Validator has not yet announced itself, and does not have enough tokens 
 
 The Validator will index the origin Mailbox contract for messages. If a message has been sent, you should see log messages that the Validator has signed them. If everything is configured correctly, you should see json files being written to your S3 bucket (if you followed the AWS setup) or to your local signatures directory if you followed the local setup. New json files get written every time a new outbound message is inserted into the mailbox.
 
-#### Next: running multiple Validators
+### Next: Running multiple Validators
 
 We encourage folks to validate on as many chains as they are interested in supporting. We recommend that resources are not shared between Validator instances.
 
-## Validator design reference
+## Design reference
 
 ```mermaid
 flowchart TB
