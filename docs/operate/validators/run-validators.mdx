@@ -34,7 +34,7 @@ Operating a Validator for Polygon mainnet requires access to an archive node. Th
 
   - Validators write their signatures off-chain to publicly accessible, highly available, storage, so that they can be aggregated by the [Relayer](../../protocol/agents/relayer.mdx).
   - The Hyperlane Validator agent currently supports storing signatures on AWS S3 using the same AWS API key above, as well as storing signatures in the local filesystem for testing.
-- The design is [open source](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/56be527d691a11a1ff2de4a390fd0dae8bb77347/typescript/infra/src/agents) and generalizable to other storage and key solutions. There is a community-submitted [PR for GCS](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156).
+- The design is [open source](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/56be527d691a11a1ff2de4a390fd0dae8bb77347/typescript/infra/src/agents) and generalizable to other storage and key solutions. There is a community-submitted work-in-progress [PR for GCS](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156).
 
 - A machine to run on
 
