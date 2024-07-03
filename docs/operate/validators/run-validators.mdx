@@ -1,62 +1,15 @@
 # Validators
 
-Everything you need to start running a Validator.
+## Overview
 
-:::tip
+Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](../protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
 
-Experienced operators may prefer to deploy agents with terraform instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
+This signature is stored and made publicly available (e.g. in a S3 bucket), which is then used by the offchain Relayer and Interchain Security Modules onchain. Validators are _not_ networked together and do not need to reach consensus; they also do not regularly submit transactions.
 
-:::
+As you follow this guide, you can run a Hyperlane validator on any of the existing [chains](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains) the protocol is live on. Hyperlane Validators are run on a per-origin-chain basis, and these instructions are written for a single chain.
 
-Hyperlane [Validators](../../protocol/agents/validators.mdx) are not networked with other Validators and do not regularly submit transactions. Hyperlane Validators are run on a per-origin-chain basis, and these instructions are written for a single chain.
 
-```mermaid
-flowchart TB
-    V(("Validator(s)"))
-    Relayer((Relayer))
-
-    subgraph Origin
-      Sender
-      M_O[(Mailbox)]
-      POS[Proof of Stake]
-
-      Sender -- "dispatch(destination, recipient, body)" --> M_O
-    end
-
-    subgraph Cloud
-      aws[(Metadata\nDatabase)]
-    end
-
-    M_O -. "indexing" .-> Relayer
-    M_O -. "indexing" .-> V
-    POS == "staking" === V
-
-    V -- "signatures" --> aws
-
-    subgraph Destination
-      Recipient
-      M_D[(Mailbox)]
-      ISM[MultisigISM]
-
-      M_D -- "verify(metadata, [origin, sender, body])" --> ISM
-      M_D -- "handle(origin, sender, body)" --> Recipient
-      ISM -. "interchainSecurityModule()" .- Recipient
-    end
-
-    Relayer -- "process()" --> M_D
-
-    aws -. "metadata" .-> Relayer
-    aws -. "moduleType()" .- ISM
-
-    POS -. "validators()" .- ISM
-
-    click ISM https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/MultisigIsm.sol
-
-    style Sender fill:#efab17
-    style Recipient fill:#efab17
-```
-
-Running a Validator requires the following:
+## Validator Requirements
 
 - An RPC node
   - Validators make simple view calls to read merkle roots from the [Mailbox](../../protocol/mailbox.mdx) contract on the chain they are validating for.
@@ -88,8 +41,7 @@ import TabItem from "@theme/TabItem";
 
 ## Guide
 
-:::info
-
+:::note[Note for Chain Deployers - not related to Validator Operators]
 
 If you're an deploying Hyperlane to a new chain, follow the [local agents guide](../../guides/deploy-hyperlane-local-agents.mdx) to understand how to configure and run a Validator locally. This is not necessary if you're only operating a validator.
 
@@ -105,6 +57,12 @@ As a recap - before running a production Validator you need to ensure you have:
 1. Set up the destination for your Validator signatures to be posted, see the [AWS Signatures Bucket Setup](validator-signatures-aws.mdx) guide.
 
 ## Configuration
+
+:::tip
+
+Experienced operators may prefer to [deploy agents with terraform](../operate/run-docker-compose.mdx) instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
+
+:::
 
 Like the local setup, there are a few base arguments you should provide when configuring your Validator.
 
@@ -326,7 +284,7 @@ export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
   </TabItem>
 </Tabs>
 
-## Announcing your Validator
+### Announcing your Validator
 
 The [Relayer](../relayer/run-relayer.mdx) needs to know where to find your Validator's signatures. Your Validator will automatically attempt to announce itself by writing to the `ValidatorAnnounce` contract on the chain that you're validating.
 
@@ -334,10 +292,58 @@ To do this, your Validator must have a small amount of tokens to pay for the gas
 
 If your Validator has not yet announced itself, and does not have enough tokens to pay for gas, it will log a message specifying how many tokens are needed.
 
-## Success!
+### Success!
 
 The Validator will index the origin Mailbox contract for messages. If a message has been sent, you should see log messages that the Validator has signed them. If everything is configured correctly, you should see json files being written to your S3 bucket (if you followed the AWS setup) or to your local signatures directory if you followed the local setup. New json files get written every time a new outbound message is inserted into the mailbox.
 
-## Running multiple Validators
+#### Next: running multiple Validators
 
 We encourage folks to validate on as many chains as they are interested in supporting. We recommend that resources are not shared between Validator instances.
+
+## Validator design reference
+
+```mermaid
+flowchart TB
+    V(("Validator(s)"))
+    Relayer((Relayer))
+
+    subgraph Origin
+      Sender
+      M_O[(Mailbox)]
+      POS[Proof of Stake]
+
+      Sender -- "dispatch(destination, recipient, body)" --> M_O
+    end
+
+    subgraph Cloud
+      aws[(Metadata\nDatabase)]
+    end
+
+    M_O -. "indexing" .-> Relayer
+    M_O -. "indexing" .-> V
+    POS == "staking" === V
+
+    V -- "signatures" --> aws
+
+    subgraph Destination
+      Recipient
+      M_D[(Mailbox)]
+      ISM[MultisigISM]
+
+      M_D -- "verify(metadata, [origin, sender, body])" --> ISM
+      M_D -- "handle(origin, sender, body)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+    end
+
+    Relayer -- "process()" --> M_D
+
+    aws -. "metadata" .-> Relayer
+    aws -. "moduleType()" .- ISM
+
+    POS -. "validators()" .- ISM
+
+    click ISM https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/MultisigIsm.sol
+
+    style Sender fill:#efab17
+    style Recipient fill:#efab17
+```
