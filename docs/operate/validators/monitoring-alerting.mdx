@@ -1,6 +1,7 @@
 # Monitoring & Alerting
 
-Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen.
+Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen. We recommend using Prometheus to scrape these metrics and Grafana to visualize them, using [this dashboard JSON template](temporary):
+![Enclave Overview](/img/validator-dashboard-template.png)
 
 :::info
 
@@ -9,7 +10,14 @@ If running as a Docker image, make sure to port-forward the metrics endpoint por
 :::
 
 ## Metrics
- 
-- the `hyperlane_latest_checkpoint` is the most critical metric in both the `phase="validator_observed"` and `phase="validator_processed"` dimension. It should gradually increase and the two should never really be out of sync.
-- another useful metric is `hyperlane_block_height` which indicates the blockheight of the rpc node the validator is connected to
+
+The dashboard template includes the following metrics:
+- `hyperlane_latest_checkpoint` - the latest checkpoint observed by the validator, visualized as the 30m increase ("Signed checkpoint diffs"). If this metric is not positive in spite of `hyperlane_block_height` increasing, it could mean that either there are no new messages, or that the validator stopped signing checkpoints.
+- `hyperlane_block_height` - the block height of the RPC node the validator is connected to, visualized as 30m increases ("Latest block diffs"). If this metric is not increasing, the RPC may be unhealthy and need changing.
+- `hyperlane_span_events_total{agent="validator", event_level="error"}` - the total number of errors logged by the validator, visualized as 30m increases ("Error log count diffs"). If this metric is nonzero, at least a low-severity alert is warranted.
+- `hyperlane_span_events_total{agent="validator", event_level="warn"}` - the total number of warnings logged by the validator, visualized as 30m increases ("Warning log count diffs"). If this metric is nonzero, at least a low-severity alert is warranted.
+
+All the metrics above can be combined to create alerts that minimize false positives. Some example critical alerts:
+- "if the `hyperlane_latest_checkpoint` stopped increasing, but the `hyperlane_block_height` is still increasing, and `error` and `warn` log counts have also been increasing, over the last 6 hours"
+- "if `hyperlane_block_height` has not increased in the last 30 minutes"
 
