@@ -117,6 +117,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "reference/hooks/arbitrum-L2-to-L1",
+          label: "Arbitrum L2 to L1",
+        },
+        {
+          type: "doc",
           id: "reference/hooks/polygon-pos",
           label: "Polygon PoS",
         },
@@ -342,8 +347,8 @@ const sidebars = {
             },
             {
               type: "doc",
-              id: "protocol/ISM/third-party-ISMs/arbitrum-orbit-ISM",
-              label: "Arbitrum Orbit ISM",
+              id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
+              label: "Arbitrum L2 to L1 ISM",
             },
             {
               type: "doc",

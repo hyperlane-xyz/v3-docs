@@ -1,0 +1,40 @@
+# Arbitrum L2 to L1 Hook
+
+Arbitrum has it's own interface for passing messages from L2 to L1 called `ArbSys` which benefits from the security of the Arbitrum rollup. To provide this security as an option in Hyperlane, we created a Hook and ISM combo that can be transparently configured to reuse the native Arbitrum interface.
+
+See the [addresses](../contract-addresses.mdx) page for Hook and ISM addresses.
+
+## How it works
+
+```mermaid
+flowchart TB
+    subgraph Origin Arbitrum L2
+      Sender
+      M_O[(Mailbox)]
+      Hook[ArbL2ToL1Hook]
+      L_2[(ArbSys)]
+
+      Sender -- "dispatch(...)" --> M_O
+      M_O -- "postDispatch(message)" --> Hook
+      Hook -- "sendMessage(messageId)" --> L_2
+    end
+
+    M_O -. "relay" .-> M_D
+    L_2 -. "rollup node" .-> L_1
+
+    subgraph Destination Ethereum 
+      Recipient
+      M_D[(Mailbox)]
+      ISM{ArbL2ToL1Ism}
+      L_1[(Outbox)]
+
+      M_D -- "verify(..., message)" --> ISM
+      M_D -- "handle(...)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+
+      L_1 -- "verifyMessageId(messageId)" --> ISM
+    end
+
+    style L_2 fill: #ff0402
+    style L_1 fill: #ff0402
+```
