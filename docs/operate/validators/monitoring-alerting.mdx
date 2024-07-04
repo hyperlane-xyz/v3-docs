@@ -1,7 +1,10 @@
 # Monitoring & Alerting
 
-Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen. We recommend using Prometheus to scrape these metrics and Grafana to visualize them, using [this dashboard JSON template](temporary):
-![Enclave Overview](/img/validator-dashboard-template.png)
+Validators expose metrics on the port number specified by the argument `--metrics`. Port `9090` is the default, though any valid port can be chosen. 
+
+We recommend using Prometheus to scrape these metrics and Grafana to visualize them, using [this dashboard JSON template](temporary), as seen below. The benefit of this dashboard is that it displays multiple validators at the same time. The screenshot shows metrics grouped by chain or by kubernetes pod.
+
+![Validator Grafana Dashboard Template](/img/validator-dashboard-template.png)
 
 :::info
 
@@ -11,13 +14,13 @@ If running as a Docker image, make sure to port-forward the metrics endpoint por
 
 ## Metrics
 
-The dashboard template includes the following metrics:
-- `hyperlane_latest_checkpoint` - the latest checkpoint observed by the validator, visualized as the 30m increase ("Signed checkpoint diffs"). If this metric is not positive in spite of `hyperlane_block_height` increasing, it could mean that either there are no new messages, or that the validator stopped signing checkpoints.
-- `hyperlane_block_height` - the block height of the RPC node the validator is connected to, visualized as 30m increases ("Latest block diffs"). If this metric is not increasing, the RPC may be unhealthy and need changing.
-- `hyperlane_span_events_total{agent="validator", event_level="error"}` - the total number of errors logged by the validator, visualized as 30m increases ("Error log count diffs"). If this metric is nonzero, at least a low-severity alert is warranted.
-- `hyperlane_span_events_total{agent="validator", event_level="warn"}` - the total number of warnings logged by the validator, visualized as 30m increases ("Warning log count diffs"). If this metric is nonzero, at least a low-severity alert is warranted.
+The dashboard template includes the following metrics.
+- `hyperlane_latest_checkpoint`: the latest checkpoint observed by the validator, visualized as 30 min increases ("Signed checkpoint diffs"). If this metric is not positive in spite of `hyperlane_block_height` increasing, it could mean that either there are no new messages, or that the validator stopped signing checkpoints.
+- `hyperlane_block_height`: the block height of the RPC node the validator is connected to, visualized as 30 min increases ("Latest block diffs"). If this metric is not increasing, the RPC may be unhealthy and need changing.
+- `hyperlane_span_events_total{agent="validator", event_level="error"}`: the total number of errors logged by the validator, visualized as 30 min increases ("Error log count diffs"). If this metric is nonzero, at least a low-severity alert is warranted. Note that the dashboard query groups metrics by kubernetes pod name, so you may need to adjust this query if you are not running in a kubernetes environment.
+- `hyperlane_span_events_total{agent="validator", event_level="warn"}`: the total number of warnings logged by the validator, visualized as 30 min increases ("Warning log count diffs"). If this metric is nonzero, at least a low-severity alert is warranted. Note that the dashboard query groups metrics by kubernetes pod name, so you may need to adjust this query if you are not running in a kubernetes environment.
 
+## Alerts
 All the metrics above can be combined to create alerts that minimize false positives. Some example critical alerts:
 - "if the `hyperlane_latest_checkpoint` stopped increasing, but the `hyperlane_block_height` is still increasing, and `error` and `warn` log counts have also been increasing, over the last 6 hours"
 - "if `hyperlane_block_height` has not increased in the last 30 minutes"
-
