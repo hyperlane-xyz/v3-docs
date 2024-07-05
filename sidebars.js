@@ -424,6 +424,11 @@ const sidebars = {
       label: "Implementation Guide",
     },
     {
+      type: "doc",
+      id: "operate/docker-quickstart",
+      label: "Docker Quick Start",
+    },
+    {
       type: "category",
       label: "Developer Tips",
       collapsible: true,
@@ -559,6 +564,11 @@ const sidebars = {
       type: "doc",
       id: "operate/run-docker-compose",
       label: "Run Docker Compose",
+    },
+    {
+      type: "doc",
+      id: "operate/docker-quickstart",
+      label: "Docker Quickstart",
     },
     {
       type: "doc",
