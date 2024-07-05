@@ -51,8 +51,9 @@ The `gasLimit` and the `exchangeRate` are configured by the message sender and t
 
 ### Gas limit
 
-The gas limit is set based on the cost of calling `handle` on the destination chain for a given message. This can vary depending on message content and the logic of the handler. The message sender is expected to configure the gas limit based on the expected cost of handling the message, a default is used when not configured, see the [interchain gas hook reference](../reference/hooks/interchain-gas.mdx#post-dispatch) for more details.
+The gas limit is set based on the cost of calling `handle` on the destination chain for a given message. This can vary depending on message content and the logic of the handler. The message sender is expected to configure the gas limit based on the expected cost of handling the message, with a default being used when the gas limit is not configured.
 
+See the [interchain gas hook reference](../reference/hooks/interchain-gas.mdx#post-dispatch) for more details.
 
 ### Destination Gas Config
 
