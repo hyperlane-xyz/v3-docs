@@ -2,7 +2,7 @@
 
 Successful interchain messages require two transactions; one on the origin chain to send the message, and one on the destination chain to deliver the message.
 
-For convenience, Hyperlane provides an onchain interface on the origin chain that allows message senders to pay the [relayer](./agents/relayer.mdx) to deliver a message on the destination chain. This payment is called an interchain gas payment.
+For convenience, Hyperlane provides an onchain interface on the origin chain that allows message senders to pay [fees](#interchain-gas-payment-calculation) to the [relayer](./agents/relayer.mdx) to deliver a message on the destination chain. This payment is called an interchain gas payment.
 
 ```mermaid
 flowchart LR
@@ -31,17 +31,32 @@ flowchart LR
 
 Interchain gas payments are facilitated by `InterchainGasPaymaster` (IGP) smart contracts.
 
-These contracts expose the [InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx), which allow users to pay the [relayer](./agents/relayer.mdx) with native tokens on the origin chain to cover the costs of delivering a message on the destination chain.
+These contracts expose the [InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx), which allow message senders to pay the [relayer](./agents/relayer.mdx) with native tokens on the origin chain to cover the costs of delivering a message on the destination chain.
 
 Each `InterchainGasPaymaster` contract corresponds to exactly one relayer. You can find addresses of the Abacus Works' relayer under [addresses](../reference/contract-addresses.mdx)
 
+### Interchain gas payment calculation
+
+The interchain gas payment is calculated as follows:
+
+$$
+destinationTxCost = destinationGasPrice * gasLimit
+\\[5pt]
+exchangeRate = \frac{originGasTokenPrice}{destinationGasTokenPrice}
+\\[5pt]
+originFee = exchangeRate * destinationTxCost
+$$
+
+The `gasLimit` and the `exchangeRate` are configured by the message sender and the relayer, respectively.
+
 ### Gas limit
 
-The gas limit is the cost of calling `handle` on the destination chain for a given message. This can vary depending on message content and the logic of the handler.
+The gas limit is set based on the cost of calling `handle` on the destination chain for a given message. This can vary depending on message content and the logic of the handler. The message sender is expected to configure the gas limit based on the expected cost of handling the message, a default is used when not configured, see the [interchain gas hook reference](../reference/hooks/interchain-gas.mdx#post-dispatch) for more details.
 
-### Gas overhead
 
-The gas overhead is set as part of the destination gas configuration, along with the `gasOracle`:
+### Destination Gas Config
+
+For each remote domain, the InterchainGasPaymaster sets the domain gas config.
 
 ```solidity
 struct DomainGasConfig {
@@ -50,7 +65,9 @@ struct DomainGasConfig {
 }
 ```
 
-This corresponds to the operational cost of processing a message on the destination chain.
+#### Gas overhead
+
+The gas overhead is set as part of the destination gas configuration. This corresponds to the operational cost of processing a message on the destination chain.
 
 :::note
 You should ensure the `gasOverhead` sufficiently covers the range of ISMs on your destination chain.
@@ -58,7 +75,7 @@ You should ensure the `gasOverhead` sufficiently covers the range of ISMs on you
 As you can configure different ISMs for different message types, you may have different gas overheads for each ISM's `verify` function.
 :::
 
-### Gas oracles
+#### Gas oracles
 
 In order to support the [InterchainGasPaymaster interface](../reference/hooks/interchain-gas.mdx), IGP contracts may be configured with gas oracles, which are responsible for tracking remote token gas prices and exchange rates.
 
