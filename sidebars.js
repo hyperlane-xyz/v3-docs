@@ -424,11 +424,6 @@ const sidebars = {
       label: "Implementation Guide",
     },
     {
-      type: "doc",
-      id: "operate/docker-quickstart",
-      label: "Docker Quick Start",
-    },
-    {
       type: "category",
       label: "Developer Tips",
       collapsible: true,
