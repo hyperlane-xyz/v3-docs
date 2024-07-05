@@ -5,29 +5,34 @@ import TabItem from '@theme/TabItem';
 
 ### 1. Setup validator key
 
-Follow the guide [here](../set-up-agent-keys.mdx#2-aws-kms) for creating agent keys with AWS KMS.
+Follow the guide [here](./set-up-agent-keys.mdx#2-aws-kms) for creating agent keys with AWS KMS.
 
 ### 2. Create S3 bucket for signatures
 
-Follow the guide [here](./validator-signatures-aws.mdx) for creating and configuring an S3 bucket for your validator to write signatures to.
+Follow the guide [here](./validators/validator-signatures-aws.mdx) for creating and configuring an S3 bucket for your validator to write signatures to.
 
 ### 3. (AVS Operators Only) Register with Hyperlane AVS
 
-If you are an AVS operator, follow the guide [here](../../guides/avs-operator-guide#4-register-your-operator) to register with the Hyperlane AVS.
+If you are an AVS operator, follow the guide [here](../guides/avs-operator-guide#4-register-your-operator) to register with the Hyperlane AVS.
 
 ## 4. Setup validator environment
 
-### Create a directory for each chain you wish to validate
+### Create config files
 
-For example, create an ethereum directory and create config.json, docker-compose.yml, and .env
+In this example, we will run three chains. 
+
 ```bash
-mkdir -p ethereum/hyperlane_db && \
-touch ethereum/config.json ethereum/docker-compose.yml ethereum/.env
+mkdir -p ethereum/hyperlane_db optimism/hyperlane_db base/hyperlane_db && \
+touch ethereum/config.json optimism/config.json base/config.json docker-compose.yml .env.ethereum .env.optimism .env.base
 ```
 
-### Edit config.json
+### Edit config files
+
+### Edit each config.json
 
 `customRpcUrls` are a comma separated list of performant RPC endpoints for the chain you wish to support, we recommend using paid providers to avoid rate limiting
+
+`chains.ethereum` should be changed to `chains.base` for example in the base/config.json, and `chains.optimism` in optimism/config.json
 
 `signer.region` and `validator.region` should be adjusted to your AWS region
 
@@ -49,19 +54,19 @@ touch ethereum/config.json ethereum/docker-compose.yml ethereum/.env
       "signer": {
         "region": "us-east-1",
         "type": "aws",
-        "id": "alias/hyperlane-validator-signer-ethereum"
+        "id": "alias/hyperlane-validator-signer"
       }
     }
   },
   "originChainName": "ethereum",
   "db": "/mnt/hyperlane_db",
   "validator": {
-    "id": "alias/hyperlane-validator-signer-ethereum",
+    "id": "alias/hyperlane-validator",
     "type": "aws",
     "region": "us-east-1"
   },
   "checkpointSyncer": {
-    "bucket": "hyperlane-validator-signatures-ethereum",
+    "bucket": "hyperlane-validator-signatures",
     "region": "us-east-1",
     "type": "s3",
     "folder": "ethereum"
@@ -71,29 +76,29 @@ touch ethereum/config.json ethereum/docker-compose.yml ethereum/.env
 }
 ```
 
-### Edit .env
+### Edit each .env file (.env.ethereum, .env.optimism, .env.base)
+
+You should change the service name, db path, and config file locations to match the folders created for each chain.
 
 ```
 AWS_ACCESS_KEY_ID=<Your AWS access key ID>
 AWS_SECRET_ACCESS_KEY=<Your AWS secret access key>
-DB_PATH=./hyperlane_db # ./hyperlane_db
-METRICS_PORT=9091 # Default is 9090, should match port set in config.json
-CONFIG_FILE=./config.json # ./config.json
+DB_PATH=./ethereum/hyperlane_db
+METRICS_PORT=9090 # Default is 9090, should match port set in config.json
+CONFIG_FILE=./ethereum/config.json
 SERVICE_NAME=ethereum
 ```
 
-## 5. Configure Docker Compose
-
-If you wish to run multiple validators, you could reuse the same docker-compose file but create different .env and config.json files per chain. 
+## 5. Configure Docker Compose (docker-compose.yml)
 
 ```yaml
-version: '3.8' 
+version: '3.8'
 
 services:
   validator:
     image: gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
     command: ./validator
-    container_name: ${SERVICE_NAME-validator}
+    container_name: ${SERVICE_NAME}-validator
     ports:
       - "${METRICS_PORT}:9090/tcp"
     environment:
@@ -101,24 +106,52 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     configs:
-      - config.json
+      - source: config_${SERVICE_NAME}
+        target: /config.json
     volumes:
       - ${DB_PATH}:/mnt/hyperlane_db
-    restart: unless-stopped  # Ensure the container restarts unless explicitly stopped
+    restart: unless-stopped
     env_file:
       - .env
 
 configs:
-  config.json:
-    file: ${CONFIG_FILE}
+  config_ethereum:
+    file: ./ethereum/config.json
+  config_optimism:
+    file: ./optimism/config.json
+  config_base:
+    file: ./base/config.json
+```
+
+Your directory structure should look similar to this:
+
+```bash
+.
+├── base
+│   ├── config.json
+│   └── hyperlane_db
+├── docker-compose.yml
+├── ethereum
+│   ├── config.json
+│   └── hyperlane_db
+├── .env.base
+├── .env.ethereum
+├── .env.optimism
+└── optimism
+    ├── config.json
+    └── hyperlane_db
 ```
 
 ## 6. Run the Hyperlane validators
 
 Bring the containers up:
 
+Remember to fund your validator address so the validator can announce.
+
 ```bash
-cd ethereum && docker-compose up -d
+docker-compose --env-file .env.ethereum up -d
+docker-compose --env-file .env.optimism up -d
+docker-compose --env-file .env.base up -d
 ```
 
 Ensure there are no errors:
