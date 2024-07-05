@@ -4,7 +4,7 @@
 
 Welcome to the Hyperlane AVS documentation. This guide will help you understand the Hyperlane's AVS (Actively Validated Service) module built atop EigenLayer, the Ethereum restaking protocol.
 
-Hyperlane currently employs a Proof of Authority model for security, in which a trusted group of validators are chosen to maintain [security](./ISM/multisig-ISM.mdx). However, if any validator signs erroneously or with malicious intent, there are no repercussions, as these validators have no economic stake. This is the gap that the AVS module is designed to address.
+Hyperlane currently employs a Proof of Authority model for security, in which a trusted group of validators are chosen to maintain [security](/docs/protocol/ISM/multisig-ISM.mdx). However, if any validator signs erroneously or with malicious intent, there are no repercussions, as these validators have no economic stake. This is the gap that the AVS module is designed to address.
 
 ```mermaid
 flowchart TB
@@ -33,7 +33,7 @@ flowchart TB
     end
 ```
 
-The AVS module uniquely enables [economic security](./ISM/economic-security.mdx) within the Hyperlane protocol with minimum cost to bootstrap a new validator network for each chain it supports. This is achieved by leveraging the shared pool of stake that can secure outbound messages from and between rollups. The main stakeholders in this process are:
+The AVS module uniquely enables [economic security](/docs/protocol/economic-security/economic-security.mdx) within the Hyperlane protocol with minimum cost to bootstrap a new validator network for each chain it supports. This is achieved by leveraging the shared pool of stake that can secure outbound messages from and between rollups. The main stakeholders in this process are:
 
 - **Operators** - EigenLayer operators who opt into the Hyperlane AVS service and start validating outbound messages from the chain(s) specified
 - **Stakers** - EigenLayer stakers who delegate their stake to the operators to secure the network
@@ -41,7 +41,7 @@ The AVS module uniquely enables [economic security](./ISM/economic-security.mdx)
 
 :::caution
 
-Slashing and reward payments are not enabled yet for EigenLayer. In addition to the AVS, signatures & validation must be set up in an [Interchain Security Module (ISM)](./ISM/modular-security.mdx).
+Slashing and reward payments are not enabled yet for EigenLayer. In addition to the AVS, signatures & validation must be set up in an [Interchain Security Module (ISM)](/docs/protocol/ISM/modular-security.mdx).
 
 :::
 
