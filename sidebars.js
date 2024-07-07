@@ -358,18 +358,13 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "protocol/agents/validators",
-          label: "Validators",
-        },
-        {
-          type: "doc",
           id: "protocol/agents/relayer",
           label: "Relayer",
         },
         {
           type: "doc",
-          id: "protocol/agents/watchtowers",
-          label: "Watchtowers",
+          id: "protocol/agents/validators",
+          label: "Validators",
         },
       ],
     },
