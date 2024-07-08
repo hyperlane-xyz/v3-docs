@@ -5,4 +5,4 @@ The Hyperlane protocol decouples the transport layer from the security layer of 
 These agents are implemented in Rust and distributed as Docker images and binaries.
 
 1. [Relayers](./agents/relayer.mdx) fulfil the message transport requirement of the protocol. They aggregate off-chain security metadata for the [`IInterchainSecurityModule` interface](../reference/ISM/specify-your-ISM) and deliver messages to their recipients.
-1. [Validators](./agents/validators.mdx) fulfil the security requirement of the protocol, as part of the [Multisig ISM](./ISM/multisig-ISM.mdx) or the [EigenLayer AVS](./eigenlayer-avs.mdx), by attestting to the validity of [Mailbox](./mailbox.mdx) messages and making their signatures available to a relayer.
+1. [Validators](./agents/validators.mdx) fulfil the security requirement of the protocol, as part of the [Multisig ISM](./ISM/multisig-ISM.mdx) or the [Hyperlane AVS](./economic-security/hyperlane-avs.mdx), by attestting to the validity of [Mailbox](./mailbox.mdx) messages and making their signatures available to a relayer.
