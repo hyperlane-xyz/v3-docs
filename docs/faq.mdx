@@ -43,7 +43,7 @@ A modular approach to security ensures that Hyperlane will continue to stay up t
 <details>
   <summary>**What happens when I send a message on Hyperlane?**</summary>
   <div>
-    <div>See the [send](./reference/messaging/send.mdx) and [receive](./reference/messaging/receive.mdx) pages for more details. In summary, an application calls the `dispatch()` function on the origin chain, inserting the message into the Mailbox's Merkle tree. A Hyperlane Relayer observes the dispatched messages and assemble metadata for the recipient's Interchain Security Module (ISM). A relayer delivers the message to the recipient by calling `Mailbox.process()`. The  verifies the message with the recipient’s ISM, and calls `recipient.handle()` to deliver the message.</div>
+    <div>See the [send](./reference/messaging/send.mdx) and [receive](./reference/messaging/receive.mdx) pages for more details. In summary, an application calls the `dispatch()` function on the origin chain, inserting the message into the Mailbox's Merkle tree. A Hyperlane Relayer observes the dispatched messages and assembles metadata for the recipient's Interchain Security Module (ISM). A relayer delivers the message to the recipient by calling `Mailbox.process()`. The Mailbox verifies the message with the recipient’s ISM, and calls `recipient.handle()` to deliver the message.</div>
   </div>
 </details>
 <details>
