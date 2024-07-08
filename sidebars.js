@@ -554,6 +554,11 @@ const sidebars = {
           id: "operate/relayer/message-filtering",
           label: "Message Filtering",
         },
+        {
+          type: "doc",
+          id: "operate/relayer/monitoring-alerting",
+          label: "Monitoring & Alerting",
+        },
       ],
     },
     {
