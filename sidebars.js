@@ -427,7 +427,7 @@ const sidebars = {
         {
           type: "doc",
           id: "guides/explorer/configuring-pi-chains",
-          label: "Configuring PI Chains",
+          label: "Configuring Permissionless Chains",
         },
         {
           type: "doc",
