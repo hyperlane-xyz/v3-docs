@@ -19,7 +19,7 @@ Relayers can easily configure the messages that they wish to process. Currently,
 2. A sender / recipient blacklist.
 3. The ability to accept [payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch) for processing a message on the destination chain.
 
-While permissionless to run, it's up to the message sender to pick which relayer to pay for delivery. [Mailbox](../mailbox.mdx) integrations usually default to always paying the same relayer, so if driven by economic incentives, it's only recommended to run a relayer for a self-deployed bridge. For convenience, Hyperlane will run an open source and configurable relayer agent, implemented as a Rust binary. If you'd like to run your own relayer, we've open sourced the [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer).
+While permissionless to run, it's up to the message sender to pick which relayer to pay for delivery. [Mailbox](../mailbox.mdx) integrations usually default to always paying the same relayer, but message senders can opt out of this. For convenience, Hyperlane will run an open source and configurable relayer agent, implemented as a Rust binary. If you'd like to run your own relayer, we've open sourced the [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer).
 
 Running your own relayer involves deploying an [IGP contract](../interchain-gas-payment.mdx) and maintaining token exchange rates and gas prices inside of it to accurately charge message delivery fees.
 
@@ -35,7 +35,7 @@ The relayer is comprised of two main tasks: an Indexer for each origin, and a Su
 
 
 ### The Indexer
-Both new and historic messages are indexed by querying [Mailbox](../mailbox.mdx) contract events using RPC. [Gas payments](../interchain-gas-payment.mdx) are also indexed to confirm senders paid for delivery, and certain ISMs use additional origin chain data. This is the case with the Multisig ISM, which relies on the Merkle Tree Hook contract to inform the Relayer about which Validator signature corresponds to which message. There is a standalone indexing task spawned for every event type (Messages, IGP, Merkle Tree insertion).
+Both new and historic messages are indexed by querying [Mailbox](../mailbox.mdx) contract events using RPCs. [Gas payments](../interchain-gas-payment.mdx) are also indexed to confirm senders paid for delivery, and certain ISMs use additional origin chain data. This is the case with the Multisig ISM, which relies on the Merkle Tree Hook contract to inform the Relayer about which Validator signature corresponds to which message. There is a standalone indexing task spawned for every event type (Messages, IGP, Merkle Tree insertion).
 
 The indexer writes to a local database (RocksDB) as a means of caching, as well as communicating with the Submitter task - the latter periodically polls the database to check if new messages were dispatched.
 
@@ -66,7 +66,7 @@ Messages go through four stages as part of the Submitter, which are spawned as i
     <tr>
       <td>Submit Task</td>
       <td>
-        Pops messages from its queue, and sends the delivery transaction onchain. deliveries are batched whenever possible. If there is no error broadcasting the transaction, the message is pushed to the Confirm step's queue. Otherwise, the message is pushed back to the Prepare queue.
+        Pops messages from its queue, and sends the delivery transaction onchain. Deliveries are batched whenever possible. If there is no error broadcasting the transaction, the message is pushed to the Confirm step's queue. Otherwise, the message is pushed back to the Prepare queue.
       </td>
     </tr>
     <tr>
