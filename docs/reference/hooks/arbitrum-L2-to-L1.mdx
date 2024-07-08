@@ -1,0 +1,38 @@
+# Arbitrum L2 to L1 Hook
+
+Arbitrum's Outbox system allows for arbitrary L2 to L1 contract calls after the optimistic challenge period, i.e., messages initiated on the L2 chain which eventually resolve in execution on L1. See more details about [here](https://docs.arbitrum.io/how-arbitrum-works/arbos/l2-l1-messaging). Hyperlane can wrap around the Outbox system to leverage the optimistic security of Arbitrum L2 (with a 7 day withdrawal period and operational fraud proofs) to secure L2 to L1 messages from any Abritrum Nitro rollups. We've implemented the [ArbL2ToL1Hook](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/hooks/ArbL2ToL1Hook.sol) and [ArbL2ToL1Ism](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/hook/ArbL2ToL1Ism.sol).
+
+## How it works
+
+```mermaid
+flowchart TB
+    subgraph Origin Arbitrum L2
+      Sender
+      M_O[(Mailbox)]
+      Hook[ArbL2ToL1Hook]
+      L_2[(ArbSys)]
+
+      Sender -- "dispatch(...)" --> M_O
+      M_O -- "postDispatch(message)" --> Hook
+      Hook -- "sendMessage(messageId)" --> L_2
+    end
+
+    M_O -. "relay" .-> M_D
+    L_2 -. "rollup node" .-> L_1
+
+    subgraph Destination Ethereum
+      Recipient
+      M_D[(Mailbox)]
+      ISM{ArbL2ToL1Ism}
+      L_1[(Outbox)]
+
+      M_D -- "verify(..., message)" --> ISM
+      M_D -- "handle(...)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+
+      L_1 -- "verifyMessageId(messageId)" --> ISM
+    end
+
+    style L_2 fill: #ff0402
+    style L_1 fill: #ff0402
+```
