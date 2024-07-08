@@ -364,8 +364,8 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "protocol/economic-security/eigenlayer-avs",
-          label: "EigenLayer AVS",
+          id: "protocol/economic-security/hyperlane-avs",
+          label: "Hyperlane AVS",
         },
       ]
     },
