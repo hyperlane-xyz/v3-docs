@@ -469,51 +469,6 @@ const sidebars = {
         },
       ],
     },
-    /**
-    {
-      type: "category",
-      label: "Ecosystems",
-      link: {
-        type: "generated-index",
-        description:
-          "Hyperlane can be deployed to virtually any chain, with implementations for major ecosystems and execution environments live.",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/ecosystems/celestia",
-          label: "Celestia",
-        },
-        {
-          type: "doc",
-          id: "guides/ecosystems/cosmos",
-          label: "Cosmos",
-        },
-        {
-          type: "doc",
-          id: "guides/ecosystems/evm",
-          label: "EVM",
-        },
-        {
-          type: "doc",
-          id: "guides/ecosystems/solana",
-          label: "Solana",
-        },
-        {
-          type: "doc",
-          id: "guides/ecosystems/move",
-          label: "Move",
-        },
-        {
-          type: "doc",
-          id: "guides/ecosystems/fuel",
-          label: "Fuel",
-        },
-      ],
-    },
-   */
   ],
 
   operateSidebar: [
