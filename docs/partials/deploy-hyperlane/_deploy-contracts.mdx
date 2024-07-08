@@ -24,24 +24,19 @@ npm install -g @hyperlane-xyz/cli
 
 <CliChainsPartial />
 
-#### ISM
+#### Core deployment with Multisig ISM
 
 Now the CLI will know how to interact with all your chains, but it will also need to know how to configure your Interchain Security Module (ISM).
 
-To create a multisig ISM configs, you can define it manually using JSON or YAML (see [example config here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/v3/typescript/cli/examples/multisig-ism.yaml)), or create it with the following command:
+To initialize a core config with multisig ISM config, you can define it manually using JSON or YAML (see [example config here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/core-config.yaml)), or create it with the following command:
 
 ```bash
-hyperlane config create ism
+hyperlane core init --advanced
 ```
 
-When asked about the multisig type, choose `message id ism`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
+When asked about the ISM type, choose `messageIdMultisigIsm`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
 
 ### Dry Run a Core Deployment
-
-Prior to executing a deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
-
-In addition to validating your upcoming deployment, you can optionally provide the address of the EOA you intend to deploy with via `--from-address` or `-f`.
-This will ensure you have approximately enough funds to complete the deployment.
 
 :::note
 
@@ -51,9 +46,13 @@ For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book
 
 :::
 
+Prior to executing a deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
+
+In addition to validating your upcoming deployment, you can optionally provide the address of the EOA you intend to deploy with via `--from-address` or `-f`.
+This will ensure you have approximately enough funds to complete the deployment.
+
 ```bash
-hyperlane deploy core --dry-run chain1 \
-    --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
+hyperlane core deploy --dry-run chain1 \ 
     --from-address $YOUR_DEPLOYER_ADDRESS \ # (optional) your account address to be impersonated via Anvil; defaults to the HYP_KEY env variable
     --registry \ # (optional) path to your primary registry; defaults to the Hyperlane github registry
     --overrides # (optional) path to a override registry; defaults to the local ./ path
@@ -61,19 +60,25 @@ hyperlane deploy core --dry-run chain1 \
 
 ### Deploy
 
-We're now ready to use the `deploy core` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
+We're now ready to use the `core deploy` command to deploy the Hyperlane contracts. To pay for transactions, the command will need the contract deployer key from step 1, which can be provided via the `HYP_KEY` env variable or as a command argument.
 
 ```bash
-hyperlane deploy core \
-    --targets chain1,chain2,... \ # all the chains you want to bridge between
-    --ism $MULTISIG_CONFIG_FILE \ # path to ism.yaml config e.g. ./configs/ism.yaml
-    --key $YOUR_DEPLOYER_PRIVATE_KEY \ # (optional) your private key to pay for transactions; can also be provided via HYP_KEY env variable
-    --registry \ # (optional) path to your primary registry; defaults to the Hyperlane github registry
-    --overrides # (optional) path to a override registry; defaults to the local ./ path
+hyperlane core deploy
 ```
 
 ### Verify
 
 Deployment contract artifacts will be written to the configured registries. By default, you'll find the new addresses in the local directory you ran the command from (e.g. `./chains/chain1/addresses.yaml`).
 
-The deployment will also generate a Hyperlane Agent config, which is written to `./configs/agent.json` by default, but can be configured with the `--agent` flag.
+### Agent configs
+
+We are now ready to generate an agent config using our deployed contracts that will be used by the agents (Validator and Relayer) in the steps below.
+
+```bash
+hyperlane registry agent-config --chains chain1
+```
+
+Set the `CONFIG_FILES` enviroment variable to the path of the agent config generated.
+```bash
+export CONFIG_FILES=/full/path/to/configs/agent-config.json
+```
