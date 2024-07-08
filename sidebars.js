@@ -117,6 +117,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "reference/hooks/arbitrum-L2-to-L1",
+          label: "Arbitrum L2 to L1",
+        },
+        {
+          type: "doc",
           id: "reference/hooks/polygon-pos",
           label: "Polygon PoS",
         },
@@ -326,7 +331,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Third-party ISMs",
+          label: "Community ISMs",
           collapsible: true,
           collapsed: true,
           items: [
@@ -350,19 +355,29 @@ const sidebars = {
               id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
               label: "Polygon PoS ISM",
             },
+            {
+              type: "doc",
+              id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
+              label: "Arbitrum L2 to L1 ISM",
+            }
           ],
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/economic-security",
-          label: "Economic Security",
         },
       ],
     },
     {
-      type: "doc",
-      id: "protocol/eigenlayer-avs",
-      label: "EigenLayer AVS",
+      type: "category",
+      label: "Economic Security",
+      link: {
+        type: "doc",
+        id: "protocol/economic-security/economic-security",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "protocol/economic-security/hyperlane-avs",
+          label: "Hyperlane AVS",
+        },
+      ]
     },
     {
       type: "category",
@@ -376,18 +391,13 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "protocol/agents/validators",
-          label: "Validators",
-        },
-        {
-          type: "doc",
           id: "protocol/agents/relayer",
           label: "Relayer",
         },
         {
           type: "doc",
-          id: "protocol/agents/watchtowers",
-          label: "Watchtowers",
+          id: "protocol/agents/validators",
+          label: "Validators",
         },
       ],
     },
@@ -508,6 +518,11 @@ const sidebars = {
           type: "doc",
           id: "operate/relayer/message-filtering",
           label: "Message Filtering",
+        },
+        {
+          type: "doc",
+          id: "operate/relayer/monitoring-alerting",
+          label: "Monitoring & Alerting",
         },
       ],
     },
