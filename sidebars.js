@@ -354,15 +354,7 @@ const sidebars = {
               type: "doc",
               id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
               label: "Polygon PoS ISM",
-            }
-          ],
-        },
-        {
-          type: "category",
-          label: "Third-party ISMs",
-          collapsible: true,
-          collapsed: true,
-          items: [
+            },
             {
               type: "doc",
               id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
