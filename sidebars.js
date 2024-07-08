@@ -331,7 +331,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Third-party ISMs",
+          label: "Community ISMs",
           collapsible: true,
           collapsed: true,
           items: [
