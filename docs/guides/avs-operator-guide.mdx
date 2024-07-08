@@ -2,7 +2,7 @@
 
 ## Overview
 
-Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](../protocol/mailbox.mdx) and if needed sign a merkle root that attests to the current state of the mailbox.
+Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](../protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
 
 This signature is stored and made publicly available (e.g. in a S3 bucket), which is then used by the offchain Relayer and Interchain Security Modules onchain. Validators are _not_ networked together and do not need to reach consensus.
 
