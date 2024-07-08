@@ -352,17 +352,22 @@ const sidebars = {
             }
           ],
         },
-        {
-          type: "doc",
-          id: "protocol/ISM/economic-security",
-          label: "Economic Security",
-        },
       ],
     },
     {
-      type: "doc",
-      id: "protocol/eigenlayer-avs",
-      label: "EigenLayer AVS",
+      type: "category",
+      label: "Economic Security",
+      link: {
+        type: "doc",
+        id: "protocol/economic-security/economic-security",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "protocol/economic-security/hyperlane-avs",
+          label: "Hyperlane AVS",
+        },
+      ]
     },
     {
       type: "category",
