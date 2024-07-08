@@ -349,7 +349,7 @@ const sidebars = {
               type: "doc",
               id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
               label: "Polygon PoS ISM",
-            }
+            },
           ],
         },
         {
@@ -390,6 +390,11 @@ const sidebars = {
           label: "Watchtowers",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "protocol/non-evm-implementations",
+      label: "Non-EVM implementations",
     },
   ],
 
