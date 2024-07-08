@@ -2,7 +2,7 @@
 
 ## Overview
 
-Validators run as part of the [Multisig ISM](../ISM/multisig-ISM.mdx) or the [Economic Security Module](./eigenlayer-avs.mdx), fulfilling the security layer of the Hyperlane protocol. If using a different ISM, validators are not required. They are responsible for attesting to messages by signing a merkle root (also referred to as a checkpoint) when new dispatches happen in the [Mailbox](../mailbox.mdx). Signatures must be made available for anyone (typically the Relayer) to fetch and submit alongside the message to the destination chain.
+Validators run as part of the [Multisig ISM](../ISM/multisig-ISM.mdx) or the [Economic Security Module](../eigenlayer-avs.mdx), fulfilling the security layer of the Hyperlane protocol. If using a different ISM, validators are not required. They are responsible for attesting to messages by signing a merkle root (also referred to as a checkpoint) when new dispatches happen in the [Mailbox](../mailbox.mdx). Signatures must be made available for anyone (typically the Relayer) to fetch and submit alongside the message to the destination chain.
 
 Unlike many other protocols, Hyperlane does **not** have an enshrined validator set. Anyone is free to run their own validator, as long as the receiver contract specifies a [Multisig ISM](../ISM/multisig-ISM.mdx) that includes their validator.
 
