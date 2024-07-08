@@ -325,14 +325,32 @@ const sidebars = {
           label: "CCIP-Read ISM",
         },
         {
-          type: "doc",
-          id: "protocol/ISM/optimistic-ISM",
-          label: "Optimistic ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/wormhole-ISM",
-          label: "Wormhole ISM",
+          type: "category",
+          label: "Third-party ISMs",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/ISM/third-party-ISMs/wormhole-ISM",
+              label: "Wormhole ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/third-party-ISMs/optimistic-ISM",
+              label: "Optimistic ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/third-party-ISMs/OPStack-ISM",
+              label: "OP Stack ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
+              label: "Polygon PoS ISM",
+            }
+          ],
         },
         {
           type: "doc",
