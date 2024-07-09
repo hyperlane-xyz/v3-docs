@@ -555,6 +555,11 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "operate/docker-quickstart",
+      label: "Docker Quickstart",
+    },
+    {
+      type: "doc",
       id: "operate/deploy-with-terraform",
       label: "Deploy with Terraform",
     },
