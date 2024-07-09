@@ -509,7 +509,7 @@ const config = {
               },
               {
                 label: "Twitter",
-                href: "https://twitter.com/hyperlane",
+                href: "https://x.com/hyperlane",
               },
             ],
           },
@@ -518,11 +518,11 @@ const config = {
             items: [
               {
                 label: "Bounties",
-                to: "https://www.hyperlane.xyz/bounty",
+                to: "https://github.com/search?q=org%3Ahyperlane-xyz+label%3Abounty+is%3Aopen+is%3Aissue&type=issues&s=&o=desc",
               },
               {
-                label: "Jobs",
-                href: "https://www.hyperlane.xyz/crew",
+                label: "Careers",
+                href: "https://jobs.lever.co/Hyperlane",
               },
             ],
           },
