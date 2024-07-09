@@ -1,35 +1,83 @@
 # Relayer
 
-A relayer is responsible for ensuring messages are delivered to their recipients. Relayers are a permissionless but integral part of the Hyperlane protocol. Anyone can run a relayer!
+## Overview
+
+### Core Function
+The relayer runs the transport layer of the Hyperlane protocol by delivering messages from origin to destination chains. Depending on the [Interchain Security Module (ISM)](../../reference/ISM/specify-your-ISM) specified by the recipient, metadata may be required to prove the security of the message, such as Validator signatures for the [Multisig ISM](../ISM/multisig-ISM.mdx), merkle proofs, zero-knowledge proofs, and more. So before attempting to deliver, the relayer gathers any ISM-specific metadata.
+
+:::tip
+The relayer will periodically retry metadata gathering and message submission. This is important to improve resilience against disruptions, such as: no gas payment made to pay for delivery, insufficient relayer balance, temporary spikes in transaction fees on the destination, Validator downtime.
+:::
+
+### Relayer Incentives
+Message senders are charged for delivery on the origin chain, and it is the relayer operator's responsibility to rebalance revenue to destination chain accounts so delivery transaction fees can always be paid for. The relayer does not receive direct token incentives from the protocol, but operators can configure their fee structure for providing their critical service. For more information, check out [Interchain Gas Payments (IGPs)](../interchain-gas-payment.mdx).
+
+### Operating a Relayer
+Relayers can easily configure the messages that they wish to process. Currently, the relayer will support:
+
+1. A sender / recipient whitelist.
+2. A sender / recipient blacklist.
+3. The ability to accept [payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch) for processing a message on the destination chain.
+
+While permissionless to run, it's up to the message sender to pick which relayer to pay for delivery. [Mailbox](../mailbox.mdx) integrations usually default to always paying the same relayer, but message senders can opt out of this. For convenience, Hyperlane will run an open source and configurable relayer agent, implemented as a Rust binary. If you'd like to run your own relayer, we've open sourced the [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer).
+
+Running your own relayer involves deploying an [IGP contract](../interchain-gas-payment.mdx) and maintaining token exchange rates and gas prices inside of it to accurately charge message delivery fees.
 
 :::info
 Want to run a relayer? Follow the [Relayer](../../operate/relayer/run-relayer.mdx) guide.
 :::
 
-:::note
-Running your own relayer involves deploying an [IGP contract](../interchain-gas-payment.mdx) and maintaining token exchange rates and gas prices inside of it to accurately charge message delivery fees. Therefore, we only recommend doing this while setting up a permissionlessly deployed bridge, rather than reusing an existing bridge.
-:::
+## In more detail
 
-Relayers are configured to relay messages between two or more chains. A relayer observes the origin [Mailbox](../mailbox.mdx) contracts, watching for new messages. When a new message is detected, the relayer queries the destination chain to determine the message recipient's [Interchain Security Module](../../reference/ISM/specify-your-ISM.mdx).
+The relayer is comprised of two main tasks: an Indexer for each origin, and a Submitter for each destination.
 
-The relayer is then responsible for collecting the metadata needed by that ISM. This will vary by ISM, and may include signatures from one or more [validators](./validators.mdx), merkle proofs, zero knowledge proofs, and more!
+![High-level Relayer Architecture](/img/relayer-architecture-high-level.png)
 
-Finally, the relayer delivers the message to its recipient by calling `Mailbox.process()` on the destination chain with the aforementioned metadata.
 
-:::tip
-The relayer will periodically retry metadata gathering and message submission. This is important to improve resilience against validator downtime or temporary spikes in transaction fees on the destination.
-:::
+### The Indexer
+Both new and historic messages are indexed by querying [Mailbox](../mailbox.mdx) contract events using RPCs. [Gas payments](../interchain-gas-payment.mdx) are also indexed to confirm senders paid for delivery, and certain ISMs use additional origin chain data. This is the case with the Multisig ISM, which relies on the Merkle Tree Hook contract to inform the Relayer about which Validator signature corresponds to which message. There is a standalone indexing task spawned for every event type (Messages, IGP, Merkle Tree insertion).
 
-The relayer does not receive direct token incentives from the protocol, but operators can configure their fee structure for the messages they process, enabling them to earn revenue streams for providing their critical service. For more information, check out [interchain gas payments](../interchain-gas-payment.mdx).
+The indexer writes to a local database (RocksDB) as a means of caching, as well as communicating with the Submitter task - the latter periodically polls the database to check if new messages were dispatched.
 
-Relayers can easily configure the messages that they wish to process. Currently, the relayer will support:
+The relayer prioritizes new messages over old ones, under the assumption that old ones are more likely to have been delivered. This means that when (re)started, two pointers are created: a forward one and a backward one, both initialized to the blockchain tip and using the monotonically increasing `nonce` field of messages to iterate. A similar approach is used to index the other events, but some lack a sequence number and can be missed if incorrect RPC responses are received - which happens very often. As such, the message indexing task sends transaction IDs where it found events to the other indexing tasks, guaranteeing no Hyperlane event is missed as long as it occured within the same transaction as the `Mailbox.dispatch()` call.
 
-1. A sender/recipient whitelist.
-2. A sender/recipient blacklist.
-3. The ability to accept [payments on the origin chain](../../reference/messaging/send.mdx#quote-dispatch) for processing a message on the destination chain.
+### The Submitter
 
-For convenience, Hyperlane will run an open source and configurable relayer agent, implemented as a rust binary. If you'd like to run your own relayer, we've open sourced the [binary here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/agents/relayer).
+Messages go through four stages as part of the Submitter, which are spawned as independent tasks described below.
 
-#### Error handling
+<table>
+  <thead>
+    <tr>
+      <th>Submitter Task</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Message Processor</td>
+      <td>Polls the local database to check if there are any undelivered messages and pushes them to the Prepare step's queue.</td>
+    </tr>
+    <tr>
+      <td>Prepare Task</td>
+      <td>
+        Pops messages from its queue, ensures gas was paid, fetches any metadata and simulates the message delivery transaction. If the simulation succeeds, the message is pushed to the Submit step's queue. Otherwise, the message is pushed back to the Prepare queue.
+      </td>
+    </tr>
+    <tr>
+      <td>Submit Task</td>
+      <td>
+        Pops messages from its queue, and sends the delivery transaction onchain. Deliveries are batched whenever possible. If there is no error broadcasting the transaction, the message is pushed to the Confirm step's queue. Otherwise, the message is pushed back to the Prepare queue.
+      </td>
+    </tr>
+    <tr>
+      <td>Confirm Task</td>
+      <td>
+        Awaits finality; if a chain reorg occurs, or the delivery transaction reverts, the message is pushed back to the Prepare queue.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-The relayer will periodically retry messages when processing fails, using an exponential backoff strategy. Currently, there is no fixed maximum number of retries after which the relayer will cease to attempt processing a message. However, this is not a guarantee of indefinite retries, and operators should not rely on this as a service level agreement (SLA).
+Messages are delivered to their recipient by calling `Mailbox.process()` on the destination chain with the aforementioned metadata.
+
+The retry count of a message determines its next delivery attempt according to an exponential backoff strategy. Currently, there is no fixed maximum number of retries after which the relayer will cease to attempt processing a message. However, this is not a guarantee of indefinite retries, and operators should not rely on this as a service level agreement (SLA).

@@ -1,9 +1,7 @@
 # Deploy Hyperlane to a new chain
 
 :::info
-This guide will help you deploy Hyperlane to your new chain as quickly as possible. This includes the core mailbox and ISM contracts as well as warp route contracts for assets you’re bridging
-
-The guide is intended for testing - by the end you’ll be able to pass messages between your custom chain and any other in the Hyperlane network.
+This guide will help you deploy Hyperlane to your new chain as quickly as possible for testing. This includes the core mailbox and ISM contracts as well as warp route contracts for assets you’re bridging.
 :::
 
 ## Prerequisites
@@ -15,7 +13,7 @@ Anyone can begin this quickstart guide once they have the following artifacts & 
     - A RPC URL, e.g. `https://eth.llamarpc.com`
 - A deployer wallet/EOA private key or seed phrase
     - This EOA should be funded on your custom chain and any chain you will be passing messages to & from
-- [The Hyperlane CLI](/docs/reference/cli.mdx)
+- [Hyperlane CLI](/docs/reference/cli.mdx)
 
 ## 1) Registry
 
@@ -173,4 +171,11 @@ Finally, push local registry to github fork and submit a PR. Please include a [c
 **Congrats! You have successfully deployed Hyperlane to your chain and added your work to the Hyperlane registry**
 
 Thank you for contributing to the future of permissionless interop 🫡
+:::
+
+:::tip
+
+**Next Steps**
+
+If you want deploy a Relayer to relay messages to your chain, continue on to [Deploy Hyperlane with Local Agents](/guides/deploy-hyperlane-local-agents.mdx#4-run-a-relayer)
 :::
