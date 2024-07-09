@@ -359,7 +359,7 @@ const sidebars = {
               type: "doc",
               id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
               label: "Arbitrum L2 to L1 ISM",
-            }
+            },
           ],
         },
       ],
@@ -377,7 +377,7 @@ const sidebars = {
           id: "protocol/economic-security/hyperlane-avs",
           label: "Hyperlane AVS",
         },
-      ]
+      ],
     },
     {
       type: "category",
