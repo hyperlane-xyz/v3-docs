@@ -550,11 +550,6 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "operate/run-docker-compose",
-      label: "Run Docker Compose",
-    },
-    {
-      type: "doc",
       id: "operate/docker-quickstart",
       label: "Docker Quickstart",
     },
