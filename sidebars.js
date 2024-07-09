@@ -107,6 +107,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "reference/hooks/arbitrum-L2-to-L1",
+          label: "Arbitrum L2->L1",
+        },
+        {
+          type: "doc",
           id: "reference/hooks/interchain-gas",
           label: "Interchain Gas",
         },
@@ -349,7 +354,7 @@ const sidebars = {
               type: "doc",
               id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
               label: "Polygon PoS ISM",
-            }
+            },
           ],
         },
         {
