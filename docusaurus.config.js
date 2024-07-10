@@ -239,7 +239,7 @@ const config = {
             ],
           },
           {
-            to: "/docs/operate/run-docker-compose",
+            to: "/docs/operate/docker-quickstart",
             from: ["/docs/operators/running-with-docker-compose"],
           },
           {

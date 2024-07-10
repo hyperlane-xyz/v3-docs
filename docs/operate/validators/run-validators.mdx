@@ -19,7 +19,7 @@ As you follow this guide, you can run a Hyperlane validator on any of the existi
 - Secure Signing Key
 
   - Validators use this key to sign the `Mailbox`'s latest merkle root. Securing this key is important. If it is compromised, attackers can attempt to falsify messages, causing the Validator to be slashed.
-  - The Hyperlane Validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys. See more under [agent keys](../set-up-agent-keys.mdx). 
+  - The Hyperlane Validator agent currently supports signing with AWS KMS keys that are accessed via API keys/secrets as well as hexadecimal plaintext keys. See more under [agent keys](../set-up-agent-keys.mdx).
 
 - Publicly Readable Storage
 
@@ -41,7 +41,6 @@ Operating a Validator for Polygon mainnet requires access to an archive node. Th
 
 :::
 
-
 ## Guide
 
 As a recap - before running a production Validator you need to have:
@@ -53,7 +52,7 @@ As a recap - before running a production Validator you need to have:
 
 :::tip
 
-Experienced operators may prefer to [deploy agents with terraform](.././run-docker-compose.mdx) instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
+Experienced operators may prefer to [deploy agents with terraform](../deploy-with-terraform.mdx) instead. This process will automatically create agent keys, Validator buckets, permissions and any other auxiliary setup required to run a Validator cluster on AWS.
 
 :::
 
