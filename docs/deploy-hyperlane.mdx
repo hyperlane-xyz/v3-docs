@@ -129,11 +129,10 @@ To send a test message, run:
 hyperlane send message --relay
 ```
 
-Currently core self-relay only works from **an existing origin chain** (if a testnet, holesky is best) **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
+Currently core self-relay only works **from Holesky** **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
 
-:::tip
-Sending from a testnet and getting `Error: No fallback hook config found`? Use `holesky`, which has a newer contract configuration that the CLI handles more gracefully. Other testnets will soon be supported.
-:::
+Support in the CLI for other origin chains is being added, chains that are not supported will output `Error: No fallback hook config found`? Use `holesky`.
+
 
 :::note
 **🎉 Congrats! You have successfully sent a message to your custom chain**
