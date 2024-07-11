@@ -1,3 +1,6 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Hyperlane AVS
 
 ### Overview
@@ -241,16 +244,17 @@ Both the challenger and slasher contracts are not yet live in production. This s
 
 ### Contract deployment
 
-#### Ethereum Mainnet
-
+<Tabs>
+  <TabItem value="ethereum" label="Ethereum" default>  
 | Name                                                                                                                                                                              | Proxy                                                                                                                           | Implementation                                                                                                                  |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | [`ECDSAStakeRegistry`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/ECDSAStakeRegistry.sol)           | [`0x272CF0BB70D3B4f79414E0823B426d2EaFd48910`](https://etherscan.io/address/0x272CF0BB70D3B4f79414E0823B426d2EaFd48910) | [`0xa11b1a385287b5167ecca6a38f63abeab981d589`](https://etherscan.io/address/0xa11b1a385287b5167ecca6a38f63abeab981d589) |
 | [`HyperlaneServiceManager`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/HyperlaneServiceManager.sol) | [`0xe8E59c6C8B56F2c178f63BCFC4ce5e5e2359c8fc`](https://etherscan.io/address/0xe8E59c6C8B56F2c178f63BCFC4ce5e5e2359c8fc) | [`0x3127e69517ec2268dd5745c97194d387a4fc0c45`](https://etherscan.io/address/0x3127e69517ec2268dd5745c97194d387a4fc0c45) |
-
-#### Holesky Testnet
-
-| Name                                                                                                                                                                              | Proxy                                                                                                                           | Implementation                                                                                                                  |
+  </TabItem>
+  <TabItem value="holesky" label="Holesky">
+    | Name                                                                                                                                                                              | Proxy                                                                                                                           | Implementation                                                                                                                  |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | [`ECDSAStakeRegistry`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/ECDSAStakeRegistry.sol)           | [`0xFfa913705484C9BAea32Ffe9945BeA099A1DFF72`](https://holesky.etherscan.io/address/0xFfa913705484C9BAea32Ffe9945BeA099A1DFF72) | [`0x628bc518ed1e0e8c6cbcd574eba0ee29e7f6943e`](https://holesky.etherscan.io/address/0x628bc518ed1e0e8c6cbcd574eba0ee29e7f6943e) |
 | [`HyperlaneServiceManager`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/f0df1a4cd1a9a6ec2e01b106941a2d4e42e5ba18/solidity/contracts/avs/HyperlaneServiceManager.sol) | [`0xc76E477437065093D353b7d56c81ff54D167B0Ab`](https://holesky.etherscan.io/address/0xc76E477437065093D353b7d56c81ff54D167B0Ab) | [`0xa3ab7e6ce24e6293bd5320a53329ef2f4de73fca`](https://holesky.etherscan.io/address/0xa3ab7e6ce24e6293bd5320a53329ef2f4de73fca) |
+  </TabItem>
+</Tabs>
