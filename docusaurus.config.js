@@ -383,8 +383,8 @@ const config = {
             from: ["/docs/build-with-hyperlane/guides/unit-testing"],
           },
           {
-            to: "/docs/protocol/eigenlayer-avs",
-            from: ["/docs/protocol/economic-security/hyperlane-avs"],
+            to: "/docs/protocol/economic-security/hyperlane-avs",
+            from: ["/docs/protocol/eigenlayer-avs"],
           },
         ],
       },
