@@ -382,6 +382,10 @@ const config = {
             to: "/docs/guides/developer-tips/unit-testing",
             from: ["/docs/build-with-hyperlane/guides/unit-testing"],
           },
+          {
+            to: "/docs/protocol/economic-security/hyperlane-avs",
+            from: ["/docs/protocol/eigenlayer-avs"],
+          },
         ],
       },
     ],
