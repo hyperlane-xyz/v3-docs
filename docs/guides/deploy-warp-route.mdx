@@ -2,15 +2,7 @@ import CliChainsPartial from "/docs/partials/deploy-hyperlane/_cli-chains.mdx";
 
 # Deploy a Warp Route
 
-_Create an interchain route for your token_
-
-A Warp Route is a type of [router](docs/reference/libraries/router.mdx) application, requiring a `HypERC20` or `HypERC721` token contract to be deployed on each chain you wish to support.
-
-:::info
-
-Check out the [Warp Route](/docs/reference/applications/warp-routes) reference page for more information on the interface and security implications of a Warp Route.
-
-:::
+Permissionlessly create an interchain token bridge by deploying Hyperlane Warp Route contracts.
 
 ## Prerequisites
 
@@ -72,27 +64,6 @@ For a minimal Warp deployment config example using local anvil chains, see [`war
 
 ## 2. Deployment
 
-### Dry Run a Warp Deployment (Optional)
-
-:::note
-
-In order to execute a dry-run, you will need an Anvil node running in a separate terminal instance.
-To spin up an Anvil node, run `anvil`.
-For more on Anvil and installation, checkout [Foundry's Anvil docs](https://book.getfoundry.sh/anvil/).
-
-:::
-
-Prior to executing a warp deployment, you can perform a dry-run via `--dry-run <CHAIN_NAME>`  or `-d <CHAIN_NAME>` to ensure that the warp deployment will be successful as well as provide analytics on the gas costs of deployment. This will not trigger any real transactions but will simulate a deployment to display a list of required contracts and their respective gas costs.
-
-In addition to validating your upcoming warp deployment, you can optionally provide the address of the EOA you intend to deploy with via `--from-address` or `-f`.
-This will ensure you have approximately enough funds to complete the warp deployment.
-
-```bash
-hyperlane warp deploy --dry-run chain1 \
-    --from-address $YOUR_DEPLOYER_ADDRESS \ # (optional) your account address to be impersonated via Anvil; defaults to the HYP_KEY env variable
-    --overrides # (optional) path to a override registry; defaults to the local ./ path
-```
-
 ### Deploy
 
 Run the following command to initiate the Warp Route deployment:
@@ -122,4 +93,11 @@ You can test in either direction between where you have the warp route set. Howe
 - If you were following the [Deploy Hyperlane to a new chain](/docs/deploy-hyperlane#3-warp-route) guide, and want other chains to connect with you, as well as to take this to production with Abacus Works, follow the [Submit to Registry](/docs/deploy-hyperlane#4-submit-to-registry) guide.
 
 - If you want interact with Warp Routes using a UI. Continue on to the [Warp UI docs](/docs/guides/deploy-warp-route-UI.mdx) for details on how to set it up.
+
 :::
+
+## Learn More 
+
+- Check out the [Warp Route](/docs/reference/applications/warp-routes) reference page for more information on the interface and security implications of a Warp Route. The [interface](/docs/reference/applications/warp-routes#interface) section covers calling `transferRemote` to transfer tokens to a specified recipient on a destination chain.
+
+- A Warp Route is a type of [router](docs/reference/libraries/router.mdx) application, a pattern enabling you to link multiple contracts across chains together.
