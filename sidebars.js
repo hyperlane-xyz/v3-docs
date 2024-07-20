@@ -22,14 +22,16 @@ const sidebars = {
       id: "intro",
       label: "Choosing Hyperlane",
     },
+   /**
     {
       type: "doc",
       id: "your-first-message",
       label: "Send your first message",
     },
+    */
     {
       type: "category",
-      label: "Deploy Hyperlane to a new chain",
+      label: "Connect Your Chain",
       link: {
         type: "doc",
         id: "deploy-hyperlane",
@@ -46,7 +48,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Deploy a Warp Route",
+      label: "Bridge a Token",
       link: {
         type: "doc",
         id: "guides/deploy-warp-route",
