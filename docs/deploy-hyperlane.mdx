@@ -149,13 +149,14 @@ Continue on to the [Deploy a Warp Route](/docs/guides/deploy-warp-route.mdx) doc
 
 ## 4) Submit to Registry
 
-If you want other chains to connect with you as well as to take this to production with Abacus Works, make a registry PR. 
+If you want other chains to connect with you as well as to take this to production, make a registry PR. 
 
-### Ensure Complete Info
+### Ensure complete info
 Make sure your metadata is complete:
 - add a `logo.svg` file inside the folder
 - include `Deployer` information identifying the team deploying
 - indicate `isTestnet` `true` if the chain is testnet
+- if your chain is mainnet, add the api url for the gnosis safe service
 - lint the yaml files and order alphabetically
 
 ### Commit to Github
@@ -180,3 +181,12 @@ Finally, push local registry to github fork and submit a PR. Please include a [c
 
 Thank you for contributing to the future of permissionless interop 🫡
 :::
+
+### Take to Production
+#### Community-Run Infra
+As a public good, a core dev team for Hyperlane - Abacus Works - can help take your mainnet chain to production free of charge. Feel free to request this in your PR, new chain batches are added every two weeks.
+
+This includes running a relayer connecting your chain to the network, adding your chain to the [Explorer](https://explorer.hyperlane.xyz/), and running one of the validators in your chain's default validator set. There is no ongoing cost or lock-in - at any time you can choose to migrate your relayer to a self-hosted option or change your validator set. 
+
+#### Self-Host Infra
+Chains with devops experience, like Stride, choose to run their own relayer. While this does have some operations burden, this allows them to add new chains even faster at their pace. In addition, they can choose to set or subsidize the interchain gas costs related to relaying. See the [Operate](/docs/operate/relayer/run-relayer.mdx) docs for more information.
