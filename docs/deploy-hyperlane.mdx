@@ -151,7 +151,14 @@ Continue on to the [Deploy a Warp Route](/docs/guides/deploy-warp-route.mdx) doc
 
 If you want other chains to connect with you as well as to take this to production with Abacus Works, make a registry PR. 
 
-Before doing so, make sure you lint the yaml file as well as add a `logo.svg` file inside the folder.
+### Ensure Complete Info
+Make sure your metadata is complete:
+- add a `logo.svg` file inside the folder
+- include `Deployer` information identifying the team deploying
+- indicate `isTestnet` `true` if the chain is testnet
+- lint the yaml files and order alphabetically
+
+### Commit to Github
 
 First, navigate to your local instance of the registry and commit changes
 
