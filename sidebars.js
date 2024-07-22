@@ -68,11 +68,6 @@ const sidebars = {
       id: "explorer",
       label: "Using the explorer",
     },
-    {
-      type: "doc",
-      id: "faq",
-      label: "FAQ",
-    },
   ],
   referenceSidebar: [
     {
@@ -480,6 +475,11 @@ const sidebars = {
           label: "Token Faucets",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "faq",
+      label: "FAQ",
     },
   ],
 
