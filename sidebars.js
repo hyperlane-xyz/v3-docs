@@ -61,6 +61,16 @@ const sidebars = {
           id: "guides/deploy-warp-route-UI",
           label: "Deploy a Warp UI",
         },
+        {
+          type: "doc",
+          id: "guides/remove-trusted-relayer",
+          label: "Remove Trusted Relayer",
+        },
+        {
+          type: "doc",
+          id: "guides/transfer-warp-route-ownership",
+          label: "Transfer Warp Route Ownership",
+        },
       ],
     },
     {

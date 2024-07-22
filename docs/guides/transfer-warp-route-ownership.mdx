@@ -1,0 +1,106 @@
+# Transfer Warp Route Ownership
+
+# Using the Hyperlane CLI
+
+One of the quickest way to transfer a warp route ownership is by using the [Hyperlane CLI.](https://docs.hyperlane.xyz/docs/reference/cli) 
+
+## Prerequisites
+
+- Warp deployment config
+    - This deployment config is used for deploying a warp route. By default, it takes the filename of `CURRENT_DIR/warp-route-deployment.yaml`
+- Warp deployment artifacts
+    - This artifact file is created **after** deploying a warp route. By default, it is written to `$HOME/.hyperlane/deployments/warp_routes/TOKEN/chain1-chain2-config.yaml`
+- Private Key that currently owns the warp route
+
+:::info
+If you followed the [Deploy a Warp Route](https://docs.hyperlane.xyz/docs/guides/deploy-warp-route) guide, you may have deployed a warp route with the owner set to the single private key. In production, it is advisable to use a multisig.
+:::
+
+To confirm using the CLI, execute:
+
+```bash
+hyperlane warp read --address 0x... --chain yourchain
+```
+
+You may see a similar config with the `owner` set to some address:
+
+```yaml
+yourchain:
+  mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  ...
+```
+
+Follow these steps using the CLI to transfer the existing ownership to another address.
+
+## Step 1: Configuration
+
+If you have the `warp-route-deployment.yaml` used to deploy your warp route, skip to step 2. Otherwise, run the following command, and save the output to `warp-route-deployment.yaml` 
+
+```bash
+hyperlane warp read --address 0x... --chain yourchain
+```
+
+Update `owner` address in the `warp-route-deployment.yaml`
+
+```diff title="warp-route-deployment.yaml"
+yourchain:
+  mailbox: '0x979Ca5202784112f4738403dBec5D0F3B9daabB9'
+- owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
++ owner: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+  interchainSecurityModule:
+    address: '0xd54d32cD6a62482497252D59E6cCC1445fF0b92d'
+    type: staticAggregationIsm
+    modules:
+      - owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+        address: '0xcE512189fF1BD41186E9eDda02BF321Fb1FC6eAc'
+        type: defaultFallbackRoutingIsm
+        domains: {}
+    threshold: 1
+  name: Ether
+  symbol: ETH
+  decimals: 18
+  totalSupply: 0
+  type: native
+
+```
+
+## Step 2: Apply
+
+Using the CLI, execute:
+
+```bash
+hyperlane warp apply --warp $HOME/.hyperlane/deployments/warp_routes/ETH/yourchain-config.yaml --config ./warp-route-deployment.yaml
+```
+
+You should see a batch of transactions executed on chain, and a final message indicating that the warp config has been updated.
+
+## Step 3: Confirm
+
+Using the CLI, execute:
+
+```bash
+hyperlane warp read --address 0x... --chain yourchain
+```
+
+Confirm that owner has been updated
+
+```yaml
+yourchain:
+  mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
+  owner: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+  interchainSecurityModule:
+    address: "0x8af9445d8A3FbFBd1D5dF185B8a4533Ab060Cf36"
+    type: staticAggregationIsm
+    modules:
+      - owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        address: "0xBe0232d5d45f9aD8322C2C4F84c39e64302Cd996"
+        type: defaultFallbackRoutingIsm
+        domains: {}
+    threshold: 1
+  name: Ether
+  symbol: ETH
+  decimals: 18
+  totalSupply: 0
+  type: native
+```
