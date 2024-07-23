@@ -52,6 +52,6 @@ pub struct Checkpoint {
 
 The only checkpoint storage that is currently supported by the agent implementation is AWS S3. Google Cloud Storage is integrated with but has an [open issue](https://github.com/hyperlane-xyz/hyperlane-monorepo/issues/4069). The Azure Blob Storage contribution is still [in progress](https://github.com/eigerco/hyperlane-monorepo/pull/2).
 
-### Liveness impications
+### Liveness implications
 
 Depending on the threshold configured in the Multisig ISM, Validator downtime can halt liveness of the protocol. The submitter prioritizes new checkpoints over old ones, so that the Relayer can fetch metadata for newer messages first, which are more likely to not have been delivered yet. 
