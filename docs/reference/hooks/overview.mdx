@@ -51,6 +51,10 @@ In addition to the `message` dispatched via the Mailbox, the `postDispatch` func
 
 If the `postDispatch` function receives insufficient payment, it may revert.
 
+:::info
+Post-Dispatch Hooks may be replayable. Developers creating custom hooks should implement safe checks to prevent this behavior. [Here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/b69bc23239ecfc8f8a6277bb0f9bc248cffea234/solidity/contracts/hooks/warp-route/RateLimitedHook.sol#L16) is an example implementation.
+:::
+
 ### Quote Dispatch (Fees)
 
 Fees are often charged in `postDispatch` to cover costs such as destination chain transaction submission and security provisioning. To receive a quote for a corresponding `postDispatch` call, you can query the `quoteDispatch` function.
