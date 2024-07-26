@@ -61,17 +61,22 @@ const sidebars = {
           id: "guides/deploy-warp-route-UI",
           label: "Deploy a Warp UI",
         },
+        {
+          type: "doc",
+          id: "guides/remove-trusted-relayer",
+          label: "Remove Trusted Relayer",
+        },
+        {
+          type: "doc",
+          id: "guides/transfer-warp-route-ownership",
+          label: "Transfer Warp Route Ownership",
+        },
       ],
     },
     {
       type: "doc",
       id: "explorer",
       label: "Using the explorer",
-    },
-    {
-      type: "doc",
-      id: "faq",
-      label: "FAQ",
     },
   ],
   referenceSidebar: [
@@ -480,6 +485,11 @@ const sidebars = {
           label: "Token Faucets",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "faq",
+      label: "FAQ",
     },
   ],
 

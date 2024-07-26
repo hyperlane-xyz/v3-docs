@@ -1,0 +1,121 @@
+# Remove Trusted Relayer ISM
+
+# Using the Hyperlane CLI
+
+When first deploying with the CLI, it uses a Trusted Relayer ISM out of the box so you don't need to run a relayer or validator. To go to production, you'll need to remove it with the Hyperlane CLI.
+
+## Prerequisites
+
+- Warp Deployment Config
+    - This deployment config is used for deploying a warp route. By default, it takes the filepath of `CURRENT_DIR/warp-route-deployment.yaml`
+- Warp Deployment Artifacts
+    - This artifact file is created **after** deploying a warp route. By default, it is written to `$HOME/.hyperlane/deployments/warp_routes/TOKEN/chain1-chain2-config.yaml`
+- Private Key that currently owns the warp route
+
+:::info
+If you followed the Deploy a Warp Route guide, you most likely have deployed a warp route with a trusted relayer set to a signer address.
+:::
+
+To confirm using the CLI, execute:
+
+```bash
+hyperlane warp read --address 0x... --chain yourchain
+```
+
+Under `interchainSecurityModule`, you may see a similar config:
+
+```yaml {7-9}
+yourchain:
+  ...
+  interchainSecurityModule:
+    address: "0xd54d32cD6a62482497252D59E6cCC1445fF0b92d"
+    type: "staticAggregationIsm"
+    modules:
+      - address: "0x50b6dA835D9b8b20523891410a2E042855B465C8"
+        relayer: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        type: "trustedRelayerIsm"
+      - owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        address: "0xcE512189fF1BD41186E9eDda02BF321Fb1FC6eAc"
+        type: "defaultFallbackRoutingIsm"
+        domains: {}
+    threshold: 1
+```
+This particular config has a `trustedRelayerIsm` as part of the `staticAggregationIsm`.
+
+This means that the `relayer` address will be allowed to call the Warp Route’s `handle()` function. In other words, the `relayer` can execute arbitrary messages on the Warp Route. This may be undesirable in cases outside of the self-relaying feature.
+
+## Step 1: Configuration
+
+If you have the `warp-route-deployment.yaml` used to deploy your warp route, skip to step 2. Otherwise, run the following command, and save the output to `warp-route-deployment.yaml` 
+
+```bash
+hyperlane warp read --address 0x... --chain yourchain
+```
+
+Update the `warp-route-deployment.yaml` by **removing** the `trustedRelayerIsm` block from `modules` . Alternatively, you can configure the entire `modules` block as desired.
+
+```diff title="warp-route-deployment.yaml"
+yourchain:
+  mailbox: '0x979Ca5202784112f4738403dBec5D0F3B9daabB9'
+  owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+  interchainSecurityModule:
+    address: '0xd54d32cD6a62482497252D59E6cCC1445fF0b92d'
+    type: 'staticAggregationIsm'
+    modules:
+-     - address: '0x50b6dA835D9b8b20523891410a2E042855B465C8'
+-       relayer: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+-       type: trustedRelayerIsm
+      - owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+        address: '0xcE512189fF1BD41186E9eDda02BF321Fb1FC6eAc'
+        type: 'defaultFallbackRoutingIsm'
+        domains: {}
+    threshold: 1
+  name: Ether
+  symbol: ETH
+  decimals: 18
+  totalSupply: 0
+  type: native
+
+```
+
+## Step 2: Apply
+
+Using the CLI, execute:
+
+```bash
+hyperlane warp apply --warp $HOME/.hyperlane/deployments/warp_routes/ETH/yourchain-config.yaml --config ./warp-route-deployment.yaml
+```
+
+You should see a batch of transactions executed on chain, and a final message indicating that the warp config has been updated.
+
+## Step 3: Confirm
+
+Using the CLI, execute:
+
+```bash
+hyperlane warp read --address 0x... --chain yourchain
+```
+
+Confirm that trusted relayer ISM has been removed:
+
+```yaml
+yourchain:
+  mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  interchainSecurityModule:
+    address: "0x8af9445d8A3FbFBd1D5dF185B8a4533Ab060Cf36"
+    type: "staticAggregationIsm"
+    modules:
+      - owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        address: "0xBe0232d5d45f9aD8322C2C4F84c39e64302Cd996"
+        type: "defaultFallbackRoutingIsm"
+        domains: {}
+    threshold: 1
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  type: "native"
+```
+
+By completing these steps, you've successfully removed the trusted relayer ISM from your Warp Route and enhanced the security of your warp route setup. Your warp route is now ready for production use.
