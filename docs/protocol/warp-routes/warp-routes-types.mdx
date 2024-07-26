@@ -1,0 +1,111 @@
+# Warp Routes: Types
+
+Warp routes are Hyperlane's implementation of token bridging, allowing for permissionless transfer of native, ERC20, and synthetic (newly deployed ERC20) assets across any chain via Hyperlane. This document provides details on all warp route types.
+
+Please note that this document does not include ERC721 warp routes.
+
+---
+
+## Native Token Warp Routes
+
+Implemented in `HypNative.sol`, native warp routes handle the transfer of native gas tokens (e.g. ETH on Ethereum or Arbitrum, MNT on Mantle) across different chains.
+
+### Features
+
+- Directly transfers native tokens without wrapping.
+- Uses `msg.value` for transfer amount.
+- Handles excess `msg.value` as hook payment.
+- Supports donations through a `receive()` function
+
+See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/HypNative.sol) for more details.
+
+## Collateral-Backed ERC20 Warp Routes
+
+Implemented in `HypERC20Collateral.sol`, collateral warp routes enable the transfer of ERC20 tokens across chains by locking them as collateral.
+
+### Features
+
+- Wraps existing ERC20 tokens as collateral for transfers.
+- Locks tokens in the contract on the source chain.
+- Releases equivalent tokens on the destination chain.
+- Uses SafeERC20 for secure token transfers.
+
+See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/HypERC20Collateral.sol) for more details.
+
+## Synthetic ERC20 Warp Routes
+
+Implemented in `HypERC20.sol`, synthetic warp routes create new tokens on destination chains that represent tokens from the origin chain.
+
+### Features
+
+- Maintains consistent total supply across all chains.
+- Supports custom token attributes (name, symbol, decimals).
+- Mints new tokens on the destination chain.
+- Burns tokens on the source chain when transferred back.
+
+See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/HypERC20.sol) for more details.
+
+---
+
+## TokenRouter Functionality
+
+All warp routes extend the `TokenRouter` contract, which provides the core functionality for warp route token transfers.
+
+### Features
+
+1. **Message Structure**: Uses [TokenMessage](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenMessage.sol) library for encoding and decoding token transfer messages.
+2. **Transfer Initiation**: `transferRemote` function initiates cross-chain transfers.
+3. **Message Handling**: `_handle` function processes incoming transfer messages.
+4. **Abstract Methods**:
+    - `_transferFromSender`: Implemented by all warp routes to handle token collection.
+    - `_transferTo`: Implemented by all warp routes to handle token distribution.
+
+### TokenMessage Format
+
+```solidity
+[32 bytes for recipient][32 bytes for amount][remaining bytes for metadata]
+```
+
+This standardized format ensures consistent handling across different warp route implementations while allowing for extensibility through metadata.
+
+See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) for more details.
+
+## FastTokenRouter Transfers
+
+Implemented in `FastTokenRouter.sol`, this router extends TokenRouter and provides faster token transfers through a liquidity provider mechanism.
+
+### Features
+
+- Allows liquidity providers to fulfill transfer requests before message processing.
+- Includes a `fastFee` to incentivize liquidity providers.
+- Introduces `fastTransferId` for unique transfer identification.
+
+See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/FastTokenRouter.sol) for more details.
+
+---
+
+## Specialized Warp Route Extensions
+
+### 1. Fast Collateral Transfers (FastHypERC20Collateral)
+
+Combines fast transfer capabilities with collateral-backed ERC20 functionality. See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/FastHypERC20Collateral.sol) for more details.
+
+### 2. Vault Integration (HypERC20CollateralVaultDeposit)
+
+Allows for yield generation on collateral by integrating with ERC-4626 vaults. See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypERC20CollateralVaultDeposit.sol) for more details.
+
+### 3. Fiat-Backed Tokens (HypFiatToken)
+
+Designed for stablecoins and other fiat-backed tokens, implementing specific mint and burn operations. See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypFiatToken.sol) for more details.
+
+### 4. Scaled Native Tokens (HypNativeScaled)
+
+Scales native token values for consistency across chains with different decimals. See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypNativeScaled.sol) for more details.
+
+### 5. xERC20 Integration (HypXERC20 & HypXERC20Lockbox)
+
+Enables cross-chain transfers of xERC20 tokens, integrating with lockbox mechanisms for conversions. See the [HypXERC20 implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypXERC20.sol) and the [HypXERC20Lockbox implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypXERC20Lockbox.sol) for more details.
+
+---
+
+For setup examples & use cases, check out [Warp Routes: Example Usage](./warp-routes-example-usage.mdx).
