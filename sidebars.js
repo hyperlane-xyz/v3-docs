@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "doc",
       id: "intro",
-      label: "Choosing Hyperlane",
+      label: "1) Choose Hyperlane",
     },
    /**
     {
@@ -31,7 +31,7 @@ const sidebars = {
     */
     {
       type: "category",
-      label: "Connect Your Chain",
+      label: "2) Connect Your Chain",
       link: {
         type: "doc",
         id: "deploy-hyperlane",
@@ -42,13 +42,13 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshooting",
+          label: "Troubleshoot",
         },
       ],
     },
     {
       type: "category",
-      label: "Bridge a Token",
+      label: "3) Bridge a Token",
       link: {
         type: "doc",
         id: "guides/deploy-warp-route",
@@ -59,24 +59,59 @@ const sidebars = {
         {
           type: "doc",
           id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Warp UI",
-        },
-        {
-          type: "doc",
-          id: "guides/remove-trusted-relayer",
-          label: "Remove Trusted Relayer",
-        },
-        {
-          type: "doc",
-          id: "guides/transfer-warp-route-ownership",
-          label: "Transfer Warp Route Ownership",
+          label: "Deploy a Bridge UI",
         },
       ],
     },
     {
       type: "doc",
       id: "explorer",
-      label: "Using the explorer",
+      label: "4) Use the Explorer",
+    },
+    {
+      type: "category",
+      label: "5) Go to Production",
+      link: {
+        type: "doc",
+        id: "production",
+      },
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "category",
+          label: "Core Deployment",
+          link: {
+            type: "doc",
+            id: "core-production",
+          },
+          collapsible: true,
+          collapsed: false,
+          items: []
+        },
+        {
+          type: "category",
+          label: "Warp Route Deployment",
+          link: {
+            type: "doc",
+            id: "warp-production",
+          },
+          collapsible: true,
+          collapsed: false,
+          items: [
+            {
+              type: "doc",
+              id: "guides/remove-trusted-relayer",
+              label: "Remove the Trusted Relayer",
+            },
+            {
+              type: "doc",
+              id: "guides/transfer-warp-route-ownership",
+              label: "Transfer Ownership",
+            },
+          ]
+        },
+      ],
     },
   ],
   referenceSidebar: [
