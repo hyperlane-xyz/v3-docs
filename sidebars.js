@@ -433,6 +433,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "guides/explorer/message-debugging",
+          label: "Debugging Message Delivery",
+        },
+        {
+          type: "doc",
           id: "guides/explorer/configuring-pi-chains",
           label: "Configuring Permissionless Chains",
         },
