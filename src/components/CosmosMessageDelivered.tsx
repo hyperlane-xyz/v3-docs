@@ -1,14 +1,7 @@
 import { useState } from "react";
-import ChainDropdown from './ChainDropdown';
 import { chainMetadata } from "@hyperlane-xyz/registry";
-import { ChainMetadata } from "@hyperlane-xyz/sdk";
 
-type Props = {
-  chains: string[];
-  label: string;
-  onChange: (chain: string) => void;
-  chain?: string;
-};
+import ChainDropdown from './ChainDropdown';
 
 // TODO: these should be in the registry, but for now we'll hardcode them.
 // Once they're in the registry, we can move away from this.
@@ -19,6 +12,7 @@ const mailboxes = {
 
 const cosmosChains = Object.keys(mailboxes);
 
+// Adding @hyperlane-xyz/utils as a dependency breaks things, so we copy the function here.
 export function strip0x(hexstr: string) {
   return hexstr.startsWith('0x') ? hexstr.slice(2) : hexstr;
 }

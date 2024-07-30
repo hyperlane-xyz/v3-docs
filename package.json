@@ -35,7 +35,6 @@
     "@docusaurus/module-type-aliases": "3.0.1",
     "@docusaurus/tsconfig": "3.0.1",
     "@docusaurus/types": "3.0.1",
-    "@hyperlane-xyz/sdk": "^4.1.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "remark-code-import": "^1.2.0",
