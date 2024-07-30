@@ -25,7 +25,7 @@ export function strip0x(hexstr: string) {
 
 export default function CosmosMessageDelivered({
 }) {
-  const [originChain, setOriginChain] = useState<string>(cosmosChains[0]);
+  const [destinationChain, setDestinationChain] = useState<string>(cosmosChains[0]);
   const [messageId, setMessageId] = useState('');
   const [status, setStatus] = useState('');
 
@@ -36,19 +36,19 @@ export default function CosmosMessageDelivered({
       return;
     }
 
-    const metadata = chainMetadata[originChain];
-    const mailbox = mailboxes[originChain];
+    const metadata = chainMetadata[destinationChain];
+    const mailbox = mailboxes[destinationChain];
     if (!mailbox) {
-      setStatus(`⛔️ No known Mailbox found for chain ${originChain}`);
+      setStatus(`⛔️ No known Mailbox found for chain ${destinationChain}`);
       return;
     }
     if (!metadata) {
-      setStatus(`⛔️ No known Mailbox found for chain ${originChain}`);
+      setStatus(`⛔️ No known Mailbox found for chain ${destinationChain}`);
       return;
     }
     const restUrl = metadata.restUrls?.[0]?.http;
     if (!restUrl) {
-      setStatus(`⛔️ No available API set for chain ${originChain}`);
+      setStatus(`⛔️ No available API set for chain ${destinationChain}`);
       return;
     }
     const payload = {
@@ -90,10 +90,10 @@ export default function CosmosMessageDelivered({
       border: "1px solid #ccc",
     }}>
         <ChainDropdown
-          chain={originChain}
+          chain={destinationChain}
           chains={cosmosChains}
-          label="Origin Chain"
-          onChange={setOriginChain}
+          label="Destination Chain"
+          onChange={setDestinationChain}
         />
         <div>
           Message ID:{"\t"}
