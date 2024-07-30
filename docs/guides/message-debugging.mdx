@@ -20,7 +20,7 @@ The **`DispatchId`** log contains the message ID as the topic number 1 (the seco
 Sometimes, chain block explorers won't show the human-friendly "DispatchId" name. In this case, you can find the log by it's topic 0: `0x788dbc1b7152732178210e7f4d9d010ef016f9eafbe66786bd7169f56e0c353a`.
 
 <figure>
-![](/img/explorer-debugging/dispatch-id-log-evm.png)
+![](/img/message-debugging/dispatch-id-log-evm.png)
 <figcaption>Example on Arbiscan showing the DispatchId log on an origin transaction.</figcaption>
 </figure>
 
@@ -31,7 +31,7 @@ When viewing the origin transaction on the origin chain's block explorer, naviga
 The **Wasm Mailbox Dispatch Id** log contains the message ID.
 
 <figure>
-![](/img/explorer-debugging/dispatch-id-log-cosmos.png)
+![](/img/message-debugging/dispatch-id-log-cosmos.png)
 <figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
 </figure>
 </TabItem>
@@ -81,7 +81,7 @@ If your destination chain is an EVM chain, the log will display `0x0000000000000
 If your destination chain is a Cosmos chain, you can take the hexadecimal content and convert it to a bech32 address using tools like [this one](https://www.bech32converter.com). Some Cosmos chains have different address lengths, so be conscious of how many characters to copy in.
 
 <figure>
-![](/img/explorer-debugging/transfer-remote-evm.png)
+![](/img/message-debugging/transfer-remote-evm.png)
 <figcaption>Example on Arbiscan showing the DispatchId log on an origin transaction.</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ If your destination chain is an EVM chain, the log will display `0x0000000000000
 If your destination chain is a Cosmos chain, you can take the hexadecimal content and convert it to a bech32 address using tools like [this one](https://www.bech32converter.com). Some Cosmos chains have different address lengths, so be conscious of how many characters to copy in.
 
 <figure>
-![](/img/explorer-debugging/transfer-remote-cosmos.png)
+![](/img/message-debugging/transfer-remote-cosmos.png)
 <figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
 </figure>
 </TabItem>

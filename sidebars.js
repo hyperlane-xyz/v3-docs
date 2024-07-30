@@ -422,6 +422,11 @@ const sidebars = {
       label: "Deploy Hyperlane with Local Agents",
     },
     {
+      type: "doc",
+      id: "guides/message-debugging",
+      label: "Debugging Message Delivery",
+    },
+    {
       type: "category",
       label: "Explorer Debugging",
       link: {
@@ -431,11 +436,6 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "guides/explorer/message-debugging",
-          label: "Debugging Message Delivery",
-        },
         {
           type: "doc",
           id: "guides/explorer/configuring-pi-chains",
