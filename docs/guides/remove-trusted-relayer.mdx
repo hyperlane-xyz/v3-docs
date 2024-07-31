@@ -51,7 +51,7 @@ This means that the `relayer` address will be allowed to call the Warp Route’s
 If you have the `warp-route-deployment.yaml` used to deploy your warp route, skip to step 2. Otherwise, run the following command, and save the output to `warp-route-deployment.yaml`
 
 ```bash
-hyperlane warp read --address 0x... --chain yourchain
+hyperlane warp read --address <addressOrDenom> --chain yourchain
 ```
 
 Update the `warp-route-deployment.yaml` by **removing** the `trustedRelayerIsm` block from `modules` . Alternatively, you can configure the entire `modules` block as desired.
@@ -95,7 +95,7 @@ You should see a batch of transactions executed on chain, and a final message in
 To confirm using the Hyperlane CLI, locate your warp route under the `/deployments/warp_routes` directory, and execute the following with `address` set to the `addressOrDenom` of your warp route:
 
 ```bash
-hyperlane warp read --address 0x... --chain yourchain
+hyperlane warp read --address <addressOrDenom> --chain yourchain
 ```
 
 After running `warp read`, confirm that the trusted relayer ISM has been removed from your warp route. You should see a similar config under `interchainSecurityModule`:

@@ -38,7 +38,7 @@ Follow these steps using the CLI to transfer the existing ownership to another a
 If you have the `warp-route-deployment.yaml` used to deploy your warp route, skip to step 2. Otherwise, run the following command, and save the output to `warp-route-deployment.yaml` 
 
 ```bash
-hyperlane warp read --address 0x... --chain yourchain
+hyperlane warp read --address <addressOrDenom> --chain yourchain
 ```
 
 Update `owner` address in the `warp-route-deployment.yaml`
