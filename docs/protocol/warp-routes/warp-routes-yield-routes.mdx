@@ -1,66 +1,60 @@
 # Warp Routes: Yield Routes
 
-## Background
-
-The goal of this guide is to illustrate how Hyperlane warp routes can be used to easily create yield-generating bridges, ensuring idle bridged assets are still productive by compounding yield over time.
+The goal of this guide is to illustrate how you can use Hyperlane warp routes to create yield-generating bridges, ensuring idle bridged assets are still productive by compounding yield over time.
 
 ## Primary Motives
 
-1. Enable yield-generating warp routes via yield-bearing collateral (via vaults).
+1. Enable yield-generating warp routes via yield-bearing collateral vaults.
 
 ## Pre-Requisites
 
 To complete the following case-study walkthrough, you should have the following available:
 
-1. An L2/L3 origin and destination network of choice, between which you’d like to deploy the yield route.
+1. An origin and destination network of choice, between which you’d like to deploy the yield route.
 2. The address of a funded [ERC-4626 vault](https://ethereum.org/en/developers/docs/standards/tokens/erc-4626/) on the origin network. This vault’s underlying asset will also be set as the collateral for the warp route (e.g. if vault is USDC funded, the warp route will also support USDC transfer).
-3. An installed instance of the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) and a wallet private key set as the `HYP_KEY` env var funded on all networks in question.
+3. An installed instance of the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) and a wallet private key set as the `HYP_KEY` env var funded on your origin and destination networks.
 
-## Case-Study Walkthrough: USDC Yield Vault on L2/L3 EVM
+## Walkthrough: Create a Yield Route
 
-The following is a case-study walkthrough on the launch of the Cheese Chain L3 yield route, responsible for earning passive yield on bridged USDC. For this study, Cheese Chain is using a [Morpho vault](https://morpho.org/) to secure their yield-bearing asset.
+### Concepts
 
-:::info
-For the sake of this example, the “origin” network will refer to the network on which the Morpho vault is present (e.g. Cheese Chain is the origin with a USDC vault).
-:::
-
-### Context
-
-- **Cheese Chain L3**: A yield generating EVM L3 blockchain built on the Arbitrum Orbit stack.
 - **ERC-4626 Vault**: The Ethereum standard for tokenized yield-bearing vaults, representing shares of an single ERC20 token of choice.
 - **EvmHypCollateralVault (HypERC20CollateralVaultDeposit)**: The Hyperlane representation of a yield-bearing EVM collateral token. Note that the yield route’s vault’s deposited asset address is used as the warp routes collateral token.
-- **EvmHypSynthetic**: A Hyperlane deployed EVM synthetic token, most commonly used to represent a remote network’s native or collateral token on another chain.
 
-### Steps: Create a Yield Route
+:::info
+For the sake of this example, the “origin” network will refer to the network on which the vault is present (e.g. yourchain is the origin with a USDC vault).
+:::
 
-1. Using the Hyperlane CLI, deploy a Cheese Chain `USDC` EvmHypCollateralVault ↔ Mock Chain `USDC` EvmHypSynthetic warp route via `hyperlane warp init && hyperlane warp deploy`.
+### Steps
+
+1. Using the Hyperlane CLI, deploy a yourchain `USDC` EvmHypCollateralVault ↔ ethereum `USDC` EvmHypSynthetic warp route:
     1. Run `hyperlane warp init` and complete the following flow:
-        1. Select `cheesechain` and `mockchain` using space, and hit enter.
-        2. For Cheese Chain, select `collateralVault`, accept the mailbox, and enter the USDC vault address on Cheese Chain.
-        3. For Mock Chain, select `synthetic` and accept the mailbox.
+        1. Select `yourchain` and `ethereum` using space, and hit enter.
+        2. For yourchain, select `collateralVault`, accept the mailbox, and enter the USDC vault address on yourchain.
+        3. For ethereum, select `synthetic` and accept the mailbox.
     2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
     3. Your newly deployed yield route can now accomplish the following:
-        1. Transfer USDC: Cheese Chain → Mock Chain
+        1. Transfer USDC: yourchain → ethereum
 
     ```mermaid
     flowchart LR
-        A[CheeseChain:<br>Alice] -->|Deposit USDC| B[CheeseChain:<br>EvmHypCollateralVault]
-        B -->|Deposit into Vault| C[CheeseChain:<br>ERC-4626 Vault]
+        A[yourchain:<br>Alice] -->|Deposit USDC| B[yourchain:<br>EvmHypCollateralVault]
+        B -->|Deposit into Vault| C[yourchain:<br>ERC-4626 Vault]
         C -->|Yield Generation| C
-        B ==>|Bridge| E[MockChain:<br>EvmHypSynthetic]
-        E -->|Mint Synthetic USDC| F[MockChain:<br>Alice]
-        C[CheeseChain:<br>ERC-4626 Vault] <-->|Withdraw Yield| G[CheeseChain:<br>Vault Owner]
+        B ==>|Bridge| E[ethereum:<br>EvmHypSynthetic]
+        E -->|Mint Synthetic USDC| F[ethereum:<br>Alice]
+        C[yourchain:<br>ERC-4626 Vault] <-->|Withdraw Yield| G[yourchain:<br>Vault Owner]
     ```
 
-        2. Transfer USDC: Mock Chain → Cheese Chain
+        2. Transfer USDC: ethereum → yourchain
 
     ```mermaid
     flowchart LR
-        A[MockChain:<br>Alice] -->|Burn Synthetic USDC| B[MockChain:<br>EvmHypSynthetic]
-        B ==>|Bridge| C[CheeseChain:<br>EvmHypCollateralVault]
-        D[CheeseChain:<br>ERC-4626 Vault] -->|Withdraw from Vault| C
-        C -->|Withdraw USDC| F[CheeseChain:<br>Alice]
-        G[CheeseChain:<br>Vault Owner] <-->|Withdraw Yield| D
+        A[ethereum:<br>Alice] -->|Burn Synthetic USDC| B[ethereum:<br>EvmHypSynthetic]
+        B ==>|Bridge| C[yourchain:<br>EvmHypCollateralVault]
+        D[yourchain:<br>ERC-4626 Vault] -->|Withdraw from Vault| C
+        C -->|Withdraw USDC| F[yourchain:<br>Alice]
+        G[yourchain:<br>Vault Owner] <-->|Withdraw Yield| D
     ```
 
 
