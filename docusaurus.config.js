@@ -12,7 +12,7 @@ const darkCodeTheme = themes.dracula;
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Hyperlane Docs",
-  tagline: "Hyperlane is the open interoperability framework powering the modular ecosystem",
+  tagline: "the open interoperability framework",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
