@@ -1,106 +1,100 @@
-# Warp Routes: Custom Gas Tokens & Fast Native Transfers
+# Warp Routes: Fast Native Transfers via Custom Gas Tokens
 
-## Background
-
-The goal of this guide is to illustrate how Hyperlane warp routes can (1) be used to easily facilitate interoperability between CosmWasm and EVM L1 and L2 networks and (2) circumvent common issues like early rollup liquidity and long settlement times for native transfers.
+This document will walk you through how to use Hyperlane to enable fast native transfers to and from your L2 via a custom gas token.
 
 ## Primary Motives
 
 1. Create a custom gas token on your L2 of choice.
-2. Use this gas token to enable fast native transfers, instead of waiting days for settlement.
-    1. While L1 to L2 transfers are on the scale of minutes, L2 to L1 transfers are typically on the scale of days or weeks while the challenge period is carried out. By using the Hyperlane-enabled strategy below, users can now experience the same fast transfer times to *and* from their L1.
-3. Overcome the liquidity cold-start problems of new rollups.
+2. Use this gas token to enable fast native transfers, instead of long wait times for settlement via canonical bridges.
 
 ## Pre-Requisites
 
 To complete the following case-study walkthrough, you should have the following available:
 
-1. A L2 network on which you are able to specify a [custom gas token](https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token).
-2. One or more L1 networks on which you’d like to enable fast native transfers from your L2.
-3. A sole deployer or authorized owner to receive mint of the receipt token (more information on this token below).
-4. An installed instance of the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) and a wallet private key sourced as `HYP_KEY`, funded on all networks in question.
+1. A L2 network (”yourchain”) on which you are able to specify a [custom gas token](https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token) and would like to enable fast native transfers to and from.
+2. A sole deployer or authorized owner to receive mint of the receipt token (more information on this token below).
+3. An installed instance of the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) and a wallet private key sourced as `HYP_KEY`, funded on all networks in question.
 
-## Case-Study Walkthrough: CosmWasm ↔ EVM
-
-The following is a case-study walkthrough on the Hyperlane-supported launch of the [inEVM bridge](https://bridge.inevm.com/), responsible for connecting the [Injective CW (CosmWasm) L1](https://docs.injective.network/) network, [inEVM L2](https://docs.inevm.com/) ([Arbitrum Orbit](https://arbitrum.io/orbit)) network, and Ethereum L1. These warp routes make fast native ↔ native asset transfers possible, along with custom gas token specification on the L2 and the transfer of any other desired asset, e.g. USDC, USDT, etc.
+## Walkthrough: Fast Native Transfers
 
 :::info
-Take a look at the inEVM bridge to see these warp routes in action: https://bridge.inevm.com/
+Note that a “receipt token” below is a (one-time) mintable “dummy” token used to collateralize a warp-route on an L1 network of choice.
 :::
-
-### Context
-
-- **Injective CW L1**: A Cosmos blockchain supporting CosmWasm smart contracts, with a focus on out-of-the-box DeFi app solutions. It also allows users to [launch their own native token](https://docs.injective.network/develop/guides/token_launch/).
-- **inEVM L2**: An EVM-compatible rollup created to facilitate composability between Injective L1 and Ethereum L1. It is built on the Arbitrum Orbit stack with the support of Caldera.
-- **Receipt Token**: A (one-time) mintable “dummy” token used to collateralize a warp-route on an L1 network of choice.
-- **EvmHypNative**: The Hyperlane representation of an EVM native token.
-- **EvmHypCollateral**: The Hyperlane representation of an EVM collateral token, most commonly an ERC20.
-- **EvmHypSynthetic**: A Hyperlane deployed EVM synthetic token, most commonly used to represent a network’s native or collateral token on another chain.
-- **CwHypNative**: Same as above, but for CosmWasm native token.
-- **CwHypCollateral** & **CwHypSynthetic**: Same as above, but for CosmWasm.
 
 ### Key
 
-To keep the below steps as clear as possible, the following symbols are used to refer to `INJ` on Injective, inEVM, and Ethereum. In reality, all symbols are just `INJ` for consistency across tokens.
+To keep the below steps as clear as possible, the following symbols are used to refer to `ETH` on yourchain and ethereum. In reality, all symbols are just `ETH` for consistency across tokens.
 
-- `INJ` in Injective: `INJ`
-- Synthetic `INJ` on inEVM: `inINJ`
-- Receipt `INJ` on Ethereum: `eINJ`
+- Native `ETH` on ethereum: `ETH`
+- Synthetic `ETH` on yourchain: `yETH`
+- Receipt `ETH` on ethereum: `rETH`
 
-### Steps: Fast Native Transfers
+### Steps
 
-1. To begin, deploy a receipt token (see above) to Ethereum to represent Injective’s native token. For this example, we will refer to the receipt token as `eINJ`.
-    1. Ensure 100% of the total supply of your `eINJ` receipt token is minted to the deployer or authorized address of choice. This must be a one-time mint event in order to avoid value dilution of the Injective ↔ inEVM native warp route, below.
-2. Using the Hyperlane CLI, deploy an Ethereum `eINJ` EvmHypCollateral ↔ inEVM `inINJ` EvmHypSynthetic warp route via `hyperlane warp init && hyperlane warp deploy`.
-    1. Use the warp route to transfer 100% of the `eINJ` receipt token from Ethereum to inEVM.
-3. Set the custom gas token on inEVM L2 to the newly deployed `inINJ` synthetic.
-    1. To find the synthetic’s address, locate the EvmHypSynthetic’s `addressOrDenom` in the newly generated `INJ/ethereum-inevm-config.yaml`
+1. Deploy a `rETH` receipt token to ethereum to represent ethereum’s native token.
+    1. For example, you may deploy your receipt token via [Remix](https://www.notion.so/Warp-Routes-Custom-Gas-Tokens-Fast-Native-Transfers-v1-e984996a93be4458906b5ed565ee87b8?pvs=21) with a funded wallet and a contract similar to below:
+
+        ```solidity
+        // SPDX-License-Identifier: MIT
+        pragma solidity ^0.8.20;
+
+        import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+        contract ReceiptETH is ERC20 {
+            constructor() ERC20("ReceiptETH", "rETH") {
+                _mint(msg.sender, 1000000 * (10 ** 18));
+            }
+        }
+        ```
+
+    2. Ensure 100% of the total supply of your `rETH` receipt token is minted to the deployer or authorized address of choice. This must be a one-time mint event in order to avoid value dilution of the ethereum ↔ yourchain native warp route, below.
+    3. Once deployed, save the address of the contract for use below.
+2. Using the Hyperlane CLI, deploy an ethereum `rETH` EvmHypCollateral ↔ yourchain `yETH` EvmHypSynthetic warp route:
+    1. Run `hyperlane warp init` and complete the following flow:
+        1. Select `ethereum` and `yourchain` using space, and hit enter.
+        2. For ethereum, select `collateral`, accept the mailbox, and enter the newly deployed `rETH` address, from above.
+        3. For yourchain, select `synthetic` and accept the mailbox.
+    2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
+    3. Use the warp route to transfer 100% of the `rETH` receipt token from ethereum to yourchain.
+3. Set the custom gas token on yourchain to the newly deployed `yETH` synthetic.
+    1. To find the synthetic’s address, locate the EvmHypSynthetic’s `addressOrDenom` in the newly generated `deployments/warp_routes/rETH/ethereum-yourchain-config.yaml`
     2. To set the custom gas token: https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token
-4. Now, using the Hyperlane CLI, deploy an Injective `INJ` CwHypNative ↔ inEVM `inINJ` EvmHypNative warp route via `hyperlane warp init && hyperlane warp deploy`
-    1. Your warp route config should connect the L1 native token (`INJ`) with the (now) L2 native token (`inINJ`)
-5. Deposit the inEVM *synthetic* `inINJ` from step 2a as collateral in the inEVM *native* warp route. This pre-populates/collateralizes the native warp route, enabling users to bridge their native assets quickly to and from Ethereum and Injective L1s.
+4. Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `yETH` EvmHypNative warp route:
+    1. Run `hyperlane warp init` and complete the following flow:
+        1. Select `ethereum` and `yourchain` using space, and hit enter.
+        2. For ethereum, select `native` and accept the mailbox.
+        3. For yourchain, select `native` and accept the mailbox.
+    2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
+    3. Your new warp route now connects the L1 native token (`ETH`) with the (now) L2 native token (`yETH`).
+5. Deposit the yourchain *synthetic* `yETH` from step 2a as collateral in yourchain’s *native* warp route. This collateralizes the native warp route, enabling users to bridge their native assets quickly to and from yourchain.
 
-```mermaid
-sequenceDiagram
-        box Ethereum L1
-        participant eINJ_C as eINJ (Collateral)
-    end
-        box inEVM L2
-        participant inINJ_S as inINJ (Synthetic)
-        participant inINJ_N as inINJ (Native)
-    end
-        box Injective L1
-        participant INJ as INJ (Native)
-    end
+    ```mermaid
+    sequenceDiagram
+    		box ethereum L1
+    			participant ETH as ETH (Native)
+    	    participant rETH_C as rETH (Collateral)
+        end
+    		box yourchain L2
+    	    participant yETH_S as yETH (Synthetic)
+    	    participant yETH_N as yETH (Native)
+        end
 
-    eINJ_C-->>inINJ_S: 1) transfer 100%<br>of receipt token
-    Note over inINJ_N,inINJ_S: 2) set custom gas<br>token to inINJ
-    inINJ_S-->>inINJ_N: 3) deposit synthetic<br>as native collateral
-    inINJ_N-->INJ: < fast INJ transfer >
-    inINJ_S-->eINJ_C: < fast INJ transfer >
-```
+        rETH_C-->>yETH_S: 1) transfer 100%<br>of receipt token
+        Note over yETH_N,yETH_S: 2) set custom gas<br>token to yETH
+        yETH_S-->>yETH_N: 3) deposit synthetic<br>as native collateral
+        yETH_N-->ETH: <- fast ETH transfer ->
+    ```
 
 
-**🎉 Congrats! You have now enabled fast native transfer between your L1s ↔ L2 via a custom gas token on your L2.**
+**🎉 Congrats! You have now enabled fast native transfer to and from yourchain via a custom gas token on your L2.**
 
 :::warning
 Please note that this collateralization strategy takes on certain ISM trust assumptions.
 :::
 
-### Steps: Additional Network & Asset Support
-
-Additionally, you may bridge additional assets from other networks of your choice to add to your newly created modular ecosystem.
-
-For the below example, let’s assume you’d like to support USDC transfer between Ethereum L1 and the inEVM L2 network.
-
-1. Using the Hyperlane CLI, deploy an Ethereum `USDC` EvmHypCollateral ↔ inEVM `USDC` EvmHypSynthetic warp route via `hyperlane warp init && hyperlane warp deploy`.
-    1. Run `hyperlane warp init` and complete the following flow:
-        1. Select `ethereum` and `inevm` using space, and hit enter.
-        2. For Ethereum, select `collateral`, accept the mailbox, and enter the Ethereum `USDC` address.
-        3. For inEVM, select `synthetic` and accept the mailbox.
-    2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
-
-**🎉 Congrats! You have now enabled USDC transfers between your L2 ↔ Ethereum.**
+:::info
+Take a look at the inEVM bridge to see an example of these warp routes in action: https://bridge.inevm.com/
+:::
 
 ---
 
