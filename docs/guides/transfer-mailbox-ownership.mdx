@@ -27,11 +27,11 @@ After running `core read`, you should see a similar config with `owner` set to p
 ```yaml {8}
 defaultHook:
   address: "0xC2E88eC0aB5FDB9756CD3EFEE40D24120fFa6E57"
-  type: merkleTreeHook
+  type: "merkleTreeHook"
 defaultIsm:
   address: "0xF37395A79f56268FD0040E1f5711e9Af974a545A"
   relayer: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
-  type: trustedRelayerIsm
+  type: "trustedRelayerIsm"
 owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
 requiredHook:
   address: "0x390d29a822C21F57B163F1173cD43382bd643401"
@@ -39,7 +39,7 @@ requiredHook:
   maxProtocolFee: "100000000000000000"
   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
   protocolFee: "0"
-  type: protocolFee
+  type: "protocolFee"
 ```
 
 The output is saved to `CURRENT_DIR/configs/core-config.yaml`.
@@ -89,16 +89,22 @@ hyperlane core read --chain yourchain
 
 After running `core read`, you should see a similar config with the now updated `owner`:
 
-```yaml
-...
+```yaml {8}
+defaultHook:
+  address: "0x67F8c06Fd2915728E9D21451E33FbDFbCcd63c44"
+  type: "merkleTreeHook"
+defaultIsm:
+  address: "0xac7D6df90fa937ADEfE7aD2d4905f0AEa170c467"
+  relayer: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  type: "trustedRelayerIsm"
 owner: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
 requiredHook:
-  address: "0x390d29a822C21F57B163F1173cD43382bd643401"
-  beneficiary: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  address: "0x1Cd94b4D9B5f0e3474a6bDB8b9503Ca84F53e548"
+  beneficiary: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
   maxProtocolFee: "100000000000000000"
-  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
   protocolFee: "0"
-  type: protocolFee
+  type: "protocolFee"
 ```
 
-By completing these steps, you have successfully transferred and verified ownership of your Warp Route to a new address.
+By completing these steps, you have successfully transferred and verified ownership of your mailbox to a new address.
