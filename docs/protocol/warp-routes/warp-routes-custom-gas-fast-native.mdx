@@ -4,7 +4,7 @@ This document will walk you through how to use Hyperlane to enable fast native t
 
 ## Primary Motives
 
-1. Create a custom gas token on your L2 of choice.
+1. Create a custom gas token to use on your L2 of choice.
 2. Use this gas token to enable fast native transfers, instead of long wait times for settlement via canonical bridges.
 
 ## Pre-Requisites
@@ -21,17 +21,9 @@ To complete the following case-study walkthrough, you should have the following 
 Note that a “receipt token” below is a (one-time) mintable “dummy” token used to collateralize a warp-route on an L1 network of choice.
 :::
 
-### Key
-
-To keep the below steps as clear as possible, the following symbols are used to refer to `ETH` on yourchain and ethereum. In reality, all symbols are just `ETH` for consistency across tokens.
-
-- Native `ETH` on ethereum: `ETH`
-- Synthetic `ETH` on yourchain: `yETH`
-- Receipt `ETH` on ethereum: `rETH`
-
 ### Steps
 
-1. Deploy a `rETH` receipt token to ethereum to represent ethereum’s native token.
+1. Deploy a `rETH` receipt token to ethereum to represent ethereum’s native token (`rETH` will also become your L2’s custom gas token).
     1. For example, you may deploy your receipt token via [Remix](https://www.notion.so/Warp-Routes-Custom-Gas-Tokens-Fast-Native-Transfers-v1-e984996a93be4458906b5ed565ee87b8?pvs=21) with a funded wallet and a contract similar to below:
 
         ```solidity
@@ -49,24 +41,22 @@ To keep the below steps as clear as possible, the following symbols are used to 
 
     2. Ensure 100% of the total supply of your `rETH` receipt token is minted to the deployer or authorized address of choice. This must be a one-time mint event in order to avoid value dilution of the ethereum ↔ yourchain native warp route, below.
     3. Once deployed, save the address of the contract for use below.
-2. Using the Hyperlane CLI, deploy an ethereum `rETH` EvmHypCollateral ↔ yourchain `yETH` EvmHypSynthetic warp route:
+2. Set the custom gas token on yourchain to the newly deployed `rETH` ERC20.
+    1. To set a custom gas token on arbitrum orbit: https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token
+3. Using the Hyperlane CLI, deploy an ethereum `rETH` EvmHypCollateral ↔ yourchain `ETH` EvmHypNative warp route:
     1. Run `hyperlane warp init` and complete the following flow:
         1. Select `ethereum` and `yourchain` using space, and hit enter.
         2. For ethereum, select `collateral`, accept the mailbox, and enter the newly deployed `rETH` address, from above.
-        3. For yourchain, select `synthetic` and accept the mailbox.
+        3. For yourchain, select `native` and accept the mailbox.
     2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
     3. Use the warp route to transfer 100% of the `rETH` receipt token from ethereum to yourchain.
-3. Set the custom gas token on yourchain to the newly deployed `yETH` synthetic.
-    1. To find the synthetic’s address, locate the EvmHypSynthetic’s `addressOrDenom` in the newly generated `deployments/warp_routes/rETH/ethereum-yourchain-config.yaml`
-    2. To set the custom gas token: https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token
-4. Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `yETH` EvmHypNative warp route:
+4. Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `ETH` EvmHypNative warp route:
     1. Run `hyperlane warp init` and complete the following flow:
         1. Select `ethereum` and `yourchain` using space, and hit enter.
         2. For ethereum, select `native` and accept the mailbox.
         3. For yourchain, select `native` and accept the mailbox.
     2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
-    3. Your new warp route now connects the L1 native token (`ETH`) with the (now) L2 native token (`yETH`).
-5. Deposit the yourchain *synthetic* `yETH` from step 2a as collateral in yourchain’s *native* warp route. This collateralizes the native warp route, enabling users to bridge their native assets quickly to and from yourchain.
+5. Deposit yourchain `ETH` as collateral in yourchain’s native warp route. This collateralizes the native warp route, enabling users to bridge their native assets quickly to and from yourchain.
 
     ```mermaid
     sequenceDiagram
@@ -75,13 +65,12 @@ To keep the below steps as clear as possible, the following symbols are used to 
     	    participant rETH_C as rETH (Collateral)
         end
     		box yourchain L2
-    	    participant yETH_S as yETH (Synthetic)
-    	    participant yETH_N as yETH (Native)
+    	    participant yETH_N as ETH (Native)
         end
 
-        rETH_C-->>yETH_S: 1) transfer 100%<br>of receipt token
-        Note over yETH_N,yETH_S: 2) set custom gas<br>token to yETH
-        yETH_S-->>yETH_N: 3) deposit synthetic<br>as native collateral
+        rETH_C-->>yETH_N: 1) transfer 100%<br>of receipt token
+        Note over yETH_N: 2) set custom gas<br>token to rETH
+        yETH_N-->>yETH_N: 3) deposit native<br>as collateral
         yETH_N-->ETH: <- fast ETH transfer ->
     ```
 
