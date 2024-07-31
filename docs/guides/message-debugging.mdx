@@ -7,125 +7,143 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
 
 ###
 
-### Finding a message ID from an origin transaction
+<details>
+  <summary>**Finding a message ID from an origin transaction**</summary>
+  <div>
+    <Tabs groupId="finding-message-id">
+    <TabItem value="evm" label="EVM Origin">
+    The easiest way is to use the [Hyperlane Explorer](https://explorer.hyperlane.xyz), if your chain is supported. If your chain isn't supported, the message ID can be found by looking at the originating transaction.
 
-<Tabs groupId="finding-message-id">
-<TabItem value="evm" label="EVM Origin">
-The easiest way is to use the [Hyperlane Explorer](https://explorer.hyperlane.xyz), if your chain is supported. If your chain isn't supported, the message ID can be found by looking at the originating transaction.
+    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Logs** tab.
 
-When viewing the origin transaction on the origin chain's block explorer, navigate the the **Logs** tab.
+    The **`DispatchId`** log contains the message ID as the topic number 1 (the second topic).
 
-The **`DispatchId`** log contains the message ID as the topic number 1 (the second topic).
+    Sometimes, chain block explorers won't show the human-friendly "DispatchId" name. In this case, you can find the log by it's topic 0: `0x788dbc1b7152732178210e7f4d9d010ef016f9eafbe66786bd7169f56e0c353a`.
 
-Sometimes, chain block explorers won't show the human-friendly "DispatchId" name. In this case, you can find the log by it's topic 0: `0x788dbc1b7152732178210e7f4d9d010ef016f9eafbe66786bd7169f56e0c353a`.
+    <figure>
+    ![](/img/message-debugging/dispatch-id-log-evm.png)
+    <figcaption>Example on Arbiscan showing the DispatchId log on an origin transaction.</figcaption>
+    </figure>
 
-<figure>
-![](/img/message-debugging/dispatch-id-log-evm.png)
-<figcaption>Example on Arbiscan showing the DispatchId log on an origin transaction.</figcaption>
-</figure>
+    </TabItem>
+    <TabItem value="cosmos" label="Cosmos Origin">
+    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Event Logs** tab.
 
-</TabItem>
-<TabItem value="cosmos" label="Cosmos Origin">
-When viewing the origin transaction on the origin chain's block explorer, navigate the the **Event Logs** tab.
+    The **Wasm Mailbox Dispatch Id** log contains the message ID.
 
-The **Wasm Mailbox Dispatch Id** log contains the message ID.
+    <figure>
+    ![](/img/message-debugging/dispatch-id-log-cosmos.png)
+    <figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
+    </figure>
+    </TabItem>
+    </Tabs>
+  </div>
+</details>
 
-<figure>
-![](/img/message-debugging/dispatch-id-log-cosmos.png)
-<figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
-</figure>
-</TabItem>
-</Tabs>
+<details>
+  <summary>**Debugging a message to a Cosmos chain**</summary>
+  <div>
+    At the moment, the [Hyperlane Explorer](https://explorer.hyperlane.xyz) doesn't support non-EVM chains.
 
-### Debugging a message to a Cosmos chain
+    To check if your message has been delivered, select the destination chain and input your message ID below:
 
-At the moment, the [Hyperlane Explorer](https://explorer.hyperlane.xyz) doesn't support non-EVM chains.
+    <CosmosMessageDelivered />
+  </div>
+</details>
 
-To check if your message has been delivered, select the destination chain and input your message ID below:
+<details>
+  <summary>**My warp route transfer says it was delivered, but I don’t see it**</summary>
+  <div>
+    We can debug this with two steps:
 
-<CosmosMessageDelivered />
+    **Verifying if the funds were received:**
 
-### My warp route transfer says it was delivered, but I don’t see it
+    <Tabs groupId="verifying-received-funds">
+    <TabItem value="evm" label="EVM Destination">
+    1. Open the block explorer for the destination chain, and navigate to your expected recipient address.
+    2. If you expect to receive a token (e.g. an ERC-20), check the Token Transfers tab for the token being transferred to your address.
+    3. If you expect to receive the native token (e.g. ETH, on Ethereum), check the "Internal Transactions" tab for the native token being transferred to your address.
+    </TabItem>
+    <TabItem value="cosmos" label="Cosmos Destination">
+    1. Open the block explorer for the destination chain, and navigate to your expected recipient address.
+    2. View your "Coins" or "Tokens" tab, and look for the expected balance.
+    3. If it's not clear if your balance is what you expect, the check the list of transactions. Look for any transactions that include "Process".
+    </TabItem>
+    </Tabs>
 
-We can debug this with two steps:
+    **Verifying the recipient of your transfer**
 
-**Verifying if the funds were received:**
+    <Tabs groupId="verifying-recipient">
+    <TabItem value="evm" label="EVM Origin">
+    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Logs** tab.
 
-<Tabs groupId="verifying-received-funds">
-<TabItem value="evm" label="EVM Destination">
-1. Open the block explorer for the destination chain, and navigate to your expected recipient address.
-2. If you expect to receive a token (e.g. an ERC-20), check the Token Transfers tab for the token being transferred to your address.
-3. If you expect to receive the native token (e.g. ETH, on Ethereum), check the "Internal Transactions" tab for the native token being transferred to your address.
-</TabItem>
-<TabItem value="cosmos" label="Cosmos Destination">
-1. Open the block explorer for the destination chain, and navigate to your expected recipient address.
-2. View your "Coins" or "Tokens" tab, and look for the expected balance.
-3. If it's not clear if your balance is what you expect, the check the list of transactions. Look for any transactions that include "Process".
-</TabItem>
-</Tabs>
+    The **`SentTransferRemote`** log contains the recipient as the topic number 1 (the second topic).
 
-**Verifying the recipient of your transfer**
+    Sometimes, chain block explorers won't show the human-friendly "SentTransferRemote" name. In this case, you can find the log by it's topic 0: `0xd229aacb94204188fe8042965fa6b269c62dc5818b21238779ab64bdd17efeec`.
 
-<Tabs groupId="verifying-recipient">
-<TabItem value="evm" label="EVM Origin">
-When viewing the origin transaction on the origin chain's block explorer, navigate the the **Logs** tab.
+    The recipient address is the account on the destination chain that will receive the warped tokens. Zeroes are padded to the left of the address if needed.
 
-The **`SentTransferRemote`** log contains the recipient as the topic number 1 (the second topic).
+    If your destination chain is an EVM chain, the log will display `0x0000000000000000000000ffffffffffffffffffffffffffffffffffffffff` to mean that `0xffffffffffffffffffffffffffffffffffffffff` is the transfer recipient.
 
-Sometimes, chain block explorers won't show the human-friendly "SentTransferRemote" name. In this case, you can find the log by it's topic 0: `0xd229aacb94204188fe8042965fa6b269c62dc5818b21238779ab64bdd17efeec`.
+    If your destination chain is a Cosmos chain, you can take the hexadecimal content and convert it to a bech32 address using tools like [this one](https://www.bech32converter.com). Some Cosmos chains have different address lengths, so be conscious of how many characters to copy in.
 
-The recipient address is the account on the destination chain that will receive the warped tokens. Zeroes are padded to the left of the address if needed.
+    <figure>
+    ![](/img/message-debugging/transfer-remote-evm.png)
+    <figcaption>Example on Arbiscan showing the DispatchId log on an origin transaction.</figcaption>
+    </figure>
 
-If your destination chain is an EVM chain, the log will display `0x0000000000000000000000ffffffffffffffffffffffffffffffffffffffff` to mean that `0xffffffffffffffffffffffffffffffffffffffff` is the transfer recipient.
+    </TabItem>
+    <TabItem value="cosmos" label="Cosmos Origin">
 
-If your destination chain is a Cosmos chain, you can take the hexadecimal content and convert it to a bech32 address using tools like [this one](https://www.bech32converter.com). Some Cosmos chains have different address lengths, so be conscious of how many characters to copy in.
+    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Event Logs** tab.
 
-<figure>
-![](/img/message-debugging/transfer-remote-evm.png)
-<figcaption>Example on Arbiscan showing the DispatchId log on an origin transaction.</figcaption>
-</figure>
+    The log including **Transfer Remote** contains the message ID, for example: `Wasm Hpl Warp Native Transfer Remote`.
 
-</TabItem>
-<TabItem value="cosmos" label="Cosmos Origin">
+    The recipient address is the account on the destination chain that will receive the warped tokens. Zeroes are padded to the left of the address if needed.
 
-When viewing the origin transaction on the origin chain's block explorer, navigate the the **Event Logs** tab.
+    If your destination chain is an EVM chain, the log will display `0x0000000000000000000000ffffffffffffffffffffffffffffffffffffffff` to mean that `0xffffffffffffffffffffffffffffffffffffffff` is the transfer recipient.
 
-The log including **Transfer Remote** contains the message ID, for example: `Wasm Hpl Warp Native Transfer Remote`.
+    If your destination chain is a Cosmos chain, you can take the hexadecimal content and convert it to a bech32 address using tools like [this one](https://www.bech32converter.com). Some Cosmos chains have different address lengths, so be conscious of how many characters to copy in.
 
-The recipient address is the account on the destination chain that will receive the warped tokens. Zeroes are padded to the left of the address if needed.
+    <figure>
+    ![](/img/message-debugging/transfer-remote-cosmos.png)
+    <figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
+    </figure>
+    </TabItem>
+    </Tabs>
+  </div>
+</details>
 
-If your destination chain is an EVM chain, the log will display `0x0000000000000000000000ffffffffffffffffffffffffffffffffffffffff` to mean that `0xffffffffffffffffffffffffffffffffffffffff` is the transfer recipient.
+<details>
+  <summary>**My Warp Route transfer recipient isn't the address I wanted**</summary>
+  <div>
+    Sometimes browser extension wallets can contend with one another, and the address of a wallet you don't typically use takes precedence over your intended wallet. We've seen this happen a few times with **OKX Wallet**. Please check all your wallet addresses for your recipient address.
+  </div>
+</details>
 
-If your destination chain is a Cosmos chain, you can take the hexadecimal content and convert it to a bech32 address using tools like [this one](https://www.bech32converter.com). Some Cosmos chains have different address lengths, so be conscious of how many characters to copy in.
+<details>
+  <summary>**Relaying an EVM → EVM message yourself**</summary>
+  <div>
+    Using the [Hyperlane CLI](/docs/reference/cli.mdx), it's possible to relay your message yourself if it's between two EVM chains.
 
-<figure>
-![](/img/message-debugging/transfer-remote-cosmos.png)
-<figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
-</figure>
-</TabItem>
-</Tabs>
+    1. Set up the CLI locally following [these instructions](/docs/reference/cli.mdx).
+    2. Find your message ID following the [above instructions](#finding-a-message-id-from-an-origin-transaction)
+    3. Obtain a private key for an account with funds on your destination chain.
+    3. Run the command to relay the message:
+    ```
+    HYP_KEY=<your-private-key> hyperlane status --relay --origin <origin-chain> --destination <destination-chain> --id <message-id>
+    ```
 
-### My Warp Route transfer recipient isn't the address I wanted
+    For example:
+    ```
+    HYP_KEY=0xffff00000000000000000000000000000000000000000000000000000000ffff hyperlane status --relay --origin base --destination blast --id 0xabcd00000000000000000000000000000000000000000000000000000000abcd
+    ```
+  </div>
+</details>
 
-Sometimes browser extension wallets can contend with one another, and the address of a wallet you don't typically use takes precedence over your intended wallet. We've seen this happen a few times with **OKX Wallet**. Please check all your wallet addresses for your recipient address.
-
-### Relaying an EVM → EVM message yourself
-
-Using the [Hyperlane CLI](/docs/reference/cli.mdx), it's possible to relay your message yourself if it's between two EVM chains.
-
-1. Set up the CLI locally following [these instructions](/docs/reference/cli.mdx).
-2. Find your message ID following the [above instructions](#finding-a-message-id-from-an-origin-transaction)
-3. Obtain a private key for an account with funds on your destination chain.
-3. Run the command to relay the message:
-```
-HYP_KEY=<your-private-key> hyperlane status --relay --origin <origin-chain> --destination <destination-chain> --id <message-id>
-```
-
-For example:
-```
-HYP_KEY=0xffff00000000000000000000000000000000000000000000000000000000ffff hyperlane status --relay --origin base --destination blast --id 0xabcd00000000000000000000000000000000000000000000000000000000abcd
-```
-
-### I still need help with my message not being delivered
-
-If the above steps haven't helped, you can join our [Discord](https://discord.com/invite/hyperlane) and create a new post in the **#support-forum** channel.
+<details>
+  <summary>**I still need help with my message not being delivered**</summary>
+  <div>
+    If the above steps haven't helped, you can join our [Discord](https://discord.com/invite/hyperlane) and create a new post in the **#support-forum** channel.
+  </div>
+</details>
