@@ -27,7 +27,7 @@ For the sake of this example, the “origin” network will refer to the network
 
 ### Steps
 
-1. Using the Hyperlane CLI, deploy a yourchain `USDC` EvmHypCollateralVault ↔ ethereum `USDC` EvmHypSynthetic warp route:
+Using the Hyperlane CLI, deploy a yourchain `USDC` EvmHypCollateralVault ↔ ethereum `USDC` EvmHypSynthetic warp route:
     1. Run `hyperlane warp init` and complete the following flow:
         1. Select `yourchain` and `ethereum` using space, and hit enter.
         2. For yourchain, select `collateralVault`, accept the mailbox, and enter the USDC vault address on yourchain.
@@ -36,26 +36,26 @@ For the sake of this example, the “origin” network will refer to the network
     3. Your newly deployed yield route can now accomplish the following:
         1. Transfer USDC: yourchain → ethereum
 
-    ```mermaid
-    flowchart LR
-        A[yourchain:<br>Alice] -->|Deposit USDC| B[yourchain:<br>EvmHypCollateralVault]
-        B -->|Deposit into Vault| C[yourchain:<br>ERC-4626 Vault]
-        C -->|Yield Generation| C
-        B ==>|Bridge| E[ethereum:<br>EvmHypSynthetic]
-        E -->|Mint Synthetic USDC| F[ethereum:<br>Alice]
-        C[yourchain:<br>ERC-4626 Vault] <-->|Withdraw Yield| G[yourchain:<br>Vault Owner]
-    ```
+            ```mermaid
+            flowchart LR
+                A[yourchain:<br>Alice] -->|Deposit USDC| B[yourchain:<br>EvmHypCollateralVault]
+                B -->|Deposit into Vault| C[yourchain:<br>ERC-4626 Vault]
+                C -->|Yield Generation| C
+                B ==>|Bridge| E[ethereum:<br>EvmHypSynthetic]
+                E -->|Mint Synthetic USDC| F[ethereum:<br>Alice]
+                C[yourchain:<br>ERC-4626 Vault] <-->|Withdraw Yield| G[yourchain:<br>Vault Owner]
+            ```
 
         2. Transfer USDC: ethereum → yourchain
 
-    ```mermaid
-    flowchart LR
-        A[ethereum:<br>Alice] -->|Burn Synthetic USDC| B[ethereum:<br>EvmHypSynthetic]
-        B ==>|Bridge| C[yourchain:<br>EvmHypCollateralVault]
-        D[yourchain:<br>ERC-4626 Vault] -->|Withdraw from Vault| C
-        C -->|Withdraw USDC| F[yourchain:<br>Alice]
-        G[yourchain:<br>Vault Owner] <-->|Withdraw Yield| D
-    ```
+            ```mermaid
+            flowchart LR
+                A[ethereum:<br>Alice] -->|Burn Synthetic USDC| B[ethereum:<br>EvmHypSynthetic]
+                B ==>|Bridge| C[yourchain:<br>EvmHypCollateralVault]
+                D[yourchain:<br>ERC-4626 Vault] -->|Withdraw from Vault| C
+                C -->|Withdraw USDC| F[yourchain:<br>Alice]
+                G[yourchain:<br>Vault Owner] <-->|Withdraw Yield| D
+            ```
 
 
 :::info
