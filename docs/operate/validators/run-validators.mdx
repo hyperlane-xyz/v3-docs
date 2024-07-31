@@ -290,7 +290,12 @@ The Validator will index the origin Mailbox contract for messages. If a message 
 
 ### Next: Running multiple Validators
 
-We encourage folks to validate on as many chains as they are interested in supporting. We recommend that resources are not shared between Validator instances.
+We encourage folks to validate on as many chains as they are interested in supporting.
+
+Some tips for easily running multiple validators:
+1. The same key can be used by multiple validators.
+2. The same AWS account can be used by multiple validators.
+3. The same checkpoint syncer S3 bucket can by used by multiple validators, however they **must** use different folders, e.g. using the `--checkpointSyncer.folder` flag.
 
 ## Design reference
 
