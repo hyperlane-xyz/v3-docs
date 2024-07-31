@@ -422,6 +422,11 @@ const sidebars = {
       label: "Deploy Hyperlane with Local Agents",
     },
     {
+      type: "doc",
+      id: "guides/message-debugging",
+      label: "Debugging Message Delivery",
+    },
+    {
       type: "category",
       label: "Explorer Debugging",
       link: {
