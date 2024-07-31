@@ -87,7 +87,13 @@ const sidebars = {
           },
           collapsible: true,
           collapsed: false,
-          items: []
+          items: [
+            {
+              type: "doc",
+              id: "guides/transfer-mailbox-ownership",
+              label: "Transfer Mailbox Ownership",
+            },
+          ]
         },
         {
           type: "category",
