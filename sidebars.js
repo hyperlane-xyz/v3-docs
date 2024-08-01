@@ -87,7 +87,18 @@ const sidebars = {
           },
           collapsible: true,
           collapsed: false,
-          items: []
+          items: [
+            {
+              type: "doc",
+              id: "guides/update-mailbox-default-ism",
+              label: "Update Mailbox Default ISM",
+            },
+            {
+              type: "doc",
+              id: "guides/transfer-mailbox-ownership",
+              label: "Transfer Mailbox Ownership",
+            },
+          ]
         },
         {
           type: "category",
@@ -102,7 +113,7 @@ const sidebars = {
             {
               type: "doc",
               id: "guides/remove-trusted-relayer",
-              label: "Remove the Trusted Relayer",
+              label: "Remove Trusted Relayer",
             },
             {
               type: "doc",
