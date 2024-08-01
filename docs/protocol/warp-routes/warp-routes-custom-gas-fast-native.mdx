@@ -2,80 +2,90 @@
 
 This document will walk you through how to use Hyperlane to enable fast native transfers to and from your L2 via a custom gas token.
 
-## Primary Motives
+# Primary Motives
 
 1. Create a custom gas token to use on your L2 of choice.
 2. Use this gas token to enable fast native transfers, instead of long wait times for settlement via canonical bridges.
 
-## Pre-Requisites
+# Pre-Requisites
 
 To complete the following case-study walkthrough, you should have the following available:
 
 1. A L2 network (”yourchain”) on which you are able to specify a [custom gas token](https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token) and would like to enable fast native transfers to and from.
 2. A sole deployer or authorized owner to receive mint of the receipt token (more information on this token below).
-3. An installed instance of the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) and a wallet private key sourced as `HYP_KEY`, funded on all networks in question.
+3. An installed instance of the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) and a wallet private key sourced as `HYP_KEY`, funded on all relevant networks.
 
-## Walkthrough: Fast Native Transfers
+# Walkthrough: Fast Native Transfers
 
 :::info
-Note that a “receipt token” below is a (one-time) mintable “dummy” token used to collateralize a warp-route on an L1 network of choice.
+Note that a “receipt token” below is a (one-time) mintable “dummy” token used to collateralize a warp-route on yourchain’s corresponding L1.
 :::
 
-### Steps
+## Steps
 
-1. Deploy a `rETH` receipt token to ethereum to represent ethereum’s native token (`rETH` will also become your L2’s custom gas token).
-    1. For example, you may deploy your receipt token via [Remix](https://www.notion.so/Warp-Routes-Custom-Gas-Tokens-Fast-Native-Transfers-v1-e984996a93be4458906b5ed565ee87b8?pvs=21) with a funded wallet and a contract similar to below:
+### 1) Deploy a Receipt Token
 
-        ```solidity
-        // SPDX-License-Identifier: MIT
-        pragma solidity ^0.8.20;
+Deploy a `rETH` receipt token to ethereum to represent ethereum's native token (`rETH` will also become your L2's custom gas token).
 
-        import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+1. For example, you may deploy your receipt token via [Remix](https://www.notion.so/Warp-Routes-Custom-Gas-Tokens-Fast-Native-Transfers-v1-e984996a93be4458906b5ed565ee87b8?pvs=21) with a funded wallet and a contract similar to below:
 
-        contract ReceiptETH is ERC20 {
-            constructor() ERC20("ReceiptETH", "rETH") {
-                _mint(msg.sender, 1000000 * (10 ** 18));
-            }
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.20;
+
+    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+    contract ReceiptETH is ERC20 {
+        constructor() ERC20("ReceiptETH", "rETH") {
+            _mint(msg.sender, 1000000 * (10 ** 18));
         }
-        ```
-
-    2. Ensure 100% of the total supply of your `rETH` receipt token is minted to the deployer or authorized address of choice. This must be a one-time mint event in order to avoid value dilution of the ethereum ↔ yourchain native warp route, below.
-    3. Once deployed, save the address of the contract for use below.
-2. Set the custom gas token on yourchain to the newly deployed `rETH` ERC20.
-    1. To set a custom gas token on arbitrum orbit: https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token
-3. Using the Hyperlane CLI, deploy an ethereum `rETH` EvmHypCollateral ↔ yourchain `ETH` EvmHypNative warp route:
-    1. Run `hyperlane warp init` and complete the following flow:
-        1. Select `ethereum` and `yourchain` using space, and hit enter.
-        2. For ethereum, select `collateral`, accept the mailbox, and enter the newly deployed `rETH` address, from above.
-        3. For yourchain, select `native` and accept the mailbox.
-    2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
-    3. Use the warp route to transfer 100% of the `rETH` receipt token from ethereum to yourchain.
-4. Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `ETH` EvmHypNative warp route:
-    1. Run `hyperlane warp init` and complete the following flow:
-        1. Select `ethereum` and `yourchain` using space, and hit enter.
-        2. For ethereum, select `native` and accept the mailbox.
-        3. For yourchain, select `native` and accept the mailbox.
-    2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
-5. Deposit yourchain `ETH` as collateral in yourchain’s native warp route. This collateralizes the native warp route, enabling users to bridge their native assets quickly to and from yourchain.
-
-    ```mermaid
-    sequenceDiagram
-    		box ethereum L1
-    			participant ETH as ETH (Native)
-    	    participant rETH_C as rETH (Collateral)
-        end
-    		box yourchain L2
-    	    participant yETH_N as ETH (Native)
-        end
-
-        rETH_C-->>yETH_N: 1) transfer 100%<br>of receipt token
-        Note over yETH_N: 2) set custom gas<br>token to rETH
-        yETH_N-->>yETH_N: 3) deposit native<br>as collateral
-        yETH_N-->ETH: <- fast ETH transfer ->
+    }
     ```
 
+2. Ensure 100% of the total supply of your `rETH` receipt token is minted to the deployer or authorized address of choice. This must be a one-time mint event in order to avoid value dilution of the ethereum ↔ yourchain native warp route, below.
+3. Once deployed, save the address of the new token for use below.
+
+### 2) Set the Custom Gas Token
+
+Set the custom gas token on yourchain to the newly deployed `rETH` ERC20.
+
+1. To set a custom gas token on arbitrum orbit: https://docs.arbitrum.io/launch-orbit-chain/how-tos/use-a-custom-gas-token
+
+### 3) Deploy a Native Warp Route
+
+Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `ETH` EvmHypNative warp route.
+
+1. Run `hyperlane warp init` and complete the following flow:
+    1. Select `ethereum` and `yourchain` using space, and hit enter.
+    2. For ethereum, select `native` and accept the mailbox.
+    3. For yourchain, select `native` and accept the mailbox.
+2. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
+
+### 4) Transfer All Receipt Tokens
+
+Use the warp route to transfer 100% of the `rETH` receipt token from ethereum to yourchain.
+
+### 5) Collateralize Your Warp Route
+
+Deposit yourchain `ETH` as collateral in yourchain's native warp route. This collateralizes the native warp route, enabling users to bridge their native assets quickly to and from yourchain.
 
 **🎉 Congrats! You have now enabled fast native transfer to and from yourchain via a custom gas token on your L2.**
+
+```mermaid
+sequenceDiagram
+		box ethereum L1
+	    participant rETH as rETH (ERC20)
+			participant ETH as ETH (Native)
+    end
+		box yourchain L2
+	    participant yETH as ETH (Native)
+    end
+
+    Note over yETH: 1) set custom gas<br>token to rETH
+    rETH-->>yETH: 2) transfer 100%<br>of receipt token
+    yETH-->>yETH: 3) deposit native<br>as collateral
+    yETH-->ETH: <- fast ETH transfer ->
+```
 
 :::warning
 Please note that this collateralization strategy takes on certain ISM trust assumptions.
