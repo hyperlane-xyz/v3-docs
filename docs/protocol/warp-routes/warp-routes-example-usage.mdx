@@ -8,6 +8,10 @@ This section describes various combinations of warp route types.
 
 This route allows for the transfer of native tokens between chains that both use their own native tokens.
 
+:::info
+This type of route should only be used when both networks have native tokens of equivalent value, e.g. inEVM & Ethereum.
+:::
+
 **Setup:**
 
 - HypNative contract deployed on both chains.
@@ -16,7 +20,7 @@ This route allows for the transfer of native tokens between chains that both use
 
 ```
 From: Ethereum (ETH)
-To: Avalanche (AVAX)
+To: inEVM (ETH)
 Amount: 1 ETH
 ```
 
@@ -25,43 +29,11 @@ Amount: 1 ETH
 ```mermaid
 graph LR
     A[Alice on Ethereum] -->|1 ETH| B(Ethereum HypNative)
-    B -->|Message| C(Avalanche HypNative)
-    C -->|AVAX equivalent| D[Alice on Avalanche]
+    B -->|Message| C(inEVM HypNative)
+    C -->|ETH equivalent| D[Alice on inEVM]
 ```
 
-**Use Case:** Alice wants to quickly move value from Ethereum to Avalanche.
-
----
-
-### 2. Native to Collateral
-
-This route enables transfers between a chain's native token and an ERC20 token on another chain.
-
-**Setup:**
-
-- HypNative contract deployed on native token chain.
-- HypERC20Collateral contract deployed on ERC20 chain.
-
-**Example Flow:**
-
-```
-From: Ethereum (ETH)
-To: Binance (WETH)
-Amount: 0.5 ETH
-```
-
-**Diagram:**
-
-```mermaid
-graph LR
-    A[Alice on Ethereum] -->|0.5 ETH| B(Ethereum HypNative)
-    B -->|Message| C(BSC HypERC20Collateral)
-    C -->|0.5 WETH| D[Alice on BSC]
-    E[WETH Pool on BSC] -.->|Collateral| C
-
-```
-
-**Use Case:** Alice wants to use the value of her ETH on BSC.
+**Use Case:** Alice wants to quickly move value from Ethereum to inEVM.
 
 ---
 
