@@ -98,9 +98,23 @@ Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `ET
 
 ### 5) Collateralize Your Warp Route
 
-Deposit yourchain `ETH` as collateral into yourchain's native warp route via the `receive()` function. If needed, you may use the verified contract to do this via your scanner's UI.
+Deposit yourchain `ETH` as collateral into yourchain's native warp route via the `receive()` function. If needed, you may use the verified contract to do this via your scanner's UI, or a wallet such as Metamask
 
 This collateralizes the native warp route, enabling users to bridge their native assets quickly to and from yourchain.
+
+### 6) Testing
+
+You can initiate a test transfer of a single wei with the following command:
+
+```bash
+hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/ETH/ethereum-yourchain-config.yaml
+```
+
+:::tip
+By Default, your warp core config is found in the local Registry at `$HOME/.hyperlane/deployments/warp_routes` to be used with the `--warp` flag.
+:::
+
+You can test in either direction between where you have the warp route set.
 
 **🎉 Congrats! You have now enabled fast native transfer to and from yourchain via a custom gas token on your L2.**
 
