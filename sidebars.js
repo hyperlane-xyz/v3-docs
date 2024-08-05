@@ -348,9 +348,52 @@ const sidebars = {
       ],
     },
     {
-      type: "doc",
-      id: "protocol/warp-routes",
+      type: "category",
       label: "Warp Routes",
+      link: {
+        type: "doc",
+        id: "protocol/warp-routes/warp-routes-overview",
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "category",
+          label: "Types",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-types",
+              label: "Warp Route Types",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-example-usage",
+              label: "Warp Route Example Usage",
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Walkthroughs",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-yield-routes",
+              label: "Warp Routes for Yield Routes",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+              label: "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
+            },
+          ]
+        },
+      ],
     },
     {
       type: "category",

@@ -1,0 +1,96 @@
+# Warp Routes: Example Usage
+
+This section describes various combinations of warp route types.
+
+## Warp Route Combinations
+
+### 1. Native to Native
+
+This route allows for the transfer of native tokens between chains that both use their own native tokens.
+
+:::info
+This type of route should only be used when both networks have native tokens of equivalent value, e.g. inEVM & Ethereum.
+:::
+
+**Setup:**
+
+- HypNative contract deployed on both chains.
+
+**Example Flow:**
+
+```
+From: Ethereum (ETH)
+To: inEVM (ETH)
+Amount: 1 ETH
+```
+
+**Diagram:**
+
+```mermaid
+graph LR
+    A[Alice on Ethereum] -->|1 ETH| B(Ethereum HypNative)
+    B -->|Message| C(inEVM HypNative)
+    C -->|ETH equivalent| D[Alice on inEVM]
+```
+
+**Use Case:** Alice wants to quickly move value from Ethereum to inEVM.
+
+---
+
+### 2. Native to Synthetic
+
+This route creates a synthetic representation of a native token on another chain.
+
+**Setup:**
+
+- HypNative contract deployed on native token chain.
+- HypERC20 (synthetic) contract deployed on other chain.
+
+**Example Flow:**
+
+```
+From: Celo (CELO)
+To: Optimism (wCELO)
+Amount: 100 CELO
+```
+
+**Diagram:**
+
+```mermaid
+graph LR
+    A[Alice on Celo] -->|100 CELO| B(Celo HypNative)
+    B -->|Message| C(Optimism HypERC20)
+    C -->|Mint 100 wCELO| D[Alice on Optimism]
+```
+
+**Use Case:** A Celo-based project wants to make their native CELO token available for use on Optimism.
+
+---
+
+### 3. Collateral to Synthetic
+
+This route allows for the creation of synthetic tokens based on collateralized ERC20 tokens.
+
+**Setup:**
+
+- HypERC20Collateral contract deployed on ERC20 chain.
+- HypERC20 (synthetic) contract deployed on other chain.
+
+**Example Flow:**
+
+```
+From: Ethereum (USDC)
+To: Arbitrum (wUSDC)
+Amount: 1000 USDC
+```
+
+**Diagram:**
+
+```mermaid
+graph LR
+    A[Alice on Ethereum] -->|1000 USDC| B(Ethereum HypERC20Collateral)
+    B -->|Message| C(Arbitrum HypERC20)
+    C -->|Mint 1000 wUSDC| D[Alice on Arbitrum]
+```
+
+**Use Case:** Alice wants to use her USDC on Arbitrum without moving actual USDC to Arbitrum or relying on Arbitrum's bridged USDC.
