@@ -36,29 +36,26 @@ Now, under `$HOME/.hyperlane/chains` you will find a new folder named with your 
 
    ```yaml
     # yaml-language-server: $schema=../schema.json
-    name: yourchain
+    blockExplorers:
+      - apiUrl: https://explorer.yourchain.com/api
+        apiKey: XXXX # helpful to avoid rate limiting on the contract verification API
+        family: etherscan #explorer you're using, also supporting routescan or blockscout
+        name: Chainscan
+        url: https://explorer.yourchain.com
     chainId: 171717
+    displayName: Chain Name
     domainId: 171717
-    protocol: ethereum
-    rpcUrls:
-      - http: https://hyper-lane-docs.rpc.caldera.xyz/http
+    isTestnet: true # optional
+    name: yourchain
     nativeToken:
       name: Ether
       symbol: ETH
       decimals: 18
+    protocol: ethereum
+    rpcUrls:
+      - http: https://hyper-lane-docs.rpc.caldera.xyz/http
     ```
 </details>
-
-In addition to the CLI generated config above, you should also edit in the block explorer url.
-
-```yaml
-blockExplorers:
-  - apiUrl: https://explorer.yourchain.com/api
-    apiKey: XXXX # helpful to avoid rate limiting on the contract verification API
-    family: etherscan #explorer you're using, also supporting routescan or blockscout
-    name: Chainscan
-    url: https://explorer.yourchain.com
-```
 
 ## 2) Core
 
