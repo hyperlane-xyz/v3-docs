@@ -2,7 +2,7 @@ import PrerequisitesPartial from '/docs/partials/warp-routes/_prerequisites-conf
 import WarpReadSymbolChainPartial from '/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx'
 import WarpApplySymbolConfigDefaultPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx'
 
-# How to Remove Trusted Relayer ISM from your Hyperlane Warp Route
+# How to Remove Trusted Relayer ISM from Warp Route
 
 # Using the Hyperlane CLI
 
@@ -16,7 +16,7 @@ In order to go to production, you'll need to remove this ISM with the [Hyperlane
 If you followed the [Deploy a Warp Route](https://docs.hyperlane.xyz/docs/guides/deploy-warp-route) guide, you most likely have deployed a warp route with a trusted relayer set to a signer address.
 :::
 
-To confirm using the Hyperlane CLI, locate your token symbol and the chain it is deployed on:
+To confirm using the Hyperlane CLI, locate your token symbol and the chain on which it is deployed:
 
 <WarpReadSymbolChainPartial />
 
@@ -88,9 +88,9 @@ To confirm that the trusted relayer was successfully removed using the Hyperlane
 <WarpReadSymbolChainPartial />
 
 
-After running `warp read`, confirm that the trusted relayer ISM has been removed from your warp route. You should see a similar config under `interchainSecurityModule`:
+After running `warp read`, confirm that the trusted relayer ISM has been removed from your warp route (In this example, it should only contain the remaining `defaultFallbackRoutingIsm`). You should see a similar config under `interchainSecurityModule`:
 
-```yaml
+```yaml {8-11}
 yourchain:
   mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
