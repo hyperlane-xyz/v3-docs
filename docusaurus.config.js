@@ -536,7 +536,7 @@ const config = {
         Built IRL in New York 🗽 and London 💂🏼‍♂️`,
       },
       prism: {
-        additionalLanguages: ["solidity", "diff"],
+        additionalLanguages: ["solidity", "diff", "bash"],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
