@@ -235,6 +235,14 @@ function verify(
 );
 ```
 
+:::info
+
+During cross chain communication involving PI chains, we have 2 cases:
+- While initiating a contract communication between a core/sdk chain with PI(permissionlessly deployed) chain, the ISM has to be mentioned on the contract of the core/sdk chain, else the chain's ISM would not be recognized by the relayer.
+- While initiating a contract communication between a PI chain and PI chain, the ISM need not be mentioned in any of the contracts as the mailboxes of these chains would have the address of the ISM module by default
+
+:::
+
 ### Validator Announce
 
 Validators announce their signature storage location so that the relayer can fetch and verify their signatures.
