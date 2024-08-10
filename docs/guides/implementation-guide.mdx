@@ -24,8 +24,22 @@ If you would like to dive deeper, check out some of the Hyperlane implementation
 
 Below describes the onchain contract spec for the Hyperlane protocol. It uses solidity types for familiarity but everything should be generalizable to other languages.
 
-- `address` should be interpreted as the local chain's address type
-- `payable` describes a function that allows callers to pass native tokens
+- `address` should be interpreted as the local chain's address type.
+- `payable` describes a function that allows callers to pass native tokens.
+- Ensure events are properly emitted for all important state changes.
+- Clearly document any deviations from the reference implementation and their rationale.
+
+### Some things to consider
+
+**Byte representation:**
+
+- Be aware that different chains may have different native types for representing bytes. For example, StarkNet uses felt252 for contract addresses, which may not fully accommodate 32-byte addresses used in other chains.
+- Implement proper conversion and validation mechanisms when dealing with cross-chain addresses.
+
+**Serialization:**
+
+- Pay close attention to how message fields are serialized, especially for variable-length data like the message body.
+- Ensure that the serialization method used (e.g., abi.encodePacked equivalent) behaves consistently across different chain implementations.
 
 ### Message
 
@@ -58,7 +72,7 @@ struct Message {
 
 ### Mailbox
 
-The mailbox is the entrypoint for developers to send and receive messages from.
+The mailbox is the entrypoint for developers to send and receive messages from. Make sure that `localDomain` is immutable to prevent unauthorized changes that could compromise cross-chain security.
 
 - [Solidity Interface](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMailbox.sol)
 
@@ -72,7 +86,7 @@ Implementations:
 
 :::info
 
-In addition to default and custom hooks, Hyperlane introduces the concept of a **Required Hook** that is used for post processing of ALL dispatches.
+In addition to default and custom hooks, Hyperlane introduces the concept of a **Required Hook** that is used for post processing of ALL dispatches. Make sure to call the required hook before the default or custom hook.
 
 :::
 
@@ -235,6 +249,12 @@ function verify(
 );
 ```
 
+:::info
+
+**Static module management** - Our Solidity implementation defines ISMs as static and part of the bytecode which might not be possible in other chains. You may need to implement dynamic modules for the ISM instead.
+
+:::
+
 ### Validator Announce
 
 Validators announce their signature storage location so that the relayer can fetch and verify their signatures.
@@ -329,6 +349,12 @@ After implementing the MultisigISM, you reach the second milestone to test that 
 ### Interchain Gas Paymaster
 
 The gas paymaster is used to pay for the gas required in message processing on the destination chain. This is not strictly required if the relayer is willing to subsidize message processing.
+
+:::warning
+
+Implement robust checks for sufficient gas payment, considering chain-specific token handling. Our solidity implementation charges native message value but for other chains, you may need to charge a specific token and scale the gas overhead and `tokenExchangeRate` accordingly.
+
+:::
 
 - [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/hooks/igp/InterchainGasPaymaster.sol)
 - [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/igp/interchain-gas-paymaster/src/main.sw)
