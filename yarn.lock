@@ -3558,13 +3558,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/registry@npm:2.4.0":
-  version: 2.4.0
-  resolution: "@hyperlane-xyz/registry@npm:2.4.0"
+"@hyperlane-xyz/registry@npm:2.5.0":
+  version: 2.5.0
+  resolution: "@hyperlane-xyz/registry@npm:2.5.0"
   dependencies:
     yaml: "npm:^2"
     zod: "npm:^3.21.2"
-  checksum: 247c77517bd7ce30a5260d53b8df3a8e5fe8c602a10191eeaeed81bcce507b9ae83db95a2e6387aeb5e718d28bea6e697d1e139335762837ea8573da28fbd590
+  checksum: 3943ea2b244325e592700faefddded93f5c8ee6761407ae3464f397efa89f7b3f9779fa3da9d08544c9ce4d694e17601e780f2d0f5c1a135ea66eab377909430
   languageName: node
   linkType: hard
 
@@ -9183,7 +9183,7 @@ __metadata:
     "@docusaurus/types": "npm:3.0.1"
     "@easyops-cn/docusaurus-search-local": "npm:^0.37.4"
     "@hyperlane-xyz/core": "npm:^3.11.0"
-    "@hyperlane-xyz/registry": "npm:2.4.0"
+    "@hyperlane-xyz/registry": "npm:2.5.0"
     "@mdx-js/react": "npm:^3.0.0"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"
