@@ -76,49 +76,45 @@ Here is an example agent config.
 
 ### Edit each .env file
 
-You should change the service name, db path, and config file locations to match the folders created for each chain.
+You should change the service name, aws credentials for each chain
 
 ```
 AWS_ACCESS_KEY_ID=<Your AWS access key ID>
 AWS_SECRET_ACCESS_KEY=<Your AWS secret access key>
-DB_PATH=./ethereum/hyperlane_db
-METRICS_PORT=9090 # Default is 9090, should match port set in config.json
-CONFIG_FILE=./ethereum/config.json
 SERVICE_NAME=ethereum
 ```
 
 ## 5. Configure Docker Compose (docker-compose.yml)
 
 ```yaml
-version: '3.8'
+x-common-attributes: &common-validator
+  image: gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
+  command: ./validator
+  container_name: ${SERVICE_NAME}-validator
+  environment:
+    CONFIG_FILES: /config.json
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  volumes:
+    - ./${SERVICE_NAME}/hyperlane_db:/mnt/hyperlane_db
+    - ./${SERVICE_NAME}/config.json:/config.json
+  restart: unless-stopped
 
 services:
-  validator:
-    image: gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
-    command: ./validator
-    container_name: ${SERVICE_NAME}-validator
+  ethereum-validator:
+    <<: *common-validator
     ports:
-      - "${METRICS_PORT}:9090/tcp"
-    environment:
-      CONFIG_FILES: /config.json
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-    configs:
-      - source: config_${SERVICE_NAME}
-        target: /config.json
-    volumes:
-      - ${DB_PATH}:/mnt/hyperlane_db
-    restart: unless-stopped
-    env_file:
-      - .env
+      - "9091:9090/tcp"
 
-configs:
-  config_ethereum:
-    file: ./ethereum/config.json
-  config_optimism:
-    file: ./optimism/config.json
-  config_base:
-    file: ./base/config.json
+  optimism-validator:
+    <<: *common-validator
+    ports:
+      - "9092:9090/tcp"
+
+  base-validator:
+    <<: *common-validator
+    ports:
+      - "9093:9090/tcp"
 ```
 
 Your directory structure should look similar to this:
@@ -147,13 +143,15 @@ Bring the containers up:
 Remember to fund your validator address so the validator can announce.
 
 ```bash
-docker-compose --env-file .env.ethereum up -d
-docker-compose --env-file .env.optimism up -d
-docker-compose --env-file .env.base up -d
+docker compose --env-file .env.ethereum up ethereum-validator -d
+docker compose --env-file .env.optimism up optimism-validator -d
+docker compose --env-file .env.base up base-validator -d
 ```
 
 Ensure there are no errors:
 
 ```bash
 docker logs -f ethereum-validator
+docker logs -f optimism-validator
+docker logs -f base-validator
 ```
