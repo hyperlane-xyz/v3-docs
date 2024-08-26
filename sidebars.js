@@ -22,7 +22,7 @@ const sidebars = {
       id: "intro",
       label: "1) Choose Hyperlane",
     },
-   /**
+    /**
     {
       type: "doc",
       id: "your-first-message",
@@ -98,7 +98,7 @@ const sidebars = {
               id: "guides/transfer-mailbox-ownership",
               label: "Transfer Mailbox Ownership",
             },
-          ]
+          ],
         },
         {
           type: "category",
@@ -120,7 +120,7 @@ const sidebars = {
               id: "guides/transfer-warp-route-ownership",
               label: "Transfer Ownership",
             },
-          ]
+          ],
         },
       ],
     },
@@ -322,6 +322,11 @@ const sidebars = {
       id: "reference/glossary",
       label: "Glossary",
     },
+    {
+      type: "doc",
+      id: "reference/audits",
+      label: "Audits",
+    },
   ],
 
   protocolSidebar: [
@@ -373,7 +378,7 @@ const sidebars = {
               id: "protocol/warp-routes/warp-routes-example-usage",
               label: "Warp Route Example Usage",
             },
-          ]
+          ],
         },
         {
           type: "category",
@@ -389,9 +394,10 @@ const sidebars = {
             {
               type: "doc",
               id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label: "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
+              label:
+                "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
             },
-          ]
+          ],
         },
       ],
     },
