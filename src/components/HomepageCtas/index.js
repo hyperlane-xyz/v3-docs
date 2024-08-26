@@ -14,12 +14,12 @@ const CtaList = [
     link: links.deployWarpRoute,
   },
   {
-    title: "Learn Concepts",
-    link: links.protocolOverview,
-  },
-  {
     title: "Run a Validator",
     link: links.runValidators,
+  },
+  {
+    title: "Learn Concepts",
+    link: links.protocolOverview,
   },
   {
     title: "Where is Hyperlane?",
