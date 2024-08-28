@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "doc",
       id: "intro",
-      label: "1) Choose Hyperlane",
+      label: "1 - Choose Hyperlane",
     },
     /**
     {
@@ -31,7 +31,7 @@ const sidebars = {
     */
     {
       type: "category",
-      label: "2) Connect Your Chain",
+      label: "2 - Connect Your Chain",
       link: {
         type: "doc",
         id: "deploy-hyperlane",
@@ -48,7 +48,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "3) Bridge a Token",
+      label: "3 - Bridge a Token",
       link: {
         type: "doc",
         id: "guides/deploy-warp-route",
@@ -66,11 +66,11 @@ const sidebars = {
     {
       type: "doc",
       id: "explorer",
-      label: "4) Use the Explorer",
+      label: "4 - Use the Explorer",
     },
     {
       type: "category",
-      label: "5) Go to Production",
+      label: "5 - Go to Production",
       link: {
         type: "doc",
         id: "production",
@@ -515,6 +515,12 @@ const sidebars = {
       type: "doc",
       id: "guides/deploy-hyperlane-local-agents",
       label: "Deploy Hyperlane with Local Agents",
+    },
+    {
+      type: "doc",
+      id: "guides/extending-warp-route",
+      label: "Extending a Warp Route",
+      
     },
     {
       type: "doc",
