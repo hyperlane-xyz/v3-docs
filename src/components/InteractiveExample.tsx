@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { TestnetChainDropdown } from "./ChainDropdown";
 
-import {
-  chainAddresses,
-  chainMetadata,
-  CoreTestnets,
-} from "@hyperlane-xyz/registry";
+import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
 import CodeBlock from "@theme/CodeBlock";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
+import { useAbacusWorksChainNames } from "../utils/registry";
 
 function hexLeftPad(s: string, bytes = 32) {
   if (s.startsWith("0x")) {
@@ -35,9 +32,10 @@ type Props = {
 };
 
 export default function InteractiveExample(props: Props) {
-  const [originChain, setOriginChain] = useState<string>(CoreTestnets[0]);
+  const chainNames = useAbacusWorksChainNames(true);
+  const [originChain, setOriginChain] = useState<string>(chainNames[0]);
   const [destinationChain, setDestinationChain] = useState<string>(
-    CoreTestnets[1]
+    chainNames[1]
   );
   const [body, setBody] = useState("Hello, world");
 
