@@ -1,9 +1,5 @@
-import {
-  chainAddresses,
-  chainMetadata,
-  CoreMainnets,
-  CoreTestnets,
-} from "@hyperlane-xyz/registry";
+import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
+import { useAbacusWorksChainNames } from "../utils/registry";
 
 export type Environment = "testnet" | "mainnet";
 
@@ -30,7 +26,7 @@ export default function AddressTable<K extends string>({
   contract,
   environment,
 }: Props<K>) {
-  const chainNames = environment === "mainnet" ? CoreMainnets : CoreTestnets;
+  const chainNames = useAbacusWorksChainNames(environment !== "mainnet");
 
   return (
     <table>

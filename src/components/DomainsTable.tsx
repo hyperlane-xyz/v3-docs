@@ -1,8 +1,5 @@
-import {
-  CoreMainnets,
-  CoreTestnets,
-  chainMetadata,
-} from "@hyperlane-xyz/registry";
+import { chainMetadata } from "@hyperlane-xyz/registry";
+import { useAbacusWorksChainNames } from "../utils/registry";
 import { capitalize } from "./AddressTable";
 
 export type Environment = "testnet" | "mainnet";
@@ -12,7 +9,7 @@ type Props = {
 };
 
 export default function DomainsTable({ environment }: Props) {
-  const chainNames = environment === "mainnet" ? CoreMainnets : CoreTestnets;
+  const chainNames = useAbacusWorksChainNames(environment !== "mainnet");
   return (
     <table>
       <thead>
