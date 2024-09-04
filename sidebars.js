@@ -556,7 +556,7 @@ const sidebars = {
     {
       type: "doc",
       id: "guides/deploy-svm-warp-route",
-      label: "Deploy a SVM <> SVM Warp Route",
+      label: "Deploy an SVM Warp Route",
     },
     {
       type: "doc",
