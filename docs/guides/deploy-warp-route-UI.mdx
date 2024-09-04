@@ -2,7 +2,7 @@ import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
 # How to Deploy a Bridge UI for Your Hyperlane Warp Route
 
-After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route.mdx), you may want to deploy a front-end UI to faciliate interchain token transfers. The easiest ways to get going with this are to,
+After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route.mdx), you may want to deploy a front-end UI to facilitate interchain token transfers. There are two popular options:
 
 - [fork, customize and deploy the Hyperlane Warp UI template](#fork--customize-the-ui)
 - [get a Superbridge instance](#superbridge)
@@ -105,7 +105,7 @@ Besides warning users in the UI about ensuring they have gas, you can also fauce
 
 ## Superbridge
 
-[Superbridge](https://superbridge.app) is a custom bridge provider, they handle hosting bridge frontends for hundreds of rollups, various tokens and different ecosystems. Getting a Superbridge for your warp route allows for a customized & hassle free approach to operating your bridge. They've also built a handy feature that allows for self-service testing of recently deployed warp routes.
+[Superbridge](https://superbridge.app) is a custom bridge provider, they handle hosting bridge front-ends for hundreds of rollups, various tokens and different ecosystems. Getting a Superbridge for your warp route allows for a customized & hassle free approach to operating your bridge. They've also built a handy feature that allows for self-service testing of recently deployed warp routes.
 
 ### Testing your warp route
 
@@ -114,10 +114,14 @@ Besides warning users in the UI about ensuring they have gas, you can also fauce
 3. Paste in the YAML file you generated when deploying your warp routes ![](/img/deploy-warp-ui/superbridge-paste-yaml.png)
 4. The specified tokens and networks will now be available for bridging.
 
-Note, if any tokens or networks are missing after you've pasted in the YAML file, it's possible Superbridge doesn't support this network just yet. [Reach out](mailto:support@superbridge.app) to them to see what the timeline is for adding support.
+:::note
+
+If any tokens or networks are missing after you've pasted in the YAML file, it's possible Superbridge doesn't support this network just yet. [Reach out](mailto:support@superbridge.app) to them to see what the timeline is for adding support.
+
+:::
 
 ### Production
 
-To bring your warp route to production with Superbridge, [reach out to the team](mailto:alex@superbridge.app)! They're super responsive and get can generally get you up and running in under 24 hours.
+To bring your warp route to production with Superbridge, [reach out to the team](mailto:alex@superbridge.app)! They can typically get a front-end up and running in about a day.
 
-A couple of their most popular Hyperlane powered bridge frontends include [Renzo](https://renzo.superbridge.app) and [Elixir](https://elixir.superbridge.app), if you're interested in checking out what the end product could look like.
+A couple of their most popular Hyperlane powered bridge front-ends include [Renzo](https://renzo.superbridge.app) and [Elixir](https://elixir.superbridge.app), if you're interested in checking out what the end product could look like.
