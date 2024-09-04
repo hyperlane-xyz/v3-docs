@@ -1,0 +1,141 @@
+# Deploy a Warp Route Between SVM Chains
+
+## Outcomes
+
+You will be deploying a Warp Route for an asset of your choice, between two SVM chains with an existing Hyperlane core deployment. At the time of writing this document, supported SVM chains are Solana and Eclipse, but you can find an up-to-date list [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/sealevel/environments/mainnet3) (all chain directory names with a `core` subdirectory).
+
+## Warp Route Types
+
+The type of token used determines the Warp Route type, so it's important to understand the different Warp Route contracts available:
+- [Native](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#native-token-warp-routes): Handles the transfer of native gas tokens (e.g. SOL on Solana, ETH on Eclipse).
+- [Collateral](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#collateral-backed-erc20-warp-routes): Handles the transfer of existing [Token-2022](https://spl.solana.com/token-2022) tokens (the ERC20 equivalent on SVM).
+- [Synthetic](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#synthetic-erc20-warp-routes): Handles synthetic tokens that are minted and burned as transfers occur through the Warp Route, to represent tokens from their origin chain. The tooling in this guide deploys a new Token-2022 token in this case, whose authority is set to the deployer key.
+
+Here are the common Warp Route setups (you can find more details [here](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-example-usage)):
+- Native to Native: Transfer a token that is native to both connected chains, such as ETH between Optimism and Arbitrum. Rebalancing liquidity is an important consideration in this case.
+- Native to Synthetic: Lock Native tokens on the origin chain to mint Synthetic ones on the destination. When transferring back, the Synthetic is burned. An example of this is a SOL Warp Route between Solana and Eclipse.
+- Collateral to Synthetic: Lock Collateral tokens on the origin chain to mint Synthetic ones on the destination. When transferring back, the Synthetic is burned. An example of this is a USDC Warp Route between Solana and Eclipse.
+- Other: Collateral to Collateral is also possible, if the token already exists on both the origin and destination chains. Rebalancing liquidity is an important consideration in this case.
+
+## Before You Start
+
+Deploying a Warp Route requires there to be a core Hyperlane deployment that is connected (i.e. actively relayed and secured) to the rest of the Hyperlane ecosystem. The core Hyperlane deployments used in this guide are Solana ([core artifacts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/environments/mainnet3/solanamainnet/core/program-ids.json)) and Eclipse ([core artifacts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/environments/mainnet3/eclipsemainnet/core/program-ids.json)). You may need to refer to these core artifacts throughout the guide.
+
+
+## Deploying a Sealevel warp route
+
+1. Install `solana-cli 1.14.20` to build the Warp Route programs:
+    ```bash
+    sh -c "$(curl -sSfL https://release.solana.com/v1.14.20/install)"
+    ```
+
+1. Build the Warp Route programs on your machine
+	- Clone [hyperlane-monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo) 
+	- Go to `./hyperlane-monorepo/rust/sealevel/programs/`
+    ```bash
+    # starting in rust/sealevel/programs/
+    cd hyperlane-sealevel-token
+    cargo build-sbf
+    cd ../hyperlane-sealevel-token-collateral
+    cargo build-sbf
+    cd ../hyperlane-sealevel-token-native
+    cargo build-sbf
+    ```
+
+1. To deploy the contracts, install `solana-cli 1.18.18`: 
+    ```bash
+    sh -c "$(curl -sSfL https://release.solana.com/v1.18.18/install)"
+    ```
+
+1. In the monorepo, in `rust/sealevel/environments/mainnet3/warp-routes`, create a new directory with the name you want your Warp Route deployment to have. For example, the existing SOL Warp Route between Solana and Eclipse lives in `rust/sealevel/environments/mainnet3/warp-routes/eclipsesol`.
+1. If your warp route creates a synthetic token, you can open a PR to the `hyperlane-registry` with metadata to associate with this token (example PR [here](https://github.com/hyperlane-xyz/hyperlane-registry/pull/142)). The `hyperlane-registry` also gives your Warp Route visibility within the Hyperlane ecosystem.
+1. Configure the parameters of your Warp Route in a JSON file named `token-config.json`, based on the `serde_json` serialization of the [TokenConfig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/client/src/warp_route.rs#L114) Rust struct.
+	- The example below shows a testnet Native to Synthetic Warp Route that transfers SOL from Solana and mints synthetic SOL on Eclipse. You can also check [this configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/environments/mainnet3/warp-routes/eclipsesol/token-config.json) of a production SOL Warp Route.
+        ```json
+        {
+        "solanatestnet": {
+            "type": "native",
+            "decimals": 9,
+            "interchainGasPaymaster": "<from core program addresses, choose the overhead igp>"
+        },
+        "eclipsetestnet": {
+            "type": "synthetic",
+            "decimals": 9,
+            "name": "Solana (testnet)",
+            "symbol": "SOL",
+            "uri": "<permalink to the metadata.json file you merged into hyperlane-registry>"
+            "interchainGasPaymaster": "<from core program addresses, choose the overhead igp>"
+        }
+        }
+        ```
+1. Create a Solana private key file. This key will be the owner of the deployed programs.
+    ```bash
+    solana-keygen new --outfile ./warp-route-deployer-key.json
+    ```
+1. Fund the new key on both networks the Warp Route is being deployed to. The public key should be the same across SVM networks, but do double check with the wallets recommended by each chain, by loading the private key into them.
+	- The funding should be enough to cover rent for all accounts related to the Warp Route, pay for transaction fees, and fund the [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts (more on this below). For reference, the observed rent from one Hyperlane Warp Route account is `2.35 SOL` on Solana and `0.025 ETH` on Eclipse, so it's a good idea to fund the key with at least `5 SOL` / `0.05 ETH`.
+	- To read the public key you just created:
+        ```bash
+        solana-keygen pubkey ./warp-route-deployer-key.json
+        ```
+
+1. Deploy the warp route with `warp-route deploy`
+    - Overview of CLI flags:
+        - `--warp-route-name` - should match the directory name picked for the Warp Route earlier
+        - `--environment` - keep as `mainnet3`
+        - `--environments-dir ../environments` - keep as `../environments`
+        - `--built-so-dir` - keep as `../../target/deploy`, as it points to the compilation output directory of Warp Route programs
+        - `--token-config-file` - point this to the `token-config.json` file created earlier
+        - `--chain-config-file` - keep as `../environments/mainnet3/chain-config.json`, as this file has been pre-populated with chain settings for all Hyperlane-supported chains
+        - `--ata-payer-funding-amount` - this flag specifies by how much to fund the Warp Route [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts on both chains the deployment happens on. It's expressed in the lowest currency denomination, which means that it's interpreted as Lamports on Solana and Gwei on Eclipse (since it uses ETH as its native currency). In the command below, the value `10000000` works out to `0.001` ETH and `0.001` SOL, which is enough for an initial deployment. ATA payers can always be topped up later, so it’s fine to pick a small value. For reference, every Warp Route transfer costs the ATA payer `0.000000001 SOL` (on Solana) and `0.000021 ETH` (on Eclipse) on the destination chain.
+    - The script is unlikely to work from the first try due to program size, but the script should be idempotent and skip contracts that were already deployed / initialized. Errors like `Error: 11 write transactions failed` can always be retried by re-running the command.
+	    - For other error types, you may need to close the buffers and programs of your deployer key and redeploy everything from scratch. To display buffers and programs, and close them one by one. Closing corrupted programs also helps recover their rent deposit.
+
+            ```bash
+            solana program show --programs --keypair ./warp-route-deployer-key.json --url <CHAIN_RPC_URL>
+
+            solana program show --buffers --keypair ./warp-route-deployer-key.json --url <CHAIN_RPC_URL>
+
+            # You'll need to add the `--bypass-warning` flag when closing program accounts (as opposed to closing buffers)
+            solana program close <YOUR_PROGRAM_ADDRESS> --url <CHAIN_RPC_URL>
+            ```
+    - To increase the odds of the deployment succeeding faster, you can set a private RPC url in the `--chain-config-file` passed to the script. (e.g. in `solanamainnet.rpcUrls.http`)
+    - If deploying a synthetic, the command below will create a new token mint and use the metadata token extension to set the token name, symbol, and metadata json using the fields in the `--token-config-file` file
+
+    - Run `warp-route deploy`
+        ```bash
+        # run from `rust/sealevel/client`
+        cargo run -- -k ./warp-route-deployer-key.json warp-route deploy --warp-route-name eclipsesol --environment mainnet3 --environments-dir ../environments --built-so-dir ../../target/deploy --token-config-file ../environments/mainnet3/warp-routes/eclipsesol/token-config.json  --chain-config-file ../environments/mainnet3/chain-config.json --ata-payer-funding-amount 10000000
+        ```
+
+## Interacting with the Warp Route
+1. Let’s query one of the Warp Route programs, getting the program ID from the auto-generated `program-ids.json` in the directory you created above (where `token-config.json` also lives). This command prints the Mint Account, Mint Authority, and ATA payer account.
+    
+    ```bash
+    # run from `rust/sealevel/client`
+    cargo run -- -k ./warp-route-deployer-key.json -u <CHAIN_RPC_URL> token query --program-id <base58 address from program-ids.json> synthetic
+    ```
+    
+    - if deploying a synthetic token, query the Mint Authority account to check out the metadata
+    ```bash
+    solana account <MINT_AUTHORITY> --url <CHAIN_RPC_URL>
+    ```
+1. Try transferring tokens! 
+	- You'll need the domain ID of the chain you're sending to, which you can find in the chain's `metadata.yaml` entry from the [hyperlane-registry](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).
+    ```bash
+    # run from `rust/sealevel/client`
+    cargo run -- -u <ORIGIN_CHAIN_RPC_URL> -k ./warp-route-deployer-key.json token transfer-remote ./warp-route-deployer-key.json <AMOUNT_IN_LOWEST_DENOM> <DESTINATION_CHAIN_DOMAIN_ID> <RECIPIENT_ADDRESS> <WARP_TOKEN_TYPE_ON_ORIGIN_CHAIN: native|synthetic|collateral> --program-id <origin chain base58 address from program-ids.json>
+    ```
+1. Look for the balance of the recipient on the destination chain, by querying the Mint Account address
+    ```bash
+    spl-token balance --owner ./warp-route-deployer-key.json -u <DESTINATION_CHAIN_RPC_URL> <MINT_ACCOUNT_ADDRESS>
+    ```
+    
+    - The final parameter here is the SPL token ID. So if this is a synthetic warp route you want to check the balance of, you need to use the Mint address from a prior query you made a few steps ago.
+    - You can also check out the last tx made to the recipient account in the explorer
+1. This guide has made heavy use of the `hyperlane-sealevel-client` CLI from `hyperlane-monorepo`. You may find its various commands useful for configuring the Warp Route, making state queries, sending transfers, and more. Check out the other utilities it provides, in particular those under the `token` subcommand.
+    ```bash
+    # run from `rust/sealevel/client`
+    cargo run -- --help
+    ```
+

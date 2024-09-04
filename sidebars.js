@@ -555,8 +555,13 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "guides/deploy-svm-warp-route",
+      label: "Deploy a SVM <> SVM Warp Route",
+    },
+    {
+      type: "doc",
       id: "guides/create-custom-hook-and-ism",
-      label: "Create a Hook/ISM",
+      label: "Create a Hook / ISM",
     },
     {
       type: "doc",
