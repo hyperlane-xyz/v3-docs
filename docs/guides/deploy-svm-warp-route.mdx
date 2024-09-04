@@ -117,9 +117,9 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
     ```
     
     - if deploying a synthetic token, query the Mint Authority account to check out the metadata
-    ```bash
-    solana account <MINT_AUTHORITY> --url <CHAIN_RPC_URL>
-    ```
+        ```bash
+        solana account <MINT_AUTHORITY> --url <CHAIN_RPC_URL>
+        ```
 1. Try transferring tokens! 
 	- You'll need the domain ID of the chain you're sending to, which you can find in the chain's `metadata.yaml` entry from the [hyperlane-registry](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).
     ```bash
