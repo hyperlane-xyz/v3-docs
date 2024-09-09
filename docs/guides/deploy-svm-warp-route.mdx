@@ -12,14 +12,13 @@ You will be deploying a Warp Route for an asset of your choice, between two SVM 
 
 The type of token used determines the Warp Route type, so it's important to understand the different Warp Route contracts available:
 - [Native](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#native-token-warp-routes): Handles the transfer of native gas tokens (e.g. SOL on Solana, ETH on Eclipse).
-- [Collateral](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#collateral-backed-erc20-warp-routes): Handles the transfer of existing [Token-2022](https://spl.solana.com/token-2022) tokens (the ERC20 equivalent on SVM).
+- [Collateral](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#collateral-backed-erc20-warp-routes): Handles the transfer of existing [Token-2022](https://spl.solana.com/token-2022) or [Token](https://spl.solana.com/token) tokens (the ERC20 equivalent on SVM).
 - [Synthetic](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-types#synthetic-erc20-warp-routes): Handles synthetic tokens that are minted and burned as transfers occur through the Warp Route, to represent tokens from their origin chain. The tooling in this guide deploys a new Token-2022 token in this case, whose authority is set to the deployer key.
 
 Here are the common Warp Route setups (you can find more details [here](https://docs.hyperlane.xyz/docs/protocol/warp-routes/warp-routes-example-usage)):
-- Native to Native: Transfer a token that is native to both connected chains, such as ETH between Optimism and Arbitrum. Rebalancing liquidity is an important consideration in this case.
 - Native to Synthetic: Lock Native tokens on the origin chain to mint Synthetic ones on the destination. When transferring back, the Synthetic is burned. An example of this is a SOL Warp Route between Solana and Eclipse.
 - Collateral to Synthetic: Lock Collateral tokens on the origin chain to mint Synthetic ones on the destination. When transferring back, the Synthetic is burned. An example of this is a USDC Warp Route between Solana and Eclipse.
-- Other: Collateral to Collateral is also possible, if the token already exists on both the origin and destination chains. Rebalancing liquidity is an important consideration in this case.
+- Other: Native to Native (such as ETH between Optimism and Arbitrum), as well as Collateral to Collateral, are also possible if the token already exists on both origin and destination chains. Rebalancing liquidity is an important consideration in this case.
 
 ## Before You Start
 
@@ -28,7 +27,7 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
 
 ## Deploy a Sealevel Warp Route
 
-1. Install `solana-cli 1.14.20` to build the Warp Route programs:
+1. Install `solana-cli 1.14.20` to build the Warp Route programs. Note that you **must** use this version, otherwise deployment may fail.
     ```bash
     sh -c "$(curl -sSfL https://release.solana.com/v1.14.20/install)"
     ```
@@ -46,14 +45,14 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
     cargo build-sbf
     ```
 
-1. To deploy the contracts, install `solana-cli 1.18.18`: 
+1. To deploy the contracts, install `solana-cli 1.18.18`. Note that you **must** use this version, otherwise deployment may fail.
     ```bash
     sh -c "$(curl -sSfL https://release.solana.com/v1.18.18/install)"
     ```
 
 1. In the monorepo, in `rust/sealevel/environments/mainnet3/warp-routes`, create a new directory with the name you want your Warp Route deployment to have. For example, the existing SOL Warp Route between Solana and Eclipse lives in `rust/sealevel/environments/mainnet3/warp-routes/eclipsesol`.
 1. If your warp route creates a synthetic token, you can open a PR to the `hyperlane-registry` with metadata to associate with this token (example PR [here](https://github.com/hyperlane-xyz/hyperlane-registry/pull/142)). The `hyperlane-registry` also gives your Warp Route visibility within the Hyperlane ecosystem.
-1. Configure the parameters of your Warp Route in a JSON file named `token-config.json`, based on the `serde_json` serialization of the [TokenConfig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/client/src/warp_route.rs#L114) Rust struct.
+1. Configure the parameters of your Warp Route in a JSON file named `token-config.json`, based on the `serde_json` serialization of the [TokenConfig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/client/src/warp_route.rs#L114) Rust struct. The value to set for the `interchainGasPaymaster`, can be find in the [core deployment artifacts](#before-you-start).
 	- The example below shows a testnet Native to Synthetic Warp Route that transfers SOL from Solana and mints synthetic SOL on Eclipse. You can also check [this configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/environments/mainnet3/warp-routes/eclipsesol/token-config.json) of a production SOL Warp Route.
         ```json
         {
@@ -84,6 +83,9 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
         ```
 
 1. Deploy the warp route with `warp-route deploy`
+    :::info
+    Note that since our goal was to make this tooling accessible to developers as soon as possible, it's not as reliable as we would hope. Please get in touch through a [GitHub issue](https://github.com/hyperlane-xyz/hyperlane-monorepo/issues) or via the `developers` channel on [Discord](https://discord.gg/2BYk6kV7) if you run into issues.
+    :::
     - Overview of CLI flags:
         - `--warp-route-name` - should match the directory name picked for the Warp Route earlier
         - `--environment` - keep as `mainnet3`
