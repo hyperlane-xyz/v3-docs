@@ -174,7 +174,7 @@ The recommended installation method for a production environment is using a Dock
 First download the docker image:
 
 ```bash
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:74a592e-20240906-191210
 ```
 
   </TabItem>
@@ -229,7 +229,7 @@ docker run \
   -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
   -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
   --mount ... \
-  gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:74a592e-20240906-191210 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \

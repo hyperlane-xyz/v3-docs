@@ -2,15 +2,20 @@ import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
 # How to Deploy a Bridge UI for Your Hyperlane Warp Route
 
-After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route.mdx), you may want to deploy a front-end UI to faciliate interchain token transfers. You can fork the [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and customize it to fit your needs.
+After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route.mdx), you may want to deploy a front-end UI to facilitate interchain token transfers. There are two popular options:
 
-## Configure & Customize the UI
+- [fork, customize and deploy the Hyperlane Warp UI template](#fork--customize-the-ui)
+- [get a Superbridge instance](#superbridge)
+
+## Fork & Customize the UI
+
+The [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) is a prebuilt Next.JS application you can customize and deploy on your own.
 
 Follow the [configuration instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/README.md) for details on how to configure the Warp UI Web application and run it locally.
 
 Follow the [customization instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) for details on how to configure the UI's tokens and change the default branding assets/theme.
 
-## Registry
+### Registry
 
 By default, the app will use the canonical Hyperlane registry published on NPM. To use use a different registry, you can set a URL using the `NEXT_PUBLIC_REGISTRY_URL` environment variable.
 
@@ -75,14 +80,14 @@ anvil1: {
 }
 ```
 
-### Deploy the UI
+#### Deploy the UI
 
 Since the UI is a Next.js app, you can use your favorite hosting service to host it. We recommend [Vercel](https://vercel.com), which works well with Next. [AWS Amplify](https://aws.amazon.com/amplify) is another popular option.
 
-* Sign up for [Vercel](https://vercel.com/)
-* Create a new project
-* Connect it to your Git repo
-* Hit Deploy!
+- Sign up for [Vercel](https://vercel.com/)
+- Create a new project
+- Connect it to your Git repo
+- Hit Deploy!
 
 And that's it! Now you and your users can use the UI to send tokens from the collateral chain to remote chains, from one remote chain to another, and from any remote chain back to the collateral chain.
 
@@ -92,9 +97,31 @@ A common problem with token bridges like Warp Routes is that a user may transfer
 
 Besides warning users in the UI about ensuring they have gas, you can also faucet them some native gas tokens to improve their initial experience. To achieve this faucet, you can modify the Warp Route contracts to hold some balance of the native token and share that with recipients. In addition, you could build an off-chain service which just observes for [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) and transfers the native gas token to the recipient.
 
-
 :::tip
 
 <TypescriptSdkPlaceholder />
 
 :::
+
+## Superbridge
+
+[Superbridge](https://superbridge.app) is a custom bridge provider, they handle hosting bridge front-ends for hundreds of rollups, various tokens and different ecosystems. Getting a Superbridge for your warp route allows for a customized & hassle free approach to operating your bridge. They've also built a handy feature that allows for self-service testing of recently deployed warp routes.
+
+### Testing your warp route
+
+1. Navigate to the [Superbridge Hyperlane Playground](https://hyperlane.superbridge.app)
+2. Click the settings cog and then click Customize ![](/img/deploy-warp-ui/superbridge-settings.png)
+3. Paste in the YAML file you generated when deploying your warp routes ![](/img/deploy-warp-ui/superbridge-paste-yaml.png)
+4. The specified tokens and networks will now be available for bridging.
+
+:::note
+
+If any tokens or networks are missing after you've pasted in the YAML file, it's possible Superbridge doesn't support this network just yet. [Reach out](mailto:support@superbridge.app) to them to see what the timeline is for adding support.
+
+:::
+
+### Production
+
+To bring your warp route to production with Superbridge, [reach out to the team](mailto:alex@superbridge.app)! They can typically get a front-end up and running in about a day.
+
+A couple of their most popular Hyperlane powered bridge front-ends include [Renzo](https://renzo.superbridge.app) and [Elixir](https://elixir.superbridge.app), if you're interested in checking out what the end product could look like.
