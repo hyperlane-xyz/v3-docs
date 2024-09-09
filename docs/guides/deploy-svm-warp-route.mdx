@@ -72,7 +72,7 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
         }
         }
         ```
-1. Create a Solana private key file. This key will be the owner of the deployed programs.
+1. Create a Solana private key file. This key pays for the deployment and will be the owner of the deployed programs. An existing funded key can be used if you'd like.
     ```bash
     solana-keygen new --outfile ./warp-route-deployer-key.json
     ```
