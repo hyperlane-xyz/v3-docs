@@ -553,11 +553,12 @@ const sidebars = {
       id: "guides/avs-operator-guide",
       label: "AVS Operator Guide",
     },
+   /*
     {
       type: "doc",
       id: "guides/deploy-svm-warp-route",
       label: "Deploy an SVM Warp Route",
-    },
+    }, */
     {
       type: "doc",
       id: "guides/create-custom-hook-and-ism",
