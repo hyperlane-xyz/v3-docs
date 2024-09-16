@@ -21,7 +21,7 @@
     "@docusaurus/theme-mermaid": "3.0.1",
     "@easyops-cn/docusaurus-search-local": "^0.37.4",
     "@hyperlane-xyz/core": "5.1.2",
-    "@hyperlane-xyz/registry": "4.1.0",
+    "@hyperlane-xyz/registry": "4.1.1",
     "@hyperlane-xyz/sdk": "5.1.2",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
