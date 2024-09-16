@@ -10,15 +10,15 @@ import WarpReadSymbolSelectPartial from '/docs/partials/warp-routes/_warp-read-s
 
 # Using the Hyperlane CLI
 
-After deploying your warp route, you may want to extend it to a new chain. This happens in 2 steps: new contract get deployed to the new chain, and all existing routers get enrolled with the new one.
+After deploying your warp route, you may want to extend it to a new chain. Extending a warp route involves deploying a new token contract on the target chain and enrolling existing tokens with it.
 
 You can extend an existing warp route using the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli).
 <PrerequisitesPartial />
 :::warning
-Gnosis Safe Users: The private key that owns the warp route must either be a Safe signer or [delegate](https://docs.safe.global/core-api/transaction-service-guides/delegates) to be able to propose update transactions.
+Gnosis Safe Users: The EOA that owns the warp route must either be a Safe signer or [delegate](https://docs.safe.global/core-api/transaction-service-guides/delegates) to be able to propose update transactions.
 :::
 
-If you already have the warp config, skip to **Step 1**.
+If you already have the warp config, skip to [Step 1](#step-1-configuration).
 
 To generate the warp route config using the Hyperlane CLI, locate your token symbol on the chain on which it is deployed:
 
@@ -28,7 +28,7 @@ To generate the warp route config using the Hyperlane CLI, locate your token sym
 
 You can then choose the warp route to extend.
 
-After running `hyperlane warp read`, you should see a similar config:
+After running `hyperlane warp read`, the CLI will display a config similar to the following:
 
 ```yaml
 basesepolia:
@@ -63,35 +63,35 @@ Update the `warp-route-deployment.yaml` by adding a config for the new chain.
 sepolia:
   mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-  name: Ether
-  symbol: ETH
+  name: "Ether"
+  symbol: "ETH"
   decimals: 18
   totalSupply: 0
   remoteRouters:
     "84532": "0x26243aaD2d03AAbafaCE785808Ae64fc32aFB8A1"
-  type: native
+  type: "native"
 basesepolia:
   mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-  name: Ether
-  symbol: ETH
+  name: "Ether"
+  symbol: "ETH"
   decimals: 18
   totalSupply: "1"
   remoteRouters:
     "11155111": "0x8A73F6E36735d8C4b9A00Af910746173050B754E"
-  type: synthetic
+  type: "synthetic"
 + holesky:
 +   mailbox: "0x46f7C5D896bbeC89bE1B19e4485e59b4Be49e9Cc"
 +   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-+   name: Ether
-+   symbol: ETH
++   name: "Ether"
++   symbol: "ETH"
 +   decimals: 18
 +   totalSupply: "1"
-+   type: synthetic
++   type: "synthetic"
 ```
 
 :::warning
-EOA Users: The extended config `owner` must match the private key address from the prerequisites step to avoid deployment failure.
+EOA Users: The extended config `owner` must match the EOA address from the prerequisites step to avoid deployment failure.
 :::
 
 ## Step 2: Apply
@@ -111,17 +111,17 @@ Using the CLI, execute the command applicable to your warp route owner setup:
           submitter:
               type: "gnosisSafe"
               chain: "basesepolia"
-              safeAddress: '0x518489F9ed41Fc35BCD23407C484F31897067ff0'
+              safeAddress: "0x518489F9ed41Fc35BCD23407C484F31897067ff0"
         sepolia:
           submitter:
               type: "gnosisSafe"
               chain: "sepolia"
-              safeAddress: '0x518489F9ed41Fc35BCD23407C484F31897067ff0'
+              safeAddress: "0x518489F9ed41Fc35BCD23407C484F31897067ff0"
         holesky:
           submitter:
               type: "gnosisSafe"
               chain: "holesky"
-              safeAddress: '0x1f9090aaE28b8a3dCeaDf281B0F12828e676c326'
+              safeAddress: "0x1f9090aaE28b8a3dCeaDf281B0F12828e676c326"
         ```
         In this case, each chain is a Gnosis Safe strategy with their respective Safe addresses. The Safe proposals **must be accepted** to complete the warp route extension.
         <WarpApplySymbolConfigDefaultStrategyPartial />
@@ -174,5 +174,3 @@ holesky:
     "11155111": "0x4e63147e72d029Eb8b37F375B3837B2644622686"
   type: "synthetic"
 ```
-
-By completing these steps, you've successfully extended your Warp Route to a new chain.
