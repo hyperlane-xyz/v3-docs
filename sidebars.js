@@ -518,6 +518,12 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "guides/extending-warp-route",
+      label: "Extending a Warp Route",
+      
+    },
+    {
+      type: "doc",
       id: "guides/message-debugging",
       label: "Debugging Message Delivery",
     },

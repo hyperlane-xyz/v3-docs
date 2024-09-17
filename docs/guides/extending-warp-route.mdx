@@ -1,0 +1,176 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PrerequisitesPartial from '/docs/partials/warp-routes/_prerequisites-config-symbol.mdx'
+import WarpReadSymbolChainPartial from '/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx'
+import WarpApplySymbolConfigDefaultPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx'
+import WarpApplySymbolConfigDefaultStrategyPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default-strategy.mdx'
+import WarpReadSymbolSelectPartial from '/docs/partials/warp-routes/_warp-read-symbol-selection.mdx'
+
+# How to extend an existing Warp Route
+
+# Using the Hyperlane CLI
+
+After deploying your warp route, you may want to extend it to a new chain. Extending a warp route involves deploying a new token contract on the target chain and enrolling existing tokens with it.
+
+You can extend an existing warp route using the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli).
+<PrerequisitesPartial />
+:::warning
+Gnosis Safe Users: The EOA that owns the warp route must either be a Safe signer or [delegate](https://docs.safe.global/core-api/transaction-service-guides/delegates) to be able to propose update transactions.
+:::
+
+If you already have the warp config, skip to [Step 1](#step-1-configuration).
+
+To generate the warp route config using the Hyperlane CLI, locate your token symbol on the chain on which it is deployed:
+
+<WarpReadSymbolChainPartial />
+
+<WarpReadSymbolSelectPartial />
+
+You can then choose the warp route to extend.
+
+After running `hyperlane warp read`, the CLI will display a config similar to the following:
+
+```yaml
+basesepolia:
+  mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "1"
+  remoteRouters:
+    "11155111": "0x8A73F6E36735d8C4b9A00Af910746173050B754E"
+  type: "synthetic"
+sepolia:
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  remoteRouters:
+    "84532": "0x26243aaD2d03AAbafaCE785808Ae64fc32aFB8A1"
+  type: "native"
+```
+This particular config has 2 chains: basesepolia and sepolia. This means messages can be relayed between both chains. 
+
+By default, `warp read` will save the output to `CURRENT_DIR/configs/warp-route-deployment.yaml`. Follow these steps to add a chain to the existing warp route.
+
+## Step 1: Configuration
+Update the `warp-route-deployment.yaml` by adding a config for the new chain.
+
+```diff title="warp-route-deployment.yaml"
+sepolia:
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  remoteRouters:
+    "84532": "0x26243aaD2d03AAbafaCE785808Ae64fc32aFB8A1"
+  type: "native"
+basesepolia:
+  mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "1"
+  remoteRouters:
+    "11155111": "0x8A73F6E36735d8C4b9A00Af910746173050B754E"
+  type: "synthetic"
++ holesky:
++   mailbox: "0x46f7C5D896bbeC89bE1B19e4485e59b4Be49e9Cc"
++   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
++   name: "Ether"
++   symbol: "ETH"
++   decimals: 18
++   totalSupply: "1"
++   type: "synthetic"
+```
+
+:::warning
+EOA Users: The extended config `owner` must match the EOA address from the prerequisites step to avoid deployment failure.
+:::
+
+## Step 2: Apply
+
+Using the CLI, execute the command applicable to your warp route owner setup:
+
+<Tabs defaultValue="eoa"
+  values={[
+    {label: "EOA", value: "eoa"},
+    {label: "Gnosis Safe", value: "gnosis"},
+  ]}>
+    <TabItem value="eoa"><WarpApplySymbolConfigDefaultPartial /></TabItem>
+    <TabItem value="gnosis">
+        Use this template to define and save a Gnosis Safe strategy:
+        ```yaml
+        basesepolia:
+          submitter:
+              type: "gnosisSafe"
+              chain: "basesepolia"
+              safeAddress: "0x518489F9ed41Fc35BCD23407C484F31897067ff0"
+        sepolia:
+          submitter:
+              type: "gnosisSafe"
+              chain: "sepolia"
+              safeAddress: "0x518489F9ed41Fc35BCD23407C484F31897067ff0"
+        holesky:
+          submitter:
+              type: "gnosisSafe"
+              chain: "holesky"
+              safeAddress: "0x1f9090aaE28b8a3dCeaDf281B0F12828e676c326"
+        ```
+        In this case, each chain is a Gnosis Safe strategy with their respective Safe addresses. The Safe proposals **must be accepted** to complete the warp route extension.
+        <WarpApplySymbolConfigDefaultStrategyPartial />
+    </TabItem>
+</Tabs>
+
+
+After executing, you should see a batch of transactions executed on chain, and a final message indicating that the warp config has been updated.
+
+## Step 3: Confirm
+
+To confirm that the warp route was successfully extended using the Hyperlane CLI, run the folllowing command with your token symbol on the chain it is deployed on:
+
+<WarpReadSymbolChainPartial />
+
+
+After running `warp read`, confirm that the warp route has been extended:
+```yaml {23-34} 
+basesepolia:
+  mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  remoteRouters:
+    "17000": "0x9B18AfD7aB869C6B011F44638ff71786447B785B"
+    "11155111": "0x4e63147e72d029Eb8b37F375B3837B2644622686"
+  type: native
+sepolia:
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "0"
+  remoteRouters:
+    "17000": "0x9B18AfD7aB869C6B011F44638ff71786447B785B"
+    "84532": "0xB38cc797Ccc6D8763439a07CEa052AF253281de6"
+  type: "synthetic"
+holesky:
+  mailbox: "0x46f7C5D896bbeC89bE1B19e4485e59b4Be49e9Cc"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "0"
+  remoteRouters:
+    "84532": "0xB38cc797Ccc6D8763439a07CEa052AF253281de6"
+    "11155111": "0x4e63147e72d029Eb8b37F375B3837B2644622686"
+  type: "synthetic"
+```
