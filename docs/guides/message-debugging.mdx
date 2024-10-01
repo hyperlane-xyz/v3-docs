@@ -1,7 +1,8 @@
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered";
+import NonEvmMessageDelivered from "@site/src/components/NonEvmMessageDelivered";
+import SealevelWarpTransferInfo from "@site/src/components/SealevelWarpTransferInfo";
 
 # Message debugging
 
@@ -41,24 +42,13 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
 </details>
 
 <details>
-  <summary>**Debugging a message to a Cosmos chain**</summary>
+  <summary>**Debugging a message to a non-EVM chain (e.g. a Cosmos or Sealevel chain)**</summary>
   <div>
     At the moment, the [Hyperlane Explorer](https://explorer.hyperlane.xyz) doesn't support non-EVM chains.
 
     To check if your message has been delivered, select the destination chain and input your message ID below:
 
-    <CosmosMessageDelivered />
-  </div>
-</details>
-
-<details>
-  <summary>**Debugging a message to a Sealevel chain (e.g. Solana, Eclipse)**</summary>
-  <div>
-    At the moment, the [Hyperlane Explorer](https://explorer.hyperlane.xyz) doesn't support non-EVM chains.
-
-    To check if your message has been delivered, select the destination chain and input your message ID below:
-
-    <CosmosMessageDelivered />
+    <NonEvmMessageDelivered chains={['neutron', 'injective', 'eclipsemainnet', 'solanamainnet']} />
   </div>
 </details>
 
@@ -120,6 +110,9 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
     ![](/img/message-debugging/transfer-remote-cosmos.png)
     <figcaption>Example on Mintscan showing the log on an origin transaction.</figcaption>
     </figure>
+    </TabItem>
+    <TabItem value="sealevel" label="Sealevel Origin">
+    <SealevelWarpTransferInfo chains={['eclipsemainnet', 'solanamainnet']} />
     </TabItem>
     </Tabs>
   </div>

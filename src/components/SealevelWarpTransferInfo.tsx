@@ -8,17 +8,6 @@ import ChainDropdown from './ChainDropdown';
 import * as buffer from "buffer";
 window.Buffer = buffer.Buffer;
 
-// TODO: these should be in the registry, but for now we'll hardcode them.
-// Once they're in the registry, we can move away from this.
-const addressesOverrides = {
-  neutron: {
-    mailbox: 'neutron1sjzzd4gwkggy6hrrs8kxxatexzcuz3jecsxm3wqgregkulzj8r7qlnuef4',
-  },
-  injective: {
-    mailbox: 'inj1palm2wtp6urg0c6j4f2ukv5u5ahdcrqek0sapt',
-  }
-};
-
 // Adding @hyperlane-xyz/utils as a dependency breaks things, so we copy these functions here.
 export function strip0x(hexstr: string) {
   return hexstr.startsWith('0x') ? hexstr.slice(2) : hexstr;
@@ -33,20 +22,14 @@ export default function NonEvmMessageDelivered({
 }: {
   chains: string[];
 }) {
-  const [destinationChain, setDestinationChain] = useState<string>(chains[0]);
-  const [messageId, setMessageId] = useState('');
+  const [originChain, setOriginChain] = useState<string>(chains[0]);
+  const [txId, setTxId] = useState('');
   const [status, setStatus] = useState('');
 
   const onButtonClick = async () => {
-    const strippedMessageId = strip0x(messageId);
-    if (strippedMessageId.length !== 64) {
-      setStatus(`⛔️ Invalid message ID, must be 32 bytes (64 hex characters)`);
-      return;
-    }
-
-    const metadata = chainMetadata[destinationChain];
+    const metadata = chainMetadata[originChain];
     if (!metadata) {
-      setStatus(`⛔️ No metadata found for chain ${destinationChain}`);
+      setStatus(`⛔️ No metadata found for chain ${originChain}`);
       return;
     }
 
@@ -56,37 +39,41 @@ export default function NonEvmMessageDelivered({
     });
 
     const multiProvider = new MultiProtocolProvider(chainMetadata);
-    const multiProtocolCore = MultiProtocolCore.fromAddressesMap(
-    // @ts-ignore
-    {
-      ...chainAddresses,
-      ...addressesOverrides,
-    }, multiProvider);
-    const core = multiProtocolCore.adapter(destinationChain);
-
-    setStatus(`⏳ Checking if message is delivered...`);
-    
-    let delivered = false;
-    try {
-      switch (metadata.protocol) {
-        case 'cosmos':
-          const cosmosCore = core as CosmWasmCoreAdapter;
-          delivered = await cosmosCore.delivered(strip0x(messageId));
-          break;
-        default:
-          delivered = await core.waitForMessageProcessed(messageId, destinationChain, 0, 1);
-          break;
-      }
-    } catch (e) {
-      setStatus(`⛔️ Error checking message delivery: ${e}`);
+    const sealevelProvider = multiProvider.getSolanaWeb3Provider(originChain)
+    setStatus(`⏳ Getting transaction...`);
+    const tx = await sealevelProvider.getParsedTransaction(txId);
+    console.log('tx', tx);
+    if (!tx) {
+      setStatus(`⛔️ Transaction not found`);
       return;
     }
 
-    if (delivered) {
-      setStatus(`Message successfully delivered: ✅`);
-    } else {
-      setStatus(`Message not yet delivered: ❌`);
-    }
+    const finalInstruction = tx.transaction.message.instructions.length - 1;
+    const transferRemoteInstruction: any = tx.transaction.message.instructions[finalInstruction];
+    const transferRemoteData = transferRemoteInstruction.data;
+
+
+    // let delivered = false;
+    // try {
+    //   switch (metadata.protocol) {
+    //     case 'cosmos':
+    //       const cosmosCore = core as CosmWasmCoreAdapter;
+    //       delivered = await cosmosCore.delivered(strip0x(messageId));
+    //       break;
+    //     default:
+    //       delivered = await core.waitForMessageProcessed(messageId, destinationChain, 0, 1);
+    //       break;
+    //   }
+    // } catch (e) {
+    //   setStatus(`⛔️ Error checking message delivery: ${e}`);
+    //   return;
+    // }
+
+    // if (delivered) {
+    //   setStatus(`Message successfully delivered: ✅`);
+    // } else {
+    //   setStatus(`Message not yet delivered: ❌`);
+    // }
   };
 
   return (
@@ -96,17 +83,17 @@ export default function NonEvmMessageDelivered({
       border: "1px solid #ccc",
     }}>
         <ChainDropdown
-          chain={destinationChain}
+          chain={originChain}
           chains={chains}
           label="Destination Chain"
-          onChange={setDestinationChain}
+          onChange={setOriginChain}
         />
         <div>
-          Message ID:{"\t"}
+          Origin tx id (signature):{"\t"}
           <input
-            defaultValue={messageId}
-            onChange={(e) => setMessageId(e.target.value)}
-            placeholder="0x..."
+            defaultValue={txId}
+            onChange={(e) => setTxId(e.target.value)}
+            placeholder="Abc..."
             style={{
               width: "100%",
               padding: "5px",
@@ -126,7 +113,7 @@ export default function NonEvmMessageDelivered({
           fontSize: "1em",
         }}
         className="button button--secondary"
-      >Check if delivered</button>
+      >Get transfer recipient</button>
       <div style={{ margin: "10px" }}>
         {status}
       </div>
