@@ -44,7 +44,7 @@ export default function NonEvmMessageDelivered({
     }
 
     const hex = strip0x(hexOrBase58ToHex(transferRemoteData));
-    // The first 26 bytes are the instruction discriminator. After that, we have the recipient address.
+    // The first 13 bytes (2 chars per byte) are the instruction discriminator. After that, we have the 32 byte recipient address.
     const recipientHex = ensure0x(hex.slice(26, 26 + 64));
     const recipientBytes = addressToBytesEvm(recipientHex);
     const recipientBase58 = bytesToAddressSol(recipientBytes);
