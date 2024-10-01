@@ -35,8 +35,13 @@ export default function NonEvmMessageDelivered({
     }
 
     const finalInstruction = tx.transaction.message.instructions.length - 1;
+    // Types don't all include `data`, but in practice we have it.
     const transferRemoteInstruction: any = tx.transaction.message.instructions[finalInstruction];
     const transferRemoteData = transferRemoteInstruction.data;
+    if (!transferRemoteData) {
+      setStatus(`⛔️ No data found in instruction`);
+      return;
+    }
 
     const hex = strip0x(hexOrBase58ToHex(transferRemoteData));
     // The first 26 bytes are the instruction discriminator. After that, we have the recipient address.
