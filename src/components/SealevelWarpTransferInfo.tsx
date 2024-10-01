@@ -19,7 +19,7 @@ export default function NonEvmMessageDelivered({
   const [status, setStatus] = useState('');
   const multiProvider = useMultiProtocolProvider();
 
-  const onButtonClick = async () => {
+  const setTransferRecipient = async () => {
     const metadata = chainMetadata[originChain];
     if (!metadata) {
       setStatus(`⛔️ No metadata found for chain ${originChain}`);
@@ -28,7 +28,7 @@ export default function NonEvmMessageDelivered({
 
     const sealevelProvider = multiProvider.getSolanaWeb3Provider(originChain)
     setStatus(`⏳ Getting transaction...`);
-    const tx = await sealevelProvider.getParsedTransaction(txId);
+    let tx = await sealevelProvider.getParsedTransaction(txId);
     if (!tx) {
       setStatus(`⛔️ Transaction not found`);
       return;
@@ -51,6 +51,14 @@ export default function NonEvmMessageDelivered({
 
     setStatus(`🕵️‍♂️ Transfer recipient (hex): ${recipientHex}\n🕵️‍♂️ Transfer recipient (base58): ${recipientBase58}`);
   };
+
+  const onButtonClick = async () => {
+    try {
+      await setTransferRecipient();
+    } catch (e) {
+      setStatus(`⛔️ Error: ${e.message}`);
+    }
+  }
 
   return (
     <div style={{
