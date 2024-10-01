@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { CosmWasmCoreAdapter, MultiProtocolCore, MultiProtocolProvider } from "@hyperlane-xyz/sdk";
 import { chainMetadata, chainAddresses } from "@hyperlane-xyz/registry";
-import { strip0x } from "@hyperlane-xyz/utils";
+import { ProtocolType, strip0x } from "@hyperlane-xyz/utils";
 
 import ChainDropdown from './ChainDropdown';
 import { useMultiProtocolProvider } from "../utils/registry";
@@ -57,7 +57,9 @@ export default function NonEvmMessageDelivered({
     let delivered = false;
     try {
       switch (metadata.protocol) {
-        case 'cosmos':
+        case ProtocolType.Cosmos:
+          // `waitForMessageProcessed` is not implemented on cosmos -- instead we
+          // use the adapter directly.
           const cosmosCore = core as CosmWasmCoreAdapter;
           delivered = await cosmosCore.delivered(strip0x(messageId));
           break;
