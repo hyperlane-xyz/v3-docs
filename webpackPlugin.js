@@ -1,13 +1,12 @@
 const webpack = require('webpack');
 
-// eslint-disable-next-line
-module.exports = function (context, options) {
+module.exports = function (_context, _options) {
   return {
     name: 'custom-docusaurus-plugin',
-    // eslint-disable-next-line
-    configureWebpack(config, isServer, utils) {
+    configureWebpack(_config, _isServer, _utils) {
       return {
         resolve: {
+          // Various libraries required by Solana tooling
           fallback: {
             "crypto": require.resolve("crypto-browserify"),
             "zlib": require.resolve("browserify-zlib"),

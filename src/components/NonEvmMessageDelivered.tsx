@@ -53,7 +53,7 @@ export default function NonEvmMessageDelivered({
     const core = multiProtocolCore.adapter(destinationChain);
 
     setStatus(`⏳ Checking if message is delivered...`);
-    
+
     let delivered = false;
     try {
       switch (metadata.protocol) {
