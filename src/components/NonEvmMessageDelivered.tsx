@@ -1,6 +1,4 @@
-// Difficulty polyfilling Buffer in the browser to be consumed by some Solana libs, so we do this instead
 import * as buffer from "buffer";
-window.Buffer = buffer.Buffer;
 import { useState } from "react";
 
 import { CosmWasmCoreAdapter, MultiProtocolCore, MultiProtocolProvider } from "@hyperlane-xyz/sdk";
@@ -9,6 +7,7 @@ import { ProtocolType, strip0x } from "@hyperlane-xyz/utils";
 
 import ChainDropdown from './ChainDropdown';
 import { useMultiProtocolProvider } from "../utils/registry";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 
 // TODO: these should be in the registry, but for now we'll hardcode them.
 // Once they're in the registry, we can move away from this.
@@ -26,6 +25,12 @@ export default function NonEvmMessageDelivered({
 }: {
   chains: string[];
 }) {
+  const isBrowser = useIsBrowser();
+  if (!isBrowser) {
+    // Difficulty polyfilling Buffer in the browser to be consumed by some Solana libs, so we do this instead
+    window.Buffer = buffer.Buffer;
+  }
+
   const [destinationChain, setDestinationChain] = useState<string>(chains[0]);
   const [messageId, setMessageId] = useState('');
   const [status, setStatus] = useState('');

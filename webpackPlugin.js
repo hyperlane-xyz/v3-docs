@@ -1,4 +1,6 @@
-const webpack = require('webpack');
+import webpack from 'webpack';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 module.exports = function (_context, _options) {
   return {
