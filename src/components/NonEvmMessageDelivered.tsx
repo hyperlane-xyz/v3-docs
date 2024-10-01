@@ -8,6 +8,7 @@ import { chainMetadata, chainAddresses } from "@hyperlane-xyz/registry";
 import { strip0x } from "@hyperlane-xyz/utils";
 
 import ChainDropdown from './ChainDropdown';
+import { useMultiProtocolProvider } from "../utils/registry";
 
 // TODO: these should be in the registry, but for now we'll hardcode them.
 // Once they're in the registry, we can move away from this.
@@ -28,6 +29,7 @@ export default function NonEvmMessageDelivered({
   const [destinationChain, setDestinationChain] = useState<string>(chains[0]);
   const [messageId, setMessageId] = useState('');
   const [status, setStatus] = useState('');
+  const multiProvider = useMultiProtocolProvider();
 
   const onButtonClick = async () => {
     const strippedMessageId = strip0x(messageId);
@@ -42,14 +44,8 @@ export default function NonEvmMessageDelivered({
       return;
     }
 
-    // The default public Solana RPC aggressively rate limits, so we add another public node to the list
-    chainMetadata.solanamainnet.rpcUrls.unshift({
-      http: 'https://solana-rpc.publicnode.com'
-    });
-
-    const multiProvider = new MultiProtocolProvider(chainMetadata);
     const multiProtocolCore = MultiProtocolCore.fromAddressesMap(
-    // @ts-ignore
+    // @ts-ignore - doesn't like the types of some recent Sealevel chains and the overrides we provide
     {
       ...chainAddresses,
       ...addressesOverrides,

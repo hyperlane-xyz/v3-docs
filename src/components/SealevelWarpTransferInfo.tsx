@@ -1,13 +1,13 @@
-import { useState } from "react";
 // Difficulty polyfilling Buffer in the browser to be consumed by some Solana libs, so we do this instead
 import * as buffer from "buffer";
 window.Buffer = buffer.Buffer;
+import { useState } from "react";
 
-import { MultiProtocolProvider } from "@hyperlane-xyz/sdk";
 import { chainMetadata } from "@hyperlane-xyz/registry";
-import { addressToBytesEvm, bytesToAddressSol, ensure0x, hexOrBase58ToHex, ProtocolType, strip0x } from "@hyperlane-xyz/utils";
+import { addressToBytesEvm, bytesToAddressSol, ensure0x, hexOrBase58ToHex, strip0x } from "@hyperlane-xyz/utils";
 
 import ChainDropdown from './ChainDropdown';
+import { useMultiProtocolProvider } from "../utils/registry";
 
 export default function NonEvmMessageDelivered({
   chains,
@@ -17,6 +17,7 @@ export default function NonEvmMessageDelivered({
   const [originChain, setOriginChain] = useState<string>(chains[0]);
   const [txId, setTxId] = useState('');
   const [status, setStatus] = useState('');
+  const multiProvider = useMultiProtocolProvider();
 
   const onButtonClick = async () => {
     const metadata = chainMetadata[originChain];
@@ -25,12 +26,6 @@ export default function NonEvmMessageDelivered({
       return;
     }
 
-    // The default public Solana RPC aggressively rate limits, so we add another public node to the list
-    chainMetadata.solanamainnet.rpcUrls.unshift({
-      http: 'https://solana-rpc.publicnode.com'
-    });
-
-    const multiProvider = new MultiProtocolProvider(chainMetadata);
     const sealevelProvider = multiProvider.getSolanaWeb3Provider(originChain)
     setStatus(`⏳ Getting transaction...`);
     const tx = await sealevelProvider.getParsedTransaction(txId);
