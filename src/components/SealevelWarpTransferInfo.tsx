@@ -49,7 +49,7 @@ export default function NonEvmMessageDelivered({
     const recipientBytes = addressToBytesEvm(recipientHex);
     const recipientBase58 = bytesToAddressSol(recipientBytes);
 
-    setStatus(`Transfer recipient (hex): ${recipientHex}\nTransfer recipient (base58): ${recipientBase58}`);
+    setStatus(`🕵️‍♂️ Transfer recipient (hex): ${recipientHex}\n🕵️‍♂️ Transfer recipient (base58): ${recipientBase58}`);
   };
 
   return (
