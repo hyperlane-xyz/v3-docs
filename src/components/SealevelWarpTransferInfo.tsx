@@ -1,21 +1,13 @@
 import { useState } from "react";
-import { CosmWasmCoreAdapter, MultiProtocolCore, MultiProtocolProvider } from "@hyperlane-xyz/sdk";
-import { chainMetadata, chainAddresses } from "@hyperlane-xyz/registry";
-
-import ChainDropdown from './ChainDropdown';
-
 // Difficulty polyfilling Buffer in the browser to be consumed by some Solana libs, so we do this instead
 import * as buffer from "buffer";
 window.Buffer = buffer.Buffer;
 
-// Adding @hyperlane-xyz/utils as a dependency breaks things, so we copy these functions here.
-export function strip0x(hexstr: string) {
-  return hexstr.startsWith('0x') ? hexstr.slice(2) : hexstr;
-}
+import { MultiProtocolProvider } from "@hyperlane-xyz/sdk";
+import { chainMetadata } from "@hyperlane-xyz/registry";
+import { addressToBytesEvm, bytesToAddressSol, ensure0x, hexOrBase58ToHex, ProtocolType, strip0x } from "@hyperlane-xyz/utils";
 
-export function ensure0x(hexstr: string) {
-  return hexstr.startsWith('0x') ? hexstr : `0x${hexstr}`;
-}
+import ChainDropdown from './ChainDropdown';
 
 export default function NonEvmMessageDelivered({
   chains,
@@ -42,7 +34,6 @@ export default function NonEvmMessageDelivered({
     const sealevelProvider = multiProvider.getSolanaWeb3Provider(originChain)
     setStatus(`⏳ Getting transaction...`);
     const tx = await sealevelProvider.getParsedTransaction(txId);
-    console.log('tx', tx);
     if (!tx) {
       setStatus(`⛔️ Transaction not found`);
       return;
@@ -52,28 +43,13 @@ export default function NonEvmMessageDelivered({
     const transferRemoteInstruction: any = tx.transaction.message.instructions[finalInstruction];
     const transferRemoteData = transferRemoteInstruction.data;
 
+    const hex = strip0x(hexOrBase58ToHex(transferRemoteData));
+    // The first 26 bytes are the instruction discriminator. After that, we have the recipient address.
+    const recipientHex = ensure0x(hex.slice(26, 26 + 64));
+    const recipientBytes = addressToBytesEvm(recipientHex);
+    const recipientBase58 = bytesToAddressSol(recipientBytes);
 
-    // let delivered = false;
-    // try {
-    //   switch (metadata.protocol) {
-    //     case 'cosmos':
-    //       const cosmosCore = core as CosmWasmCoreAdapter;
-    //       delivered = await cosmosCore.delivered(strip0x(messageId));
-    //       break;
-    //     default:
-    //       delivered = await core.waitForMessageProcessed(messageId, destinationChain, 0, 1);
-    //       break;
-    //   }
-    // } catch (e) {
-    //   setStatus(`⛔️ Error checking message delivery: ${e}`);
-    //   return;
-    // }
-
-    // if (delivered) {
-    //   setStatus(`Message successfully delivered: ✅`);
-    // } else {
-    //   setStatus(`Message not yet delivered: ❌`);
-    // }
+    setStatus(`Transfer recipient (hex): ${recipientHex}\nTransfer recipient (base58): ${recipientBase58}`);
   };
 
   return (
@@ -114,7 +90,7 @@ export default function NonEvmMessageDelivered({
         }}
         className="button button--secondary"
       >Get transfer recipient</button>
-      <div style={{ margin: "10px" }}>
+      <div style={{ margin: "10px", whiteSpace: 'pre-wrap' }}>
         {status}
       </div>
     </div>

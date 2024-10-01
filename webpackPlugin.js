@@ -17,6 +17,7 @@ module.exports = function (context, options) {
             "querystring": require.resolve("querystring-es3"),
             "stream": require.resolve("stream-browserify"),
             "buffer": require.resolve("buffer/"),
+            "vm": false,
           },
         },
         plugins: [
