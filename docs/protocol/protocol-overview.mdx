@@ -19,7 +19,7 @@ flowchart TB
       Sender -- "1. dispatch(destination, recipient, body)" --> M_O
     end
 
-    M_O -. "2. emit Message(origin, sender, destination, recipient, body)" .-> Relayer
+    M_O -. "2. emit dispatch(origin, sender, destination, recipient, body)" .-> Relayer
 
     subgraph Destination
       Recipient
