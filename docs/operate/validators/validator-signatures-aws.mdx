@@ -14,11 +14,11 @@ If you're only intending to run a Validator for testing or development purposes,
 
 Follow the instructions in [Agent Keys](../set-up-agent-keys.mdx) to generate an AWS IAM user and either a KMS or a hexadecimal key. You will use this key's credentials in the following steps.
 
-:::note
-Note that the IAM user is required for setting up the S3 bucket, so is required regardless of the type of key used.
-:::
-
 ### 2. Create an S3 bucket
+
+:::info
+Note that Step 1 (creating the IAM user) is required for setting up the S3 bucket, so is required regardless of the type of key used.
+:::
 
 Your Validator will post their signatures to this bucket.
 
