@@ -1,6 +1,28 @@
+import IsmDiagram from "@site/src/diagrams/messaging-isms.md";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Modular Security
 
 Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
+
+<IsmDiagram />
+
+Message recipients can specify custom security constraints by specifying an `InterchainSecurityModule` address. This implementation can be configured, composed, and customized according to the needs of their application.
+
+<details>
+<summary>`IInterchainSecurityModule` Interface</summary>
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol
+
+```
+
+</TabItem>
+</Tabs>
+</details>
 
 Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx)'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
 
@@ -24,7 +46,7 @@ For example, application developers can build ISMs that adjust security models b
 
 ## Overriding the default ISM
 
-Application developers can override the default ISM by implementing the `ISpecifiesInterchainSecurityModule` interface in their application.
+Developers can specify or override the default ISM by implementing the `ISpecifiesInterchainSecurityModule` interface in their application.
 
 Specifically, this interface must be implemented in the same smart contract that implements `handle()`.
 
@@ -39,6 +61,8 @@ interface ISpecifiesInterchainSecurityModule {
         returns (IInterchainSecurityModule);
 }
 ```
+
+If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
 
 # General Interface
 
@@ -72,13 +96,17 @@ interface IInterchainSecurityModule {
 
 ### Verify
 
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L31-L34
+
+```
+
 The primary function that ISMs must implement is `verify()`. The [Mailbox](../mailbox.mdx) will call `IInterchainSecurityModule.verify()` before delivering a message to its recipient. If `verify()` reverts or returns `false`, the message will not be delivered.
 
-The `verify()` function takes two parameters.
+The `verify()` function takes two parameters:
 
-The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
+- The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
 
-The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
+- The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
 
 :::warning
 See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
@@ -86,40 +114,28 @@ See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob
 
 ### Module type
 
-The secondary function that ISMs must implement is `moduleType()`. This is used to signal to the [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
+The secondary function that ISMs must implement is `moduleType()`.
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L21
+
+```
+
+This is used to signal to the [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
+
+```
+
+:::note
+
+To accomplish this, all ISM contracts implement the ISM interface, which requires `moduleType` to be defined.
+This type is branched on by the Relayer in order to determine the required metadata for that ISM.
+For more information on module types and their metadata formats, see [Protocol](/docs/protocol/ISM/modular-security.mdx#module-type).
+
+:::
 
 :::tip
 
 For more information on the available module types and their respective metadata, please visit the ISM docs outlined in this section, e.g. [Multisig ISM](./multisig-ISM.mdx).
 
 :::
-
-## Sequence diagram
-
-The following shows a simplified sequence diagram of an interchain message being verified and delivered on the destination chain.
-
-:::info
-If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the [Mailbox](../mailbox.mdx) will be used to verify the message.
-
-This is omitted from the sequence diagram for clarity.
-:::
-
-```mermaid
-sequenceDiagram
-
-
-    participant Relayer
-    participant Mailbox
-    participant ISM
-    participant Recipient
-
-    Relayer-->>ISM: moduleType()
-    ISM-->>Relayer: ISM type
-    Relayer->>Mailbox: process(metadata, message)
-    Mailbox-->>Recipient: interchainSecurityModule()
-    Recipient-->>Mailbox: ISM address
-    Mailbox->>ISM: verify(metadata, message)
-    ISM-->>Mailbox: true
-    Mailbox->>Recipient: handle(origin, sender, body)
-
-```

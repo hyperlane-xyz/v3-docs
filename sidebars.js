@@ -408,6 +408,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "protocol/ISM/sequence-diagram",
+          label: "Sequence Diagram",
+        },
+        {
+          type: "doc",
           id: "protocol/ISM/multisig-ISM",
           label: "Multisig ISM",
         },
