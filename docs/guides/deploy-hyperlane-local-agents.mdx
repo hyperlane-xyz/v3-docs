@@ -269,7 +269,7 @@ export CONFIG_FILES=/full/path/to/configs/agent-config.json
 
 ### Configure
 
-There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
+There are numerous parameters that relayers can be configured with. For this guide, we are concerned with just a handful:
 
 | Parameter                       | Description                                                                              |
 | ------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -343,7 +343,7 @@ docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:7a8478
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
 
 ```sh
-mkdir -p hyperlane_db_validator_<your_chain_name>
+mkdir -p hyperlane_db_relayer
 ```
 
 Finally, run the relayer:
