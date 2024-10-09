@@ -20,7 +20,7 @@ const sidebars = {
     {
       type: "doc",
       id: "intro",
-      label: "Choose Hyperlane",
+      label: "Overview",
     },
     /**
     {
@@ -520,7 +520,6 @@ const sidebars = {
       type: "doc",
       id: "guides/extending-warp-route",
       label: "Extending a Warp Route",
-      
     },
     {
       type: "doc",
