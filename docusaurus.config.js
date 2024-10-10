@@ -451,12 +451,12 @@ const config = {
             position: "left",
             label: "🧭 Guides",
           },
-          {
+          /*{
             type: "docSidebar",
             sidebarId: "referenceSidebar",
             position: "left",
             label: "📖 Reference",
-          },
+          },*/
           {
             type: "docSidebar",
             sidebarId: "protocolSidebar",

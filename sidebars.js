@@ -125,8 +125,9 @@ const sidebars = {
       ],
     },
   ],
+  /*
   referenceSidebar: [
-    /*
+    
     {
       type: "category",
       label: "General Message Passing",
@@ -149,8 +150,6 @@ const sidebars = {
         },
       ],
     },
-    */
-    /*
     {
       type: "category",
       label: "Post-Dispatch Hooks",
@@ -183,8 +182,6 @@ const sidebars = {
         },
       ],
     },
-    */
-    /*
     {
       type: "category",
       label: "Interchain Security Modules",
@@ -211,9 +208,7 @@ const sidebars = {
           label: "Aggregation",
         },
       ],
-    },*/
-
-    /*
+    },
     {
       type: "category",
       label: "Libraries",
@@ -247,7 +242,6 @@ const sidebars = {
         },
       ],
     },
-    */
     {
       type: "category",
       label: "Applications",
@@ -266,7 +260,6 @@ const sidebars = {
         },
       ],
     },
-    /**
     {
       type: "category",
       label: "Typescript SDK",
@@ -304,9 +297,6 @@ const sidebars = {
         },
       ],
     },
-    */
-
-    /*
     {
       type: "doc",
       id: "reference/contract-addresses",
@@ -337,8 +327,7 @@ const sidebars = {
       id: "reference/audits",
       label: "Audits",
     },
-    */
-  ],
+  ],    */
 
   protocolSidebar: [
     {
