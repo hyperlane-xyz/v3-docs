@@ -121,6 +121,7 @@ const sidebars = {
     },
   ],
   referenceSidebar: [
+    /*
     {
       type: "category",
       label: "General Message Passing",
@@ -143,6 +144,7 @@ const sidebars = {
         },
       ],
     },
+    */
     {
       type: "category",
       label: "Post-Dispatch Hooks",
@@ -341,6 +343,24 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
+        {
+          type: "category",
+          label: "General Message Passing",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/messaging/send",
+              label: "Send a message",
+            },
+            {
+              type: "doc",
+              id: "reference/messaging/receive",
+              label: "Receive a message",
+            },
+          ],
+        },
         {
           type: "doc",
           id: "protocol/interchain-gas-payment",
