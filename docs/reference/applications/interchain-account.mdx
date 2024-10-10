@@ -46,7 +46,7 @@ Interchain Accounts allow you to make a remote call from **Chain A** to **Chain 
 
 - We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you, which serves as a proxy for your cross-chain calls. You can do it yourself too [here](#computing-addresses).
 
-- You can encode your call which includes the to address, call data, and the `msg.value` for each call, batched together in a array.
+- You can encode your call which includes the to address, call data, and the `msg.value` for each call, batched together in an array.
 
 - You send the encoded call to the **Chain A** router which gets relayed to the **Chain B** router.
 

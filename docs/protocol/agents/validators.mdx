@@ -18,7 +18,7 @@ Want to run a validator? Follow the [validators guide](../../operate/validators/
 
 ## In more detail
 
-The Validator agent uses two key types: one to for signing transactions on the blockchain it is validating, and another for signing checkpoints on the Ethereum-compatible ECDSA curve. Since checkpoints are public, when a Validator first starts operating it must announce its checkpoint location via an onchain `announce` transaction. This is the only transaction ever submitted by the Validator agent; the blockchain-specific key is otherwise not used at all. There is also the option of manually announcing a new Validator to avoid configuring the blockchain-specific key. Validators can be announced by anyone.
+The Validator agent uses two key types: one for signing transactions on the blockchain it is validating, and another for signing checkpoints on the Ethereum-compatible ECDSA curve. Since checkpoints are public, when a Validator first starts operating it must announce its checkpoint location via an onchain `announce` transaction. This is the only transaction ever submitted by the Validator agent; the blockchain-specific key is otherwise not used at all. There is also the option of manually announcing a new Validator to avoid configuring the blockchain-specific key. Validators can be announced by anyone.
 
 For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.
 
@@ -33,7 +33,7 @@ To run a Validator for the EigenLayer AVS and provide [economic security](../eco
 The validator is comprised of two main tasks: an Indexer for the origin chain, and a Checkpoint Submitter to publish signed merkle roots.
 
 ### The Indexer
-The only event type indexed by the Validator is `InsertedIntoTree` from the Merkle Tree Hook [contract](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/hooks/MerkleTreeHook.sol#L32) that the [Mailbox](../mailbox.mdx) calls whenever a new message is dispatched. The happens over RPC, and the agent builds an in-memory merkle tree based on the merkle insertion events, which are also cached to a local RocksDB database for fast startup. Whenever a new message is dispatched, the Checkpoint Submitter generates a checkpoint from the in-memory tree and adds it to a queue for processing.
+The only event type indexed by the Validator is `InsertedIntoTree` from the Merkle Tree Hook [contract](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/hooks/MerkleTreeHook.sol#L32) that the [Mailbox](../mailbox.mdx) calls whenever a new message is dispatched. This happens over RPC, and the agent builds an in-memory merkle tree based on the merkle insertion events, which are also cached to a local RocksDB database for fast startup. Whenever a new message is dispatched, the Checkpoint Submitter generates a checkpoint from the in-memory tree and adds it to a queue for processing.
 
 ### The Checkpoint Submitter
 The checkpoint submitter uses the ECDSA key to sign checkpoints and publish them to highly-available storage. The schema of a checkpoint is
