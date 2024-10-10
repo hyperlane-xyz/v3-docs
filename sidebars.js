@@ -145,6 +145,7 @@ const sidebars = {
       ],
     },
     */
+    /*
     {
       type: "category",
       label: "Post-Dispatch Hooks",
@@ -177,6 +178,7 @@ const sidebars = {
         },
       ],
     },
+    */
     /*
     {
       type: "category",
@@ -205,6 +207,8 @@ const sidebars = {
         },
       ],
     },*/
+
+    /*
     {
       type: "category",
       label: "Libraries",
@@ -238,6 +242,7 @@ const sidebars = {
         },
       ],
     },
+    */
     {
       type: "category",
       label: "Applications",
@@ -295,6 +300,8 @@ const sidebars = {
       ],
     },
     */
+
+    /*
     {
       type: "doc",
       id: "reference/contract-addresses",
@@ -325,6 +332,7 @@ const sidebars = {
       id: "reference/audits",
       label: "Audits",
     },
+    */
   ],
 
   protocolSidebar: [
@@ -370,50 +378,33 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Warp Routes",
+      label: "Post-Dispatch Hooks",
       link: {
         type: "doc",
-        id: "protocol/warp-routes/warp-routes-overview",
+        id: "reference/hooks/overview",
       },
       collapsible: true,
       collapsed: true,
       items: [
         {
-          type: "category",
-          label: "Types",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-types",
-              label: "Warp Route Types",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-example-usage",
-              label: "Warp Route Example Usage",
-            },
-          ],
+          type: "doc",
+          id: "reference/hooks/interchain-gas",
+          label: "Interchain Gas",
         },
         {
-          type: "category",
-          label: "Walkthroughs",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Warp Routes for Yield Routes",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label:
-                "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
-            },
-          ],
+          type: "doc",
+          id: "reference/hooks/op-stack",
+          label: "OP Stack",
+        },
+        {
+          type: "doc",
+          id: "reference/hooks/arbitrum-L2-to-L1",
+          label: "Arbitrum L2 to L1",
+        },
+        {
+          type: "doc",
+          id: "reference/hooks/polygon-pos",
+          label: "Polygon PoS",
         },
       ],
     },
@@ -494,6 +485,67 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Applications",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "category",
+          label: "Warp Routes",
+          link: {
+            type: "doc",
+            id: "protocol/warp-routes/warp-routes-overview",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/applications/warp-routes",
+              label: "Warp Routes Interface",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-types",
+              label: "Warp Route Types",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-example-usage",
+              label: "Warp Route Example Usage",
+            },
+            {
+              type: "category",
+              label: "Walkthroughs",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-yield-routes",
+                  label: "Warp Routes for Yield Routes",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+                  label:
+                    "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
+                },
+              ],
+            },
+          ],
+        },
+
+        {
+          type: "doc",
+          id: "reference/applications/interchain-account",
+          label: "Interchain Accounts",
+        },
+      ],
+    },
+
+    {
+      type: "category",
       label: "Economic Security",
       link: {
         type: "doc",
@@ -515,7 +567,7 @@ const sidebars = {
         id: "protocol/agents",
       },
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -530,9 +582,72 @@ const sidebars = {
       ],
     },
     {
+      type: "category",
+      label: "Libraries",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/libraries/mailboxclient",
+          label: "Mailbox Client",
+        },
+        {
+          type: "doc",
+          id: "reference/libraries/router",
+          label: "Router",
+        },
+        {
+          type: "doc",
+          id: "reference/libraries/typecasts",
+          label: "TypeCasts",
+        },
+        {
+          type: "doc",
+          id: "reference/libraries/message",
+          label: "Message",
+        },
+        {
+          type: "doc",
+          id: "reference/libraries/hookmetadata",
+          label: "Standard Hook Metadata",
+        },
+      ],
+    },
+    {
       type: "doc",
       id: "protocol/non-evm-implementations",
       label: "Non-EVM implementations",
+    },
+    {
+      type: "doc",
+      id: "reference/contract-addresses",
+      label: "Addresses",
+    },
+    {
+      type: "doc",
+      id: "reference/domains",
+      label: "Domains",
+    },
+    {
+      type: "doc",
+      id: "reference/registries",
+      label: "Registries",
+    },
+    {
+      type: "doc",
+      id: "reference/cli",
+      label: "CLI",
+    },
+    {
+      type: "doc",
+      id: "reference/glossary",
+      label: "Glossary",
+    },
+    {
+      type: "doc",
+      id: "reference/audits",
+      label: "Audits",
     },
   ],
 
