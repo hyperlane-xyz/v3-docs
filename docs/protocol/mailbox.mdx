@@ -11,8 +11,8 @@ The network of `Mailboxes` facilitates the connective tissue between blockchains
 
 <SimpleMessagingDiagram />
 
-- To [**send**](./send.mdx) interchain messages, call the `dispatch` function.
-- To [**receive**](./receive.mdx) interchain messages, implement the `handle` function.
+- To [**send**](../reference/messaging/send.mdx) interchain messages, call the `dispatch` function.
+- To [**receive**](../reference/messaging/receive.mdx) interchain messages, implement the `handle` function.
 
 ## Interface
 
@@ -43,7 +43,7 @@ The Mailbox prepends message bodies with a header containing the following field
 - `destination`: The domain of the destination chain
 - `recipient`: The address of the recipient on the destination chain
 
-See the [`Message` library](../libraries/message.mdx) for more information on the message encoding.
+See the [`Message` library](../reference/libraries/message.mdx) for more information on the message encoding.
 
 ### Uniqueness
 
