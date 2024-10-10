@@ -6,6 +6,22 @@ Developers can configure, for each origin chain, a set of `n` ISMs, and the numb
 
 `AggregationISMs` can aggregate the security of any ISMs. For example, users can deploy a [Multisig ISM](multisig-ISM.mdx) with their own validator set, and deploy an `AggregationISM` that aggregates that ISM with the Hyperlane default ISM.
 
+## Interface
+
+`AggregationISMs` must implement the `IAggregationIsm` interface.
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IAggregationIsm.sol
+
+```
+
+## Configure
+
+The hyperlane-monorepo contains an `AggregationISM` implementation that application developers can deploy off-the-shelf, specifying their desired configuration.
+
+Developers can configure, for each origin chain, a set of `n` ISMs, and the number of ISMs needed to verify a message.
+
+`AggregationISMs` can aggregate the security of any ISMs. For example, users can deploy a [Multisig ISM](./multisig-ISM.mdx) with their own validator set, and deploy an `AggregationISM` that aggregates that ISM with the Hyperlane default ISM.
+
 ## Customize
 
 The hyperlane-monorepo contains an abstract `AggregationISM` implementation that application developers can fork.
@@ -14,4 +30,4 @@ Developers simply need to implement the `modulesAndThreshold()` function.
 
 By creating a custom implementation, application developers can tailor the security provided by a `AggregationISM` to the needs of their application.
 
-For example, a custom implementation could require that low value messages be verified by a [Multisig ISM](multisig-ISM.mdx), and require that high value messages _also_ be verified by a [Wormhole ISM](./third-party-ISMs/wormhole-ISM.mdx).
+For example, a custom implementation could require that low value messages be verified by a [Multisig ISM](./multisig-ISM.mdx), and require that high value messages _also_ be verified by a Wormhole ISM.
