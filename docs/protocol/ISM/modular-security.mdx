@@ -46,7 +46,7 @@ Message recipients can specify custom security constraints by specifying an `Int
 </Tabs>
 </details>
 
-### Overriding the default ISM
+## Overriding the default ISM
 
 Developers can specify or override the default ISM by implementing the `ISpecifiesInterchainSecurityModule` interface in their application.
 
@@ -66,7 +66,7 @@ interface ISpecifiesInterchainSecurityModule {
 
 If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
 
-### ISM General Interface
+## ISM General Interface
 
 ISMs must implement the `IInterchainSecurityModel()` interface. This interface consists of two functions.
 
@@ -96,9 +96,9 @@ interface IInterchainSecurityModule {
 }
 ```
 
-#### Verify
+### Verify
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L31-L34
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L27-L38
 
 ```
 
@@ -114,11 +114,11 @@ The `verify()` function takes two parameters:
 See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
 :::
 
-#### Module type
+### Module type
 
 The secondary function that ISMs must implement is `moduleType()`.
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L21
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L20-L25
 
 ```
 
