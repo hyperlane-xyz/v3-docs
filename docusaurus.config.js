@@ -325,7 +325,7 @@ const config = {
             ],
           },
           {
-            to: "/docs/explorer",
+            to: "/docs/guides/explorer",
             from: [
               "/docs/build-with-hyperlane/explorer",
               "/docs/build-with-hyperlane/guides/finding-my-messages",
