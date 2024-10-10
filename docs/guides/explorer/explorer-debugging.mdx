@@ -47,7 +47,7 @@ If you have a use case which is not accommodated by this behavior, **please reac
 
 An underfunded message implies the [interchain gas payments](../../reference/hooks/interchain-gas.mdx) made to deliver this message are insufficient.
 
-Relayers use the [`eth_estimateGas`](https://ethereum.github.io/execution-apis/api-documentation/)RPC on the destination chain to determine the absolute cost of relaying a message. If this amount exceeds the total amount of gas paid for on the origin chain, relayers will typically refuse to deliver a message.
+Relayers use the [`eth_estimateGas`](https://ethereum.github.io/execution-apis/api-documentation/) RPC on the destination chain to determine the absolute cost of relaying a message. If this amount exceeds the total amount of gas paid for on the origin chain, relayers will typically refuse to deliver a message.
 
 You can [manually pay for interchain gas](../../reference/hooks/interchain-gas.mdx#retrying) to resolve this.
 
