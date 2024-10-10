@@ -413,6 +413,11 @@ const sidebars = {
         },
         {
           type: "doc",
+          id: "protocol/ISM/custom-ISM",
+          label: "Override the Default ISM",
+        },
+        {
+          type: "doc",
           id: "protocol/ISM/multisig-ISM",
           label: "Multisig ISM",
         },
