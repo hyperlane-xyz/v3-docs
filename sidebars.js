@@ -175,6 +175,7 @@ const sidebars = {
         },
       ],
     },
+    /*
     {
       type: "category",
       label: "Interchain Security Modules",
@@ -201,7 +202,7 @@ const sidebars = {
           label: "Aggregation",
         },
       ],
-    },
+    },*/
     {
       type: "category",
       label: "Libraries",
