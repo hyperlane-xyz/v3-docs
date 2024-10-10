@@ -6,7 +6,29 @@ import TabItem from "@theme/TabItem";
 
 Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
 
+Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx)'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
+
 <IsmDiagram />
+
+## Configure
+
+Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
+
+For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
+
+## Compose
+
+ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
+
+For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [Wormhole ISM](./third-party-ISMs/wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
+
+## Customize
+
+ISMs are fully customizable. Developers can write their own ISMs, tailoring them to the needs of their application.
+
+For example, application developers can build ISMs that adjust security models based on message content. High value and infrequent messages (e.g. governance) could be verified by a security model that prioritizes safety over latency and gas costs. Lower value and more frequent messages could be verified by a security model that prioritizes latency and gas costs over safety.
+
+### Custom Security Constraints
 
 Message recipients can specify custom security constraints by specifying an `InterchainSecurityModule` address. This implementation can be configured, composed, and customized according to the needs of their application.
 
@@ -24,27 +46,7 @@ Message recipients can specify custom security constraints by specifying an `Int
 </Tabs>
 </details>
 
-Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx)'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
-
-### Configure
-
-Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
-
-For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
-
-### Compose
-
-ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
-
-For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [Wormhole ISM](./third-party-ISMs/wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
-
-### Customize
-
-ISMs are fully customizable. Developers can write their own ISMs, tailoring them to the needs of their application.
-
-For example, application developers can build ISMs that adjust security models based on message content. High value and infrequent messages (e.g. governance) could be verified by a security model that prioritizes safety over latency and gas costs. Lower value and more frequent messages could be verified by a security model that prioritizes latency and gas costs over safety.
-
-## Overriding the default ISM
+### Overriding the default ISM
 
 Developers can specify or override the default ISM by implementing the `ISpecifiesInterchainSecurityModule` interface in their application.
 
@@ -64,7 +66,7 @@ interface ISpecifiesInterchainSecurityModule {
 
 If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
 
-# General Interface
+### ISM General Interface
 
 ISMs must implement the `IInterchainSecurityModel()` interface. This interface consists of two functions.
 
@@ -94,7 +96,7 @@ interface IInterchainSecurityModule {
 }
 ```
 
-### Verify
+#### Verify
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L31-L34
 
@@ -112,7 +114,7 @@ The `verify()` function takes two parameters:
 See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
 :::
 
-### Module type
+#### Module type
 
 The secondary function that ISMs must implement is `moduleType()`.
 
