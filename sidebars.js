@@ -22,13 +22,6 @@ const sidebars = {
       id: "intro",
       label: "Overview",
     },
-    /**
-    {
-      type: "doc",
-      id: "your-first-message",
-      label: "Send your first message",
-    },
-    */
     {
       type: "category",
       label: "Connect Your Chain",
@@ -664,11 +657,6 @@ const sidebars = {
   guidesSidebar: [
     {
       type: "doc",
-      id: "guides/deploy-hyperlane-local-agents",
-      label: "Deploy Hyperlane with Local Agents",
-    },
-    {
-      type: "doc",
       id: "guides/extending-warp-route",
       label: "Extending a Warp Route",
     },
@@ -711,11 +699,6 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "guides/avs-operator-guide",
-      label: "AVS Operator Guide",
-    },
-    {
-      type: "doc",
       id: "guides/deploy-svm-warp-route",
       label: "Deploy an SVM Warp Route",
     },
@@ -755,6 +738,16 @@ const sidebars = {
   ],
 
   operateSidebar: [
+    {
+      type: "doc",
+      id: "operate/overview-agents",
+      label: "Overview",
+    },
+    {
+      type: "doc",
+      id: "operate/set-up-agent-keys",
+      label: "Key Management",
+    },
     {
       type: "category",
       label: "Run Validators",
@@ -800,11 +793,6 @@ const sidebars = {
       ],
     },
     {
-      type: "doc",
-      id: "operate/set-up-agent-keys",
-      label: "Agent Keys",
-    },
-    {
       type: "category",
       label: "Agent Config",
       link: {
@@ -821,15 +809,34 @@ const sidebars = {
         },
       ],
     },
+
     {
-      type: "doc",
-      id: "operate/docker-quickstart",
-      label: "Docker Quickstart",
-    },
-    {
-      type: "doc",
-      id: "operate/deploy-with-terraform",
-      label: "Deploy with Terraform",
+      type: "category",
+      label: "Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
+        },
+        {
+          type: "doc",
+          id: "operate/docker-quickstart",
+          label: "Docker Quickstart",
+        },
+        {
+          type: "doc",
+          id: "operate/deploy-with-terraform",
+          label: "Deploy with Terraform",
+        },
+        {
+          type: "doc",
+          id: "guides/avs-operator-guide",
+          label: "AVS Operator Guide",
+        },
+      ],
     },
   ],
 };
