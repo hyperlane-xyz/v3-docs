@@ -39,7 +39,7 @@ There are six steps in this guide:
 
 ## 3. Run a validator
 
-Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](../protocol/ISM/multisig-ISM.mdx). Learn more about what validators do [here](../protocol/agents/validators.mdx).
+Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](docs/protocol/ISM/multisig-ISM.mdx). Learn more about what validators do [here](../protocol/agents/validators.mdx).
 
 ### Setup directories
 
@@ -52,7 +52,7 @@ export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
 Next, create a local directory for your validator to write its signatures to. Remember the path, as you will need this when configuring your validator.
 
 :::danger
-The validator signatures path will be written on-chain as part of the [validator announcement transaction](./implementation-guide.mdx#validator-announce). **Be careful not to reveal any security-sensitive or personal information!**
+The validator signatures path will be written on-chain as part of the [validator announcement transaction](docs/guides/implementation-guide.mdx#validator-announce). **Be careful not to reveal any security-sensitive or personal information!**
 :::
 
 ```sh
@@ -98,7 +98,7 @@ Make sure the validator key corresponds to the address provided when setting up 
 
 :::
 
-To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
+To learn more about all the parameters you can change, read the [agent configuration reference](docs/operate/config-reference.mdx).
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
@@ -255,11 +255,11 @@ And run the binary directly:
 </TabItem>
 </Tabs>
 
-For further information, check out the [Validators guide](../operate/validators/run-validators.mdx).
+For further information, check out the [Validators guide](docs/operate/validators/run-validators.mdx).
 
 ## 4. Run a relayer
 
-Relayers deliver interchain messages sent between the local and remote chains. Learn more about what relayers do [here](../protocol/agents/relayer.mdx).
+Relayers deliver interchain messages sent between the local and remote chains. Learn more about what relayers do [here](docs/protocol/agents/relayer.mdx).
 
 You should already have set the `CONFIG_FILES` environment variable to the path of the agent config generated in the [agent configs](#agent-configs) step. If not, do so now.
 
@@ -283,7 +283,7 @@ There are numerous parameters that validators can be configured with. For this g
 Your set of relay chains should include both the origin chain and destination chain.
 :::
 
-To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
+To learn more about all the parameters you can change, read the [agent configuration reference](docs/operate/config-reference.mdx).
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
@@ -403,7 +403,7 @@ And run the binary directly:
 </TabItem>
 </Tabs>
 
-For further information, check out the [Relayer guide](../operate/relayer/run-relayer.mdx).
+For further information, check out the [Relayer guide](docs/operate/relayer/run-relayer.mdx).
 
 ## 5. Send test messages
 

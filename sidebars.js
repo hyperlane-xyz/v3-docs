@@ -42,6 +42,19 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "For Node Operators",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "For Chains",
       collapsible: true,
       collapsed: true,
@@ -811,11 +824,6 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
-        },
         {
           type: "doc",
           id: "operate/docker-quickstart",
