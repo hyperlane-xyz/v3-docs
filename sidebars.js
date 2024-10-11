@@ -24,31 +24,15 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Connect Your Chain",
-      link: {
-        type: "doc",
-        id: "deploy-hyperlane",
-      },
+      label: "For Smart Contract Devs",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "doc",
-          id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshoot",
+          id: "guides/deploy-warp-route",
+          label: "Bridge a Token",
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Bridge a Token",
-      link: {
-        type: "doc",
-        id: "guides/deploy-warp-route",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
         {
           type: "doc",
           id: "guides/deploy-warp-route-UI",
@@ -58,55 +42,66 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Go to Production",
-      link: {
-        type: "doc",
-        id: "production",
-      },
+      label: "For Chains",
       collapsible: true,
       collapsed: true,
       items: [
         {
-          type: "category",
-          label: "Core Deployment",
-          link: {
-            type: "doc",
-            id: "core-production",
-          },
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/update-mailbox-default-ism",
-              label: "Update Mailbox Default ISM",
-            },
-            {
-              type: "doc",
-              id: "guides/transfer-mailbox-ownership",
-              label: "Transfer Mailbox Ownership",
-            },
-          ],
+          type: "doc",
+          id: "deploy-hyperlane",
+          label: "Connect Your Chain",
+        },
+        {
+          type: "doc",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshoot",
         },
         {
           type: "category",
-          label: "Warp Route Deployment",
-          link: {
-            type: "doc",
-            id: "warp-production",
-          },
+          label: "Go to Production",
           collapsible: true,
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "guides/remove-trusted-relayer",
-              label: "Remove Trusted Relayer",
+              id: "production",
+              label: "Production Overview",
             },
             {
-              type: "doc",
-              id: "guides/transfer-warp-route-ownership",
-              label: "Transfer Ownership",
+              type: "category",
+              label: "Core Deployment",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/update-mailbox-default-ism",
+                  label: "Update Mailbox Default ISM",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-mailbox-ownership",
+                  label: "Transfer Mailbox Ownership",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Warp Route Deployment",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/remove-trusted-relayer",
+                  label: "Remove Trusted Relayer",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-warp-route-ownership",
+                  label: "Transfer Ownership",
+                },
+              ],
             },
           ],
         },
