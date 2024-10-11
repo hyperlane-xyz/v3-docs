@@ -37,7 +37,7 @@ const sidebars = {
         id: "deploy-hyperlane",
       },
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -54,7 +54,7 @@ const sidebars = {
         id: "guides/deploy-warp-route",
       },
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -71,7 +71,7 @@ const sidebars = {
         id: "production",
       },
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "category",
@@ -81,7 +81,7 @@ const sidebars = {
             id: "core-production",
           },
           collapsible: true,
-          collapsed: false,
+          collapsed: true,
           items: [
             {
               type: "doc",
@@ -103,7 +103,7 @@ const sidebars = {
             id: "warp-production",
           },
           collapsible: true,
-          collapsed: false,
+          collapsed: true,
           items: [
             {
               type: "doc",
