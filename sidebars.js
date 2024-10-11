@@ -572,34 +572,47 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Libraries",
+      label: "Developer Tools",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "doc",
-          id: "reference/libraries/mailboxclient",
-          label: "Mailbox Client",
+          id: "reference/cli",
+          label: "CLI",
         },
         {
-          type: "doc",
-          id: "reference/libraries/router",
-          label: "Router",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/typecasts",
-          label: "TypeCasts",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/message",
-          label: "Message",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/hookmetadata",
-          label: "Standard Hook Metadata",
+          type: "category",
+          label: "Libraries",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/libraries/mailboxclient",
+              label: "Mailbox Client",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/router",
+              label: "Router",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/typecasts",
+              label: "TypeCasts",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/message",
+              label: "Message",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/hookmetadata",
+              label: "Standard Hook Metadata",
+            },
+          ],
         },
       ],
     },
@@ -624,19 +637,27 @@ const sidebars = {
       label: "Registries",
     },
     {
-      type: "doc",
-      id: "reference/cli",
-      label: "CLI",
-    },
-    {
-      type: "doc",
-      id: "reference/glossary",
-      label: "Glossary",
-    },
-    {
-      type: "doc",
-      id: "reference/audits",
-      label: "Audits",
+      type: "category",
+      label: "Resources",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/glossary",
+          label: "Glossary",
+        },
+        {
+          type: "doc",
+          id: "faq",
+          label: "FAQ",
+        },
+        {
+          type: "doc",
+          id: "reference/audits",
+          label: "Audits",
+        },
+      ],
     },
   ],
 
@@ -730,11 +751,6 @@ const sidebars = {
           label: "Token Faucets",
         },
       ],
-    },
-    {
-      type: "doc",
-      id: "faq",
-      label: "FAQ",
     },
   ],
 
