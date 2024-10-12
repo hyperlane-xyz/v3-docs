@@ -38,6 +38,7 @@ const config = {
   },
 
   plugins: [
+    './webpackPlugin',
     [
       "@docusaurus/plugin-client-redirects",
       {

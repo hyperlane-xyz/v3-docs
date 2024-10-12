@@ -1,27 +1,40 @@
+import * as buffer from "buffer";
 import { useState } from "react";
-import { chainMetadata } from "@hyperlane-xyz/registry";
+
+import { CosmWasmCoreAdapter, MultiProtocolCore, MultiProtocolProvider } from "@hyperlane-xyz/sdk";
+import { chainMetadata, chainAddresses } from "@hyperlane-xyz/registry";
+import { ProtocolType, strip0x } from "@hyperlane-xyz/utils";
 
 import ChainDropdown from './ChainDropdown';
+import { useMultiProtocolProvider } from "../utils/registry";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 
 // TODO: these should be in the registry, but for now we'll hardcode them.
 // Once they're in the registry, we can move away from this.
-const mailboxes = {
-  'neutron': 'neutron1sjzzd4gwkggy6hrrs8kxxatexzcuz3jecsxm3wqgregkulzj8r7qlnuef4',
-  'injective': 'inj1palm2wtp6urg0c6j4f2ukv5u5ahdcrqek0sapt',
+const addressesOverrides = {
+  neutron: {
+    mailbox: 'neutron1sjzzd4gwkggy6hrrs8kxxatexzcuz3jecsxm3wqgregkulzj8r7qlnuef4',
+  },
+  injective: {
+    mailbox: 'inj1palm2wtp6urg0c6j4f2ukv5u5ahdcrqek0sapt',
+  }
 };
 
-const cosmosChains = Object.keys(mailboxes);
-
-// Adding @hyperlane-xyz/utils as a dependency breaks things, so we copy the function here.
-export function strip0x(hexstr: string) {
-  return hexstr.startsWith('0x') ? hexstr.slice(2) : hexstr;
-}
-
-export default function CosmosMessageDelivered({
+export default function NonEvmMessageDelivered({
+  chains,
+}: {
+  chains: string[];
 }) {
-  const [destinationChain, setDestinationChain] = useState<string>(cosmosChains[0]);
+  const isBrowser = useIsBrowser();
+  if (!isBrowser) {
+    // Difficulty polyfilling Buffer in the browser to be consumed by some Solana libs, so we do this instead
+    window.Buffer = buffer.Buffer;
+  }
+
+  const [destinationChain, setDestinationChain] = useState<string>(chains[0]);
   const [messageId, setMessageId] = useState('');
   const [status, setStatus] = useState('');
+  const multiProvider = useMultiProtocolProvider();
 
   const onButtonClick = async () => {
     const strippedMessageId = strip0x(messageId);
@@ -31,45 +44,39 @@ export default function CosmosMessageDelivered({
     }
 
     const metadata = chainMetadata[destinationChain];
-    const mailbox = mailboxes[destinationChain];
-    if (!mailbox) {
-      setStatus(`⛔️ No known Mailbox found for chain ${destinationChain}`);
-      return;
-    }
     if (!metadata) {
-      setStatus(`⛔️ No known Mailbox found for chain ${destinationChain}`);
+      setStatus(`⛔️ No metadata found for chain ${destinationChain}`);
       return;
     }
-    const restUrl = metadata.restUrls?.[0]?.http;
-    if (!restUrl) {
-      setStatus(`⛔️ No available API set for chain ${destinationChain}`);
-      return;
-    }
-    const payload = {
-      mailbox: {
-        message_delivered: {
-          id: strippedMessageId,
-        }
-      }
-    };
-    const base64Payload = window.btoa(JSON.stringify(payload));
-    const url = `${restUrl}/cosmwasm/wasm/v1/contract/${mailbox}/smart/${base64Payload}`;
+
+    const multiProtocolCore = MultiProtocolCore.fromAddressesMap(
+    // @ts-ignore - doesn't like the types of some recent Sealevel chains and the overrides we provide
+    {
+      ...chainAddresses,
+      ...addressesOverrides,
+    }, multiProvider);
+    const core = multiProtocolCore.adapter(destinationChain);
+
     setStatus(`⏳ Checking if message is delivered...`);
-    let responseJson;
-    console.log(`Fetching from ${url}`);
+
+    let delivered = false;
     try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      responseJson = await response.json();
+      switch (metadata.protocol) {
+        case ProtocolType.Cosmos:
+          // `waitForMessageProcessed` is not implemented on cosmos -- instead we
+          // use the adapter directly.
+          const cosmosCore = core as CosmWasmCoreAdapter;
+          delivered = await cosmosCore.delivered(strip0x(messageId));
+          break;
+        default:
+          delivered = await core.waitForMessageProcessed(messageId, destinationChain, 0, 1);
+          break;
+      }
     } catch (e) {
       setStatus(`⛔️ Error checking message delivery: ${e}`);
       return;
     }
-    const delivered = responseJson?.data?.delivered ?? false;
+
     if (delivered) {
       setStatus(`Message successfully delivered: ✅`);
     } else {
@@ -85,7 +92,7 @@ export default function CosmosMessageDelivered({
     }}>
         <ChainDropdown
           chain={destinationChain}
-          chains={cosmosChains}
+          chains={chains}
           label="Destination Chain"
           onChange={setDestinationChain}
         />

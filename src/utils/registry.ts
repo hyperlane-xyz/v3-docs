@@ -1,5 +1,6 @@
 import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
-import type { ChainMetadata, ChainName } from "@hyperlane-xyz/sdk";
+import { MultiProtocolProvider, type ChainMetadata, type ChainName } from "@hyperlane-xyz/sdk";
+import { deepCopy, objMerge } from "@hyperlane-xyz/utils";
 import { useMemo } from "react";
 
 const ABACUS_WORKS_DEPLOYER_NAME = "abacus works";
@@ -29,4 +30,16 @@ export function getAbacusWorksChainNames(isTestnet = false): ChainName[] {
 
 export function useAbacusWorksChainNames(isTestnet = false) {
   return useMemo(() => getAbacusWorksChainNames(isTestnet), [isTestnet]);
+}
+
+export function useMultiProtocolProvider() {
+  return useMemo(() => {
+    const chainMetadataCopied = deepCopy(chainMetadata);
+    // The default public Solana RPC aggressively rate limits, so we add another public node to the list
+    chainMetadataCopied.solanamainnet.rpcUrls.unshift({
+      http: 'https://solana-rpc.publicnode.com'
+    });
+
+    return new MultiProtocolProvider(chainMetadataCopied);
+  }, []);
 }
