@@ -16,34 +16,38 @@ This signature is stored and made publicly available (e.g. in a S3 bucket), whic
 
 A Hyperlane [Relayer](docs/protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
 
-Every Hyperlane message requires two transactions to be delivered, on the origin chain to [send](docs/reference/messaging/send.mdx) the message, and on the destination chain to [receive](docs/reference/messaging/receive.mdx) the message
+Hyperlane Relayers are configured to relay messages between one or more origin chains and destination chains.
+Every Hyperlane message requires two transactions to be delivered on the origin chain to [send](docs/reference/messaging/send.mdx) the message, and on the destination chain to [receive](docs/reference/messaging/receive.mdx) the message.
 
-A Relayer is responsible for sending the second transaction.
+A Relayer is responsible for the second transaction on the destination chain. The full process includes several important steps:
+
+- The Relayer keeps track of new messages as they come in on the origin chain.
+- It checks the [Interchain Security Module (ISM)](/docs/protocol/ISM/modular-security.mdx) specified by the recipient to gather the necessary metadata to secure the message. For example, it may retrieve Multisig ISM signatures from Validator checkpoint storage.
+- After assembling the security metadata, the Relayer then sends the message to the recipient on the destination chain.
+
+If the message delivery fails (e.g., due to a lack of liquidity to transfer out of a Warp Route contract), the Relayer retries the delivery with an exponential backoff mechanism until successful.
+
+A Relayer has no special permissions in Hyperlane. If Relayer keys are compromised, only the tokens held by those keys are at risk.
 
 ```mermaid
-flowchart TB
-    subgraph Origin
+flowchart LR
+    subgraph Origin Chain
       Sender
       M_O[(Mailbox)]
       IGP[InterchainGasPaymaster]
-      Sender -- "id = dispatch()" --> M_O
-      Sender -- "payForGas(id)\n{value: payment}" --> IGP
+      Sender -- "dispatch(...)\n{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
     end
 
     Relayer((Relayer))
 
     M_O -. "indexing" .-> Relayer
-    IGP -. "paymaster" .- Relayer
+    IGP -. "value" .- Relayer
 
-    subgraph Destination
+    subgraph Destination Chain
       M_D[(Mailbox)]
+      M_D -- "handle(...)" --> Recipient
     end
 
-    Relayer -- "process()" --> M_D
-
-    style Sender fill:#efab17
-
-    click IGP https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol
+    Relayer -- "process{gasLimit}(...)" --> M_D
 ```
-
-Hyperlane Relayers are configured to relay messages between one or more origin chains and destination chains. A Relayer has no special permissions in Hyperlane. If Relayer keys are compromised, only the tokens held by those keys are at risk.
