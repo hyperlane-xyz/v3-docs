@@ -1,30 +1,12 @@
-import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
+import { chainMetadata } from "@hyperlane-xyz/registry";
 import { useAbacusWorksChainNames } from "../utils/registry";
+import { capitalize, Environment } from "./AddressTable";
 
-export type Environment = "testnet" | "mainnet";
-
-type Props<K extends string> = {
-  contract: K;
+type Props = {
   environment: Environment;
 };
 
-export function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-export function camelToTitle(camelCaseString: string) {
-  // Add a space before each uppercase letter and trim the resulting string
-  const spacedString = camelCaseString.replace(/([A-Z])/g, " $1").trim();
-
-  return spacedString
-    .split(" ")
-    .map((word: string) => capitalize(word))
-    .join(" ");
-}
-
-export default function AddressTable<K extends string>({
-  environment,
-}: Props<K>) {
+export default function ReorgPeriodTable({ environment }: Props) {
   const chainNames = useAbacusWorksChainNames(environment !== "mainnet");
 
   return (
