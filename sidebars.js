@@ -548,11 +548,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "guides/explorer/rest-api",
-          label: "REST API",
-        },
-        {
-          type: "doc",
           id: "guides/explorer/graphql-api",
           label: "GraphQL API",
         },

@@ -2,23 +2,19 @@
 
 Hyperlane can be [permissionlessly deployed](/docs/deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, first configure the explorer with metadata about that chain.
 
-To begin, go to the [explorer's settings page](https://explorer.hyperlane.xyz/settings).
+To begin, click either the Origin or the Destination button on the explorer's home page. This will open the chain selection modal. From there, click the plus icon in the top-right.
 
-![](/img/explorer-debugging/explorer-settings.png)
+![](/img/explorer-debugging/explorer-add-metadata.png)
 
-From there, click the Add Custom Chain button. A modal will appear. Input the configuration for your PI Chain.
-
-The chain config schema is an extension of the Hyperlane [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts) but with a `contracts` object added. Currently only the `mailbox` contract address is required but more functionality may be enabled in the future if more addresses are provided.
+The displayed form accepts JSON or YAML confirming to the [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
 
 If a valid Etherscan-based block explorer config is provided, the Hyperlane Explorer will utilize it to find the desired messages. If not, it will use the RPC URL. Note, Explorers with api keys (even just free-tier keys), perform faster and more reliably.
 
-![](/img/explorer-debugging/explorer-add-custom-chain.png)
+### Chain Metadata Examples
 
-### Chain Config Examples
+**A minimal example in JSON:**
 
-**A minimal chain config:**
-
-```js
+```json
 {
   "chainId": 11155111,
   "name": "sepolia",
@@ -27,45 +23,35 @@ If a valid Etherscan-based block explorer config is provided, the Hyperlane Expl
 }
 ```
 
-**A chain config with a block explorer and block timings included:**
+**A more detailed example in YAML:**
 
-```js
-{
-  "chainId": 11155111,
-  "domainId": 11155111,
-  "name": "sepolia",
-  "protocol": "ethereum",
-  "displayName": "Sepolia",
-  "nativeToken": {
-    "name": "Ether",
-    "symbol": "ETH",
-    "decimals": 18
-  },
-  "rpcUrls": [
-    {
-      "http": "https://rpc.sepolia.org"
-    },
-    {
-      "http": "https://eth-sepolia.public.blastapi.io	"
-    }
-  ],
-  "blockExplorers": [
-    {
-      "name": "Etherscan",
-      "url": "https://sepolia.etherscan.io",
-      "apiUrl": "https://api-sepolia.etherscan.io/api",
-      "family": "etherscan"
-    }
-  ],
-  "blocks": {
-    "confirmations": 1,
-    "reorgPeriod": 2,
-    "estimateBlockTime": 13
-  },
-  "isTestnet": true,
-  "mailbox": "0x123...",
-  "interchainGasPaymaster": "0x123..."
-}
+```yaml
+# Yaml metadata example
+blockExplorers:
+  - apiUrl: https://api-sepolia.etherscan.io/api
+    family: etherscan
+    name: Etherscan
+    url: https://sepolia.etherscan.io
+blocks:
+  confirmations: 1
+  estimateBlockTime: 13
+  reorgPeriod: 2
+chainId: 11155111
+deployer:
+  name: Abacus Works
+  url: https://www.hyperlane.xyz
+displayName: Sepolia
+domainId: 11155111
+isTestnet: true
+name: sepolia
+nativeToken:
+  decimals: 18
+  name: Ether
+  symbol: ETH
+protocol: ethereum
+rpcUrls:
+  - http: https://ethereum-sepolia.publicnode.com
+  - http: https://ethereum-sepolia.blockpi.network/v1/rpc/public
 ```
 
 :::info
