@@ -475,9 +475,9 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Applications",
+      label: "Use Cases",
       collapsible: true,
-      collapsed: true,
+      collapsed: false,
       items: [
         {
           type: "category",

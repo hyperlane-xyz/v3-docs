@@ -467,7 +467,7 @@ const config = {
             type: "docSidebar",
             sidebarId: "operateSidebar",
             position: "left",
-            label: "⚙️ Node Operators",
+            label: "⚙️ Agent Operators",
           },
           {
             href: "https://github.com/hyperlane-xyz",
