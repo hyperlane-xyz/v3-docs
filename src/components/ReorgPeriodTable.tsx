@@ -1,4 +1,4 @@
-import { chainMetadata } from "@hyperlane-xyz/registry";
+import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
 import { useAbacusWorksChainNames } from "../utils/registry";
 import { capitalize, Environment } from "./AddressTable";
 
@@ -21,6 +21,8 @@ export default function ReorgPeriodTable({ environment }: Props) {
       </thead>
       <tbody>
         {chainNames.map((chain) => {
+          const mailbox = chainAddresses[chain]?.mailbox;
+          if (!mailbox) return null;
           const targetMetadata = chainMetadata[chain];
           return (
             <tr key={chain}>
