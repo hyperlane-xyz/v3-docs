@@ -9,7 +9,7 @@ import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
 
 To deliver interchain messages, the [relayer](/docs/operate/relayer/run-relayer.mdx) calls `Mailbox.process()`.
 
-This function takes as parameters the message to deliver as well as arbitrary metadata that can be specified by the relayer.
+This function takes as parameters the message to deliver, as well as arbitrary metadata that can be specified by the relayer.
 
 The `Mailbox` will pass the message and metadata to the recipient's interchain security module for verification. If the ISM successfully verifies the message, the `Mailbox` delivers the message to the recipient by calling `recipient.handle()`.
 

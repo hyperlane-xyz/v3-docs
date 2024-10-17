@@ -8,7 +8,7 @@ The `MultisigISM` is one of the most commonly used ISM types. These ISMs verify 
 
 Based on the following module types, the relayer will encode the appropriately formatted metadata:
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L18
 
 ```
 
@@ -16,7 +16,7 @@ For these module types, the metadata is formatted by the relayer as follows:
 
 ### MessageIdMultisigIsmMetadata
 
-**Type: `Types.MESSAGE_ID_MULTISIG**
+**Type: `Types.MESSAGE_ID_MULTISIG`**
 
 **Format of metadata:**
 
@@ -52,7 +52,7 @@ For these module types, the metadata is formatted by the relayer as follows:
 
 The hyperlane-monorepo contains [`MultisigISM` implementations](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity/contracts/isms/multisig) (including a [legacy](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/LegacyMultisigIsm.sol) version and more gas-efficient [versions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/StaticMultisigIsm.sol) deployable via factories) that application developers can deploy off-the-shelf, specifying their desired configuration.
 
-Developers can configure, for each origin chain, a set of `n` Validators, and the number of validator signatures (`m`) needed to verify a message.
+Developers can configure, for each origin chain, a set of `n` Validators.  Alongisde this, a `threshold` must be configured to specify the number of these validator's signatures (`m`) needed to verify a message.
 
 Validator signatures are **not** specific to an ISM. In other words, developers can configure their `MultisigISM` to use **any** validator that's running on Hyperlane.
 

@@ -18,7 +18,7 @@ interface ISpecifiesInterchainSecurityModule {
 
 If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
 
-## ISM General Interface
+## ISM Interface
 
 ISMs must implement the `IInterchainSecurityModel()` interface. This interface consists of two functions.
 
@@ -58,12 +58,12 @@ The primary function that ISMs must implement is `verify()`. The [Mailbox](../ma
 
 The `verify()` function takes two parameters:
 
-- The first, `_metadata`, consists of arbitrary bytes provided by [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, for a [Multisig ISM](multisig-ISM.mdx), `_metadata` must include validator signatures.
+- The first, `_metadata`, consists of arbitrary bytes provided by the [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, the `_metadata` for a [Multisig ISM](multisig-ISM.mdx) must include validator signatures.
 
 - The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
 
 :::warning
-See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`
+See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`.
 :::
 
 ### Module type
@@ -76,7 +76,7 @@ The secondary function that ISMs must implement is `moduleType()`.
 
 This is used to signal to the [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L14
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L18
 
 ```
 
