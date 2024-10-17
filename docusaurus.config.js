@@ -184,44 +184,8 @@ const config = {
             ],
           },
           {
-            to: "/docs/protocol/mailbox",
-            from: ["/docs/protocol/messaging"],
-          },
-          {
-            to: "/docs/protocol/ISM/modular-security",
-            from: ["/docs/protocol/sovereign-consensus"],
-          },
-          {
-            to: "/docs/protocol/economic-security",
-            from: ["/docs/protocol/proof-of-stake"],
-          },
-          {
-            to: "/docs/protocol/agents/watchtowers",
-            from: ["/docs/protocol/agents/processor"],
-          },
-          {
-            to: "/docs/protocol/ISM/ccip-read-ISM",
-            from: ["/docs/protocol/sovereign-consensus/ccip-read-ism"],
-          },
-          {
-            to: "/docs/protocol/ISM/multisig-ISM",
-            from: ["/docs/protocol/sovereign-consensus/multisig-ism"],
-          },
-          {
-            to: "/docs/protocol/ISM/aggregation-ISM",
-            from: ["/docs/protocol/sovereign-consensus/aggregation-ism"],
-          },
-          {
-            to: "/docs/protocol/ISM/routing-ISM",
-            from: ["/docs/protocol/sovereign-consensus/routing-ism"],
-          },
-          {
             to: "/docs/protocol/ISM/third-party-ISMs/optimistic-ISM",
             from: ["/docs/protocol/sovereign-consensus/optimistic-ism"],
-          },
-          {
-            to: "/docs/protocol/ISM/third-party-ISMs/wormhole-ISM",
-            from: ["/docs/protocol/sovereign-consensus/wormhole-ism"],
           },
           {
             to: "/docs/faq",
@@ -294,10 +258,6 @@ const config = {
             from: ["/docs/protocol/sovereign-consensus/routing-ism"],
           },
           {
-            to: "/docs/protocol/ISM/third-party-ISMs/optimistic-ISM",
-            from: ["/docs/protocol/sovereign-consensus/optimistic-ism"],
-          },
-          {
             to: "/docs/protocol/ISM/third-party-ISMs/wormhole-ISM",
             from: ["/docs/protocol/sovereign-consensus/wormhole-ism"],
           },
@@ -355,8 +315,12 @@ const config = {
             from: ["/docs/resources/token-sources-and-faucets"],
           },
           {
-            to: "/docs/guides/latencies",
+            to: "/docs/reference/latencies",
             from: ["/docs/resources/latencies"],
+          },
+          {
+            to: "/docs/reference/latencies",
+            from: ["/docs/guides/latencies"],
           },
           {
             to: "/docs/reference/ISM/specify-your-ISM",

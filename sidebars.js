@@ -305,6 +305,11 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "reference/latencies",
+      label: "Latencies",
+    },
+    {
+      type: "doc",
       id: "reference/registries",
       label: "Registries",
     },
@@ -695,11 +700,6 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "guides/explorer/rest-api",
-          label: "REST API",
-        },
-        {
-          type: "doc",
           id: "guides/explorer/graphql-api",
           label: "GraphQL API",
         },
@@ -730,11 +730,6 @@ const sidebars = {
           type: "doc",
           id: "guides/developer-tips/unit-testing",
           label: "Unit Testing",
-        },
-        {
-          type: "doc",
-          id: "guides/latencies",
-          label: "Latencies",
         },
         {
           type: "doc",
