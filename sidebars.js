@@ -639,6 +639,11 @@ const sidebars = {
     },
     {
       type: "doc",
+      id: "reference/latencies",
+      label: "Latencies",
+    },
+    {
+      type: "doc",
       id: "reference/registries",
       label: "Registries",
     },
