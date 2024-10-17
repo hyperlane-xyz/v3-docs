@@ -22,40 +22,84 @@ const sidebars = {
       id: "intro",
       label: "Overview",
     },
-    /**
-    {
-      type: "doc",
-      id: "your-first-message",
-      label: "Send your first message",
-    },
-    */
     {
       type: "category",
-      label: "Connect Your Chain",
-      link: {
-        type: "doc",
-        id: "deploy-hyperlane",
-      },
+      label: "For Chains",
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
+        {
+          type: "doc",
+          id: "deploy-hyperlane",
+          label: "Connect Your Chain",
+        },
         {
           type: "doc",
           id: "deploy-hyperlane-troubleshooting",
           label: "Troubleshoot",
         },
+        {
+          type: "category",
+          label: "Go to Production",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "production",
+              label: "Production Overview",
+            },
+            {
+              type: "category",
+              label: "Core Deployment",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/update-mailbox-default-ism",
+                  label: "Update Mailbox Default ISM",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-mailbox-ownership",
+                  label: "Transfer Mailbox Ownership",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Warp Route Deployment",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/remove-trusted-relayer",
+                  label: "Remove Trusted Relayer",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-warp-route-ownership",
+                  label: "Transfer Ownership",
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
     {
       type: "category",
-      label: "Bridge a Token",
-      link: {
-        type: "doc",
-        id: "guides/deploy-warp-route",
-      },
+      label: "For Smart Contract Devs",
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route",
+          label: "Bridge a Token",
+        },
         {
           type: "doc",
           id: "guides/deploy-warp-route-UI",
@@ -65,62 +109,21 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Go to Production",
-      link: {
-        type: "doc",
-        id: "production",
-      },
+      label: "For Agent Operators",
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
-          type: "category",
-          label: "Core Deployment",
-          link: {
-            type: "doc",
-            id: "core-production",
-          },
-          collapsible: true,
-          collapsed: false,
-          items: [
-            {
-              type: "doc",
-              id: "guides/update-mailbox-default-ism",
-              label: "Update Mailbox Default ISM",
-            },
-            {
-              type: "doc",
-              id: "guides/transfer-mailbox-ownership",
-              label: "Transfer Mailbox Ownership",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Warp Route Deployment",
-          link: {
-            type: "doc",
-            id: "warp-production",
-          },
-          collapsible: true,
-          collapsed: false,
-          items: [
-            {
-              type: "doc",
-              id: "guides/remove-trusted-relayer",
-              label: "Remove Trusted Relayer",
-            },
-            {
-              type: "doc",
-              id: "guides/transfer-warp-route-ownership",
-              label: "Transfer Ownership",
-            },
-          ],
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
         },
       ],
     },
   ],
+  /*
   referenceSidebar: [
+    
     {
       type: "category",
       label: "General Message Passing",
@@ -253,7 +256,6 @@ const sidebars = {
         },
       ],
     },
-    /**
     {
       type: "category",
       label: "Typescript SDK",
@@ -291,7 +293,6 @@ const sidebars = {
         },
       ],
     },
-    */
     {
       type: "doc",
       id: "reference/contract-addresses",
@@ -327,7 +328,7 @@ const sidebars = {
       id: "reference/audits",
       label: "Audits",
     },
-  ],
+  ],    */
 
   protocolSidebar: [
     {
@@ -346,6 +347,24 @@ const sidebars = {
       collapsed: true,
       items: [
         {
+          type: "category",
+          label: "General Message Passing",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/messaging/send",
+              label: "Send a message",
+            },
+            {
+              type: "doc",
+              id: "reference/messaging/receive",
+              label: "Receive a message",
+            },
+          ],
+        },
+        {
           type: "doc",
           id: "protocol/interchain-gas-payment",
           label: "Interchain Gas Payment",
@@ -354,50 +373,33 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Warp Routes",
+      label: "Post-Dispatch Hooks",
       link: {
         type: "doc",
-        id: "protocol/warp-routes/warp-routes-overview",
+        id: "reference/hooks/overview",
       },
       collapsible: true,
       collapsed: true,
       items: [
         {
-          type: "category",
-          label: "Types",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-types",
-              label: "Warp Route Types",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-example-usage",
-              label: "Warp Route Example Usage",
-            },
-          ],
+          type: "doc",
+          id: "reference/hooks/interchain-gas",
+          label: "Interchain Gas",
         },
         {
-          type: "category",
-          label: "Walkthroughs",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Warp Routes for Yield Routes",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label:
-                "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
-            },
-          ],
+          type: "doc",
+          id: "reference/hooks/op-stack",
+          label: "OP Stack",
+        },
+        {
+          type: "doc",
+          id: "reference/hooks/arbitrum-L2-to-L1",
+          label: "Arbitrum L2 to L1",
+        },
+        {
+          type: "doc",
+          id: "reference/hooks/polygon-pos",
+          label: "Polygon PoS",
         },
       ],
     },
@@ -411,6 +413,16 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
+        {
+          type: "doc",
+          id: "protocol/ISM/sequence-diagram",
+          label: "Sequence Diagram",
+        },
+        {
+          type: "doc",
+          id: "protocol/ISM/custom-ISM",
+          label: "Override the Default ISM",
+        },
         {
           type: "doc",
           id: "protocol/ISM/multisig-ISM",
@@ -468,6 +480,67 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Use Cases",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "category",
+          label: "Warp Routes",
+          link: {
+            type: "doc",
+            id: "protocol/warp-routes/warp-routes-overview",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/applications/warp-routes",
+              label: "Warp Routes Interface",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-types",
+              label: "Warp Route Types",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-example-usage",
+              label: "Warp Route Example Usage",
+            },
+            {
+              type: "category",
+              label: "Walkthroughs",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-yield-routes",
+                  label: "Warp Routes for Yield Routes",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+                  label:
+                    "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
+                },
+              ],
+            },
+          ],
+        },
+
+        {
+          type: "doc",
+          id: "reference/applications/interchain-account",
+          label: "Interchain Accounts",
+        },
+      ],
+    },
+
+    {
+      type: "category",
       label: "Economic Security",
       link: {
         type: "doc",
@@ -489,7 +562,7 @@ const sidebars = {
         id: "protocol/agents",
       },
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -504,18 +577,102 @@ const sidebars = {
       ],
     },
     {
+      type: "category",
+      label: "Developer Tools",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/cli",
+          label: "CLI",
+        },
+        {
+          type: "category",
+          label: "Libraries",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/libraries/mailboxclient",
+              label: "Mailbox Client",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/router",
+              label: "Router",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/typecasts",
+              label: "TypeCasts",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/message",
+              label: "Message",
+            },
+            {
+              type: "doc",
+              id: "reference/libraries/hookmetadata",
+              label: "Standard Hook Metadata",
+            },
+          ],
+        },
+      ],
+    },
+    {
       type: "doc",
       id: "protocol/non-evm-implementations",
       label: "Non-EVM implementations",
     },
+    {
+      type: "doc",
+      id: "reference/contract-addresses",
+      label: "Addresses",
+    },
+    {
+      type: "doc",
+      id: "reference/domains",
+      label: "Domains",
+    },
+    {
+      type: "doc",
+      id: "reference/latencies",
+      label: "Latencies",
+    },
+    {
+      type: "doc",
+      id: "reference/registries",
+      label: "Registries",
+    },
+    {
+      type: "category",
+      label: "Resources",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/glossary",
+          label: "Glossary",
+        },
+        {
+          type: "doc",
+          id: "faq",
+          label: "FAQ",
+        },
+        {
+          type: "doc",
+          id: "reference/audits",
+          label: "Audits",
+        },
+      ],
+    },
   ],
 
   guidesSidebar: [
-    {
-      type: "doc",
-      id: "guides/deploy-hyperlane-local-agents",
-      label: "Deploy Hyperlane with Local Agents",
-    },
     {
       type: "doc",
       id: "guides/extending-warp-route",
@@ -555,11 +712,6 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "guides/avs-operator-guide",
-      label: "AVS Operator Guide",
-    },
-    {
-      type: "doc",
       id: "guides/deploy-svm-warp-route",
       label: "Deploy an SVM Warp Route",
     },
@@ -591,14 +743,19 @@ const sidebars = {
         },
       ],
     },
-    {
-      type: "doc",
-      id: "faq",
-      label: "FAQ",
-    },
   ],
 
   operateSidebar: [
+    {
+      type: "doc",
+      id: "operate/overview-agents",
+      label: "Overview",
+    },
+    {
+      type: "doc",
+      id: "operate/set-up-agent-keys",
+      label: "Key Management",
+    },
     {
       type: "category",
       label: "Run Validators",
@@ -644,11 +801,6 @@ const sidebars = {
       ],
     },
     {
-      type: "doc",
-      id: "operate/set-up-agent-keys",
-      label: "Agent Keys",
-    },
-    {
       type: "category",
       label: "Agent Config",
       link: {
@@ -665,15 +817,29 @@ const sidebars = {
         },
       ],
     },
+
     {
-      type: "doc",
-      id: "operate/docker-quickstart",
-      label: "Docker Quickstart",
-    },
-    {
-      type: "doc",
-      id: "operate/deploy-with-terraform",
-      label: "Deploy with Terraform",
+      type: "category",
+      label: "Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "operate/docker-quickstart",
+          label: "Docker Quickstart",
+        },
+        {
+          type: "doc",
+          id: "operate/deploy-with-terraform",
+          label: "Deploy with Terraform",
+        },
+        {
+          type: "doc",
+          id: "guides/avs-operator-guide",
+          label: "AVS Operator Guide",
+        },
+      ],
     },
   ],
 };
