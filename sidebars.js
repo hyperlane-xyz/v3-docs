@@ -24,37 +24,6 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "For Smart Contract Devs",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route",
-          label: "Bridge a Token",
-        },
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Bridge UI",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "For Node Operators",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
-        },
-      ],
-    },
-    {
-      type: "category",
       label: "For Chains",
       collapsible: true,
       collapsed: true,
@@ -117,6 +86,37 @@ const sidebars = {
               ],
             },
           ],
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "For Smart Contract Devs",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route",
+          label: "Bridge a Token",
+        },
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Bridge UI",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "For Agent Operators",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
         },
       ],
     },
