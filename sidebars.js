@@ -541,6 +541,28 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Agents",
+      link: {
+        type: "doc",
+        id: "protocol/agents",
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "protocol/agents/relayer",
+          label: "Relayer",
+        },
+        {
+          type: "doc",
+          id: "protocol/agents/validators",
+          label: "Validators",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Use Cases",
       collapsible: true,
       collapsed: false,
@@ -577,44 +599,6 @@ const sidebars = {
           type: "doc",
           id: "reference/applications/interchain-account",
           label: "Interchain Accounts",
-        },
-      ],
-    },
-
-    {
-      type: "category",
-      label: "Economic Security",
-      link: {
-        type: "doc",
-        id: "protocol/economic-security/economic-security",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "protocol/economic-security/hyperlane-avs",
-          label: "Hyperlane AVS",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Agents",
-      link: {
-        type: "doc",
-        id: "protocol/agents",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "protocol/agents/relayer",
-          label: "Relayer",
-        },
-        {
-          type: "doc",
-          id: "protocol/agents/validators",
-          label: "Validators",
         },
       ],
     },
@@ -665,6 +649,43 @@ const sidebars = {
       ],
     },
     {
+      type: "category",
+      label: "Hyperlane Explorer",
+      link: {
+        type: "doc",
+        id: "guides/explorer/explorer",
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/explorer/configuring-pi-chains",
+          label: "Configuring Permissionless Chains",
+        },
+        {
+          type: "doc",
+          id: "guides/explorer/graphql-api",
+          label: "GraphQL API",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Economic Security",
+      link: {
+        type: "doc",
+        id: "protocol/economic-security/economic-security",
+      },
+      items: [
+        {
+          type: "doc",
+          id: "protocol/economic-security/hyperlane-avs",
+          label: "Hyperlane AVS",
+        },
+      ],
+    },
+    {
       type: "doc",
       id: "protocol/non-evm-implementations",
       label: "Alt-VM implementations",
@@ -697,6 +718,11 @@ const sidebars = {
       items: [
         {
           type: "doc",
+          id: "guides/message-debugging",
+          label: "Debugging Message Delivery",
+        },
+        {
+          type: "doc",
           id: "reference/glossary",
           label: "Glossary",
         },
@@ -715,39 +741,6 @@ const sidebars = {
   ],
 
   guidesSidebar: [
-    {
-      type: "doc",
-      id: "guides/message-debugging",
-      label: "Debugging Message Delivery",
-    },
-
-    {
-      type: "category",
-      label: "Hyperlane Explorer",
-      link: {
-        type: "doc",
-        id: "guides/explorer/explorer",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/explorer/explorer-debugging",
-          label: "Explorer Debugging",
-        },
-        {
-          type: "doc",
-          id: "guides/explorer/configuring-pi-chains",
-          label: "Configuring Permissionless Chains",
-        },
-        {
-          type: "doc",
-          id: "guides/explorer/graphql-api",
-          label: "GraphQL API",
-        },
-      ],
-    },
     {
       type: "doc",
       id: "guides/deploy-hyperlane-local-agents",
