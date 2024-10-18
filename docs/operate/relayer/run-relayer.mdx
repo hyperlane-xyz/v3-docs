@@ -1,44 +1,13 @@
 # Run a Relayer
 
-A Hyperlane [Relayer](../../protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
-
 :::tip
 
-We recommend you read through the [**Deploy Hyperlane Local Agents**](../../guides/deploy-hyperlane-local-agents.mdx) guide as well as the [**Run Validators**](../validators/run-validators.mdx) documentation before trying to run a production Relayer.
+- For an introduction on Relayers in Hyperlane, you can check out the [Overview section](/docs/operate/overview-agents.mdx).
+- We recommend you read through the [**Deploy Hyperlane Local Agents**](../../guides/deploy-hyperlane-local-agents.mdx) guide to understand how to configure and run the Relayer locally, as well as the [**Run Validators**](../validators/run-validators.mdx) documentation before trying to run a production Relayer.
 
 :::
 
-Every Hyperlane message requires two transactions to be delivered, one on the origin chain to [send](../../reference/messaging/send.mdx) the message, and one on the destination chain to [receive](../../reference/messaging/receive.mdx) the messages. A Relayer is responsible for sending the second transaction.
-
-```mermaid
-flowchart TB
-    subgraph Origin
-      Sender
-      M_O[(Mailbox)]
-      IGP[InterchainGasPaymaster]
-      Sender -- "id = dispatch()" --> M_O
-      Sender -- "payForGas(id)\n{value: payment}" --> IGP
-    end
-
-    Relayer((Relayer))
-
-    M_O -. "indexing" .-> Relayer
-    IGP -. "paymaster" .- Relayer
-
-    subgraph Destination
-      M_D[(Mailbox)]
-    end
-
-    Relayer -- "process()" --> M_D
-
-    style Sender fill:#efab17
-
-    click IGP https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/igps/InterchainGasPaymaster.sol
-```
-
-Hyperlane Relayers are configured to relay messages between one or more origin chains and destination chains. A Relayer has no special permissions in Hyperlane. If Relayer keys are compromised, only the tokens held by those keys are at risk.
-
-Running a Relayer requires the following:
+## Requirements
 
 - RPC nodes
   - A Relayer uses RPC nodes to read the origin chain(s), and deliver messages to the destination chain(s). The Relayer must be configured with an RPC node for all origin and destination chains.
@@ -50,11 +19,12 @@ Running a Relayer requires the following:
 
 ## Guide
 
-We strongly encourage you to follow the [local agents guide](../../guides/deploy-hyperlane-local-agents.mdx) to understand how to configure and run the Relayer locally.
-
 :::info
-The local agent setup shows how you can run a Relayer on your _local machine_, which is **only for testing and development purposes**.
-:::
+
+- The local agent setup shows how you can run a Relayer on your _local machine_, which is **only for testing and development purposes**.
+- We strongly encourage you to follow the [local agents guide](../../guides/deploy-hyperlane-local-agents.mdx) to understand how to configure and run the Relayer locally.
+
+  :::
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
