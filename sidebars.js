@@ -625,7 +625,7 @@ const sidebars = {
     {
       type: "doc",
       id: "protocol/non-evm-implementations",
-      label: "Non-EVM implementations",
+      label: "Alt-VM implementations",
     },
     {
       type: "doc",

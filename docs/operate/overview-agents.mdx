@@ -2,22 +2,30 @@
 
 The Hyperlane protocol decouples the transport layer from the security layer of cross-chain message passing. To run a deployment, it relies on offchain agents that observe onchain activity and carry out either the transport or security aspects of the protocol.
 
-1. [Validators](docs/protocol/agents/validators.mdx) fulfil the security requirement of the protocol, as part of the [Multisig ISM](docs/protocol/ISM/multisig-ISM.mdx) or the [Hyperlane AVS](docs/protocol/economic-security/hyperlane-avs.mdx), by attesting to the validity of [Mailbox](docs/protocol/mailbox.mdx) messages and making their signatures available to a relayer. This is the agent community operators run if looking to help secure an origin chain, and it's the most important duty one can perform to help decentralize message passing on Hyperlane. **Note that just running a validator doesn't mean it's actively contributing to securing messages:** a Multisig ISM on the destination chain must have enrolled the validator's checkpoint-signing key, and that ISM must be used by message recipients.
-   These agents are implemented in Rust and distributed as Docker images and binaries.
-2. [Relayers](docs/protocol/agents/relayer.mdx) fulfil the message transport requirement of the protocol. They aggregate off-chain security metadata for the [`IInterchainSecurityModule` interface](../reference/ISM/specify-your-ISM) and deliver messages to their recipients. Relaying is permissionless, and one honest relayer running between a chain pair is sufficient for ensuring liveness. Running a relayer is: 1) much more operationally complex than a validator; 2) not required for securing the network; and 3) only recommended for permissionless deployments of Hyperlane.
+1. Hyperlane [Validators](#validator) are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](docs/protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
+2. [Relayers](#relayer) fulfil the message transport requirement of the protocol. They aggregate off-chain security metadata for the [`IInterchainSecurityModule` interface](../reference/ISM/specify-your-ISM) and deliver messages to their recipients.
 
-## Validators
+## Validators {#validators}
 
-Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](docs/protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
+[Validators](docs/protocol/agents/validators.mdx) fulfil the security requirement of the protocol, as part of the [Multisig ISM](docs/protocol/ISM/multisig-ISM.mdx) or the [Hyperlane AVS](docs/protocol/economic-security/hyperlane-avs.mdx), by attesting to the validity of [Mailbox](docs/protocol/mailbox.mdx) messages and making their signatures available to a Relayer.
 
 This signature is stored and made publicly available (e.g. in a S3 bucket), which is then used by the offchain Relayer and Interchain Security Modules onchain. Validators are _not_ networked together and do not need to reach consensus; they also do not regularly submit onchain transactions.
 
-# Relayer
+This is the agent community operators run if looking to help secure an origin chain, and it's the most important duty one can perform to help decentralize message passing on Hyperlane. **Note that just running a Validator doesn't mean it's actively contributing to securing messages:** a Multisig ISM on the destination chain must have enrolled the Validator's checkpoint-signing key, and that ISM must be used by message recipients.
+
+These agents are implemented in Rust and distributed as Docker images and binaries.
+
+👉 Learn more about Validators [here](docs/protocol/agents/validators.mdx).
+
+## Relayer {#relayer}
 
 A Hyperlane [Relayer](docs/protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
 
+Relaying is permissionless, and one honest Relayer running between a chain pair is sufficient for ensuring liveness. Running a Relayer is: 1) much more operationally complex than a Validator; 2) not required for securing the network; and 3) only recommended for permissionless deployments of Hyperlane.
+
 Hyperlane Relayers are configured to relay messages between one or more origin chains and destination chains.
 Every Hyperlane message involves two transactions:
+
 1. To [`dispatch`](docs/reference/messaging/send.mdx) and send a message on the origin chain.
 2. To [`process`](docs/reference/messaging/receive.mdx) and deliver the message on destination chain.
 
@@ -53,3 +61,5 @@ flowchart LR
 
     Relayer -- "process{gasLimit}(...)" --> M_D
 ```
+
+👉 Learn more about Relayers [here](docs/protocol/agents/relayer.mdx).
