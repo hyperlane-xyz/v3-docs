@@ -98,12 +98,63 @@ const sidebars = {
         {
           type: "doc",
           id: "guides/deploy-warp-route",
-          label: "Bridge a Token",
+          label: "Quickstart: Bridge a Token",
         },
         {
           type: "doc",
           id: "guides/deploy-warp-route-UI",
           label: "Deploy a Bridge UI",
+        },
+        {
+          type: "category",
+          label: "Warp Routes",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-yield-routes",
+              label: "Yield Routes",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+              label: "Fast Native Transfer via Custom Gas Tokens",
+            },
+            {
+              type: "doc",
+              id: "guides/extending-warp-route",
+              label: "Extending a Warp Route",
+            },
+            {
+              type: "doc",
+              id: "guides/deploy-svm-warp-route",
+              label: "Deploy an SVM Warp Route",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "guides/create-custom-hook-and-ism",
+          label: "Create a Hook / ISM",
+        },
+        {
+          type: "category",
+          label: "Developer Tips",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/developer-tips/unit-testing",
+              label: "Unit Testing",
+            },
+            {
+              type: "doc",
+              id: "guides/token-faucets",
+              label: "Token Faucets",
+            },
+          ],
         },
       ],
     },
@@ -113,10 +164,20 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
-        {
+        /*{
           type: "doc",
           id: "guides/deploy-hyperlane-local-agents",
           label: "Deploy Hyperlane with Local Agents",
+        },*/
+        {
+          type: "doc",
+          id: "guides/quickstart-validator",
+          label: "Run a Validator",
+        },
+        {
+          type: "doc",
+          id: "guides/quickstart-relayer",
+          label: "Run a Relayer",
         },
       ],
     },
@@ -509,25 +570,6 @@ const sidebars = {
               id: "protocol/warp-routes/warp-routes-example-usage",
               label: "Warp Route Example Usage",
             },
-            {
-              type: "category",
-              label: "Walkthroughs",
-              collapsible: true,
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "protocol/warp-routes/warp-routes-yield-routes",
-                  label: "Warp Routes for Yield Routes",
-                },
-                {
-                  type: "doc",
-                  id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-                  label:
-                    "Warp Routes for Fast Native Transfer via Custom Gas Tokens",
-                },
-              ],
-            },
           ],
         },
 
@@ -675,14 +717,10 @@ const sidebars = {
   guidesSidebar: [
     {
       type: "doc",
-      id: "guides/extending-warp-route",
-      label: "Extending a Warp Route",
-    },
-    {
-      type: "doc",
       id: "guides/message-debugging",
       label: "Debugging Message Delivery",
     },
+
     {
       type: "category",
       label: "Hyperlane Explorer",
@@ -712,36 +750,13 @@ const sidebars = {
     },
     {
       type: "doc",
-      id: "guides/deploy-svm-warp-route",
-      label: "Deploy an SVM Warp Route",
-    },
-    {
-      type: "doc",
-      id: "guides/create-custom-hook-and-ism",
-      label: "Create a Hook / ISM",
+      id: "guides/deploy-hyperlane-local-agents",
+      label: "Deploy Hyperlane with Local Agents",
     },
     {
       type: "doc",
       id: "guides/implementation-guide",
       label: "Implementation Guide",
-    },
-    {
-      type: "category",
-      label: "Developer Tips",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/developer-tips/unit-testing",
-          label: "Unit Testing",
-        },
-        {
-          type: "doc",
-          id: "guides/token-faucets",
-          label: "Token Faucets",
-        },
-      ],
     },
   ],
 
