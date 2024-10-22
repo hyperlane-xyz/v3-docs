@@ -6,26 +6,18 @@ The `MultisigISM` is one of the most commonly used ISM types. These ISMs verify 
 
 ## Multisig Module Types
 
-Based on the following module types, the relayer will encode the appropriately formatted metadata:
+## Multisig Module Types
 
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L18
+There are two types of Multisig ISMs modules:
 
+```solidity
+  enum Types {
+      ...
+      MERKLE_ROOT_MULTISIG,
+      MESSAGE_ID_MULTISIG,
+      ...
+  }
 ```
-
-For these module types, the metadata is formatted by the relayer as follows:
-
-### MessageIdMultisigIsmMetadata
-
-**Type: `Types.MESSAGE_ID_MULTISIG`**
-
-**Format of metadata:**
-
-- `1st component (len == 32 bytes): Origin merkle tree address`
-- `2nd component (len == 32 bytes): Signed checkpoint root`
-- `3rd component (len == 4 bytes): Signed checkpoint index`
-- `4th component (len == threshold * 65 bytes): Validator signatures`
-
-<!-- ```mermaid block-beta columns 4 a["[32 bytes] Origin merkle tree address"]:2 b["[32 bytes] Signed checkpoint root"]:2 c["[4 bytes] Signed checkpoint index"]:1 block:group:3 d["[65 bytes] Validator signatures"] e["[65 bytes] Validator signatures"] f["[65 bytes] Validator signatures"] end ``` -->
 
 ### MerkleRootMultisigIsmMetadata
 
@@ -33,12 +25,29 @@ For these module types, the metadata is formatted by the relayer as follows:
 
 **Format of metadata:**
 
-- `1st component (len == 32 bytes) Origin merkle tree address`
-- `2nd component (len == 4 bytes) Index of message ID in merkle tree`
-- `3rd component (len == 32 bytes) Signed checkpoint message ID`
-- `4th component (len == 1024 bytes) Merkle proof`
-- `5th component (len == 4 bytes) Signed checkpoint index (computed from proof and index)`
-- `6th component (len == threshold * 65 bytes): Validator signatures`
+| **Component**                                | **Length (bytes)** | **Description**                                         |
+| -------------------------------------------- | ------------------ | ------------------------------------------------------- |
+| 1st component                                | 32                 | Origin merkle tree address                              |
+| 2nd component                                | 4                  | Index of message ID in merkle tree                      |
+| 3rd component                                | 32                 | Signed checkpoint message ID                            |
+| 4th component                                | 1024               | Merkle proof                                            |
+| 5th component                                | 4                  | Signed checkpoint index (computed from proof and index) |
+| 6th component (len == threshold \* 65 bytes) | threshold \* 65    | Validator signatures                                    |
+
+### MessageIdMultisigIsmMetadata
+
+**Type: `Types.MESSAGE_ID_MULTISIG`**
+
+**Format of metadata:**
+
+| **Component**                                | **Length (bytes)** | **Description**            |
+| -------------------------------------------- | ------------------ | -------------------------- |
+| 1st component                                | 32                 | Origin merkle tree address |
+| 2nd component                                | 32                 | Signed checkpoint root     |
+| 3rd component                                | 4                  | Signed checkpoint index    |
+| 4th component (len == threshold \* 65 bytes) | threshold \* 65    | Validator signatures       |
+
+<!-- ```mermaid block-beta columns 4 a["[32 bytes] Origin merkle tree address"]:2 b["[32 bytes] Signed checkpoint root"]:2 c["[4 bytes] Signed checkpoint index"]:1 block:group:3 d["[65 bytes] Validator signatures"] e["[65 bytes] Validator signatures"] f["[65 bytes] Validator signatures"] end ``` -->
 
 ## Interface
 
@@ -52,7 +61,7 @@ For these module types, the metadata is formatted by the relayer as follows:
 
 The hyperlane-monorepo contains [`MultisigISM` implementations](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity/contracts/isms/multisig) (including a [legacy](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/LegacyMultisigIsm.sol) version and more gas-efficient [versions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/StaticMultisigIsm.sol) deployable via factories) that application developers can deploy off-the-shelf, specifying their desired configuration.
 
-Developers can configure, for each origin chain, a set of `n` Validators.  Alongisde this, a `threshold` must be configured to specify the number of these validator's signatures (`m`) needed to verify a message.
+Developers can configure, for each origin chain, a set of `n` Validators. Alongisde this, a `threshold` must be configured to specify the number of these validator's signatures (`m`) needed to verify a message.
 
 Validator signatures are **not** specific to an ISM. In other words, developers can configure their `MultisigISM` to use **any** validator that's running on Hyperlane.
 

@@ -11,7 +11,7 @@ To deliver interchain messages, the [relayer](/docs/operate/relayer/run-relayer.
 
 This function takes as parameters the message to deliver, as well as arbitrary metadata that can be specified by the relayer.
 
-The `Mailbox` will pass the message and metadata to the recipient's interchain security module for verification. If the ISM successfully verifies the message, the `Mailbox` delivers the message to the recipient by calling `recipient.handle()`.
+The `Mailbox` will pass the message and metadata to the recipient's Interchain Security Module (ISM) for verification. If the ISM successfully verifies the message, the `Mailbox` delivers the message to the recipient by calling `recipient.handle()`.
 
 <SimpleMessagingDiagram />
 
