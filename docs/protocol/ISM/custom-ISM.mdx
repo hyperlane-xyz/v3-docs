@@ -82,7 +82,7 @@ This is used to signal to the [Relayer](../agents/relayer.mdx) what to include i
 
 :::note
 
-To accomplish this, all ISM contracts implement the ISM interface, which requires `moduleType` to be defined.
+All ISM contracts must implement the ISM interface, which requires `moduleType` to be defined.
 This type is branched on by the Relayer in order to determine the required metadata for that ISM.
 For more information on module types and their metadata formats, see [Protocol](/docs/protocol/ISM/modular-security.mdx#module-type).
 
