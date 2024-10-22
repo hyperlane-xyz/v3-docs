@@ -712,6 +712,24 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Hyperlane Deployment Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
+        },
+        {
+          type: "doc",
+          id: "guides/implementation-guide",
+          label: "Implementation Guide",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Resources",
       collapsible: true,
       collapsed: true,
@@ -739,7 +757,7 @@ const sidebars = {
       ],
     },
   ],
-
+  /*
   guidesSidebar: [
     {
       type: "doc",
@@ -751,7 +769,7 @@ const sidebars = {
       id: "guides/implementation-guide",
       label: "Implementation Guide",
     },
-  ],
+  ],*/
 
   operateSidebar: [
     {

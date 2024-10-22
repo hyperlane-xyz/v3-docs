@@ -409,12 +409,13 @@ const config = {
             position: "left",
             label: "⏩ Get Started",
           },
+          /*
           {
             type: "docSidebar",
             sidebarId: "guidesSidebar",
             position: "left",
             label: "🧭 Guides",
-          },
+          },*/
           /*{
             type: "docSidebar",
             sidebarId: "referenceSidebar",
