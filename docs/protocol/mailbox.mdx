@@ -36,12 +36,14 @@ The `IMailbox` interface exposes two state-mutating functions; `dispatch()` and 
 
 The Mailbox prepends message bodies with a header containing the following fields:
 
-- `version`: The version of the Mailbox contract
-- `nonce`: A unique identifier for each message sent from a given Mailbox
-- `origin`: The domain of the origin chain
-- `sender`: The address of the sender on the origin chain
-- `destination`: The domain of the destination chain
-- `recipient`: The address of the recipient on the destination chain
+| **Field**     | **Description**                                                |
+| ------------- | -------------------------------------------------------------- |
+| `version`     | The version of the Mailbox contract                            |
+| `nonce`       | A unique identifier for each message sent from a given Mailbox |
+| `origin`      | The domain of the origin chain                                 |
+| `sender`      | The address of the sender on the origin chain                  |
+| `destination` | The domain of the destination chain                            |
+| `recipient`   | The address of the recipient on the destination chain          |
 
 See the [`Message` library](../reference/libraries/message.mdx) for more information on the message encoding.
 
@@ -55,16 +57,6 @@ The `nonce` is a monotonically increasing integer for each message sent from a g
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol#L49
 
 ```
-
-</TabItem>
-<TabItem value="cw" label="CosmWasm">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
 
 </TabItem>
 </Tabs>
@@ -83,16 +75,7 @@ The Mailbox maintains a mapping of already delivered `messageId` values to preve
 ```
 
 </TabItem>
-<TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
 </Tabs>
 
 ## Dispatch
