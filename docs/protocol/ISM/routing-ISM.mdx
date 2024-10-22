@@ -6,6 +6,18 @@ This ISM simply switches security models depending on the origin chain of the me
 
 Eventually, you could imagine a `DomainRoutingIsm` routing to different light-client-based ISMs, depending on the type of consensus protocol used on the origin chain.
 
+## Interface
+
+`RoutingISMs` must implement the `IRoutingIsm` interface.
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IRoutingIsm.sol
+
+```
+
+## Configure
+
+The hyperlane-monorepo contains a `RoutingISM` implementation, `DomainRoutingIsm` and `DefaultFallbackRoutingIsm`, that application developers can deploy off-the-shelf, specifying their desired configuration.
+
 ## Customize
 
 The hyperlane-monorepo contains an abstract `RoutingISM` implementation that application developers can fork.

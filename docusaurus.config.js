@@ -409,29 +409,30 @@ const config = {
             position: "left",
             label: "⏩ Get Started",
           },
+          /*
           {
             type: "docSidebar",
             sidebarId: "guidesSidebar",
             position: "left",
             label: "🧭 Guides",
-          },
-          {
+          },*/
+          /*{
             type: "docSidebar",
             sidebarId: "referenceSidebar",
             position: "left",
             label: "📖 Reference",
-          },
+          },*/
           {
             type: "docSidebar",
             sidebarId: "protocolSidebar",
             position: "left",
-            label: "🧠 Protocol",
+            label: "📖 Learn",
           },
           {
             type: "docSidebar",
             sidebarId: "operateSidebar",
             position: "left",
-            label: "⚙️ Operate",
+            label: "⚙️ Agent Operators",
           },
           {
             href: "https://github.com/hyperlane-xyz",

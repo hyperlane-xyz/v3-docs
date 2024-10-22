@@ -6,38 +6,18 @@ import SendTestMessagesPartial from "/docs/partials/deploy-hyperlane/_send-test-
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Deploy Hyperlane with Local Agents
+# Quickstart: Run a Validator
 
 :::tip
 
-This guide is for advanced users who may eventually intend to run Hyperlane agents in a production-like environment. It will cover the basics of how to manually configure and run agents but **it is not a production setup guide**.
+- This guide is for advanced users who may eventually intend to run Hyperlane agents in a production-like environment. It will cover the basics of how to manually configure and run agents but **it is not a production setup guide**.
+- For more detailed guide, check out the [Validators guide](docs/operate/validators/run-validators.mdx)
 
 :::
 
 <TerminologyPartial />
 
-## Overview
-
-There are six steps in this guide:
-
-1. [<b>Set up keys</b>](#1-set-up-keys) that you will use to deploy contracts and run validators and relayers.
-1. [<b>Deploy contracts</b>](#2-deploy-contracts) to the local chain and to every remote chain with which the local chain will be able to send and receive messages.
-1. [<b>Run a validator</b>](#3-run-a-validator) to provide the signatures needed for the Interchain Security Modules you deployed.
-1. [<b>Run a relayer</b>](#4-run-a-relayer) to send and receive messages between the chains you deployed contracts to.
-1. [<b>Send a test message</b>](#5-send-test-messages) to confirm that your relayer is able to deliver messages to and from each pair of chains.
-1. [<b>Deploy a Warp Route</b>](#6-optional-deploy-a-warp-route) to send token value, not just messages, across chains.
-
-## Getting Started
-
-## 1. Set up keys
-
-<SetupKeysPartial />
-
-## 2. Deploy contracts
-
-<DeployContractsPartial />
-
-## 3. Run a validator
+## Run a validator
 
 Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](docs/protocol/ISM/multisig-ISM.mdx). Learn more about what validators do [here](../protocol/agents/validators.mdx).
 
@@ -254,161 +234,3 @@ And run the binary directly:
 
 </TabItem>
 </Tabs>
-
-For further information, check out the [Validators guide](docs/operate/validators/run-validators.mdx).
-
-## 4. Run a relayer
-
-Relayers deliver interchain messages sent between the local and remote chains. Learn more about what relayers do [here](docs/protocol/agents/relayer.mdx).
-
-You should already have set the `CONFIG_FILES` environment variable to the path of the agent config generated in the [agent configs](#agent-configs) step. If not, do so now.
-
-```bash
-export CONFIG_FILES=/full/path/to/configs/agent-config.json
-```
-
-### Configure
-
-There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
-
-| Parameter                       | Description                                                                              |
-| ------------------------------- | ---------------------------------------------------------------------------------------- |
-| `--db`                          | Path for writing persistent data to disk.                                                |
-| `--relayChains`                 | Comma separated names of the chains to relay between. E.g. `ethereum,polygon,avalanche`. |
-| `--allowLocalCheckpointSyncers` | Allows the relayer to look for validator signatures on the local filesystem.             |
-| `--defaultSigner.key`           | A hexadecimal private key used to sign transactions for all chains.                      |
-| `--metrics-port`                | Optional. The port to expose prometheus metrics on, defaults to `9090`.                  |
-
-:::tip
-Your set of relay chains should include both the origin chain and destination chain.
-:::
-
-To learn more about all the parameters you can change, read the [agent configuration reference](docs/operate/config-reference.mdx).
-
-<Tabs groupId="docker">
-<TabItem value="docker" label="Using Docker">
-
-**Mounting directories**
-
-For the relayer, we provide almost the same arguments to Docker as the validator:
-
-1. Set the `$CONFIG_FILES` environment variable to a fixed path within the container.
-1. Mount the agent config file to this fixed path and making it **readonly**.
-1. Mount the persistent data directory at a fixed path within the container.
-1. Mount the validator signatures directory to a fixed path within the container and making it **readonly**.
-
-```sh
-...
--e CONFIG_FILES=/config/agent-config.json \
---mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
---mount type=bind,source="$(pwd)"/hyperlane_db_relayer,target=/hyperlane_db \
---mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures,readonly \
-...
-```
-
-Hardcoding these paths deduplucates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
-
-</TabItem>
-<TabItem value="from-source" label="Building from source">
-
-**Clone and setup**
-
-If you haven't already done so, clone the Hyperlane monorepo and follow the [setup instructions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md) in the `rust` directory.
-
-```sh
-# clone hyperlane monorepo
-git clone git@github.com:hyperlane-xyz/hyperlane-monorepo.git
-
-# install rustup
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# (apple silicon only) install rosetta 2
-softwareupdate --install-rosetta --agree-to-license
-```
-
-</TabItem>
-</Tabs>
-
-### Run
-
-<Tabs groupId="docker">
-<TabItem value="docker" label="Using Docker">
-
-If you haven't already pulled the Docker image, do this now by running:
-
-```sh
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
-```
-
-Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
-
-```sh
-mkdir -p hyperlane_db_validator_<your_chain_name>
-```
-
-Finally, run the relayer:
-
-```sh
-docker run \
-  -it \
-  -e CONFIG_FILES=/config/agent-config.json \
-  --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
-  --mount type=bind,source="$(pwd)"/hyperlane_db_relayer,target=/hyperlane_db \
-  --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures,readonly \
-  gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821 \
-  ./relayer \
-  --db /hyperlane_db \
-  --relayChains <chain_1_name>,<chain_2_name> \
-  --allowLocalCheckpointSyncers true \
-  --defaultSigner.key <your_relayer_key> \
-```
-
-</TabItem>
-<TabItem value="from-source" label="Building from source">
-
-After following the setup instructions, you should now be able to use `cargo` to run the Relayer:
-
-```sh
-cargo run --release --bin relayer -- \
-    --db ./hyperlane_db_relayer \
-    --relayChains <chain_1_name>,<chain_2_name> \
-    --allowLocalCheckpointSyncers true \
-    --defaultSigner.key <your_relayer_key> \
-    --metrics-port 9091
-```
-
-The metrics port is overriden to avoid clashing with the validator.
-
-:::note (optional) Run the binary directly
-
-You can alternatively build out the agent:
-
-```sh
-cargo build --release --bin relayer
-```
-
-And run the binary directly:
-
-```sh
-./target/release/relayer \
-    --db ./hyperlane_db_relayer \
-    --relayChains <chain_1_name>,<chain_2_name> \
-    --allowLocalCheckpointSyncers true \
-    --defaultSigner.key <your_relayer_key> \
-    --metrics-port 9091
-```
-
-:::
-
-</TabItem>
-</Tabs>
-
-For further information, check out the [Relayer guide](docs/operate/relayer/run-relayer.mdx).
-
-## 5. Send test messages
-
-<SendTestMessagesPartial />
-
-## 6. (Optional) Deploy a Warp Route
-
-To connect tokens using your new Hyperlane deployment, see the [Warp Route deployment guide](/docs/guides/deploy-warp-route.mdx).
