@@ -50,37 +50,28 @@ Your Validator IAM user will need write permissions, and it should be publicly r
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": [
-                "s3:GetObject",
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "${BUCKET_ARN}",
-                "${BUCKET_ARN}/*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "${USER_ARN}"
-            },
-            "Action": [
-                "s3:DeleteObject",
-                "s3:PutObject"
-            ],
-            "Resource": "${BUCKET_ARN}/*"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": ["${BUCKET_ARN}", "${BUCKET_ARN}/*"]
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${USER_ARN}"
+      },
+      "Action": ["s3:DeleteObject", "s3:PutObject"],
+      "Resource": "${BUCKET_ARN}/*"
+    }
+  ]
 }
 ```
 
 :::tip
 
-Advanced users may consider using the [S3 terraform module](../deploy-with-terraform.mdx#iam--kms) instead to create the S3 bucket with the correct permissions.
+Advanced users may consider using the [S3 Terraform module](../deploy-with-terraform.mdx#iam--kms) instead to create the S3 bucket with the correct permissions.
 
 :::
