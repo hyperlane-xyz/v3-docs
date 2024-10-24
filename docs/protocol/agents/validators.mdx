@@ -8,7 +8,7 @@ Unlike many other protocols, Hyperlane does **not** have an enshrined validator 
 
 Validator checkpoints are public. This ensures the transport layer is permissionless, since anyone can fetch the signatures and call `Mailbox.process()` to deliver the message. The Relayer merely provides a convenience service for message senders.
 
-It's important that the Validator only signs finalized checkpoints to avoid compromising the safety of the protocol. Signing messages that get reorged out leads to slashing in the economic security module. The Validator agent connects to a single chain to check for new messages. If validating multiple chains, multiple instances of this agent must be run. 
+It's important that the Validator only signs finalized checkpoints to avoid compromising the safety of the protocol. Signing messages that get reorged out leads to slashing in the economic security module. The Validator agent connects to a single chain to check for new messages. If validating multiple chains, multiple instances of this agent must be run.
 
 Hyperlane is developing the validator as a binary implemented in Rust that can be easily run by anyone. Operationally, validators need to run this binary and have access to an RPC provider or node for the chain that they are validating for. We hope that the majority of Hyperlane validators will come from each chain's existing node operator community.
 
@@ -18,14 +18,16 @@ Want to run a validator? Follow the [validators guide](../../operate/validators/
 
 ## In more detail
 
-The Validator agent uses two key types: one to for signing transactions on the blockchain it is validating, and another for signing checkpoints on the Ethereum-compatible ECDSA curve. Since checkpoints are public, when a Validator first starts operating it must announce its checkpoint location via an onchain `announce` transaction. This is the only transaction ever submitted by the Validator agent; the blockchain-specific key is otherwise not used at all. There is also the option of manually announcing a new Validator to avoid configuring the blockchain-specific key. Validators can be announced by anyone.
+The Validator agent uses two key types: one for signing transactions on the blockchain it is validating, and another for signing checkpoints on the Ethereum-compatible ECDSA curve. Since checkpoints are public, when a Validator first starts operating it must announce its checkpoint location via an onchain `announce` transaction. This is the only transaction ever submitted by the Validator agent; the blockchain-specific key is otherwise not used at all. There is also the option of manually announcing a new Validator to avoid configuring the blockchain-specific key. Validators can be announced by anyone.
 
 For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.
 
 ### Multisig ISM Prerequisites
+
 To validate messages from an origin chain, the Validator's checkpoint signing key must be registered in the [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx) specified by the destination chain recipient. This can only be done when the ISM contract is deployed, but this is easily done by sending a `deploy(validatorAddresses, threshold)` transaction on any implementation of [StaticThresholdAddressSetFactory](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/libs/StaticAddressSetFactory.sol#L10).
 
 ### AVS Operator Prerequisites
+
 To run a Validator for the EigenLayer AVS and provide [economic security](../economic-security/economic-security.mdx), the Validator must register as an AVS operator. See more details in the [AVS Operator Guide](../../guides/avs-operator-guide.mdx).
 
 ## Architecture
@@ -33,10 +35,13 @@ To run a Validator for the EigenLayer AVS and provide [economic security](../eco
 The validator is comprised of two main tasks: an Indexer for the origin chain, and a Checkpoint Submitter to publish signed merkle roots.
 
 ### The Indexer
-The only event type indexed by the Validator is `InsertedIntoTree` from the Merkle Tree Hook [contract](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/hooks/MerkleTreeHook.sol#L32) that the [Mailbox](../mailbox.mdx) calls whenever a new message is dispatched. The happens over RPC, and the agent builds an in-memory merkle tree based on the merkle insertion events, which are also cached to a local RocksDB database for fast startup. Whenever a new message is dispatched, the Checkpoint Submitter generates a checkpoint from the in-memory tree and adds it to a queue for processing.
+
+The only event type indexed by the Validator is `InsertedIntoTree` from the Merkle Tree Hook [contract](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/hooks/MerkleTreeHook.sol#L32) that the [Mailbox](../mailbox.mdx) calls whenever a new message is dispatched. This happens over RPC, and the agent builds an in-memory merkle tree based on the merkle insertion events, which are also cached to a local RocksDB database for fast startup. Whenever a new message is dispatched, the Checkpoint Submitter generates a checkpoint from the in-memory tree and adds it to a queue for processing.
 
 ### The Checkpoint Submitter
+
 The checkpoint submitter uses the ECDSA key to sign checkpoints and publish them to highly-available storage. The schema of a checkpoint is
+
 ```rust
 pub struct Checkpoint {
     /// The merkle tree hook address
@@ -54,4 +59,4 @@ The only checkpoint storage that is currently supported by the agent implementat
 
 ### Liveness implications
 
-Depending on the threshold configured in the Multisig ISM, Validator downtime can halt liveness of the protocol. The submitter prioritizes new checkpoints over old ones, so that the Relayer can fetch metadata for newer messages first, which are more likely to not have been delivered yet. 
+Depending on the threshold configured in the Multisig ISM, Validator downtime can halt liveness of the protocol. The submitter prioritizes new checkpoints over old ones, so that the Relayer can fetch metadata for newer messages first, which are more likely to not have been delivered yet.

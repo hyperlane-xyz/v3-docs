@@ -452,7 +452,7 @@ const config = {
               },
               {
                 label: "Contract Interfaces",
-                to: "/docs/reference/messaging/messaging-interface",
+                to: "/docs/protocol/mailbox",
               },
             ],
           },

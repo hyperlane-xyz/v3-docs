@@ -10,6 +10,7 @@ Metadata and artifacts for deployments done by the Hyperlane core team will be a
 https://github.com/hyperlane-xyz/hyperlane-registry
 
 However, community members are encouraged to add their own deployments to this canonical registry. The steps to contribute are as follows:
+
 1. Fork and clone the registry repository
 2. Use the CLI and set the `--registry` flag to the local path of the cloned repository
 3. Execute your commands as needed
@@ -20,8 +21,9 @@ However, community members are encouraged to add their own deployments to this c
 As long as the registry conforms to the same layout and file schemas as the canonical registry, any Github repository URL or local file path can be used instead.
 
 The CLI has two command line arguments for configuring the registry it uses:
+
 - The `--registry` flag sets the primary registry and uses the default Github registry if not set
-- The `--overrides` flag sets an optional additional path which can be useful for forcing specific overrides of the default data, for example to use a different RPC URL in a chain's metadada.
+- The `--overrides` flag sets an optional additional path which can be useful for forcing specific overrides of the default data, for example to use a different RPC URL in a chain's metadata.
 
 Once your custom registry additions/updates are complete and tested, consider opening a pull request to the canonical registry so that others can benefit from your deployments.
 
@@ -46,9 +48,9 @@ The simplest way to access the registry data would be to import the desired part
 
 ```ts
 // Via the base package
-import { ethereum, ethereumAddresses } from '@hyperlane-xyz/registry';
+import { ethereum, ethereumAddresses } from "@hyperlane-xyz/registry";
 // Or via sub-exports for more optimal bundles if your bundler allows it
-import { metadata, addresses } from '@hyperlane-xyz/registry/chains/ethereum';
+import { metadata, addresses } from "@hyperlane-xyz/registry/chains/ethereum";
 ```
 
 #### Via the utilities (dynamic)
@@ -56,8 +58,7 @@ import { metadata, addresses } from '@hyperlane-xyz/registry/chains/ethereum';
 If you need to ensure you have the latest data, registry content can be fetched on-the-fly with the `GithubRegistry` class.
 
 ```ts
-import { GithubRegistry } from '@hyperlane-xyz/registry';
+import { GithubRegistry } from "@hyperlane-xyz/registry";
 const registry = new GithubRegistry();
 const chainMetadata = await registry.getMetadata();
 ```
-
