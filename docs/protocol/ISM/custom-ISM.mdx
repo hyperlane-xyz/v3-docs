@@ -1,0 +1,95 @@
+# Overriding the default ISM
+
+Developers can specify or override the default ISM by implementing the `ISpecifiesInterchainSecurityModule` interface in their application.
+
+Specifically, this interface must be implemented in the same smart contract that implements `handle()`.
+
+```solidity
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity >=0.6.11;
+
+interface ISpecifiesInterchainSecurityModule {
+    function interchainSecurityModule()
+        external
+        view
+        returns (IInterchainSecurityModule);
+}
+```
+
+If no ISM is specified, or if the specified ISM is the null address, whatever ISM is configured as the default on the destination chain Mailbox will be used.
+
+## ISM Interface
+
+ISMs must implement the `IInterchainSecurityModel()` interface. This interface consists of two functions.
+
+```solidity
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity >=0.6.11;
+
+interface IInterchainSecurityModule {
+    /**
+     * @notice Returns an enum that represents the type of security model
+     * encoded by this ISM.
+     * @dev Relayers infer how to fetch and format metadata.
+     */
+    function moduleType() external view returns (uint8);
+
+    /**
+     * @notice Defines a security model responsible for verifying interchain
+     * messages based on the provided metadata.
+     * @param _metadata Off-chain metadata provided by a relayer, specific to
+     * the security model encoded by the module (e.g. validator signatures)
+     * @param _message Hyperlane encoded interchain message
+     * @return True if the message was verified
+     */
+    function verify(bytes calldata _metadata, bytes calldata _message)
+        external
+        returns (bool);
+}
+```
+
+### Verify
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L27-L38
+
+```
+
+The primary function that ISMs must implement is `verify()`. The [Mailbox](../mailbox.mdx) will call `IInterchainSecurityModule.verify()` before delivering a message to its recipient. If `verify()` reverts or returns `false`, the message will not be delivered.
+
+The `verify()` function takes two parameters:
+
+- The first, `_metadata`, consists of arbitrary bytes provided by the [Relayer](../agents/relayer.mdx). Typically, these bytes are specific to the ISM. For example, the `_metadata` for a [Multisig ISM](multisig-ISM.mdx) must include validator signatures.
+
+- The second, `_message`, consists of the Hyperlane message being verified. ISMs can use this to inspect details about the message being verified. For example, a [Multisig ISM](multisig-ISM.mdx) could change validator sets based on the origin chain of the message.
+
+:::warning
+See the [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) library for more information on the format of the Hyperlane message passed to `verify()`.
+:::
+
+### Module type
+
+The secondary function that ISMs must implement is `moduleType()`.
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L20-L25
+
+```
+
+This is used to signal to the [Relayer](../agents/relayer.mdx) what to include in `_metadata`. ISMs **must** return one of the supported module types.
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L5-L18
+
+```
+
+:::note
+
+All ISM contracts must implement the ISM interface, which requires `moduleType` to be defined.
+This type is branched on by the Relayer in order to determine the required metadata for that ISM.
+For more information on module types and their metadata formats, see [Protocol](/docs/protocol/ISM/modular-security.mdx#module-type).
+
+:::
+
+:::tip
+
+For more information on the available module types and their respective metadata, please visit the ISM docs outlined in this section, e.g. [Multisig ISM](./multisig-ISM.mdx).
+
+:::

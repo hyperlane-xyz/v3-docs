@@ -4,7 +4,7 @@
 
 Hyperlane validators are light offchain agents responsible for security - they observe messages on an origin chain's [Mailbox](../protocol/mailbox.mdx) and if needed sign a merkle root that attests the current state of the mailbox.
 
-This signature is stored and made publicly available (e.g. in a S3 bucket), which is then used by the offchain Relayer and Interchain Security Modules onchain. Validators are _not_ networked together and do not need to reach consensus.
+This signature is stored and made publicly available (e.g. in an S3 bucket), which is then used by the offchain Relayer and Interchain Security Modules onchain. Validators are _not_ networked together and do not need to reach consensus.
 
 As you follow this guide, you'll run a Hyperlane validator on [**any of the chains**](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains) the protocol is live on, including Arbitrum, Optimism, BSC, Base, Blast, Linea, Mode, and Polygon. After that you'll link your validator with your EigenLayer Operator by interacting with the AVS contract on Ethereum Mainnet or Holesky. This process, like the entire Hyperlane framework, is open source and permissionless - no whitelisting or staking minimums needed.
 
@@ -56,7 +56,7 @@ Your AVS signing key can be reused across multiple validators and doesn't requir
 
 ### Confirming registration
 
-To confirm you are registed on mainnet, run `hyperlane avs check --chain ethereum --operatorAddress <AVS_SIGNING_ADDRESS>` using the Hyperlane CLI and see if your validator address is there. This query may take a few minutes to complete.
+To confirm you are registered on mainnet, run `hyperlane avs check --chain ethereum --operatorAddress <AVS_SIGNING_ADDRESS>` using the Hyperlane CLI and see if your validator address is there. This query may take a few minutes to complete.
 
 Additionally, you can search your address under the `operatorRegistry` function [on Etherscan](https://etherscan.io/address/0x272CF0BB70D3B4f79414E0823B426d2EaFd48910#readProxyContract#F12) or check on EigenLayer's UI for [Ethereum](https://app.eigenlayer.xyz/avs/0xe8e59c6c8b56f2c178f63bcfc4ce5e5e2359c8fc) or [Holesky](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab).
 

@@ -1,0 +1,18 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import ReorgPeriodTable from "@site/src/components/ReorgPeriodTable";
+
+# Latencies
+
+Validators must wait a certain number of blocks to be mined before they are considered valid and [reorg-safe](https://www.alchemy.com/overviews/what-is-a-reorg). Without this, validators could be slashed since they may have signed a checkpoint that is no longer valid.
+
+Refer to the following sections for block finality configuration used by the Hyperlane validators.
+
+<Tabs groupId="environment">
+<TabItem value="mainnet" label="Mainnet">
+<ReorgPeriodTable environment="mainnet"/>
+</TabItem>
+<TabItem value="testnet" label="Testnet">
+<ReorgPeriodTable environment="testnet"/>
+</TabItem>
+</Tabs>

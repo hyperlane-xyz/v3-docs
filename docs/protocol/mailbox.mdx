@@ -1,30 +1,84 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
+
 # Mailbox
 
 The Hyperlane `Mailbox` smart contracts expose an on-chain API for sending and receiving interchain messages. There is a `Mailbox` contract deployed on every chain Hyperlane supports.
 
 The network of `Mailboxes` facilitates the connective tissue between blockchains that developers leverage to create interchain applications, and add interchain functionality to their existing applications.
 
+<SimpleMessagingDiagram />
+
+- To [**send**](../reference/messaging/send.mdx) interchain messages, call the `dispatch` function.
+- To [**receive**](../reference/messaging/receive.mdx) interchain messages, implement the `handle` function.
+
 ## Interface
 
-The `IMailbox` interface exposes two state-mutating functions; `dispatch()` and `process()`, which are used to send and receive messages, respectively.
+The [`IMailbox`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMailbox.sol) interface exposes two state-mutating functions; `dispatch()` and `process()`, which are used to send and receive messages, respectively.
 
-```solidity
-// SPDX-License-Identifier: MIT OR Apache-2.0
-pragma solidity >=0.8.0;
+<details>
+<summary>`IMailbox` Interface</summary>
 
-interface IMailbox {
-    function dispatch(
-        uint32 _destinationDomain,
-        bytes32 _recipientAddress,
-        bytes calldata _messageBody
-    ) external returns (bytes32);
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
 
-    function process(bytes calldata _metadata, bytes calldata _message)
-        external;
-}
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol
+
 ```
 
-### Dispatch
+</TabItem>
+</Tabs>
+</details>
+
+### Message Headers
+
+The Mailbox prepends message bodies with a header containing the following fields:
+
+| **Field**     | **Description**                                                |
+| ------------- | -------------------------------------------------------------- |
+| `version`     | The version of the Mailbox contract                            |
+| `nonce`       | A unique identifier for each message sent from a given Mailbox |
+| `origin`      | The domain of the origin chain                                 |
+| `sender`      | The address of the sender on the origin chain                  |
+| `destination` | The domain of the destination chain                            |
+| `recipient`   | The address of the recipient on the destination chain          |
+
+See the [`Message` library](../reference/libraries/message.mdx) for more information on the message encoding.
+
+### Uniqueness
+
+The `nonce` is a monotonically increasing integer for each message sent from a given Mailbox. It is incremented each time a message is dispatched to serve as a separator for otherwise identical messages.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol#L49
+
+```
+
+</TabItem>
+</Tabs>
+
+The `messageId` is a globally unique message identifier, returned from the `dispatch` call, computed as the `keccak256` hash of the message (with headers).
+
+### Replay Protection
+
+The Mailbox maintains a mapping of already delivered `messageId` values to prevent replay attacks. If a message is received with a `messageId` that has already been delivered, the message is rejected.
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol#L51
+
+```
+
+</TabItem>
+
+</Tabs>
+
+## Dispatch
 
 To send interchain messages, developers call `Mailbox.dispatch()`.
 
@@ -32,7 +86,7 @@ This function takes as parameters the message contents, the destination chain ID
 
 Hyperlane's proof of stake protocol uses this merkle tree to verify fraud proofs.
 
-### Process
+## Process
 
 To deliver interchain messages, the [relayer](./agents/relayer.mdx) calls `Mailbox.process()`.
 

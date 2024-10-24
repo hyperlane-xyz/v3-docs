@@ -1,15 +1,25 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-import MessagingIsmDiagram from '@site/src/diagrams/messaging-isms.md';
+import MessagingIsmDiagram from "@site/src/diagrams/messaging-isms.md";
 
-import SimpleMessagingDiagram from '@site/src/diagrams/messaging-simple.md';
+import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
 
 # Receive a message
 
-Contracts can receive interchain messages by implementing the `handle` function.
+To deliver interchain messages, the [relayer](/docs/operate/relayer/run-relayer.mdx) calls `Mailbox.process()`.
 
-<SimpleMessagingDiagram/>
+This function takes as parameters the message to deliver, as well as arbitrary metadata that can be specified by the relayer.
+
+The `Mailbox` will pass the message and metadata to the recipient's Interchain Security Module (ISM) for verification. If the ISM successfully verifies the message, the `Mailbox` delivers the message to the recipient by calling `recipient.handle()`.
+
+<SimpleMessagingDiagram />
+
+:::info
+
+See [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)for more details on Hyperlane message encoding
+
+:::
 
 ## Handle
 
@@ -23,6 +33,7 @@ To ensure only valid interchain messages are accepted, it is important to restri
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMessageRecipient.sol#L5-L9
+
 ```
 
 **Parameters**
@@ -33,21 +44,15 @@ To ensure only valid interchain messages are accepted, it is important to restri
 
 :::info
 Sender addresses are left-padded to `bytes32` for compatibility with virtual machines that are addressed differently. The following utility is provided in the [`TypeCasts` library](../libraries/typecasts.mdx) for convenience.
+
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/libs/TypeCasts.sol#L10-L13
+
 ```
+
 :::
 
 </TabItem>
-<TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
 </Tabs>
 
 ### Access Control
@@ -60,19 +65,11 @@ The following utility is provided in the [`MailboxClient` library](../libraries/
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/MailboxClient.sol#L45-L51
+
 ```
 
 </TabItem>
-<TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
 </Tabs>
 
 ### Examples
@@ -81,19 +78,11 @@ The following utility is provided in the [`MailboxClient` library](../libraries/
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/test/TestRecipient.sol#L30-L38
+
 ```
 
 </TabItem>
-<TabItem value="cw" label="CosmWasm">
 
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
 </Tabs>
 
 ## Verify
@@ -108,6 +97,7 @@ To query the default ISM address, you can call the `defaultIsm` function.
 <TabItem value="sol" label="Solidity">
 
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol#L53
+
 ```
 
 </TabItem>
@@ -117,23 +107,4 @@ To query the default ISM address, you can call the `defaultIsm` function.
 
 To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages. The Mailbox will defer to this ISM when specified.
 
-<MessagingIsmDiagram/>
-
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol#L38-L41
-```
-
-</TabItem>
-<TabItem value="cw" label="CosmWasm">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-<TabItem value="sl" label="Sealevel">
-
-🚧 Coming soon! 🚧
-
-</TabItem>
-</Tabs>
+<MessagingIsmDiagram />

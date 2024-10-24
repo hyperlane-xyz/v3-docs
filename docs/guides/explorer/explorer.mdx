@@ -1,0 +1,37 @@
+# How to Use the Hyperlane Explorer
+
+The [Hyperlane Explorer](https://explorer.hyperlane.xyz/) can be used to find messages on any network with a Hyperlane deployment. Drill down into messages for more details about their properties and status.
+
+Messages to/from [core chains](/docs/reference/domains.mdx) will be searchable by transaction hash, message ID, or sender/recipient address. For other chains, the explorer can be configured to search for messages by providing it a chain config.
+
+### Searching for messages
+
+The [Hyperlane Explorer](https://explorer.hyperlane.xyz/) supports searching for messages using any of the following values:
+
+- Hash of the transaction that initiated the message (origin tx)
+- Hash of the transaction that delivered message (destination tx)
+- Address of the account that sent the origin transaction
+- Address of the account that sent the destination transaction
+- Address of the message sender
+- Address of the message recipient
+- ID of the message
+
+To search, enter your query into the top search bar. You can use the Origin Chain, Destination Chain, and Time filter options to narrow down your search.
+
+![Explorer search bar](/img/explorersearchbar.png)
+
+:::info
+
+Note, by default the explorer will only find message on [core Hyperlane chains](/docs/reference/domains.mdx).
+
+To view messages send to and/or from other chains, see [configuring PI Chains](./configuring-pi-chains.mdx).
+
+:::
+
+### Permissionless Interoperability
+
+The explorer can be configured to search for messages on any chain with a Hyperlane deployment. See [configuring PI Chains](./configuring-pi-chains.mdx) for details.
+
+### Debugging Messages
+
+If you're trying to debug a problem with message delivery, the [explorer debugging](./explorer-debugging.mdx) page has useful tips.
