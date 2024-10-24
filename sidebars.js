@@ -114,7 +114,7 @@ const sidebars = {
             {
               type: "doc",
               id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Yield Routes",
+              label: "Deploy Yield Routes",
             },
             {
               type: "doc",
