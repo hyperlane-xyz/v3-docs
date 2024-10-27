@@ -47,7 +47,7 @@ This means that the `relayer` address will be allowed to call the Warp Route’s
 By default, `warp read` will save the output to `CURRENT_DIR/configs/warp-route-deployment.yaml`. Follow these steps using the CLI to transfer the existing ownership to another address.
 
 ## Step 1: Configuration
-Update the `warp-route-deployment.yaml` by **removing** the `trustedRelayerIsm` block from `modules` . Alternatively, you can configure the entire `modules` block as desired.
+Update the `warp-route-deployment.yaml` by **removing** the `trustedRelayerIsm` block from `modules`. Alternatively, you can configure the entire `modules` block as desired.
 
 ```diff title="warp-route-deployment.yaml"
 yourchain:
@@ -83,7 +83,7 @@ You should see a batch of transactions executed on chain, and a final message in
 
 ## Step 3: Confirm
 
-To confirm that the trusted relayer was successfully removed using the Hyperlane CLI, run the folllowing command with your token symbol and the chain it is deployed on:
+To confirm that the trusted relayer was successfully removed using the Hyperlane CLI, run the following command with your token symbol and the chain it is deployed on:
 
 <WarpReadSymbolChainPartial />
 
