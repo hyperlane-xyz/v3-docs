@@ -145,7 +145,7 @@ To solve this issue, you can mount directories on your file system into the cont
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration between docker instances running validators for different origin chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the chain name and validator key.
+Hardcoding these paths deduplicates the configuration between docker instances running validators for different origin chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the chain name and validator key.
 
 ```sh
 ...
@@ -280,7 +280,7 @@ There are numerous parameters that validators can be configured with. For this g
 | `--metrics-port`                | Optional. The port to expose prometheus metrics on, defaults to `9090`.                  |
 
 :::tip
-Your set of relay chains should include both the origin chain and destination chain.
+Your set of relay chains should include both the origin chain and the destination chain.
 :::
 
 To learn more about all the parameters you can change, read the [agent configuration reference](docs/operate/config-reference.mdx).
@@ -306,7 +306,7 @@ For the relayer, we provide almost the same arguments to Docker as the validator
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
+Hardcoding these paths deduplicates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
 
 </TabItem>
 <TabItem value="from-source" label="Building from source">
