@@ -428,7 +428,7 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey"
 
 **Requires:** `chains.<chain_name>.signer.type = "hexKey" | undefined`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -473,7 +473,7 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46
 
 **Requires:** `chains.<chain_name>.signer.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -514,7 +514,7 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum"
 
 **Requires:** `chains.<chain_name>.signer.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -705,7 +705,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
     OR chains.`<chain_name>`.protocol = "cosmos" | "sealevel" | "fuel"
 ```
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:**
 
@@ -933,7 +933,7 @@ export HYP_DEFAULTSIGNER_TYPE="hexKey"
 
 **Requires:** `defaultsigner.type = "hexKey" | undefined`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -970,7 +970,7 @@ export HYP_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875e
 
 **Requires:** `defaultsigner.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -1007,7 +1007,7 @@ export HYP_DEFAULTSIGNER_ID="alias/validator-signer-ethereum"
 
 **Requires:** `defaultsigner.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -1242,7 +1242,7 @@ export HYP_VALIDATOR_TYPE="hexKey"
 
 **Requires:** `validator.type = "hexKey" | undefined`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -1279,7 +1279,7 @@ export HYP_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec
 
 **Requires:** `validator.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -1316,7 +1316,7 @@ export HYP_VALIDATOR_ID="alias/validator-signer-ethereum"
 
 **Requires:** `validator.type = "aws"`
 
-**Optional:** No (iff requirements are met)
+**Optional:** No (if requirements are met)
 
 **Agents:** All
 
@@ -1387,7 +1387,7 @@ export HYP_CHECKPOINTSYNCER_TYPE="localStorage"
 
 **Requires:** `checkpointsyncer.type = "localStorage"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (if conditions are met)
 
 **Agents:** Validator
 
@@ -1424,7 +1424,7 @@ export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer"
 
 **Requires:** `checkpointsyncer.type = "s3"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (if conditions are met)
 
 **Agents:** Validator
 
@@ -1461,7 +1461,7 @@ export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
 
 **Requires:** `checkpointsyncer.type = "s3"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (if conditions are met)
 
 **Agents:** Validator
 
@@ -1498,7 +1498,7 @@ export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum"
 
 **Requires:** `checkpointsyncer.type = "s3"`
 
-**Optional:** No (iff conditions are met)
+**Optional:** No (if conditions are met)
 
 **Agents:** Validator
 
@@ -1531,7 +1531,7 @@ export HYP_CHECKPOINTSYNCER_REGION="us-east-1"
 
 ## interval
 
-**Description:** How frequently the validator should check for new checkpoints in seconds. See also [latencies](../reference/latencies.mdx).
+**Description:** How frequently the validator should check for new checkpoints in seconds? See also [latencies](../reference/latencies.mdx).
 
 **Optional:** No
 
