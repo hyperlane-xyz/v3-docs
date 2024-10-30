@@ -473,10 +473,24 @@ const sidebars = {
         },
       ],
     },
+
     {
-      type: "doc",
-      id: "protocol/non-evm-implementations",
-      label: "Alt-VM implementations",
+      type: "category",
+      label: "Alt-VM Implementations & Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "protocol/non-evm-implementations",
+          label: "Alt-VM implementations",
+        },
+        {
+          type: "doc",
+          id: "guides/implementation-guide",
+          label: "Implementation Guide",
+        },
+      ],
     },
     {
       type: "doc",
@@ -508,11 +522,6 @@ const sidebars = {
           type: "doc",
           id: "guides/deploy-hyperlane-local-agents",
           label: "Deploy Hyperlane with Local Agents",
-        },
-        {
-          type: "doc",
-          id: "guides/implementation-guide",
-          label: "Implementation Guide",
         },
       ],
     },
