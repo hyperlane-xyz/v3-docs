@@ -23,67 +23,64 @@ const sidebars = {
       label: "Overview",
     },
     {
+      type: "doc",
+      id: "deploy-hyperlane",
+      label: "Connect Your Chain",
+    },
+    {
+      type: "doc",
+      id: "guides/deploy-warp-route",
+      label: "Bridge a Token",
+    },
+    {
+      type: "doc",
+      id: "deploy-hyperlane-troubleshooting",
+      label: "Troubleshoot",
+    },
+    {
       type: "category",
-      label: "For Chains",
+      label: "Go to Production",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "doc",
-          id: "deploy-hyperlane",
-          label: "Connect Your Chain",
-        },
-        {
-          type: "doc",
-          id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshoot",
+          id: "production",
+          label: "Production Overview",
         },
         {
           type: "category",
-          label: "Go to Production",
+          label: "Core Deployment",
           collapsible: true,
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "production",
-              label: "Production Overview",
+              id: "guides/update-mailbox-default-ism",
+              label: "Update Mailbox Default ISM",
             },
             {
-              type: "category",
-              label: "Core Deployment",
-              collapsible: true,
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "guides/update-mailbox-default-ism",
-                  label: "Update Mailbox Default ISM",
-                },
-                {
-                  type: "doc",
-                  id: "guides/transfer-mailbox-ownership",
-                  label: "Transfer Mailbox Ownership",
-                },
-              ],
+              type: "doc",
+              id: "guides/transfer-mailbox-ownership",
+              label: "Transfer Mailbox Ownership",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Warp Route Deployment",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/remove-trusted-relayer",
+              label: "Remove Trusted Relayer",
             },
             {
-              type: "category",
-              label: "Warp Route Deployment",
-              collapsible: true,
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "guides/remove-trusted-relayer",
-                  label: "Remove Trusted Relayer",
-                },
-                {
-                  type: "doc",
-                  id: "guides/transfer-warp-route-ownership",
-                  label: "Transfer Ownership",
-                },
-              ],
+              type: "doc",
+              id: "guides/transfer-warp-route-ownership",
+              label: "Transfer Ownership",
             },
           ],
         },
@@ -91,15 +88,10 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "For Smart Contract Devs",
+      label: "Guides",
       collapsible: true,
       collapsed: true,
       items: [
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route",
-          label: "Quickstart: Bridge a Token",
-        },
         {
           type: "doc",
           id: "guides/deploy-warp-route-UI",
@@ -136,39 +128,17 @@ const sidebars = {
         {
           type: "doc",
           id: "guides/create-custom-hook-and-ism",
-          label: "Create a Hook / ISM",
-        },
-        {
-          type: "category",
-          label: "Developer Tips",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/developer-tips/unit-testing",
-              label: "Unit Testing",
-            },
-            {
-              type: "doc",
-              id: "guides/token-faucets",
-              label: "Token Faucets",
-            },
-          ],
+          label: "Create a Hook/ISM",
         },
       ],
     },
+    /*
     {
       type: "category",
       label: "For Agent Operators",
       collapsible: true,
       collapsed: true,
       items: [
-        /*{
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
-        },*/
         {
           type: "doc",
           id: "guides/quickstart-validator",
@@ -181,216 +151,8 @@ const sidebars = {
         },
       ],
     },
+    */
   ],
-  /*
-  referenceSidebar: [
-    
-    {
-      type: "category",
-      label: "General Message Passing",
-      link: {
-        type: "doc",
-        id: "reference/messaging/messaging-interface",
-      },
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "reference/messaging/send",
-          label: "Send a message",
-        },
-        {
-          type: "doc",
-          id: "reference/messaging/receive",
-          label: "Receive a message",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Post-Dispatch Hooks",
-      link: {
-        type: "doc",
-        id: "reference/hooks/overview",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/hooks/interchain-gas",
-          label: "Interchain Gas",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/op-stack",
-          label: "OP Stack",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/arbitrum-L2-to-L1",
-          label: "Arbitrum L2 to L1",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/polygon-pos",
-          label: "Polygon PoS",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Interchain Security Modules",
-      link: {
-        type: "doc",
-        id: "reference/ISM/specify-your-ISM",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/ISM/multisig-ISM-interface",
-          label: "Multisig",
-        },
-        {
-          type: "doc",
-          id: "reference/ISM/routing-ISM-interface",
-          label: "Routing",
-        },
-        {
-          type: "doc",
-          id: "reference/ISM/aggregation-ISM-interface",
-          label: "Aggregation",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Libraries",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/libraries/mailboxclient",
-          label: "Mailbox Client",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/router",
-          label: "Router",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/typecasts",
-          label: "TypeCasts",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/message",
-          label: "Message",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/hookmetadata",
-          label: "Standard Hook Metadata",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Applications",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "reference/applications/warp-routes",
-          label: "Warp Routes",
-        },
-        {
-          type: "doc",
-          id: "reference/applications/interchain-account",
-          label: "Interchain Accounts",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Typescript SDK",
-      link: {
-        type: "doc",
-        id: "reference/typescript-sdk/sdk-overview",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/multiprovider",
-          label: "RPC Providers",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/deploying-contracts",
-          label: "Deployment",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/testing-contracts",
-          label: "Interchain Testing",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/quoting-gas",
-          label: "Quoting Gas Payments",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/app-abstraction",
-          label: "App Abstraction",
-        },
-      ],
-    },
-    {
-      type: "doc",
-      id: "reference/contract-addresses",
-      label: "Addresses",
-    },
-    {
-      type: "doc",
-      id: "reference/domains",
-      label: "Domains",
-    },
-    {
-      type: "doc",
-      id: "reference/latencies",
-      label: "Latencies",
-    },
-    {
-      type: "doc",
-      id: "reference/registries",
-      label: "Registries",
-    },
-    {
-      type: "doc",
-      id: "reference/cli",
-      label: "CLI",
-    },
-    {
-      type: "doc",
-      id: "reference/glossary",
-      label: "Glossary",
-    },
-    {
-      type: "doc",
-      id: "reference/audits",
-      label: "Audits",
-    },
-  ],    */
-
   protocolSidebar: [
     {
       type: "doc",
@@ -399,165 +161,188 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Mailbox",
-      link: {
-        type: "doc",
-        id: "protocol/mailbox",
-      },
+      label: "Protocol",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "category",
-          label: "General Message Passing",
+          label: "Mailbox",
+          link: {
+            type: "doc",
+            id: "protocol/mailbox",
+          },
           collapsible: true,
           collapsed: true,
           items: [
             {
-              type: "doc",
-              id: "reference/messaging/send",
-              label: "Send a message",
+              type: "category",
+              label: "General Message Passing",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "reference/messaging/send",
+                  label: "Send a message",
+                },
+                {
+                  type: "doc",
+                  id: "reference/messaging/receive",
+                  label: "Receive a message",
+                },
+              ],
             },
             {
               type: "doc",
-              id: "reference/messaging/receive",
-              label: "Receive a message",
+              id: "protocol/interchain-gas-payment",
+              label: "Interchain Gas Payment",
             },
           ],
-        },
-        {
-          type: "doc",
-          id: "protocol/interchain-gas-payment",
-          label: "Interchain Gas Payment",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Post-Dispatch Hooks",
-      link: {
-        type: "doc",
-        id: "reference/hooks/overview",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/hooks/interchain-gas",
-          label: "Interchain Gas",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/op-stack",
-          label: "OP Stack",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/arbitrum-L2-to-L1",
-          label: "Arbitrum L2 to L1",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/polygon-pos",
-          label: "Polygon PoS",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Interchain Security Modules",
-      link: {
-        type: "doc",
-        id: "protocol/ISM/modular-security",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "protocol/ISM/sequence-diagram",
-          label: "Sequence Diagram",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/custom-ISM",
-          label: "Override the Default ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/multisig-ISM",
-          label: "Multisig ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/routing-ISM",
-          label: "Routing ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/aggregation-ISM",
-          label: "Aggregation ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/ccip-read-ISM",
-          label: "CCIP-Read ISM",
         },
         {
           type: "category",
-          label: "Community ISMs",
+          label: "Post-Dispatch Hooks",
+          link: {
+            type: "doc",
+            id: "reference/hooks/overview",
+          },
           collapsible: true,
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "protocol/ISM/third-party-ISMs/wormhole-ISM",
-              label: "Wormhole ISM",
+              id: "reference/hooks/interchain-gas",
+              label: "Interchain Gas",
             },
             {
               type: "doc",
-              id: "protocol/ISM/third-party-ISMs/optimistic-ISM",
-              label: "Optimistic ISM",
+              id: "reference/hooks/op-stack",
+              label: "OP Stack",
             },
             {
               type: "doc",
-              id: "protocol/ISM/third-party-ISMs/OPStack-ISM",
-              label: "OP Stack ISM",
+              id: "reference/hooks/arbitrum-L2-to-L1",
+              label: "Arbitrum L2 to L1",
             },
             {
               type: "doc",
-              id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
-              label: "Polygon PoS ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
-              label: "Arbitrum L2 to L1 ISM",
+              id: "reference/hooks/polygon-pos",
+              label: "Polygon PoS",
             },
           ],
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Agents",
-      link: {
-        type: "doc",
-        id: "protocol/agents",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
         {
-          type: "doc",
-          id: "protocol/agents/relayer",
-          label: "Relayer",
+          type: "category",
+          label: "Interchain Security Modules",
+          link: {
+            type: "doc",
+            id: "protocol/ISM/modular-security",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/ISM/sequence-diagram",
+              label: "Sequence Diagram",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/custom-ISM",
+              label: "Override the Default ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/multisig-ISM",
+              label: "Multisig ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/routing-ISM",
+              label: "Routing ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/aggregation-ISM",
+              label: "Aggregation ISM",
+            },
+            {
+              type: "doc",
+              id: "protocol/ISM/ccip-read-ISM",
+              label: "CCIP-Read ISM",
+            },
+            {
+              type: "category",
+              label: "Community ISMs",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/wormhole-ISM",
+                  label: "Wormhole ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/optimistic-ISM",
+                  label: "Optimistic ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/OPStack-ISM",
+                  label: "OP Stack ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
+                  label: "Polygon PoS ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
+                  label: "Arbitrum L2 to L1 ISM",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Economic Security",
+              link: {
+                type: "doc",
+                id: "protocol/economic-security/economic-security",
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/economic-security/hyperlane-avs",
+                  label: "Hyperlane AVS",
+                },
+              ],
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "protocol/agents/validators",
-          label: "Validators",
+          type: "category",
+          label: "Agents",
+          link: {
+            type: "doc",
+            id: "protocol/agents",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/agents/relayer",
+              label: "Relayer",
+            },
+            {
+              type: "doc",
+              id: "protocol/agents/validators",
+              label: "Validators",
+            },
+          ],
         },
       ],
     },
@@ -646,42 +431,45 @@ const sidebars = {
             },
           ],
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Hyperlane Explorer",
-      link: {
-        type: "doc",
-        id: "guides/explorer/explorer",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
         {
-          type: "doc",
-          id: "guides/explorer/configuring-pi-chains",
-          label: "Configuring Permissionless Chains",
+          type: "category",
+          label: "Hyperlane Explorer",
+          link: {
+            type: "doc",
+            id: "guides/explorer/explorer",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/explorer/configuring-pi-chains",
+              label: "Configuring New Chains",
+            },
+            {
+              type: "doc",
+              id: "guides/explorer/graphql-api",
+              label: "GraphQL API",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "guides/explorer/graphql-api",
-          label: "GraphQL API",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Economic Security",
-      link: {
-        type: "doc",
-        id: "protocol/economic-security/economic-security",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "protocol/economic-security/hyperlane-avs",
-          label: "Hyperlane AVS",
+          type: "category",
+          label: "Developer Tips",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/developer-tips/unit-testing",
+              label: "Unit Testing",
+            },
+            {
+              type: "doc",
+              id: "guides/token-faucets",
+              label: "Token Faucets",
+            },
+          ],
         },
       ],
     },
