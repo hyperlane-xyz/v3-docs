@@ -6,40 +6,38 @@ import TabItem from "@theme/TabItem";
 
 Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart contracts that are responsible for verifying that interchain messages being delivered on the destination chain were _actually sent_ on the origin chain.
 
-Hyperlane developers can **optionally** **override** the [Mailbox's](../mailbox.mdx)'s default ISM by specifying an application-specific ISM, which they can configure, compose, and customize according to the needs of their application.
-
 <IsmDiagram />
 
-## Configure
+## Core Concepts
+
+### Default vs Custom ISM
+
+Developers can either use the [Mailbox's](../mailbox.mdx) default ISM or specify their own application-specific ISM. Application-specific ISM can be:
+
+- **Configured**: Use pre-built ISMs with custom parameters
+- **Composed**: Combine multiple ISMs together like security "legos"
+- **Customized**: Create entirely new ISMs tailored to specific needs
+
+#### Configure
 
 Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
 
 For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
 
-## Compose
+#### Compose
 
 ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
 
-For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a [Wormhole ISM](./third-party-ISMs/wormhole-ISM.mdx) that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
+For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a Wormhole ISM that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
 
-## Customize
+#### Customize
 
 ISMs are fully customizable. Developers can write their own ISMs, tailoring them to the needs of their application.
 
 For example, application developers can build ISMs that adjust security models based on message content. High value and infrequent messages (e.g. governance) could be verified by a security model that prioritizes safety over latency and gas costs. Lower value and more frequent messages could be verified by a security model that prioritizes latency and gas costs over safety.
 
-Message recipients can specify custom security constraints by specifying an `InterchainSecurityModule` address. This implementation can be configured, composed, and customized according to the needs of their application.
+:::tip
 
-<details>
-<summary>`IInterchainSecurityModule` Interface</summary>
+- Learn how to [Override the Default ISM](./custom-ISM.mdx)
 
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol
-
-```
-
-</TabItem>
-</Tabs>
-</details>
+:::
