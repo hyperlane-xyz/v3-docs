@@ -39,52 +39,35 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Go to Production",
+      label: "Warp Routes",
+      link: {
+        type: "doc",
+        id: "protocol/warp-routes/warp-routes-overview",
+      },
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "doc",
-          id: "production",
-          label: "Production Overview",
+          id: "reference/applications/warp-routes",
+          label: "Warp Routes Interface",
         },
         {
-          type: "category",
-          label: "Core Deployment",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/update-mailbox-default-ism",
-              label: "Update Mailbox Default ISM",
-            },
-            {
-              type: "doc",
-              id: "guides/transfer-mailbox-ownership",
-              label: "Transfer Mailbox Ownership",
-            },
-          ],
+          type: "doc",
+          id: "protocol/warp-routes/warp-routes-types",
+          label: "Warp Route Types",
         },
         {
-          type: "category",
-          label: "Warp Route Deployment",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/remove-trusted-relayer",
-              label: "Remove Trusted Relayer",
-            },
-            {
-              type: "doc",
-              id: "guides/transfer-warp-route-ownership",
-              label: "Transfer Ownership",
-            },
-          ],
+          type: "doc",
+          id: "protocol/warp-routes/warp-routes-example-usage",
+          label: "Warp Route Example Usage",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "reference/applications/interchain-account",
+      label: "Interchain Accounts",
     },
     {
       type: "category",
@@ -126,32 +109,61 @@ const sidebars = {
           ],
         },
         {
+          type: "category",
+          label: "Go to Production",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "production",
+              label: "Production Overview",
+            },
+            {
+              type: "category",
+              label: "Core Deployment",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/update-mailbox-default-ism",
+                  label: "Update Mailbox Default ISM",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-mailbox-ownership",
+                  label: "Transfer Mailbox Ownership",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Warp Route Deployment",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/remove-trusted-relayer",
+                  label: "Remove Trusted Relayer",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-warp-route-ownership",
+                  label: "Transfer Ownership",
+                },
+              ],
+            },
+          ],
+        },
+        {
           type: "doc",
           id: "guides/create-custom-hook-and-ism",
           label: "Create a Hook/ISM",
         },
       ],
     },
-    /*
-    {
-      type: "category",
-      label: "For Agent Operators",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/quickstart-validator",
-          label: "Run a Validator",
-        },
-        {
-          type: "doc",
-          id: "guides/quickstart-relayer",
-          label: "Run a Relayer",
-        },
-      ],
-    },
-    */
   ],
   protocolSidebar: [
     {
@@ -343,47 +355,6 @@ const sidebars = {
               label: "Validators",
             },
           ],
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Use Cases",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "category",
-          label: "Warp Routes",
-          link: {
-            type: "doc",
-            id: "protocol/warp-routes/warp-routes-overview",
-          },
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "reference/applications/warp-routes",
-              label: "Warp Routes Interface",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-types",
-              label: "Warp Route Types",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-example-usage",
-              label: "Warp Route Example Usage",
-            },
-          ],
-        },
-
-        {
-          type: "doc",
-          id: "reference/applications/interchain-account",
-          label: "Interchain Accounts",
         },
       ],
     },
