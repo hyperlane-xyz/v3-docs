@@ -270,9 +270,19 @@ const sidebars = {
               label: "Override the Default ISM",
             },
             {
-              type: "doc",
-              id: "protocol/ISM/multisig-ISM",
+              type: "category",
               label: "Multisig ISM",
+              link: {
+                type: "doc",
+                id: "protocol/ISM/multisig-ISM",
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "reference/latencies",
+                  label: "Latencies",
+                },
+              ],
             },
             {
               type: "doc",
@@ -477,11 +487,6 @@ const sidebars = {
       type: "doc",
       id: "reference/domains",
       label: "Domains",
-    },
-    {
-      type: "doc",
-      id: "reference/latencies",
-      label: "Latencies",
     },
     {
       type: "doc",
