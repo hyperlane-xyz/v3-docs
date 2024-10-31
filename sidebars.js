@@ -276,33 +276,41 @@ const sidebars = {
             },
             {
               type: "category",
-              label: "Multisig ISM",
-              link: {
-                type: "doc",
-                id: "protocol/ISM/multisig-ISM",
-              },
+              label: "Standard ISMs",
+              collapsible: true,
+              collapsed: true,
               items: [
                 {
+                  type: "category",
+                  label: "Multisig ISM",
+                  link: {
+                    type: "doc",
+                    id: "protocol/ISM/multisig-ISM",
+                  },
+                  items: [
+                    {
+                      type: "doc",
+                      id: "reference/latencies",
+                      label: "Latencies",
+                    },
+                  ],
+                },
+                {
                   type: "doc",
-                  id: "reference/latencies",
-                  label: "Latencies",
+                  id: "protocol/ISM/routing-ISM",
+                  label: "Routing ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/aggregation-ISM",
+                  label: "Aggregation ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/ccip-read-ISM",
+                  label: "CCIP-Read ISM",
                 },
               ],
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/routing-ISM",
-              label: "Routing ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/aggregation-ISM",
-              label: "Aggregation ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/ccip-read-ISM",
-              label: "CCIP-Read ISM",
             },
             {
               type: "category",
@@ -484,19 +492,25 @@ const sidebars = {
       ],
     },
     {
-      type: "doc",
-      id: "reference/contract-addresses",
-      label: "Addresses",
-    },
-    {
-      type: "doc",
-      id: "reference/domains",
-      label: "Domains",
-    },
-    {
-      type: "doc",
-      id: "reference/registries",
-      label: "Registries",
+      type: "category",
+      label: "Deployments",
+      items: [
+        {
+          type: "doc",
+          id: "reference/contract-addresses",
+          label: "Addresses",
+        },
+        {
+          type: "doc",
+          id: "reference/domains",
+          label: "Domains",
+        },
+        {
+          type: "doc",
+          id: "reference/registries",
+          label: "Registries",
+        },
+      ],
     },
     {
       type: "category",
