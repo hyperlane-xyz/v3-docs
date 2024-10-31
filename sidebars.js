@@ -23,19 +23,25 @@ const sidebars = {
       label: "Overview",
     },
     {
-      type: "doc",
-      id: "deploy-hyperlane",
-      label: "Connect Your Chain",
-    },
-    {
-      type: "doc",
-      id: "guides/deploy-warp-route",
-      label: "Bridge a Token",
-    },
-    {
-      type: "doc",
-      id: "deploy-hyperlane-troubleshooting",
-      label: "Troubleshoot",
+      type: "category",
+      label: "Quickstart",
+      items: [
+        {
+          type: "doc",
+          id: "deploy-hyperlane",
+          label: "Connect Your Chain",
+        },
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route",
+          label: "Bridge a Token",
+        },
+        {
+          type: "doc",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshoot",
+        },
+      ],
     },
     {
       type: "category",
@@ -111,14 +117,13 @@ const sidebars = {
         {
           type: "category",
           label: "Go to Production",
+          link: {
+            type: "doc",
+            id: "production",
+          },
           collapsible: true,
           collapsed: true,
           items: [
-            {
-              type: "doc",
-              id: "production",
-              label: "Production Overview",
-            },
             {
               type: "category",
               label: "Core Deployment",
