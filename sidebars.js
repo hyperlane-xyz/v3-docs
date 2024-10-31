@@ -29,7 +29,7 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy-hyperlane",
-          label: "Connect Your Chain",
+          label: "Deploy to a New Chain",
         },
         {
           type: "doc",
