@@ -7,8 +7,6 @@ Unlike general message passing, which requires recipients to implement a specifi
 ## Overview
 
 ```mermaid
-
-
 flowchart TB
     subgraph Origin chain
     direction TB
@@ -38,13 +36,11 @@ flowchart TB
     style Sender fill:#FF0099
     style SenderAccount fill:#FF0099
     style Recipient fill:#FF0099
-
-
 ```
 
 Interchain Accounts allow you to make a remote call from **Chain A** to **Chain B** using the router (`InterchainAccountRouter`). Here's how it works:
 
-- We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you, which serves as a proxy for your cross-chain calls. You can do it yourself too [here](#computing-addresses).
+- We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you, which serves as a proxy for your cross-chain calls. You can explore this [here](#example-usage).
 
 - You can encode your call which includes the to address, call data, and the `msg.value` for each call, batched together in an array.
 
@@ -82,7 +78,7 @@ interface IInterchainAccountRouter {
 
 :::tip
 
-Use `InterchainAccountRouter` out of the box - ICA routers have already been deployed to core chains. Please refer to [addresses](../contract-addresses.mdx#interchainaccountrouter). Try using the `callRemote` method to do a call via your wallet's interchain account.
+- Use `InterchainAccountRouter` out of the box - ICA routers have already been deployed to core chains. Please refer to [addresses](../contract-addresses.mdx#interchainaccountrouter). Try using the `callRemote` method to do a call via your wallet's interchain account.
 
 :::
 
@@ -90,7 +86,7 @@ Use `InterchainAccountRouter` out of the box - ICA routers have already been dep
 
 ### Encoding
 
-The `callRemote` function takes as arguments an array of `Call` structs. `Call.data` can be easily encoded with the `abi.encodeCall` function.
+To use the `callRemote` function, first prepare an array of `Call` structs. `Call.data` can be easily encoded with the `abi.encodeCall` function.
 
 ```solidity
 struct Call {
@@ -176,10 +172,11 @@ address myRemoteIca = IInterchainAccountRouter(...).getRemoteInterchainAccount(
 
 Interchain Accounts allow developers to override the default chains and security models configured in the `InterchainAccountRouter`.
 
-This can be useful for developers who wish to:
+These are useful for:
 
-- Call an ICA on a chain that was not explicitly added by the `InterchainAccountRouter` owner (router not set), or
-- Secure their ICA(s) using different ISM than the defaults configured in the `InterchainAccountRouter`
+- Calling an ICA on chains not configured in `InterchainAccountRouter`.
+- Using different ISM than the defaults configured in the `InterchainAccountRouter`
+- Adjusting the gas limit for IGP payments or setting other parameters.
 
 ### Interface
 
