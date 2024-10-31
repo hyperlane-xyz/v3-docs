@@ -167,6 +167,11 @@ const sidebars = {
           id: "guides/create-custom-hook-and-ism",
           label: "Create a Hook/ISM",
         },
+        {
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
+        },
       ],
     },
   ],
@@ -215,37 +220,37 @@ const sidebars = {
               id: "protocol/interchain-gas-payment",
               label: "Interchain Gas Payment",
             },
-          ],
-        },
-        {
-          type: "category",
-          label: "Post-Dispatch Hooks",
-          link: {
-            type: "doc",
-            id: "reference/hooks/overview",
-          },
-          collapsible: true,
-          collapsed: true,
-          items: [
             {
-              type: "doc",
-              id: "reference/hooks/interchain-gas",
-              label: "Interchain Gas",
-            },
-            {
-              type: "doc",
-              id: "reference/hooks/op-stack",
-              label: "OP Stack",
-            },
-            {
-              type: "doc",
-              id: "reference/hooks/arbitrum-L2-to-L1",
-              label: "Arbitrum L2 to L1",
-            },
-            {
-              type: "doc",
-              id: "reference/hooks/polygon-pos",
-              label: "Polygon PoS",
+              type: "category",
+              label: "Post-Dispatch Hooks",
+              link: {
+                type: "doc",
+                id: "reference/hooks/overview",
+              },
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "reference/hooks/interchain-gas",
+                  label: "Interchain Gas",
+                },
+                {
+                  type: "doc",
+                  id: "reference/hooks/op-stack",
+                  label: "OP Stack",
+                },
+                {
+                  type: "doc",
+                  id: "reference/hooks/arbitrum-L2-to-L1",
+                  label: "Arbitrum L2 to L1",
+                },
+                {
+                  type: "doc",
+                  id: "reference/hooks/polygon-pos",
+                  label: "Polygon PoS",
+                },
+              ],
             },
           ],
         },
@@ -492,19 +497,6 @@ const sidebars = {
       type: "doc",
       id: "reference/registries",
       label: "Registries",
-    },
-    {
-      type: "category",
-      label: "Hyperlane Deployment Guides",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
-        },
-      ],
     },
     {
       type: "category",
