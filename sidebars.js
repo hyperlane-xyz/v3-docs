@@ -443,7 +443,7 @@ const sidebars = {
             {
               type: "doc",
               id: "guides/explorer/configuring-pi-chains",
-              label: "Configuring New Chains",
+              label: "Configuring New Chains in the Hyperlane Explorer",
             },
             {
               type: "doc",
