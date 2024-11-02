@@ -14,7 +14,7 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
     <TabItem value="evm" label="EVM Origin">
     The easiest way is to use the [Hyperlane Explorer](https://explorer.hyperlane.xyz), if your chain is supported. If your chain isn't supported, the message ID can be found by looking at the originating transaction.
 
-    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Logs** tab.
+    When viewing the origin transaction on the origin chain's block explorer, navigate the **Logs** tab.
 
     The **`DispatchId`** log contains the message ID as the topic number 1 (the second topic).
 
@@ -27,7 +27,7 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
 
     </TabItem>
     <TabItem value="cosmos" label="Cosmos Origin">
-    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Event Logs** tab.
+    When viewing the origin transaction on the origin chain's block explorer, navigate the **Event Logs** tab.
 
     The **Wasm Mailbox Dispatch Id** log contains the message ID.
 
@@ -75,7 +75,7 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
 
     <Tabs groupId="verifying-recipient">
     <TabItem value="evm" label="EVM Origin">
-    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Logs** tab.
+    When viewing the origin transaction on the origin chain's block explorer, navigate the **Logs** tab.
 
     The **`SentTransferRemote`** log contains the recipient as the topic number 1 (the second topic).
 
@@ -95,7 +95,7 @@ import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered"
     </TabItem>
     <TabItem value="cosmos" label="Cosmos Origin">
 
-    When viewing the origin transaction on the origin chain's block explorer, navigate the the **Event Logs** tab.
+    When viewing the origin transaction on the origin chain's block explorer, navigate the **Event Logs** tab.
 
     The log including **Transfer Remote** contains the message ID, for example: `Wasm Hpl Warp Native Transfer Remote`.
 
