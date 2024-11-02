@@ -24,18 +24,18 @@
 }
 
 .card {
-  background-color: #f9f9f9; /* Ultra light gray */
+  background-color: #f9f9f9;
   border-radius: 7px;
   padding: 15px;
-  width: 40%; /* Adjust width to fit two per row */
+  width: 40%;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
 }
 
 .card:hover {
-  background-color: #d9d9d9; /* Darker gray on hover */
-  transform: scale(1.02); /* Slight scale-up effect */
+  background-color: #d9d9d9;
+  transform: scale(1.02);
   text-decoration: none;
 }
 
@@ -43,11 +43,22 @@
   padding-top: 5px;
   margin: 0;
   font-weight: bold;
-  font-size: 1.2rem; /* Slightly smaller title */
+  font-size: 1.2rem;
 }
 
 .card p {
   margin-top: 5px;
   color: gray;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
 }

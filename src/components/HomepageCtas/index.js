@@ -30,23 +30,53 @@ function Home() {
           </p>
           <div className={styles.cardContainer}>
             <Link to={links.deployHyperlane} className={styles.card}>
-              <h3>Deploy to a New Chain</h3>
+              <h3>
+                <div
+                  className={styles.icon}
+                  style={{ backgroundImage: 'url("icons/icon-1.svg")' }}
+                />
+                Deploy to a New Chain
+              </h3>
               <p>Quickly deploy Hyperlane on a new chain</p>
             </Link>
             <Link to={links.deployWarpRoute} className={styles.card}>
-              <h3>Bridge Tokens with Warp Routes</h3>
+              <h3>
+                <div
+                  className={styles.icon}
+                  style={{ backgroundImage: 'url("icons/icon-2.svg")' }}
+                />
+                Bridge Tokens with Warp Routes
+              </h3>
               <p>Learn how to bridge assets using Warp Routes</p>
             </Link>
             <Link to={links.runValidators} className={styles.card}>
-              <h3>Run a Validator</h3>
+              <h3>
+                <div
+                  className={styles.icon}
+                  style={{ backgroundImage: 'url("icons/icon-3.svg")' }}
+                />
+                Run a Validator
+              </h3>
               <p>Step-by-step instructions to run a Hyperlane Validator</p>
             </Link>
             <Link to={links.protocolOverview} className={styles.card}>
-              <h3>Core Concepts</h3>
+              <h3>
+                <div
+                  className={styles.icon}
+                  style={{ backgroundImage: 'url("icons/icon-4.svg")' }}
+                />
+                Core Concepts
+              </h3>
               <p>Learn about the Hyperlane protocol and core components</p>
             </Link>
             <Link to={links.contractAddresses} className={styles.card}>
-              <h3>Where is Hyperlane?</h3>
+              <h3>
+                <div
+                  className={styles.icon}
+                  style={{ backgroundImage: 'url("icons/icon-5.svg")' }}
+                />
+                Where is Hyperlane?
+              </h3>
               <p>Learn about the current deployments</p>
             </Link>
           </div>
