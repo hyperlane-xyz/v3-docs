@@ -496,9 +496,55 @@ const sidebars = {
       label: "Deployments",
       items: [
         {
-          type: "doc",
-          id: "reference/contract-addresses",
-          label: "Addresses",
+          type: "category",
+          label: "Contract Addresses",
+          items: [
+            {
+              type: "doc",
+              id: "reference/addresses/mailbox-addresses",
+              label: "Mailbox",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-gas-paymaster",
+              label: "Interchain Gas Paymaster (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/storage-gas-oracle",
+              label: "Storage Gas Oracle",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/merkle-tree",
+              label: "Merkle Tree (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/validator-announce",
+              label: "Validator Announe",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/proxy-admin",
+              label: "Proxy Admin",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/test-recipient",
+              label: "Test Recipient",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-account-router",
+              label: "Interchain Account Router",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/ism-validator",
+              label: "Default ISM Validator Addresses",
+            },
+          ],
         },
         {
           type: "doc",
