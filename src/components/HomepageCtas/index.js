@@ -16,7 +16,7 @@ function Home() {
               paddingTop: "15px",
             }}
           >
-            Welcome to Hyperlane Docs
+            Hyperlane Docs
           </h1>
           <p
             style={{
@@ -25,10 +25,23 @@ function Home() {
               marginBottom: "40px",
             }}
           >
-            Hyperlane is an open interoperability framework that enables secure
-            and seamless cross-chain communication for building interchain apps.
+            Explore our tools, guides and references for building cross-chain
+            applications apps.
           </p>
           <div className={styles.cardContainer}>
+            <Link to={links.intro} className={styles.card}>
+              <h3>
+                <div
+                  className={styles.icon}
+                  style={{ backgroundImage: 'url("icons/icon-5.svg")' }}
+                />
+                Intro to Hyperlane
+              </h3>
+              <p>
+                Overview of the Hyperlane protocol, Permissionless
+                Interoperability and use-cases
+              </p>
+            </Link>
             <Link to={links.deployHyperlane} className={styles.card}>
               <h3>
                 <div
@@ -73,7 +86,7 @@ function Home() {
               <h3>
                 <div
                   className={styles.icon}
-                  style={{ backgroundImage: 'url("icons/icon-5.svg")' }}
+                  style={{ backgroundImage: 'url("icons/icon-6.svg")' }}
                 />
                 Where is Hyperlane?
               </h3>

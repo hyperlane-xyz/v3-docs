@@ -4,4 +4,5 @@ export default {
   protocolOverview: "/docs/protocol/protocol-overview",
   runValidators: "/docs/operate/validators/run-validators",
   contractAddresses: "/docs/reference/contract-addresses",
+  intro: "/docs/intro",
 };
