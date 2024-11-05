@@ -34,6 +34,16 @@
   border: 1px solid var(--ifm-color-emphasis-200);
 }
 
+@media (max-width: 768px) {
+  .cardContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .card {
+    width: 100%;
+  }
+}
+
 .card:hover {
   transform: scale(1.02);
   text-decoration: none;
