@@ -1,14 +1,12 @@
 # Multisig ISM
 
-_Verify messages using validator signatures_
+_Verify messages through validator consensus_
 
 The `MultisigISM` is one of the most commonly used ISM types. These ISMs verify that `m` of `n` [Validators](../agents/validators.mdx) have attested to the validity of a particular interchain message.
 
 ## Multisig Module Types
 
-## Multisig Module Types
-
-There are two types of Multisig ISMs modules:
+There are two types of `MultisigISM` modules:
 
 ```solidity
   enum Types {
@@ -61,7 +59,10 @@ There are two types of Multisig ISMs modules:
 
 The hyperlane-monorepo contains [`MultisigISM` implementations](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity/contracts/isms/multisig) (including a [legacy](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/LegacyMultisigIsm.sol) version and more gas-efficient [versions](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/StaticMultisigIsm.sol) deployable via factories) that application developers can deploy off-the-shelf, specifying their desired configuration.
 
-Developers can configure, for each origin chain, a set of `n` Validators. Alongside this, a `threshold` must be configured to specify the number of these validator's signatures (`m`) needed to verify a message.
+To configure a `MultisigISM` instance:
+
+1. Developers define the set of `n` Validators on each origin chain.
+2. A threshold is set, specifying the number (`m`) of Validator signatures required to confirm a message.
 
 Validator signatures are **not** specific to an ISM. In other words, developers can configure their `MultisigISM` to use **any** validator that's running on Hyperlane.
 

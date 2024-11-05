@@ -24,31 +24,106 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "For Chains",
-      collapsible: true,
-      collapsed: true,
+      label: "Quickstart",
       items: [
         {
           type: "doc",
           id: "deploy-hyperlane",
-          label: "Connect Your Chain",
+          label: "Deploy to a New Chain",
+        },
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route",
+          label: "Bridge a Token",
         },
         {
           type: "doc",
           id: "deploy-hyperlane-troubleshooting",
           label: "Troubleshoot",
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Warp Routes",
+      link: {
+        type: "doc",
+        id: "protocol/warp-routes/warp-routes-overview",
+      },
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "reference/applications/warp-routes",
+          label: "Warp Routes Interface",
+        },
+        {
+          type: "doc",
+          id: "protocol/warp-routes/warp-routes-types",
+          label: "Warp Route Types",
+        },
+        {
+          type: "doc",
+          id: "protocol/warp-routes/warp-routes-example-usage",
+          label: "Warp Route Example Usage",
+        },
+      ],
+    },
+    {
+      type: "doc",
+      id: "reference/applications/interchain-account",
+      label: "Interchain Accounts",
+    },
+    {
+      type: "category",
+      label: "Guides",
+      collapsible: true,
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Bridge UI",
+        },
         {
           type: "category",
-          label: "Go to Production",
+          label: "Warp Routes",
           collapsible: true,
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "production",
-              label: "Production Overview",
+              id: "protocol/warp-routes/warp-routes-yield-routes",
+              label: "Deploy Yield Routes",
             },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+              label: "Fast Native Transfer via Custom Gas Tokens",
+            },
+            {
+              type: "doc",
+              id: "guides/extending-warp-route",
+              label: "Extending a Warp Route",
+            },
+            {
+              type: "doc",
+              id: "guides/deploy-svm-warp-route",
+              label: "Deploy an SVM Warp Route",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Go to Production",
+          link: {
+            type: "doc",
+            id: "production",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
             {
               type: "category",
               label: "Core Deployment",
@@ -87,310 +162,19 @@ const sidebars = {
             },
           ],
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "For Smart Contract Devs",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route",
-          label: "Quickstart: Bridge a Token",
-        },
-        {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Bridge UI",
-        },
-        {
-          type: "category",
-          label: "Warp Routes",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Deploy Yield Routes",
-            },
-            {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label: "Fast Native Transfer via Custom Gas Tokens",
-            },
-            {
-              type: "doc",
-              id: "guides/extending-warp-route",
-              label: "Extending a Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/deploy-svm-warp-route",
-              label: "Deploy an SVM Warp Route",
-            },
-          ],
-        },
         {
           type: "doc",
           id: "guides/create-custom-hook-and-ism",
-          label: "Create a Hook / ISM",
+          label: "Create a Hook/ISM",
         },
         {
-          type: "category",
-          label: "Developer Tips",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/developer-tips/unit-testing",
-              label: "Unit Testing",
-            },
-            {
-              type: "doc",
-              id: "guides/token-faucets",
-              label: "Token Faucets",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "For Agent Operators",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        /*{
           type: "doc",
           id: "guides/deploy-hyperlane-local-agents",
           label: "Deploy Hyperlane with Local Agents",
-        },*/
-        {
-          type: "doc",
-          id: "guides/quickstart-validator",
-          label: "Run a Validator",
-        },
-        {
-          type: "doc",
-          id: "guides/quickstart-relayer",
-          label: "Run a Relayer",
         },
       ],
     },
   ],
-  /*
-  referenceSidebar: [
-    
-    {
-      type: "category",
-      label: "General Message Passing",
-      link: {
-        type: "doc",
-        id: "reference/messaging/messaging-interface",
-      },
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "reference/messaging/send",
-          label: "Send a message",
-        },
-        {
-          type: "doc",
-          id: "reference/messaging/receive",
-          label: "Receive a message",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Post-Dispatch Hooks",
-      link: {
-        type: "doc",
-        id: "reference/hooks/overview",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/hooks/interchain-gas",
-          label: "Interchain Gas",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/op-stack",
-          label: "OP Stack",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/arbitrum-L2-to-L1",
-          label: "Arbitrum L2 to L1",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/polygon-pos",
-          label: "Polygon PoS",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Interchain Security Modules",
-      link: {
-        type: "doc",
-        id: "reference/ISM/specify-your-ISM",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/ISM/multisig-ISM-interface",
-          label: "Multisig",
-        },
-        {
-          type: "doc",
-          id: "reference/ISM/routing-ISM-interface",
-          label: "Routing",
-        },
-        {
-          type: "doc",
-          id: "reference/ISM/aggregation-ISM-interface",
-          label: "Aggregation",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Libraries",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/libraries/mailboxclient",
-          label: "Mailbox Client",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/router",
-          label: "Router",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/typecasts",
-          label: "TypeCasts",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/message",
-          label: "Message",
-        },
-        {
-          type: "doc",
-          id: "reference/libraries/hookmetadata",
-          label: "Standard Hook Metadata",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Applications",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "doc",
-          id: "reference/applications/warp-routes",
-          label: "Warp Routes",
-        },
-        {
-          type: "doc",
-          id: "reference/applications/interchain-account",
-          label: "Interchain Accounts",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Typescript SDK",
-      link: {
-        type: "doc",
-        id: "reference/typescript-sdk/sdk-overview",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/multiprovider",
-          label: "RPC Providers",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/deploying-contracts",
-          label: "Deployment",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/testing-contracts",
-          label: "Interchain Testing",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/quoting-gas",
-          label: "Quoting Gas Payments",
-        },
-        {
-          type: "doc",
-          id: "reference/typescript-sdk/app-abstraction",
-          label: "App Abstraction",
-        },
-      ],
-    },
-    {
-      type: "doc",
-      id: "reference/contract-addresses",
-      label: "Addresses",
-    },
-    {
-      type: "doc",
-      id: "reference/domains",
-      label: "Domains",
-    },
-    {
-      type: "doc",
-      id: "reference/latencies",
-      label: "Latencies",
-    },
-    {
-      type: "doc",
-      id: "reference/registries",
-      label: "Registries",
-    },
-    {
-      type: "doc",
-      id: "reference/cli",
-      label: "CLI",
-    },
-    {
-      type: "doc",
-      id: "reference/glossary",
-      label: "Glossary",
-    },
-    {
-      type: "doc",
-      id: "reference/audits",
-      label: "Audits",
-    },
-  ],    */
-
   protocolSidebar: [
     {
       type: "doc",
@@ -399,206 +183,206 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Mailbox",
-      link: {
-        type: "doc",
-        id: "protocol/mailbox",
-      },
+      label: "Protocol",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "category",
-          label: "General Message Passing",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "reference/messaging/send",
-              label: "Send a message",
-            },
-            {
-              type: "doc",
-              id: "reference/messaging/receive",
-              label: "Receive a message",
-            },
-          ],
-        },
-        {
-          type: "doc",
-          id: "protocol/interchain-gas-payment",
-          label: "Interchain Gas Payment",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Post-Dispatch Hooks",
-      link: {
-        type: "doc",
-        id: "reference/hooks/overview",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "reference/hooks/interchain-gas",
-          label: "Interchain Gas",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/op-stack",
-          label: "OP Stack",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/arbitrum-L2-to-L1",
-          label: "Arbitrum L2 to L1",
-        },
-        {
-          type: "doc",
-          id: "reference/hooks/polygon-pos",
-          label: "Polygon PoS",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Interchain Security Modules",
-      link: {
-        type: "doc",
-        id: "protocol/ISM/modular-security",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "protocol/ISM/sequence-diagram",
-          label: "Sequence Diagram",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/custom-ISM",
-          label: "Override the Default ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/multisig-ISM",
-          label: "Multisig ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/routing-ISM",
-          label: "Routing ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/aggregation-ISM",
-          label: "Aggregation ISM",
-        },
-        {
-          type: "doc",
-          id: "protocol/ISM/ccip-read-ISM",
-          label: "CCIP-Read ISM",
-        },
-        {
-          type: "category",
-          label: "Community ISMs",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "protocol/ISM/third-party-ISMs/wormhole-ISM",
-              label: "Wormhole ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/third-party-ISMs/optimistic-ISM",
-              label: "Optimistic ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/third-party-ISMs/OPStack-ISM",
-              label: "OP Stack ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
-              label: "Polygon PoS ISM",
-            },
-            {
-              type: "doc",
-              id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
-              label: "Arbitrum L2 to L1 ISM",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Agents",
-      link: {
-        type: "doc",
-        id: "protocol/agents",
-      },
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "protocol/agents/relayer",
-          label: "Relayer",
-        },
-        {
-          type: "doc",
-          id: "protocol/agents/validators",
-          label: "Validators",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Use Cases",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "category",
-          label: "Warp Routes",
+          label: "Mailbox",
           link: {
             type: "doc",
-            id: "protocol/warp-routes/warp-routes-overview",
+            id: "protocol/mailbox",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "category",
+              label: "General Message Passing",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "reference/messaging/send",
+                  label: "Send a message",
+                },
+                {
+                  type: "doc",
+                  id: "reference/messaging/receive",
+                  label: "Receive a message",
+                },
+              ],
+            },
+            {
+              type: "doc",
+              id: "protocol/interchain-gas-payment",
+              label: "Interchain Gas Payment",
+            },
+            {
+              type: "category",
+              label: "Post-Dispatch Hooks",
+              link: {
+                type: "doc",
+                id: "reference/hooks/overview",
+              },
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "reference/hooks/interchain-gas",
+                  label: "Interchain Gas",
+                },
+                {
+                  type: "doc",
+                  id: "reference/hooks/op-stack",
+                  label: "OP Stack",
+                },
+                {
+                  type: "doc",
+                  id: "reference/hooks/arbitrum-L2-to-L1",
+                  label: "Arbitrum L2 to L1",
+                },
+                {
+                  type: "doc",
+                  id: "reference/hooks/polygon-pos",
+                  label: "Polygon PoS",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Interchain Security Modules",
+          link: {
+            type: "doc",
+            id: "protocol/ISM/modular-security",
           },
           collapsible: true,
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "reference/applications/warp-routes",
-              label: "Warp Routes Interface",
+              id: "protocol/ISM/sequence-diagram",
+              label: "Sequence Diagram",
             },
             {
               type: "doc",
-              id: "protocol/warp-routes/warp-routes-types",
-              label: "Warp Route Types",
+              id: "protocol/ISM/custom-ISM",
+              label: "Override the Default ISM",
             },
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-example-usage",
-              label: "Warp Route Example Usage",
+              type: "category",
+              label: "Standard ISMs",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "category",
+                  label: "Multisig ISM",
+                  link: {
+                    type: "doc",
+                    id: "protocol/ISM/multisig-ISM",
+                  },
+                  items: [
+                    {
+                      type: "doc",
+                      id: "reference/latencies",
+                      label: "Latencies",
+                    },
+                  ],
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/routing-ISM",
+                  label: "Routing ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/aggregation-ISM",
+                  label: "Aggregation ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/ccip-read-ISM",
+                  label: "CCIP-Read ISM",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Community ISMs",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/wormhole-ISM",
+                  label: "Wormhole ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/optimistic-ISM",
+                  label: "Optimistic ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/OPStack-ISM",
+                  label: "OP Stack ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
+                  label: "Polygon PoS ISM",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
+                  label: "Arbitrum L2 to L1 ISM",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Economic Security",
+              link: {
+                type: "doc",
+                id: "protocol/economic-security/economic-security",
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/economic-security/hyperlane-avs",
+                  label: "Hyperlane AVS",
+                },
+              ],
             },
           ],
         },
-
         {
-          type: "doc",
-          id: "reference/applications/interchain-account",
-          label: "Interchain Accounts",
+          type: "category",
+          label: "Agents",
+          link: {
+            type: "doc",
+            id: "protocol/agents",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "protocol/agents/relayer",
+              label: "Relayer",
+            },
+            {
+              type: "doc",
+              id: "protocol/agents/validators",
+              label: "Validators",
+            },
+          ],
         },
       ],
     },
@@ -646,85 +430,131 @@ const sidebars = {
             },
           ],
         },
+        {
+          type: "category",
+          label: "Hyperlane Explorer",
+          link: {
+            type: "doc",
+            id: "guides/explorer/explorer",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/explorer/configuring-pi-chains",
+              label: "Configuring New Chains in the Hyperlane Explorer",
+            },
+            {
+              type: "doc",
+              id: "guides/explorer/graphql-api",
+              label: "GraphQL API",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Developer Tips",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/developer-tips/unit-testing",
+              label: "Unit Testing",
+            },
+            {
+              type: "doc",
+              id: "guides/token-faucets",
+              label: "Token Faucets",
+            },
+          ],
+        },
       ],
     },
+
     {
       type: "category",
-      label: "Hyperlane Explorer",
-      link: {
-        type: "doc",
-        id: "guides/explorer/explorer",
-      },
+      label: "Alt-VM Implementations & Guides",
       collapsible: true,
       collapsed: true,
       items: [
         {
           type: "doc",
-          id: "guides/explorer/configuring-pi-chains",
-          label: "Configuring Permissionless Chains",
-        },
-        {
-          type: "doc",
-          id: "guides/explorer/graphql-api",
-          label: "GraphQL API",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Economic Security",
-      link: {
-        type: "doc",
-        id: "protocol/economic-security/economic-security",
-      },
-      items: [
-        {
-          type: "doc",
-          id: "protocol/economic-security/hyperlane-avs",
-          label: "Hyperlane AVS",
-        },
-      ],
-    },
-    {
-      type: "doc",
-      id: "protocol/non-evm-implementations",
-      label: "Alt-VM implementations",
-    },
-    {
-      type: "doc",
-      id: "reference/contract-addresses",
-      label: "Addresses",
-    },
-    {
-      type: "doc",
-      id: "reference/domains",
-      label: "Domains",
-    },
-    {
-      type: "doc",
-      id: "reference/latencies",
-      label: "Latencies",
-    },
-    {
-      type: "doc",
-      id: "reference/registries",
-      label: "Registries",
-    },
-    {
-      type: "category",
-      label: "Hyperlane Deployment Guides",
-      collapsible: true,
-      collapsed: true,
-      items: [
-        {
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
+          id: "protocol/non-evm-implementations",
+          label: "Alt-VM implementations",
         },
         {
           type: "doc",
           id: "guides/implementation-guide",
           label: "Implementation Guide",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deployments",
+      items: [
+        {
+          type: "category",
+          label: "Contract Addresses",
+          items: [
+            {
+              type: "doc",
+              id: "reference/addresses/mailbox-addresses",
+              label: "Mailbox",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-gas-paymaster",
+              label: "Interchain Gas Paymaster (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/storage-gas-oracle",
+              label: "Storage Gas Oracle",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/merkle-tree",
+              label: "Merkle Tree (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/validator-announce",
+              label: "Validator Announe",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/proxy-admin",
+              label: "Proxy Admin",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/test-recipient",
+              label: "Test Recipient",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-account-router",
+              label: "Interchain Account Router",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/ism-validator",
+              label: "Default ISM Validator Addresses",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "reference/domains",
+          label: "Domains",
+        },
+        {
+          type: "doc",
+          id: "reference/registries",
+          label: "Registries",
         },
       ],
     },
