@@ -4,7 +4,7 @@ All agents use the same method of configuration which is a multi-layered config 
 
 ## Config layers
 
-1. Base configuration from "default deployments" are in the [monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) and all of these are loaded automatically.
+1. Base configuration from "default deployments" are in the [monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/main/config) and all of these are loaded automatically.
 2. Config files passed in via the `CONFIG_FILES` env var are loaded next; this env var should be a comma separated list of paths to json files that should be loaded in order from first to last.
 3. `HYP_` prefixed env vars will be read next.
 4. `HYP_<AGENT>_` prefixed env vars are then read and apply ONLY for the current agent. I.e. `RELAYER`, `VALIDATOR`, and `SCRAPER` will only read their respective prefixes.
@@ -47,7 +47,7 @@ For example:
 
 ## Config files with Docker
 
-Running with the agent in Docker adds an extra layer of complexity because the config files need to be accessible from within the Docker container. The base configs that can be found in [the repo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/config) are already part of the provided Docker image and will all be loaded by default.
+Running with the agent in Docker adds an extra layer of complexity because the config files need to be accessible from within the Docker container. The base configs that can be found in [the repo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/main/config) are already part of the provided Docker image and will all be loaded by default.
 
 Mounting a single config file can be done with the flag `--mount type=bind,source=$LOCAL_CONFIG_PATH,target=/config/$CONFIG_NAME,readonly` and then adding the config file to `CONFIG_FILES` so it is loaded.
 
