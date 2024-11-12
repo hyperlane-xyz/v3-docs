@@ -37,7 +37,7 @@ Other relevant metrics include:
 The metrics above can be combined to create alerts that minimize false positives. Some example critical alerts:
 
 ### For all agents:
-- `hyperlane_block_height` for any chain has not increased in the last 30 minutes
+- `hyperlane_block_height` for any chain has not increased in the last 15 minutes
 - The rate of `hyperlane_request_count{status="failure"}` in the last 10 minutes is > 60% of the rate of `hyperlane_request_count{status=~"success|failure"}`. Most agent issues are due to bad RPCs, and this is likely to catch these issues.
 
 ### For relayers:
