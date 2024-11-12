@@ -107,7 +107,14 @@ This collateralizes the native warp route, enabling users to bridge their native
 You can initiate a test transfer of a single wei with the following command:
 
 ```bash
-hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/ETH/ethereum-yourchain-config.yaml
+hyperlane warp send --relay --symbol ETH
+```
+
+The `--relay` flag is optional and will relay the message to the destination chain.
+
+You can also run a relayer that delivers only for your warp route in the background with:
+```bash
+hyperlane relayer --symbol TOKEN
 ```
 
 :::tip
