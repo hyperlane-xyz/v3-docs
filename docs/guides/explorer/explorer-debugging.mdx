@@ -53,4 +53,4 @@ You can [manually pay for interchain gas](../../reference/hooks/interchain-gas.m
 
 ## Using Etherscan
 
-You can also look at the [Etherscan](https://etherscan.io/) page of the recipient on the destination chain however be aware that the processing transaction won't show up on list of transactions as you would typically imagine. The reason for that is that relayers actually call the Mailbox contracts which in turn call the `handle` function on the recipient. Thus, you will find evidence of processing on the under the `Internal Txns` tab instead
+You can also look at the [Etherscan](https://etherscan.io/) page of the recipient on the destination chain however be aware that the processing transaction won't show up on list of transactions as you would typically imagine. The reason for that is that relayers actually call the Mailbox contracts which in turn call the `handle` function on the recipient. Thus, you will find evidence of processing under the `Internal Txns` tab instead
