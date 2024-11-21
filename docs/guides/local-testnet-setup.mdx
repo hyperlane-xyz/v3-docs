@@ -4,7 +4,11 @@ This guide walks you through sending interchain messages between two local Anvil
 
 ## Prerequisites
 
-- **[Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli):** Ensure you have the latest version of the Hyperlane CLI installed. `npm install -g @hyperlane-xyz/cli`
+- **[Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli):** Make sure you have the latest version of the Hyperlane CLI installed.
+
+  ```bash
+  npm install -g @hyperlane-xyz/cli
+  ```
 
 - **[Anvil (foundry)](https://book.getfoundry.sh/getting-started/installation):** Installed to run local chains. Install it via
   ```bash
@@ -48,13 +52,15 @@ We will run two Anvil nodes with unique chain IDs.
 
 ### 3. Initialize the Hyperlane Registry
 
-On a new termial, use the Hyperlane CLI to create a custom chain config for both your chains:
+On a new termial, use the Hyperlane CLI to create a custom chain config:
 
 ```bash
 hyperlane registry init
 ```
 
-Follow the prompts to set up anvilchain1 and anvilchain2. The CLI will ask you for the details of your chains including chainId and RPC URLs.
+Follow the prompts to set up `anvilchain1`. The CLI will ask you for the details of your chains including chainId and RPC URLs. Repeat the process for `anvilchain2`.
+
+This process will create `metadata.yaml` files under `$HOME/.hyperlane/chains/anvilchain1` and `$HOME/.hyperlane/chains/anvilchain2`.
 
 Example metadata:
 
@@ -92,8 +98,6 @@ rpcUrls:
   - http: http://localhost:8546
 ```
 
-This will create `metadata.yaml` files under `$HOME/.hyperlane/chains/anvilchain1` and `$HOME/.hyperlane/chains/anvilchain2`.
-
 ### 4. Deploy Core Contracts
 
 We'll configure and deploy Hyperlane core contracts to the custom chains.
@@ -108,7 +112,7 @@ hyperlane core init
 
 The deployment configuration will be saved to `./configs/core-config.yaml`.
 
-Next, deploy the core contracts for both chains:
+Next, deploy the core contracts:
 
 ```bash
 hyperlane core deploy
@@ -119,7 +123,7 @@ Follow the prompts to select `anvilchain1`. The CLI will deploy Mailbox, Interch
 Once complete, you’ll find `addresses.yaml` in `$HOME/.hyperlane/chains/anvilchain1` and `$HOME/.hyperlane/chains/anvilchain2`, with the deployed contract addresses.
 
 :::tip
-You should be able to see the messages on your terminals running the local chains.
+You should be able to see the messages of the contract deployments on your terminals running the local chains.
 :::
 
 ### 5. Send a Test Message
@@ -134,8 +138,10 @@ The CLI will prompt you to provide the origin chain (`anvilchain1`) and the dest
 
 :::tip
 
-For local testing: The `--relay` flag automatically relays the message to the destination chain.
+For local testing, the `--relay` flag automatically relays the message to the destination chain.
 
 :::
 
 Review the logs on `anvilchain1` and `anvilchain2` to confirm the message was sent and received.
+
+🎉 There you go, you've sent a message between two local Anvil chains using Hyperlane!
