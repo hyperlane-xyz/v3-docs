@@ -87,6 +87,11 @@ const sidebars = {
           label: "Deploy a Bridge UI",
         },
         {
+          type: "doc",
+          id: "guides/local-testnet-setup",
+          label: "Local Setup: Sending Messages between Anvil Chains",
+        },
+        {
           type: "category",
           label: "Warp Routes",
           collapsible: true,
