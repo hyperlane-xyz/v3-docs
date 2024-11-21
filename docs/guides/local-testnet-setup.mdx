@@ -1,6 +1,6 @@
-# Hyperlane Local Setup Guide: Sending Messages between Anvil Chains
+# Hyperlane Local Setup Guide: Sending Messages between Anvil Nodes
 
-This guide walks you through sending interchain messages between two local Anvil chains using the Hyperlane CLI.
+This guide walks you through sending interchain messages between two local Anvil nodes using the Hyperlane CLI.
 
 ## Prerequisites
 
@@ -52,26 +52,26 @@ We will run two Anvil nodes with unique chain IDs.
 
 ### 3. Initialize the Hyperlane Registry
 
-On a new termial, use the Hyperlane CLI to create a custom chain config:
+On a new termial, use the Hyperlane CLI to create configurations for both Anvil nodes:
 
 ```bash
 hyperlane registry init
 ```
 
-Follow the prompts to set up `anvilchain1`. The CLI will ask you for the details of your chains including chainId and RPC URLs. Repeat the process for `anvilchain2`.
+Follow the prompts to set up `anvilnode1`. The CLI will ask you for the details of your chains including chainId and RPC URLs. Repeat the process for `anvilnode2`.
 
-This process will create `metadata.yaml` files under `$HOME/.hyperlane/chains/anvilchain1` and `$HOME/.hyperlane/chains/anvilchain2`.
+This process will create `metadata.yaml` files under `$HOME/.hyperlane/chains/anvilnode1` and `$HOME/.hyperlane/chains/anvilnode2`.
 
 Example metadata:
 
-- **anvilchain1**
+- **anvilnode1**
 
 ```yaml
 chainId: 31337
-displayName: Anvilchain1
+displayName: Anvilnode1
 domainId: 31337
 isTestnet: true
-name: anvilchain1
+name: anvilnode1
 nativeToken:
   decimals: 18
   name: ETH
@@ -81,14 +81,14 @@ rpcUrls:
   - http: http://localhost:8545
 ```
 
-- **anvilchain2**
+- **anvilnode2**
 
 ```yaml
 chainId: 31338
-displayName: Anvilchain2
+displayName: Anvilnode2
 domainId: 31338
 isTestnet: true
-name: anvilchain2
+name: anvilnode2
 nativeToken:
   decimals: 18
   name: ETH
@@ -100,7 +100,7 @@ rpcUrls:
 
 ### 4. Deploy Core Contracts
 
-We'll configure and deploy Hyperlane core contracts to the custom chains.
+We'll configure and deploy Hyperlane core contracts.
 
 :::tip
 You'll need the deployer wallet private key to deploy the core contracts. You can use `export HYP_KEY='<YOUR_PRIVATE_KEY>'` to set the private key as an environment variable.
@@ -118,23 +118,23 @@ Next, deploy the core contracts:
 hyperlane core deploy
 ```
 
-Follow the prompts to select `anvilchain1`. The CLI will deploy Mailbox, Interchain Security Modules (ISMs), and other required contracts. Repeat the process for `anvilchain2`.
+Follow the prompts to select `anvilnode1`. The CLI will deploy Mailbox, Interchain Security Modules (ISMs), and other required contracts. Repeat the process for `anvilnode2`.
 
-Once complete, you’ll find `addresses.yaml` in `$HOME/.hyperlane/chains/anvilchain1` and `$HOME/.hyperlane/chains/anvilchain2`, with the deployed contract addresses.
+Once complete, you’ll find `addresses.yaml` in `$HOME/.hyperlane/chains/anvilnode1` and `$HOME/.hyperlane/chains/anvilnode2`, with the deployed contract addresses.
 
 :::tip
-You should be able to see the messages of the contract deployments on your terminals running the local chains.
+You should be able to see the messages of the contract deployments on your terminals running the local nodes.
 :::
 
 ### 5. Send a Test Message
 
-Use the Hyperlane CLI to send a message from `anvilchain1` to `anvilchain2`.
+Use the Hyperlane CLI to send a message from `anvilnode1` to `anvilnode2`.
 
 ```bash
 hyperlane send message --relay
 ```
 
-The CLI will prompt you to provide the origin chain (`anvilchain1`) and the destination chain (`anvilchain2`).
+The CLI will prompt you to provide the origin chain (`anvilnode1`) and the destination chain (`anvilnode2`).
 
 :::tip
 
@@ -142,6 +142,6 @@ For local testing, the `--relay` flag automatically relays the message to the de
 
 :::
 
-Review the logs on `anvilchain1` and `anvilchain2` to confirm the message was sent and received.
+Review the logs on `anvilnode1` and `anvilnode2` to confirm the message was sent and received.
 
-🎉 There you go, you've sent a message between two local Anvil chains using Hyperlane!
+🎉 There you go, you've sent a message between two local Anvil nodes using Hyperlane!
