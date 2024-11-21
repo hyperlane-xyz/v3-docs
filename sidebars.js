@@ -89,7 +89,7 @@ const sidebars = {
         {
           type: "doc",
           id: "guides/local-testnet-setup",
-          label: "Local Setup: Sending Messages between Anvil Chains",
+          label: "Local Setup: Sending Messages between Anvil Nodes",
         },
         {
           type: "category",
