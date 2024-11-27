@@ -5,16 +5,6 @@ module.exports = function () {
     name: "my-loaders",
     configureWebpack() {
       return {
-        module: {
-          rules: [
-            {
-              test: /\.m?js/,
-              resolve: {
-                fullySpecified: false,
-              },
-            },
-          ],
-        },
         resolve: {
           fallback: {
             crypto: false,
