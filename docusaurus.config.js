@@ -34,7 +34,17 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "zh-Hans"],
+    localeConfigs: {
+      en: {
+        label: 'English',
+        htmlLang: 'en-US',
+      },
+      'zh-Hans': {
+        label: '简体中文',
+        htmlLang: 'zh-Hans',
+      },
+    },
   },
 
   plugins: [
@@ -397,12 +407,16 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: "Hyperlane",
+        title: "Hyperlane Docs",
         logo: {
-          alt: "Hyperlane logo",
+          alt: "Hyperlane Logo",
           src: "img/logo.svg",
         },
         items: [
+          {
+            type: "localeDropdown",
+            position: "right",
+          },
           {
             type: "docSidebar",
             sidebarId: "getstartedSidebar",
@@ -496,9 +510,9 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
+        copyright: `Copyright ÂŠ ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
         <br>
-        Built IRL in New York 🗽 and London 💂🏼‍♂️`,
+        Built IRL in New York âœ¨ and London ðŸ§â€â‚ï¸`,
       },
       prism: {
         additionalLanguages: ["solidity", "diff", "bash"],

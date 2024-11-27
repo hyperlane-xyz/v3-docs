@@ -1,0 +1,31 @@
+# Warp Routes
+
+## 概述
+
+开发者可以使用 Hyperlane 无需许可地部署 Warp Routes - 这些合约允许任何 ERC20、ERC721 或原生代币在链之间无缝移动。
+
+您可以将 Warp Routes 与 Hyperlane 部署结合使用，在任何链与通过 Hyperlane 连接的其他链之间创建经济贸易路线。
+
+### 模块化安全
+
+与建立在 Hyperlane 之上的所有应用程序一样，Warp Routes 通过[跨链安全模块](../../protocol/ISM/modular-security.mdx)具有可定制的安全性。这允许 Warp Route 部署者配置和强制执行跨链代币必须遵循的自定义规则和约束。
+
+### 部署 Warp Route
+
+Warp Routes 可以在任何具有 Hyperlane 部署的链集之间部署。如果您想创建一个包含 Hyperlane 当前未部署的链的 Warp Route，您可以随时自行[部署 hyperlane](../../deploy-hyperlane.mdx)！
+
+### Warp Route 架构
+
+Warp Route 合约通过在源链（又称抵押链）上锁定抵押代币，然后在目标链（合成链）上铸造包装代币来在链之间转移价值。
+
+下图提供了创建您的 Warp Route 及其生成资产的过程的简化概述。
+
+![Warp Route 图表/草图](/img/warpcontractdiagram.png)
+
+每个 Warp Route 由一个合约组成，该合约部署在代币可以在其间移动的每条链上。这些合约使用 [Mailbox](../mailbox.mdx) 相互发送跨链消息。
+
+当用户从_规范的_源链转移到_非规范的_目标链时，他们的代币被锁定在 `HypERC20Collateral` 合约中，该合约向目标链发送消息以铸造包装代币。
+
+当用户在非规范链之间转移时，他们的包装代币在源链上被销毁，该链向目标链发送消息以铸造包装代币。
+
+最后，如果用户从非规范源链转移回规范目标链，他们的包装代币在源链上被销毁，该链向目标链发送消息以释放锁定在 `HypERC20Collateral` 合约中的代币。

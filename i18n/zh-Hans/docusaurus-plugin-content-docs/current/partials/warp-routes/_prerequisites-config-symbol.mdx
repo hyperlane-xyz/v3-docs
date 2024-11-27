@@ -1,0 +1,8 @@
+## 前置条件
+
+- warp route 配置。
+    - 对于新部署，此配置可能使用 `CURRENT_DIR/configs/warp-route-deployment.yaml` 作为文件路径。
+    - 对于现有部署，如果存在于注册表中，可以使用 `hyperlane warp read` 生成配置。
+- warp route 代币符号。
+    - 代币符号可以在链上找到，或在您的本地 Hyperlane 注册表中找到。默认情况下，它被写入到 `$HOME/.hyperlane/deployments/warp_routes/<tokenSymbol>`。
+- 访问当前拥有 warp route 的私钥。

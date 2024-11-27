@@ -1,0 +1,133 @@
+import PrerequisitesPartial from '../partials/core/_prerequisites-config-artifacts.mdx'
+import CoreReadChainPartial from '../partials/core/commands/_core-read-chain.mdx'
+import CoreApplyChainPartial from '../partials/core/commands/_core-apply-chain.mdx'
+
+# 如何更新 Mailbox 默认 ISM
+
+# 使用 Hyperlane CLI
+
+首次使用 CLI 部署时，新的 mailbox 会默认使用可信中继器 ISM，这样您就不需要运行中继器或验证器。
+
+为了投入生产环境，您需要使用 Hyperlane CLI 移除这个 ISM。
+
+<PrerequisitesPartial />
+
+:::info
+如果您按照[如何使用 Hyperlane 连接您的链](/docs/deploy-hyperlane)指南进行操作，您可能使用单个私钥作为所有者部署了 mailbox。在生产环境中，建议使用多重签名钱包。
+:::
+
+要使用 Hyperlane CLI 进行确认，请执行以下命令，将 `--chain` 设置为您部署 mailbox 的链的名称：
+
+<CoreReadChainPartial />
+
+运行 `core read` 后，您应该看到类似的配置，其中 `owner` 设置为私钥的地址：
+
+```yaml {4-7}
+defaultHook:
+  address: "0xC2E88eC0aB5FDB9756CD3EFEE40D24120fFa6E57"
+  type: "merkleTreeHook"
+defaultIsm:
+  address: "0xF37395A79f56268FD0040E1f5711e9Af974a545A"
+  relayer: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  type: "trustedRelayerIsm"
+owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+requiredHook:
+  address: "0x390d29a822C21F57B163F1173cD43382bd643401"
+  beneficiary: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  protocolFee: "0"
+  type: "protocolFee"
+```
+
+输出将保存到 `CURRENT_DIR/configs/core-config.yaml`。
+
+这个特定的配置有一个 `trustedRelayerIsm`。这意味着回退到 mailbox 的 `defaultIsm` 的合约（例如 warp routes）将授权给 `relayer` 地址执行任意消息的权限。在自我中继功能之外的情况下，这可能是不希望的。
+按照以下步骤使用 CLI 将现有的默认 ISM 更新为不同的配置。
+
+## 步骤 1：更新配置
+
+您可以选择将 `relayer` 地址更新为其他地址（例如，通过将其设置为不可访问的地址来"销毁"它）。
+
+```diff title="core-config.yaml"
+defaultHook:
+  address: "0xC2E88eC0aB5FDB9756CD3EFEE40D24120fFa6E57"
+  type: merkleTreeHook
+defaultIsm:
+  address: "0xF37395A79f56268FD0040E1f5711e9Af974a545A"
+- relayer: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
++ relayer: "0x0000000000000000000000000000000000000001"
+  type: trustedRelayerIsm
+owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+requiredHook:
+  address: "0x4f54055C94DCbC2b502146D46909A2cC7461c5D8"
+  beneficiary: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  protocolFee: "0"
+  type: protocolFee
+```
+
+或者，您也可以将 `defaultIsm` 配置更新为不同的 ISM 配置。如下所示，它被更新为 `messageIdMultisigIsm`。
+
+:::warning
+配置 ISM 是一个高级功能，需要了解不同 ISM 类型以及它们如何在拓扑结构中协同工作。
+:::
+
+```diff title="core-config.yaml"
+defaultHook:
+  address: "0xC2E88eC0aB5FDB9756CD3EFEE40D24120fFa6E57"
+  type: merkleTreeHook
+defaultIsm:
+- address: "0xF37395A79f56268FD0040E1f5711e9Af974a545A"
+- relayer: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+- type: trustedRelayerIsm
++ threshold: 1
++ type: messageIdMultisigIsm
++ validators:
++  - "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+requiredHook:
+  address: "0x4f54055C94DCbC2b502146D46909A2cC7461c5D8"
+  beneficiary: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  protocolFee: "0"
+  type: protocolFee
+```
+
+## 步骤 2：应用更改
+
+使用 CLI 执行以下命令：
+
+<CoreApplyChainPartial />
+
+您应该会看到一系列链上交易被执行，最后会有一条消息表明 mailbox 已更新。
+
+## 步骤 3：确认
+
+要使用 Hyperlane CLI 进行确认，请执行以下命令：
+
+<CoreReadChainPartial />
+
+运行 `core read` 后，您应该看到类似的配置，其中显示了更新后的默认 ISM：
+
+```yaml {6}
+defaultHook:
+  address: "0x67F8c06Fd2915728E9D21451E33FbDFbCcd63c44"
+  type: "merkleTreeHook"
+defaultIsm:
+  address: "0xac7D6df90fa937ADEfE7aD2d4905f0AEa170c467"
+  relayer: "0x0000000000000000000000000000000000000001"
+  type: "trustedRelayerIsm"
+owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+requiredHook:
+  address: "0x1Cd94b4D9B5f0e3474a6bDB8b9503Ca84F53e548"
+  beneficiary: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  protocolFee: "0"
+  type: "protocolFee"
+```
+
+完成这些步骤后，您已成功更新了 mailbox 默认 ISM 并增强了 mailbox 的安全性。您的 mailbox 现在已准备好用于生产环境。

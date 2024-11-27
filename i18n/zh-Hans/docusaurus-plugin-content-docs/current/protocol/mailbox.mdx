@@ -1,0 +1,108 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
+
+# 邮箱
+
+Hyperlane 的 `Mailbox` 智能合约提供了一个链上 API，用于发送和接收跨链消息。在 Hyperlane 支持的每个链上都部署了一个 `Mailbox` 合约。
+
+`Mailbox` 网络为区块链之间提供了连接组织，开发者可以利用这些连接来创建跨链应用程序，并为其现有应用程序添加跨链功能。
+
+<SimpleMessagingDiagram />
+
+- 要[**发送**](../reference/messaging/send.mdx)跨链消息，调用 `dispatch` 函数。
+- 要[**接收**](../reference/messaging/receive.mdx)跨链消息，实现 `handle` 函数。
+
+## 接口
+
+[`IMailbox`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMailbox.sol) 接口提供了两个状态修改函数：`dispatch()` 和 `process()`，分别用于发送和接收消息。
+
+<details>
+<summary>`IMailbox` 接口</summary>
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+```solidity
+interface IMailbox {
+    function dispatch(
+        uint32 destination,
+        bytes32 recipient,
+        bytes calldata body
+    ) external payable returns (bytes32);
+
+    function process(bytes calldata message, bytes calldata metadata) external;
+    
+    function delivered(bytes32 messageId) external view returns (bool);
+    
+    function defaultHook() external view returns (IPostDispatchHook);
+    
+    function requiredHook() external view returns (IPostDispatchHook);
+}
+```
+</TabItem>
+</Tabs>
+</details>
+
+### 消息头
+
+Mailbox 在消息体前添加包含以下字段的消息头：
+
+| **字段**      | **描述**                                      |
+| ------------- | --------------------------------------------- |
+| `version`     | Mailbox 合约的版本                            |
+| `nonce`       | 给定 Mailbox 发送的每条消息的唯一标识符      |
+| `origin`      | 源链的域 ID                                   |
+| `sender`      | 源链上发送者的地址                            |
+| `destination` | 目标链的域 ID                                 |
+| `recipient`   | 目标链上接收者的地址                         |
+
+有关消息编码的更多信息，请参阅 [`Message` 库](../reference/libraries/message.mdx)。
+
+### 唯一性
+
+`nonce` 是给定 Mailbox 发送的每条消息的单调递增整数。每次发送消息时都会递增，用作相同消息的分隔符。
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+```solidity
+function nonce() external view returns (uint32);
+```
+</TabItem>
+</Tabs>
+
+`messageId` 是全局唯一的消息标识符，由 `dispatch` 调用返回，计算为消息（包含消息头）的 `keccak256` 哈希值。
+
+### 重放保护
+
+Mailbox 维护一个已传递的 `messageId` 值的映射，以防止重放攻击。如果收到一个已经传递过的 `messageId` 的消息，该消息将被拒绝。
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+```solidity
+function delivered(bytes32 messageId) external view returns (bool);
+```
+</TabItem>
+</Tabs>
+
+## 发送消息
+
+要发送跨链消息，开发者需要调用 `Mailbox.dispatch()`。
+
+该函数的参数包括消息内容、目标链 ID 和接收者地址。每条消息都会作为叶子节点插入到 `Mailbox` 存储的[增量默克尔树](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f)中。
+
+Hyperlane 的权益证明协议使用这个默克尔树来验证欺诈证明。
+
+## 处理消息
+
+要传递跨链消息，[中继器](./agents/relayer.mdx)会调用 `Mailbox.process()`。
+
+该函数的参数包括要传递的消息以及中继器可以指定的任意元数据。
+
+`Mailbox` 会将消息和元数据传递给接收者的跨链安全模块进行验证。如果 ISM 成功验证了消息，`Mailbox` 会通过调用 `recipient.handle()` 将消息传递给接收者。
+
+:::info
+
+有关 Hyperlane 消息编码的更多详细信息，请参阅 [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
+
+:::

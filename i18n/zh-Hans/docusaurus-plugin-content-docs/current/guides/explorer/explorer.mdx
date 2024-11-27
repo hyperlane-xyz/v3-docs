@@ -1,0 +1,37 @@
+# 如何使用 Hyperlane Explorer
+
+[Hyperlane Explorer](https://explorer.hyperlane.xyz/) 可用于在任何部署了 Hyperlane 的网络上查找消息。深入了解消息以获取有关其属性和状态的更多详细信息。
+
+对于[核心链](/docs/reference/domains.mdx)的收发消息，可以通过交易哈希、消息 ID 或发送者/接收者地址进行搜索。对于其他链，可以通过提供链配置来配置浏览器以搜索消息。
+
+### 搜索消息
+
+[Hyperlane Explorer](https://explorer.hyperlane.xyz/) 支持使用以下任何值搜索消息：
+
+- 发起消息的交易哈希（源交易）
+- 传递消息的交易哈希（目标交易）
+- 发送源交易的账户地址
+- 发送目标交易的账户地址
+- 消息发送者的地址
+- 消息接收者的地址
+- 消息的 ID
+
+要搜索，请在顶部搜索栏中输入您的查询。您可以使用源链、目标链和时间筛选选项来缩小搜索范围。
+
+![Explorer 搜索栏](/img/explorersearchbar.png)
+
+:::info
+
+请注意，默认情况下，浏览器只会在[核心 Hyperlane 链](/docs/reference/domains.mdx)上查找消息。
+
+要查看发送到和/或来自其他链的消息，请参阅[配置 PI 链](./configuring-pi-chains.mdx)。
+
+:::
+
+### 无许可互操作性
+
+可以配置浏览器以搜索任何部署了 Hyperlane 的链上的消息。有关详细信息，请参阅[配置 PI 链](./configuring-pi-chains.mdx)。
+
+### 调试消息
+
+如果您正在尝试调试消息传递问题，[浏览器调试](./explorer-debugging.mdx)页面有一些有用的提示。

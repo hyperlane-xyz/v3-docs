@@ -1,0 +1,38 @@
+---
+description: 在任意链之间创建代币路由
+---
+
+# Warp Route 接口
+
+## 接口
+
+Hyperlane Warp Routes 使用 `IHypERC20` 代币接口。Warp Route 代币实现了这个接口，它扩展了标准的 `ERC20` 接口。
+
+```solidity
+/// @notice ERC20接口的跨链扩展
+interface IHypERC20 is IERC20 {
+  /**
+    * @notice 将代币转移到远程链上指定的接收者
+    * @param _destination 目标链的域ID
+    * @param _recipient 接收者的地址，编码为bytes32
+    * @param _amount 要转移的代币数量
+    */
+  function transferRemote(
+    uint32 _destination,
+    bytes32 _recipient,
+    uint256 _amount
+  ) external payable;
+}
+```
+
+## 安全考虑
+
+Warp Route 的部署者可以选择性地指定用于验证跨链转账消息的跨链安全模块（ISMs）。
+
+这意味着每个 Warp Route 可能有独特的安全配置。用户在进行跨链代币转账之前，应该了解该 Route 的信任假设。
+
+同样，Warp 前端应该手动管理其 warp routes，以避免支持不安全的路由。详情请参阅 [Warp UI 部署文档](../../guides/deploy-warp-route-UI)。
+
+## 部署您的 Warp Route
+
+准备好部署您的 Warp Route 了吗？很简单 - 请按照[分步指南](../../guides/deploy-warp-route)进行操作。

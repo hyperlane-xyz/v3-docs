@@ -1,0 +1,147 @@
+# Hyperlane 本地设置指南：在 Anvil 节点之间发送消息
+
+本指南将指导你使用 Hyperlane CLI 在两个本地 Anvil 节点之间发送跨链消息。
+
+## 前提条件
+
+- **[Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli)：** 确保你已安装最新版本的 Hyperlane CLI。
+
+  ```bash
+  npm install -g @hyperlane-xyz/cli
+  ```
+
+- **[Anvil (foundry)](https://book.getfoundry.sh/getting-started/installation)：** 用于运行本地链。通过以下命令安装：
+  ```bash
+  curl -L https://foundry.paradigm.xyz | bash
+  ```
+- **Node.js**（v18 或更高版本）
+- **部署钱包私钥**：你需要一个有资金的钱包来部署合约。这将作为 HYP_KEY 使用。
+  ```bash
+  export HYP_KEY=<你的私钥>
+  ```
+
+## 分步指南
+
+### 1. 环境设置：创建 Hyperlane 配置的工作目录：
+
+```bash
+mkdir hyperlane-local-test && cd hyperlane-local-test
+```
+
+### 2. 启动两个不同的 Anvil 节点
+
+我们将运行两个具有唯一链 ID 的 Anvil 节点。
+
+- 在第一个终端中，启动第一个 Anvil 节点：
+
+  ```bash
+  anvil --port 8545 --chain-id 31337
+  ```
+
+  - 运行在 `http://localhost:8545`
+  - 链 ID：`31337`
+
+- 在新的终端中，启动第二个 Anvil 节点：
+
+  ```bash
+  anvil --port 8546 --chain-id 31338
+  ```
+
+  - 运行在 `http://localhost:8546`
+  - 链 ID：`31338`
+
+### 3. 初始化 Hyperlane 注册表
+
+在新的终端中，使用 Hyperlane CLI 为两个 Anvil 节点创建配置：
+
+```bash
+hyperlane registry init
+```
+
+按照提示设置 `anvilnode1`。CLI 将询问你的链的详细信息，包括链 ID 和 RPC URL。对 `anvilnode2` 重复此过程。
+
+此过程将在 `$HOME/.hyperlane/chains/anvilnode1` 和 `$HOME/.hyperlane/chains/anvilnode2` 下创建 `metadata.yaml` 文件。
+
+示例元数据：
+
+- **anvilnode1**
+
+```yaml
+chainId: 31337
+displayName: Anvilnode1
+domainId: 31337
+isTestnet: true
+name: anvilnode1
+nativeToken:
+  decimals: 18
+  name: ETH
+  symbol: ETH
+protocol: ethereum
+rpcUrls:
+  - http: http://localhost:8545
+```
+
+- **anvilnode2**
+
+```yaml
+chainId: 31338
+displayName: Anvilnode2
+domainId: 31338
+isTestnet: true
+name: anvilnode2
+nativeToken:
+  decimals: 18
+  name: ETH
+  symbol: ETH
+protocol: ethereum
+rpcUrls:
+  - http: http://localhost:8546
+```
+
+### 4. 部署核心合约
+
+我们将配置并部署 Hyperlane 核心合约。
+
+:::tip
+你需要部署钱包私钥来部署核心合约。你可以使用 `export HYP_KEY='<你的私钥>'` 将私钥设置为环境变量。
+:::
+
+```bash
+hyperlane core init
+```
+
+部署配置将保存到 `./configs/core-config.yaml`。
+
+接下来，部署核心合约：
+
+```bash
+hyperlane core deploy
+```
+
+按照提示选择 `anvilnode1`。CLI 将部署 Mailbox、跨链安全模块（ISM）和其他必需的合约。对 `anvilnode2` 重复此过程。
+
+完成后，你会在 `$HOME/.hyperlane/chains/anvilnode1` 和 `$HOME/.hyperlane/chains/anvilnode2` 中找到 `addresses.yaml`，其中包含已部署的合约地址。
+
+:::tip
+你应该能够在运行本地节点的终端上看到合约部署的消息。
+:::
+
+### 5. 发送测试消息
+
+使用 Hyperlane CLI 从 `anvilnode1` 向 `anvilnode2` 发送消息。
+
+```bash
+hyperlane send message --relay
+```
+
+CLI 将提示你提供源链（`anvilnode1`）和目标链（`anvilnode2`）。
+
+:::tip
+
+对于本地测试，`--relay` 标志会自动将消息中继到目标链。
+
+:::
+
+查看 `anvilnode1` 和 `anvilnode2` 上的日志，确认消息已发送和接收。
+
+🎉 就是这样，你已经使用 Hyperlane 在两个本地 Anvil 节点之间发送了消息！

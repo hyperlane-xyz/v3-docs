@@ -1,0 +1,85 @@
+import CliChainsPartial from "/docs/partials/deploy-hyperlane/_cli-chains.mdx";
+
+在设置好部署者、验证器和中继器密钥后，是时候使用 Hyperlane CLI 将智能合约部署到本地和远程链上了。
+
+在本地链上，我们将部署：
+
+- 核心合约，包括可用于发送和接收消息的 [Mailbox](/docs/reference/messaging/messaging-interface)。
+
+在所有链上，我们将部署：
+
+- 一个多重签名 ISM，用于验证来自其他本地和远程链的入站消息。
+- 一个 `InterchainGasPaymaster`，用于向我们的中继器支付跨链消息传递费用。
+- 一个 `TestRecipient`，我们将向其发送消息以测试一切是否正常工作。
+
+### 设置
+
+首先，安装 [Hyperlane CLI](/docs/reference/cli.mdx)。
+
+```bash
+npm install -g @hyperlane-xyz/cli
+```
+
+#### 链配置
+
+<CliChainsPartial />
+
+#### 使用多重签名 ISM 的核心部署
+
+现在 CLI 知道如何与所有链进行交互，但它还需要知道如何配置您的跨链安全模块（ISM）。
+
+要使用多重签名 ISM 配置初始化核心配置，您可以使用 JSON 或 YAML 手动定义（参见[示例配置](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/core-config.yaml)），或使用以下命令创建：
+
+```bash
+hyperlane core init --advanced
+```
+
+当询问 ISM 类型时，选择 `messageIdMultisigIsm`。在本指南中，我们将使用 1/1 多重签名，因此选择阈值为 `1` 并输入您的密钥地址。
+
+当询问默认钩子类型和所需钩子类型时，选择 `merkleTreeHook`。
+
+### 进行核心部署的预演
+
+:::note
+
+要执行预演，您需要在单独的终端实例中运行 Anvil 节点。
+要启动 Anvil 节点，运行 `anvil`。
+有关 Anvil 和安装的更多信息，请查看 [Foundry 的 Anvil 文档](https://book.getfoundry.sh/anvil/)。
+
+:::
+
+在执行部署之前，您可以通过 `--dry-run <CHAIN_NAME>` 或 `-d <CHAIN_NAME>` 进行预演，以确保部署将成功，并提供部署的 gas 成本分析。这不会触发任何实际交易，而是模拟部署以显示所需合约及其各自的 gas 成本。
+
+除了验证即将进行的部署外，您还可以通过 `--from-address` 或 `-f` 选项提供您打算用于部署的 EOA 地址。
+这将确保您有足够的资金完成部署。
+
+```bash
+hyperlane core deploy --dry-run chain1 \ 
+    --from-address $YOUR_DEPLOYER_ADDRESS \ # (可选) 通过 Anvil 模拟的账户地址；默认为 HYP_KEY 环境变量
+    --registry \ # (可选) 主注册表的路径；默认为 Hyperlane github 注册表
+    --overrides # (可选) 覆盖注册表的路径；默认为本地 ./ 路径
+```
+
+### 部署
+
+我们现在准备使用 `core deploy` 命令来部署 Hyperlane 合约。为了支付交易费用，该命令需要步骤 1 中的合约部署者密钥，可以通过 `HYP_KEY` 环境变量或命令参数提供。
+
+```bash
+hyperlane core deploy
+```
+
+### 验证
+
+部署合约的构件将写入配置的注册表中。默认情况下，您可以在运行命令的本地目录中找到新地址（例如 `./chains/chain1/addresses.yaml`）。
+
+### 代理配置
+
+现在我们准备使用已部署的合约生成代理配置，该配置将在后续步骤中被代理（验证器和中继器）使用。
+
+```bash
+hyperlane registry agent-config --chains chain1
+```
+
+将 `CONFIG_FILES` 环境变量设置为生成的代理配置路径。
+```bash
+export CONFIG_FILES=/full/path/to/configs/agent-config.json

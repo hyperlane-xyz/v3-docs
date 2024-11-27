@@ -1,0 +1,77 @@
+# AWS 签名存储桶设置
+
+配置您的签名密钥和 S3 存储桶
+
+:::info
+
+这些说明适用于验证器密钥存在于 AWS 密钥管理服务（KMS）中，且验证器签名公开发布在 S3 存储桶中的生产环境。
+
+如果您只打算运行验证器用于测试或开发目的，请考虑改为遵循[本地设置指南](../../guides/deploy-hyperlane-local-agents.mdx)。
+
+:::
+
+### 1. 创建 AWS IAM 用户和签名密钥
+
+按照[代理密钥](../set-up-agent-keys.mdx)中的说明创建 AWS IAM 用户和 KMS 或十六进制密钥。您将在后续步骤中使用此密钥的凭证。
+
+### 2. 创建 S3 存储桶
+
+:::info
+请注意，步骤 1（创建 IAM 用户）是设置 S3 存储桶所必需的，因此无论使用何种类型的密钥都是必需的。
+:::
+
+您的验证器将把他们的签名发布到这个存储桶。
+
+1. 在 AWS 控制台中转到 AWS 的 S3。
+2. 在右侧，点击橙色的"创建存储桶"按钮
+3. 选择一个信息丰富的存储桶名称，例如 `hyperlane-validator-signatures-${validator_name}-${chain_name}`
+4. 考虑选择与您在上一步创建的 KMS 密钥相同的区域。
+5. 保持对象所有权的推荐设置"ACL 已禁用"。
+6. 配置公共访问设置，以便中继器可以读取您的签名
+   1. 取消选中"阻止所有公共访问"
+   2. 选中前两个通过访问控制列表阻止访问的选项
+   3. 保持最后两个选项未选中，我们将通过存储桶策略授予公共读取访问权限
+   4. 确认这些设置可能会导致您的存储桶公开访问
+7. 其余默认设置可以保持不变，点击底部的橙色"创建存储桶"按钮
+
+### 3. 配置 S3 存储桶权限
+
+您的验证器 IAM 用户需要写入权限，并且应该可以被中继器公开读取。
+
+1. 在 AWS 控制台中导航回"身份和访问管理(IAM)"
+2. 在"IAM 资源"下，您应该至少看到一个"用户"，点击进入
+3. 点击您之前配置的用户名（例如 `hyperlane-validator-${chain_name}`）
+4. 复制"用户 ARN"到剪贴板，它应该看起来像 `arn:aws:iam::791444913613:user/hyperlane-validator-${chain_name}`
+5. 导航回 AWS 控制台中的"S3"
+6. 点击您刚刚创建的存储桶的名称
+7. 在存储桶名称下方，点击"权限"
+8. 滚动到"存储桶策略"并点击"编辑"
+9. 输入以下内容。存储桶 ARN 显示在输入策略的位置上方
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": ["${BUCKET_ARN}", "${BUCKET_ARN}/*"]
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${USER_ARN}"
+      },
+      "Action": ["s3:DeleteObject", "s3:PutObject"],
+      "Resource": "${BUCKET_ARN}/*"
+    }
+  ]
+}
+```
+
+:::tip
+
+高级用户可以考虑使用 [S3 Terraform 模块](../deploy-with-terraform.mdx#iam--kms)来创建具有正确权限的 S3 存储桶。
+
+:::

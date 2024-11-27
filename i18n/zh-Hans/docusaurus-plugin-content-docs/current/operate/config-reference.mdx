@@ -1,0 +1,1982 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# 配置参考
+
+## CONFIG_FILES
+
+**描述：**（仅环境变量）按顺序加载的额外配置文件路径列表（例如 `hyperlane-monorepo/rust/main/config` 中的文件）。它们将按照从前到后的顺序合并，所以如果第一个和最后一个文件都指定了特定的配置路径，将使用最后列出的文件中设置的值。
+
+这些文件必须在你的代理能够访问的文件系统中。如果你在 Docker 中运行，请参阅[代理配置指南](./agent-config.mdx#config-files-with-docker)以了解如何将配置文件挂载到 Docker 容器中的提示。
+
+**可选：** 是
+
+**代理：** 所有
+
+**类型：** `string`（逗号分隔的文件路径列表）
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+不支持作为参数
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export CONFIG_FILES='./config/ethereum/my-config.json,./config/ethereum/my-validator-config.json'
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+不支持在配置文件中使用
+</TabItem>
+</Tabs>
+
+## chains
+
+**描述：** 代理必须使用的每个链的配置。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `Map<string, ChainSetup (Object)>`（参见 `chains.*` 了解 `ChainSetup` 值）
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.*
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_*="...."
+export HYP_CHAINS_ETHEREUM_*="...."
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {},
+        "ethereum": {}
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.name
+
+**描述：** 域的名称。允许为域指定一个不同于链的真实名称。这_几乎总是_应该与 `chain_name` 相同。
+
+**要求：** 如果是已知的域名，需要与域 ID 对齐。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```sh
+--chains.${CHAIN_NAME}.name $DOMAIN_NAME
+--chains.ethereum.name ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_NAME="$DOMAIN_NAME"
+export HYP_CHAINS_ETHEREUM_NAME="ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "name": "<domain_name>"
+        },
+        "ethereum": {
+            "name": "ethereum"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.domain
+
+**描述：** 用于唯一标识域的 Hyperlane 域 ID。参见：[域标识符](../reference/domains.mdx)。
+
+**要求：** 如果是已知域，需要与域名对齐。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `Numeric (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.domain $DOMAIN_ID
+--chains.ethereum.domain 1
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_DOMAIN="$DOMAIN_NAME"
+export HYP_CHAINS_ETHEREUM_DOMAIN=1
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "domain": "<domain_id>"
+        },
+        "ethereum": {
+            "domain": 1
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.mailbox
+
+**描述：** 链上邮箱合约的地址。参见[合约地址](../reference/contract-addresses.mdx)。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.mailbox "$MAILBOX_ADDRESS"
+--chains.ethereum.mailbox "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS"
+export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "mailbox": "<mailbox_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "mailbox": "0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.interchainGasPaymaster
+
+**描述：** 链上跨链 gas 支付合约的地址。参见[合约地址](../reference/contract-addresses.mdx)。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.interchainGasPaymaster "$IGP_ADDRESS"
+--chains.ethereum.interchainGasPaymaster "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_INTERCHAINGASPAYMASTER="$IGP_ADDRESS"
+export HYP_CHAINS_ETHEREUM_INTERCHAINGASPAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "interchainGasPaymaster": "<igp_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "interchainGasPaymaster": "0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.validatorAnnounce
+
+**描述：** 链上验证者公告合约的地址。参见[合约地址](../reference/contract-addresses.mdx)。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.validatorAnnounce "$VALIDATOR_ANNOUNCE_ADDRESS"
+--chains.ethereum.validatorAnnounce "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_VALIDATORANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
+export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "validatorAnnounce": "<validator_announce_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "validatorAnnounce": "0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.merkleTreeHook
+
+**描述：** 链上 merkle 树钩子合约的地址。参见[合约地址](../reference/contract-addresses.mdx)。
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `Hash (string)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.merkleTreeHook "$MERKLE_TREE_HOOK_ADDRESS"
+--chains.ethereum.merkleTreeHook "0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS"
+export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "addresses": {
+                "merkleTreeHook": "<merkle_tree_hook_address>"
+            }
+        },
+        "ethereum": {
+            "addresses": {
+                "merkleTreeHook": "0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer
+
+**描述：** 应该用于此链的签名者
+
+**可选：** 是（如果未指定，将使用 `defaultsigner`）
+
+**代理：** 所有
+
+**类型：** `SignerConf (Object)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.signer.*
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_SIGNER_*="...."
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {}
+        },
+        "ethereum": {
+            "signer": {}
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.type
+
+**描述：** 定义的签名者类型。`HexKey` 签名者使用私钥，`Aws` 签名者使用基于 AWS 的 KMS，而 `Node` 假定本地节点将签署 RPC 调用。
+
+**可选：** 是；默认为 `node`，除非指定了 `key`，在这种情况下默认为 `hexKey`
+
+**代理：** 所有
+
+**类型：** `枚举 ("hexKey" | "aws" | "cosmosKey" | "node")`
+
+不同 VM 接受的值：
+- EVM：`hexKey`（ECDSA）或 `aws`（ECDSA）
+- sealevel：`hexKey`（ED25519）
+- cosmos：`cosmosKey`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.signer.type hexKey
+--chains.ethereum.signer.type node
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey"
+export HYP_CHAINS_ETHEREUM_SIGNER_TYPE="node"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {
+                "type": "hexKey"
+            }
+        },
+        "ethereum": {
+            "signer": {
+                "type": "node"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.key
+
+**描述：** 十六进制密钥。私钥的十六进制字符串。
+
+**要求：** `chains.<chain_name>.signer.type = "hexKey" | undefined`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.signer.key "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {
+                "key": "<key_in_hex>"
+            }
+        },
+        "ethereum": {
+            "signer": {
+                "key": "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.id
+
+**描述：** 标识 AWS KMS 密钥的 UUID
+
+**要求：** `chains.<chain_name>.signer.type = "aws"`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.ethereum.signer.type "alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "ethereum": {
+            "signer": {
+                "type": "aws",
+                "id": "alias/validator-signer-ethereum"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.signer.region
+
+**描述：** AWS 区域
+
+**要求：** `chains.<chain_name>.signer.type = "aws"`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.signer.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHAINS_${CHAIN_NAME}_SIGNER_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "signer": {
+                "type": "aws",
+                "region": "us-east-1"
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.protocol
+
+**描述：** 要使用的连接协议。
+
+**可选：** 默认为 `"ethereum"`
+
+**代理：** 所有
+
+**类型：** `枚举 ("ethereum" | "fuel")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.protocol ethereum
+--chains.ethereum.protocol ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_PROTOCOL="ethereum"
+export HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "protocol": "<protocol>"
+        },
+        "arbitrum": {
+            "protocol": "ethereum"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.rpcConsensusType
+
+:::info
+
+**共识类型目前仅适用于 EVM 链。**
+
+非 EVM 链的连接仅支持单个 RPC URL。如果在 [rpcUrls](#chainschain_namerpcurls) 中指定了多个 RPC URL，则只会使用第一个。
+
+:::
+
+**描述：** 指定如何处理多个 RPC URL 的共识类型。
+
+- `single`：只使用第一个可用的 RPC URL。
+- `quorum`：使用所有 RPC URL，并等待法定人数（超过一半）的响应一致。
+- `fallback`：按顺序尝试每个 RPC URL，直到获得成功响应。
+
+**要求：** 必须指定 [rpcUrls](#chainschain_namerpcurls)
+
+**可选：** 默认为 `"single"`
+
+**代理：** 所有
+
+**类型：** `枚举 ("single" | "quorum" | "fallback")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.rpcConsensusType "single"
+--chains.ethereum.rpcConsensusType "single"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_RPCCONSENSUSTYPE="single"
+export HYP_CHAINS_ETHEREUM_RPCCONSENSUSTYPE="single"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "rpcConsensusType": "single"
+        },
+        "ethereum": {
+            "rpcConsensusType": "single"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.customRpcUrls
+
+:::info
+
+非 EVM 链的连接仅支持单个 RPC URL。如果指定了多个 RPC URL，则只会使用第一个。
+
+:::
+
+**描述：** 用于连接提供者的逗号分隔 URL。`customRpcUrls` 和 [rpcUrls](#chainschain_namerpcurls) 的区别在于 `customRpcUrls` 允许从命令行或环境变量中使用更友好的输入方式（逗号分隔而不是数组）。
+
+**类型：** `string`（不带空格的逗号分隔 URL 列表）
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.customrpcurls "$CONNECTION_URLS"
+--chains.ethereum.customrpcurls "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_CUSTOMRPCURLS="$CONNECTION_URLS"
+export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "rpcUrls": "<connection_urls>"
+        },
+        "ethereum": {
+            "rpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.rpcUrls
+
+:::info
+
+非 EVM 链的连接仅支持单个 RPC URL。如果在 [rpcUrls](#chainschain_namerpcurls) 中指定了多个 RPC URL，则只会使用第一个。
+
+:::
+
+**描述：** 用于连接提供者的 URL 数组。
+
+**要求：** 必须指定 [rpcConsensusType](#chainschain_namerpcconsensustype)
+
+**可选：** 否
+
+**代理：** 所有
+
+**类型：** `string[]`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.rpcurls.0.https "$CONNECTION_URL_0"
+--chains.${CHAIN_NAME}.rpcurls.1.https "$CONNECTION_URL_1"
+--chains.${CHAIN_NAME}.rpcurls.2.https "$CONNECTION_URL_2"
+--chains.ethereum.rpcurls.0.https "http://127.0.0.1:8545"
+--chains.ethereum.rpcurls.1.https "http://127.0.0.1:8546"
+--chains.ethereum.rpcurls.2.https "http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_0_HTTPS="$CONNECTION_URL_0"
+export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_1_HTTPS="$CONNECTION_URL_1"
+export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_2_HTTPS="$CONNECTION_URL_2"
+export HYP_CHAINS_ETHEREUM_RPCURLS_0_HTTPS="http://127.0.0.1:8545"
+export HYP_CHAINS_ETHEREUM_RPCURLS_1_HTTPS="http://127.0.0.1:8546"
+export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "rpcUrls": [
+                {
+                    "http": "<connection_url_1>"
+                },
+                {
+                    "http": "<connection_url_2>"
+                }
+            ],
+        },
+        "ethereum": {
+            "rpcUrls": [
+                {
+                    "http": "http://127.0.0.1:8545"
+                },
+                {
+                    "http": "http://127.0.0.1:8546"
+                }
+            ],
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.index.from
+
+**描述：** 开始索引合约的区块高度。
+
+**可选：** 默认为 `0`
+
+**代理：** 中继者 & 抓取器
+
+**类型：** `数值 (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.index.from 0
+--chains.ethereum.index.from 16271503
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_INDEX_FROM=0
+export HYP_CHAINS_ETHEREUM_INDEX_FROM=16271503
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "index": {
+                "from": 0
+            }
+        },
+        "ethereum": {
+            "index": {
+                "from": 16271503
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## chains.`<chain_name>`.index.chunk
+
+**描述：** 索引合约时一次查询的区块数量。注意，配置的提供者必须支持设置的任何值。默认值应该适用于几乎所有提供者。
+
+**可选：** 默认为 `1999`
+
+**代理：** 中继者 & 抓取器
+
+**类型：** `数值 (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--chains.${CHAIN_NAME}.index.chunk 1999
+--chains.ethereum.index.chunk 1999
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHAINS_${CHAIN_NAME}_INDEX_CHUNK=1999
+export HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "chains": {
+        "`<chain_name>`": {
+            "index": {
+                "chunk": 1999
+            }
+        },
+        "ethereum": {
+            "index": {
+                "chunk": 1999
+            }
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner
+
+:::info
+
+由于每个虚拟机支持不同的签名者类型，默认签名者只能支持单一虚拟机类型。例如，如果默认签名者是 ECDSA 类型的，它将只能在 EVM 链上签名。
+
+:::
+
+**描述：** 所有未指定自己的签名者的链应该使用的默认签名者。
+
+**可选：** 是
+
+**代理：** 所有
+
+**类型：** `SignerConf (对象)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```
+--defaultSigner.*
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_DEFAULTSIGNER_*="...."
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "defaultsigner": {}
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.type
+
+**描述：** 定义的签名者类型。`HexKey` 签名者使用私钥，`Aws` 签名者使用基于 AWS 的 KMS，而 `Node` 则假定本地节点将签名 RPC 调用。
+
+**可选：** 是；默认为 `node`，除非指定了 `key`，在这种情况下默认为 `hexKey`
+
+**代理：** 所有
+
+**类型：** `枚举 ("hexKey" | "aws" | "cosmosKey" | "node")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```
+--defaultSigner.type hexKey
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_DEFAULTSIGNER_TYPE="hexKey"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "defaultsigner": {
+        "type": "hexKey"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.key
+
+**描述：** 十六进制密钥。私钥的十六进制字符串。
+
+**要求：** `defaultsigner.type = "hexKey" | undefined`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--defaultSigner.key "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "defaultsigner": {
+        "type": "hexKey",
+        "key": "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.id
+
+**描述：** 标识 AWS KMS 密钥的 UUID
+
+**要求：** `defaultsigner.type = "aws"`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--defaultSigner.id "alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_DEFAULTSIGNER_ID="alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "defaultsigner": {
+        "type": "aws",
+        "id": "alias/validator-signer-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultsigner.region
+
+**描述：** AWS 区域
+
+**要求：** `defaultsigner.type = "aws"`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--defaultSigner.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_DEFAULTSIGNER_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "defaultsigner": {
+        "type": "aws",
+        "region": "us-east-1"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## metricsport
+
+**描述：** 用于暴露 Prometheus 指标的端口
+
+**可选：** 默认为 `9090`
+
+**代理：** 所有
+
+**类型：** `数值 (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--metrics-port 9090
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_METRICSPORT=9090
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "metrics": 9090
+}
+```
+</TabItem>
+</Tabs>
+
+## log.fmt
+
+**描述：** 日志模块的配置。这控制着日志记录。
+
+**可选：** 默认为 `pretty`
+
+**代理：** 所有
+
+**类型：** `枚举 ("pretty" | "json" | "full" | "compact")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--log.fmt pretty
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_LOG_FMT="pretty"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "log": {
+        "fmt": "pretty"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## log.level
+
+**描述：** 日志模块的配置。这控制着日志记录。要获得完整的详细程度（包括依赖项），请使用 `dependencyTrace`。
+
+**可选：** 默认为 `info`
+
+**代理：** 所有
+
+**类型：** `枚举 ("dependencyTrace" | "trace" | "debug" | "info" | "warn" | "error" | "off")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--log.level info
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_LOG_LEVEL="info"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "log": {
+        "level": "info"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## originchainname
+
+**描述：** 验证者应该验证的链的名称，以及中继者应该从中中继消息的链的名称。**对于中继者已弃用，请改用** [#relaychains](#relaychains)。
+
+**可选：** 否 - 验证者；是 - 中继者
+
+**代理：** 验证者 & 中继者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--originChainName ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_ORIGINCHAINNAME="ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "originchainname": "ethereum"
+}
+```
+</TabItem>
+</Tabs>
+
+## validator
+
+**描述：** 验证者应该使用的签名者。
+
+**可选：** 是
+
+**代理：** 所有
+
+**类型：** `SignerConf (对象)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--validator.*
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_VALIDATOR_*="...."
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "validator": {}
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.type
+
+**描述：** 定义的 EVM 签名者类型。请注意，无论验证者在哪种 VM 上运行，检查点始终使用 EVM ECDSA 曲线进行签名。`HexKey` 签名者使用私钥，`Aws` 签名者使用基于 AWS 的 KMS，而 `Node` 则假定本地节点将签署 RPC 调用。
+
+**可选：** 是；默认为 `node`，除非指定了 `key`，在这种情况下默认为 `hexKey`
+
+**代理：** 所有
+
+**类型：** `枚举 ("hexKey" | "aws" | "node")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--validator.type hexKey
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_VALIDATOR_TYPE="hexKey"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "validator": {
+        "type": "hexKey"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.key
+
+**描述：** 十六进制密钥。私钥的十六进制字符串。
+
+**要求：** `validator.type = "hexKey" | undefined`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--validator.key 8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "validator": {
+        "type": "hexKey",
+        "key": "8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.id
+
+**描述：** 标识 AWS KMS 密钥的 UUID
+
+**要求：** `validator.type = "aws"`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--validator.id "alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_VALIDATOR_ID="alias/validator-signer-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "validator": {
+        "type": "aws",
+        "id": "alias/validator-signer-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## validator.region
+
+**描述：** AWS 区域
+
+**要求：** `validator.type = "aws"`
+
+**可选：** 否（如果满足要求）
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--validator.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_VALIDATOR_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "validator": {
+        "type": "aws",
+        "region": "us-east-1"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.type
+
+:::info
+
+**检查点同步器类型**
+
+检查点同步器类型目前仅适用于验证者。
+
+:::
+
+**描述：** 定义同步检查点的方法
+
+**可选：** 否
+
+**代理：** 验证者
+
+**类型：** `枚举 ("localStorage" | "s3")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--checkpointSyncer.type localStorage
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHECKPOINTSYNCER_TYPE="localStorage"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "checkpointsyncer": {
+        "type": "localStorage"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.path
+
+**描述：** 本地存储类型检查点同步器配置在本地磁盘上的路径。
+
+**要求：** `checkpointsyncer.type = "localStorage"`
+
+**可选：** 否（如果满足条件）
+
+**代理：** 验证者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--checkpointSyncer.path "/tmp/syncer"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "checkpointsyncer": {
+        "type": "localStorage",
+        "path": "/tmp/syncer"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.bucket
+
+**描述：** S3 存储桶名称
+
+**要求：** `checkpointsyncer.type = "s3"`
+
+**可选：** 否（如果满足条件）
+
+**代理：** 验证者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--checkpointSyncer.bucket signatures-ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "checkpointsyncer": {
+        "type": "s3",
+        "bucket": "signatures-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.folder
+
+**描述：** S3 存储桶中的文件夹
+
+**要求：** `checkpointsyncer.type = "s3"`
+
+**可选：** 否（如果满足条件）
+
+**代理：** 验证者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--checkpointSyncer.folder signatures-ethereum
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "checkpointsyncer": {
+        "type": "s3",
+        "folder": "signatures-ethereum"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## checkpointsyncer.region
+
+**描述：** S3 存储桶区域
+
+**要求：** `checkpointsyncer.type = "s3"`
+
+**可选：** 否（如果满足条件）
+
+**代理：** 验证者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--checkpointSyncer.region us-east-1
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_CHECKPOINTSYNCER_REGION="us-east-1"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "checkpointsyncer": {
+        "type": "s3",
+        "region": "us-east-1"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## interval
+
+**描述：** 验证者应该每隔多少秒检查新的检查点。另请参阅[延迟](../reference/latencies.mdx)。
+
+**可选：** 否
+
+**代理：** 验证者
+
+**类型：** `数值 (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--interval 30
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_INTERVAL=30
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "interval": 30
+}
+```
+</TabItem>
+</Tabs>
+
+## db
+
+**描述：** 这是代理在磁盘上存储相关数据的本地文件系统路径。**每个代理必须是唯一的！**多个代理必须有不同的路径。如果路径不是以系统定义的根路径（如 Unix 上的 `/`）开头，则该路径相对于当前工作目录。使用 docker 镜像时，请确保此文件夹在运行之间得到持久化。
+
+对于抓取器，这是连接到 postgresql 数据库的连接字符串。
+
+**可选：** 对于验证者和中继者，它是可选的，默认为当前工作目录中包含 `originchainname` 的路径。对于抓取器，它是必需的。
+
+**代理：** 所有
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+# 验证者
+--db "/tmp/hyp/validator/ethereum-cache"
+
+# 中继者
+--db "/tmp/hyp/relayer/ethereum-cache"
+
+# 抓取器
+--db "postgresql://postgres:password@localhost:5432/dbname"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+# 验证者
+export HYP_DB="/tmp/hyp/validator/ethereum-cache"
+
+# 中继者
+export HYP_DB="/tmp/hyp/relayer/ethereum-cache"
+
+# 抓取器
+export HYP_DB="postgresql://postgres:password@localhost:5432/dbname"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "db": "/tmp/hyp/validator/ethereum-cache"
+}
+```
+</TabItem>
+</Tabs>
+
+## relaychains
+
+**描述：** 用于传递消息的链列表。
+
+**可选：** 否
+
+**代理：** 中继者
+
+**类型：** `string`（逗号分隔的链列表）
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--relayChains "arbitrum,ethereum,bsc"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_RELAYCHAINS="arbitrum,ethereum,bsc"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "relaychains": "arbitrum,ethereum,bsc"
+}
+```
+</TabItem>
+</Tabs>
+
+## gaspaymentenforcement
+
+**描述：** JSON 字符串化的 gas 支付执行配置数组，按优先级从高到低排序。最后一个策略应该是一个全面的策略，用于处理任何未匹配前面策略的消息。
+
+**可选：** 默认为无执行（`[{"type": "none"}]`）
+
+**代理：** 中继者
+
+**类型：** `JSON (string)`
+
+```typescript
+type gaspaymentenforcement = Array<GasPaymentEnforcementPolicy>;
+
+type GasPaymentEnforcementPolicy =
+( // 每种类型特有的字段...
+    // 无要求 - 所有消息都会被处理，无论 gas 支付情况如何
+    { type: "none" }
+    // 已支付最低金额的消息将被处理
+  & { type: "minimum", payment: U256 }
+    // 根据链上费用报价，已在外部链上支付所需 gas 数量。
+    // `gasfraction` 默认为 "1 / 2"。
+  & { type: "onChainFeeQuoting", gasfraction?: GasFraction }
+) | { // 所有类型都具有以下字段...
+    // 如果消息匹配，将使用此策略。
+    // 如果未指定匹配列表，所有消息都将匹配。
+    matchingList?: MatchingList
+};
+
+// 匹配规则列表。如果列表中任何元素匹配消息，则该消息匹配。
+type MatchingList = Array<MatchingListElement>;
+
+// 如果提供的任何值匹配，则匹配消息。
+interface MatchingListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array<U32>;
+type HashFilter = Wildcard | H256 | Array<H256>;
+
+// 32位无符号整数
+type U32 = number | string;
+// 256位无符号整数；注意：`number` 类型精度有限。
+type U256 = string | number;
+// 256位哈希（也可以更少）以十六进制编码
+type H256 = string;
+// 匹配任何内容
+type Wildcard = "*";
+// 形如 `{分子} / {分母}` 的数字字符串，例如 "1 / 2"
+type GasFraction = string;
+```
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--gasPaymentEnforcement '[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]'
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_GASPAYMENTENFORCEMENT='[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]'
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "gaspaymentenforcement": "[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]"
+}
+```
+</TabItem>
+</Tabs>
+
+## whitelist
+
+**描述：** 定义允许哪些消息的匹配列表。任何不匹配此列表的消息都不会被中继。如果未提供白名单，则允许所有消息。
+
+另请参阅 [消息过滤](./relayer/message-filtering.mdx)
+
+**可选：** 是
+
+**代理：** 中继者
+
+**类型：** `JSON (string)`
+
+```typescript
+// 匹配规则列表。如果列表中任何元素匹配消息，则该消息匹配。
+type MatchingList = Array<MatchingListElement>;
+
+// 如果提供的任何值匹配，则匹配消息。
+interface MatchingListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array<U32>;
+type HashFilter = Wildcard | H256 | Array<H256>;
+
+// 32位无符号整数
+type U32 = number | string;
+// 256位哈希（也可以更少）以十六进制编码
+type H256 = string;
+// 匹配任何内容
+type Wildcard = "*";
+```
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--whitelist '[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_WHITELIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "whitelist": "[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]"
+}
+```
+</TabItem>
+</Tabs>
+
+## blacklist
+
+**描述：** 定义应忽略哪些消息的匹配列表。任何匹配此列表的消息都不会被中继。如果未提供黑名单，则允许所有消息。
+
+另请参阅 [消息过滤](./relayer/message-filtering.mdx)
+
+**可选：** 是
+
+**代理：** 中继者
+
+**类型：** `JSON (string)`
+
+```typescript
+// 匹配规则列表。如果列表中任何元素匹配消息，则该消息匹配。
+type MatchingList = Array<MatchingListElement>;
+
+// 如果提供的任何值匹配，则匹配消息。
+interface MatchingListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array<U32>;
+type HashFilter = Wildcard | H256 | Array<H256>;
+
+// 32位无符号整数
+type U32 = number | string;
+// 256位哈希（也可以更少）以十六进制编码
+type H256 = string;
+// 匹配任何内容
+type Wildcard = "*";
+```
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--blacklist '[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "blacklist": "[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]"
+}
+```
+</TabItem>
+</Tabs>
+
+## transactiongaslimit
+
+**描述：** 中继交易允许的最大 gas 限制。
+
+**可选：** 默认无限制
+
+**代理：** 中继者
+
+**类型：** `数值 (string | number)`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--transactionGasLimit 250000000
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_TRANSACTIONGASLIMIT="250000000"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "transactiongaslimit": "250000000"
+}
+```
+</TabItem>
+</Tabs>
+
+## skiptransactiongaslimitfor
+
+**描述：** 跳过应用 `transactiongaslimit` 的域 ID 列表。
+
+**可选：** 默认对所有域使用 `transactiongaslimit`
+
+**代理：** 中继者
+
+**类型：** `string`（逗号分隔的域 ID 列表）
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--skipTransactionGasLimitFor "43114,10,42220"
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "skiptransactiongaslimitfor": "43114,10,42220"
+}
+```
+</TabItem>
+</Tabs>
+
+## allowlocalcheckpointsyncers
+
+**描述：** 是否允许本地 `checkpointsyncer` 类型，如果为 `false` 则会忽略它们。
+
+**可选：** 默认为 `false`
+
+**代理：** 中继者
+
+**类型：** `boolean`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+```bash
+--allowLocalCheckpointSyncers false
+```
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```sh
+export HYP_ALLOWLOCALCHECKPOINTSYNCERS=false
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+```json
+{
+    "allowlocalcheckpointsyncers": false
+}
+```
+</TabItem>
+</Tabs>
+
+## AWS_ACCESS_KEY_ID
+
+**描述：** （仅环境变量）验证者的 AWS IAM 用户的访问密钥 ID。
+
+**可选：** 如果任何签名者配置使用 `aws`，则必需
+
+**代理：** 中继者和验证者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+不支持作为参数
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+不支持在配置文件中使用
+</TabItem>
+</Tabs>
+
+## AWS_SECRET_ACCESS_KEY
+
+**描述：** （仅环境变量）验证者的 AWS IAM 用户的秘密访问密钥。
+
+**可选：** 如果任何签名者配置使用 `aws`，则必需
+
+**代理：** 中继者和验证者
+
+**类型：** `string`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="作为参数" default>
+不支持作为参数
+</TabItem>
+
+<TabItem value="env" label="作为环境变量">
+```bash
+export AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+```
+</TabItem>
+
+<TabItem value="config" label="作为配置">
+不支持在配置文件中使用
+</TabItem>
+</Tabs>

@@ -1,0 +1,157 @@
+# 使用 Docker Compose 和 AWS 快速入门
+
+有时候不依赖长长的 docker 命令会更好。使用 Docker compose 运行与使用原始 Docker 非常相似，你可以在 [Docker 文档](https://docs.Docker.com/compose/compose-file/)中找到完整的格式规范。
+
+## 1. 设置验证者密钥
+
+按照[此处](set-up-agent-keys.mdx#2-aws-kms)的指南使用 AWS KMS 创建代理密钥。
+
+## 2. 创建用于签名的 S3 存储桶
+
+按照[此处](./validators/validator-signatures-aws.mdx)的指南创建和配置 S3 存储桶，供你的验证者写入签名。
+
+## 3. (仅限 AVS 运营者) 在 Hyperlane AVS 中注册
+
+如果你是 AVS 运营者，请按照[此处](../guides/avs-operator-guide.mdx#4-register-your-operator)的指南在 Hyperlane AVS 中注册。
+
+## 4. 设置验证者环境
+
+### 创建配置文件
+
+在这个例子中，我们将运行三个链。
+
+```bash
+mkdir -p ethereum/hyperlane_db optimism/hyperlane_db base/hyperlane_db && \
+touch ethereum/config.json optimism/config.json base/config.json docker-compose.yml .env.ethereum .env.optimism .env.base
+```
+
+### 编辑每个 config.json
+
+你可以在[这里](./agent-config.mdx)阅读更多关于代理配置的信息。
+
+| 参数                      | 描述                                                                                                                                                                                                 |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `customRpcUrls`          | 你想要支持的链的高性能 RPC 端点的逗号分隔列表。我们建议使用付费提供商以避免速率限制。                                                                                                                |
+| `chains.ethereum`        | 在 base/config.json 中应改为 `chains.base`，在 optimism/config.json 中应改为 `chains.optimism`。                                                                                                      |
+| `signer.region`          | 应调整为你的 AWS 区域。                                                                                                                                                                               |
+| `validator.region`       | 应调整为你的 AWS 区域。                                                                                                                                                                               |
+| `signer.id`              | 应调整为你在步骤 3 中配置的 AWS KMS ID，前缀为 `alias/`。                                                                                                                                             |
+| `validator.id`           | 应调整为你在步骤 3 中配置的 AWS KMS ID，前缀为 `alias/`。                                                                                                                                             |
+| `originChainName`        | 应该是你正在验证的链。                                                                                                                                                                                |
+| `checkpointSyncer.bucket`| 应反映 S3 存储桶的名称。                                                                                                                                                                              |
+| `checkpointSyncer.folder`| 验证者将在存储桶中使用的文件夹名称。你可以为多个验证者使用相同的存储桶，但确保每个验证者的文件夹名称是唯一的。                                                                                      |
+| `reorgPeriod`            | 每个链可能不同。[查找 reorgPeriods](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains)。                                                                                           |
+
+这是一个代理配置示例。
+
+```json
+{
+  "chains": {
+    "ethereum": {
+      "customRpcUrls": "https://eth.llamarpc.com,https://rpc.mevblocker.io",
+      "signer": {
+        "region": "us-east-1",
+        "type": "aws",
+        "id": "alias/hyperlane-validator-signer"
+      }
+    }
+  },
+  "originChainName": "ethereum",
+  "db": "/mnt/hyperlane_db",
+  "validator": {
+    "id": "alias/hyperlane-validator",
+    "type": "aws",
+    "region": "us-east-1"
+  },
+  "checkpointSyncer": {
+    "bucket": "hyperlane-validator-signatures",
+    "region": "us-east-1",
+    "type": "s3",
+    "folder": "ethereum"
+  },
+  "reorgPeriod": 14,
+  "metricsPort": "9090"
+}
+```
+
+### 编辑每个 .env 文件
+
+你应该为每个链更改服务名称和 aws 凭证
+
+```
+AWS_ACCESS_KEY_ID=<你的 AWS 访问密钥 ID>
+AWS_SECRET_ACCESS_KEY=<你的 AWS 秘密访问密钥>
+SERVICE_NAME=ethereum
+```
+
+## 5. 配置 Docker Compose (docker-compose.yml)
+
+```yaml
+x-common-attributes: &common-validator
+  image: gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
+  command: ./validator
+  container_name: ${SERVICE_NAME}-validator
+  environment:
+    CONFIG_FILES: /config.json
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  volumes:
+    - ./${SERVICE_NAME}/hyperlane_db:/mnt/hyperlane_db
+    - ./${SERVICE_NAME}/config.json:/config.json
+  restart: unless-stopped
+
+services:
+  ethereum-validator:
+    <<: *common-validator
+    ports:
+      - "9091:9090/tcp"
+
+  optimism-validator:
+    <<: *common-validator
+    ports:
+      - "9092:9090/tcp"
+
+  base-validator:
+    <<: *common-validator
+    ports:
+      - "9093:9090/tcp"
+```
+
+你的目录结构应该类似于这样：
+
+```bash
+.
+├── base
+│   ├── config.json
+│   └── hyperlane_db
+├── docker-compose.yml
+├── ethereum
+│   ├── config.json
+│   └── hyperlane_db
+├── .env.base
+├── .env.ethereum
+├── .env.optimism
+└── optimism
+    ├── config.json
+    └── hyperlane_db
+```
+
+## 6. 运行 Hyperlane 验证者
+
+启动容器：
+
+记得为你的验证者地址提供资金，以便验证者可以进行公告。
+
+```bash
+docker compose --env-file .env.ethereum up ethereum-validator -d
+docker compose --env-file .env.optimism up optimism-validator -d
+docker compose --env-file .env.base up base-validator -d
+```
+
+确保没有错误：
+
+```bash
+docker logs -f ethereum-validator
+docker logs -f optimism-validator
+docker logs -f base-validator
+```

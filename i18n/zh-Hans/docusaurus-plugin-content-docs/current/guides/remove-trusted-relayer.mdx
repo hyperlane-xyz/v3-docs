@@ -1,0 +1,113 @@
+import PrerequisitesPartial from '../partials/warp-routes/_prerequisites-config-symbol.mdx'
+import WarpReadSymbolChainPartial from '../partials/warp-routes/commands/_warp-read-symbol-chain.mdx'
+import WarpApplySymbolConfigDefaultPartial from '../partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx'
+
+# 如何从 Warp Route 中移除可信中继器 ISM
+
+# 使用 Hyperlane CLI
+
+首次使用 CLI 部署时，新的 warp routes 会默认使用可信中继器 ISM，这样您就不需要运行中继器或验证器。
+
+为了投入生产环境，您需要使用 [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) 移除这个 ISM。
+
+<PrerequisitesPartial />
+
+:::info
+如果您按照[部署 Warp Route](https://docs.hyperlane.xyz/docs/guides/deploy-warp-route) 指南进行操作，您很可能部署了一个将可信中继器设置为签名者地址的 warp route。
+:::
+
+要使用 Hyperlane CLI 进行确认，请找到您的代币符号和部署它的链：
+
+<WarpReadSymbolChainPartial />
+
+然后，您可以选择要移除可信中继器的 warp route。
+
+运行 `warp read` 后，您应该在 `interchainSecurityModule` 下看到类似的配置，其中包含一个 `trustedRelayerIsm`：
+
+```yaml {7-9}
+yourchain:
+  ...
+  interchainSecurityModule:
+    address: "0xd54d32cD6a62482497252D59E6cCC1445fF0b92d"
+    type: "staticAggregationIsm"
+    modules:
+      - address: "0x50b6dA835D9b8b20523891410a2E042855B465C8"
+        relayer: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        type: "trustedRelayerIsm"
+      - owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        address: "0xcE512189fF1BD41186E9eDda02BF321Fb1FC6eAc"
+        type: "defaultFallbackRoutingIsm"
+        domains: {}
+    threshold: 1
+```
+
+这个特定的配置在 `staticAggregationIsm` 中包含一个 `trustedRelayerIsm`。
+
+这意味着 `relayer` 地址将被允许调用 Warp Route 的 `handle()` 函数。换句话说，`relayer` 可以在 Warp Route 上执行任意消息。在自我中继功能之外的情况下，这可能是不希望的。
+
+默认情况下，`warp read` 会将输出保存到 `CURRENT_DIR/configs/warp-route-deployment.yaml`。按照以下步骤使用 CLI 更新配置。
+
+## 步骤 1：配置
+
+通过从 `modules` 中**移除** `trustedRelayerIsm` 块来更新 `warp-route-deployment.yaml`。或者，您也可以根据需要配置整个 `modules` 块。
+
+```diff title="warp-route-deployment.yaml"
+yourchain:
+  mailbox: '0x979Ca5202784112f4738403dBec5D0F3B9daabB9'
+  owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+  interchainSecurityModule:
+    address: '0xd54d32cD6a62482497252D59E6cCC1445fF0b92d'
+    type: 'staticAggregationIsm'
+    modules:
+-     - address: '0x50b6dA835D9b8b20523891410a2E042855B465C8'
+-       relayer: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+-       type: trustedRelayerIsm
+      - owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+        address: '0xcE512189fF1BD41186E9eDda02BF321Fb1FC6eAc'
+        type: 'defaultFallbackRoutingIsm'
+        domains: {}
+    threshold: 1
+  name: Ether
+  symbol: ETH
+  decimals: 18
+  totalSupply: 0
+  type: native
+```
+
+## 步骤 2：应用更改
+
+使用 CLI 执行以下命令：
+
+<WarpApplySymbolConfigDefaultPartial />
+
+您应该会看到一系列链上交易被执行，最后会有一条消息表明 warp 配置已更新。
+
+## 步骤 3：确认
+
+要使用 Hyperlane CLI 确认可信中继器已成功移除，请使用您的代币符号和部署链运行以下命令：
+
+<WarpReadSymbolChainPartial />
+
+运行 `warp read` 后，确认可信中继器 ISM 已从您的 warp route 中移除（在本例中，应该只包含剩余的 `defaultFallbackRoutingIsm`）。您应该在 `interchainSecurityModule` 下看到类似的配置：
+
+```yaml {8-11}
+yourchain:
+  mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  interchainSecurityModule:
+    address: "0x8af9445d8A3FbFBd1D5dF185B8a4533Ab060Cf36"
+    type: "staticAggregationIsm"
+    modules:
+      - owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+        address: "0xBe0232d5d45f9aD8322C2C4F84c39e64302Cd996"
+        type: "defaultFallbackRoutingIsm"
+        domains: {}
+    threshold: 1
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  type: "native"
+```
+
+完成这些步骤后，您已成功从 Warp Route 中移除了可信中继器 ISM，并增强了 warp route 设置的安全性。您的 warp route 现在已准备好用于生产环境。

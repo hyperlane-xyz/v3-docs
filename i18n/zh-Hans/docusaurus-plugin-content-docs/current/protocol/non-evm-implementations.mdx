@@ -1,0 +1,27 @@
+# 替代虚拟机实现
+
+虽然我们的公开文档目前主要关注 EVM 兼容性，但我们也为其他生态系统提供不同程度的支持。这些生态系统可能目前还没有完整的功能对等性或完整的工具集成（例如 TypeScript CLI 支持）。我们正在积极努力扩展这些平台的文档和工具。
+
+:::info
+如果您对在这些平台上进行构建或将 Hyperlane 引入其他新生态系统感兴趣，请在[我们的 Discord](https://discord.gg/hyperlane) 上联系我们！
+:::
+
+## CosmWasm
+
+您可以在[这里](https://github.com/many-things/cw-hyperlane)找到由 [Mitosis 团队](https://mitosis.org/)实现和维护的 CosmWasm 版本的 Hyperlane。关于如何部署到 Cosmos appchain，请参考[此指南](https://github.com/many-things/cw-hyperlane/blob/main/DEPLOYMENT.md)。截至 2024 年 7 月，我们已在 Celestia、Stride 和 Neutron 上线。
+
+## Sealevel
+
+Solana 虚拟机的 Hyperlane v3 现已在 Solana 和 Eclipse 上线，更多 Solana rollups 即将推出。您可以在[这里](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs)找到 Sealevel 合约实现。
+
+## Cairo
+
+Hyperlane 协议已由 [Pragma 团队](https://www.pragma.build/)用 Cairo 为 Starkware 实现。您可以在[这里](https://github.com/astraly-labs/hyperlane_starknet)找到正在进行中的实现。
+
+## Move
+
+Hyperlane 已由 [Movement Labs](https://movementlabs.xyz/) 在 MoveVM 中实现。您可以在[这里](https://github.com/movementlabsxyz/hyperlane-monorepo)找到正在进行中的实现。这些 Move 合约已在 Movement 的 M1 测试网上线。
+
+## Sway
+
+您可以在[这里](https://github.com/hyperlane-xyz/fuel-contracts)找到我们正在进行中的 Sway 实现。

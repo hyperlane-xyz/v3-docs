@@ -1,0 +1,105 @@
+# Warp Routes：类型
+
+Warp routes 是 Hyperlane 的代币桥接实现，允许通过 Hyperlane 在任何链之间无需许可地转移原生代币、ERC20 代币和合成代币（新部署的 ERC20）。本文档提供了所有 warp route 类型的详细信息。
+
+_请注意，本文档不包含 ERC721 warp routes。_
+
+## 原生代币 Warp Routes
+
+在 `HypNative.sol` 中实现，原生 warp routes 处理原生 gas 代币（例如以太坊或 Arbitrum 上的 ETH，Mantle 上的 MNT）在不同链之间的转移。
+
+### 特点
+
+- 直接转移原生代币而无需包装。
+- 使用 `msg.value` 作为转移金额。
+- 将多余的 `msg.value` 作为钩子支付处理。
+- 通过 `receive()` 函数支持捐赠。
+
+更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/HypNative.sol)。
+
+## 抵押支持的 ERC20 Warp Routes
+
+在 `HypERC20Collateral.sol` 中实现，抵押 warp routes 通过将 ERC20 代币锁定为抵押品来实现跨链转移。
+
+### 特点
+
+- 将现有 ERC20 代币包装为转移的抵押品。
+- 在源链上将代币锁定在合约中。
+- 在目标链上释放等值代币。
+- 使用 SafeERC20 进行安全的代币转移。
+
+更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/HypERC20Collateral.sol)。
+
+## 合成 ERC20 Warp Routes
+
+在 `HypERC20.sol` 中实现，合成 warp routes 在目标链上创建代表源链代币的新代币。
+
+### 特点
+
+- 在所有链上维持一致的总供应量。
+- 支持自定义代币属性（名称、符号、小数位数）。
+- 在目标链上铸造新代币。
+- 转回时在源链上销毁代币。
+
+更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/HypERC20.sol)。
+
+## TokenRouter 功能
+
+所有 warp routes 都扩展自 `TokenRouter` 合约，该合约提供了 warp route 代币转移的核心功能。
+
+### 特点
+
+1. **消息结构**：使用 [TokenMessage](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenMessage.sol) 库进行代币转移消息的编码和解码。
+2. **转移初始化**：`transferRemote` 函数启动跨链转移。
+3. **消息处理**：`_handle` 函数处理传入的转移消息。
+4. **抽象方法**：
+   - `_transferFromSender`：由所有 warp routes 实现以处理代币收集。
+   - `_transferTo`：由所有 warp routes 实现以处理代币分发。
+
+### TokenMessage 格式
+
+```solidity
+[32 字节用于接收者][32 字节用于金额][剩余字节用于元数据]
+```
+
+这种标准化格式确保了不同 warp route 实现之间的一致处理，同时通过元数据允许扩展性。
+
+更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol)。
+
+## FastTokenRouter 转移
+
+在 `FastTokenRouter.sol` 中实现，此路由扩展自 TokenRouter，通过流动性提供者机制提供更快的代币转移。
+
+### 特点
+
+- 允许流动性提供者在消息处理之前完成转移请求。
+- 包含 `fastFee` 以激励流动性提供者。
+- 引入 `fastTransferId` 用于唯一转移标识。
+
+更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/FastTokenRouter.sol)。
+
+## 专门的 Warp Route 扩展
+
+### 1. 快速抵押转移（FastHypERC20Collateral）
+
+将快速转移功能与抵押支持的 ERC20 功能相结合。更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/FastHypERC20Collateral.sol)。
+
+### 2. 金库集成（HypERC4626OwnerCollateral, HypERC4626Collateral）
+
+通过与 ERC-4626 金库集成实现抵押品收益生成。更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypERC4626OwnerCollateral.sol)和[重定基准变体](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypERC4626Collateral.sol)。
+
+### 3. 法币支持的代币（HypFiatToken）
+
+为稳定币和其他法币支持的代币设计，实现特定的铸造和销毁操作。更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypFiatToken.sol)。
+
+### 4. 缩放原生代币（HypNativeScaled）
+
+为具有不同小数位数的链之间的一致性缩放原生代币值。更多详情请参见[实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypNativeScaled.sol)。
+
+### 5. xERC20 集成（HypXERC20 和 HypXERC20Lockbox）
+
+启用 xERC20 代币的跨链转移，集成锁箱机制进行转换。更多详情请参见 [HypXERC20 实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypXERC20.sol)和 [HypXERC20Lockbox 实现代码](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/extensions/HypXERC20Lockbox.sol)。
+
+:::info
+有关设置示例和用例，请查看 [Warp Routes：示例用法](./warp-routes-example-usage.mdx)。
+:::

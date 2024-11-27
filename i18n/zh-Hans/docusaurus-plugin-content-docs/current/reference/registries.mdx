@@ -1,0 +1,64 @@
+# Hyperlane 注册表
+
+## 概述
+
+任何人都可以在任何地方部署 Hyperlane。但要使这些部署有用，它们的详细信息必须是众所周知的。注册表是链元数据、合约地址和其他与 Hyperlane 合约和工具交互所需的有用信息的集合。Hyperlane 核心团队维护着一个[规范注册表](https://github.com/hyperlane-xyz/hyperlane-registry)。[CLI](/docs/reference/cli.mdx)、[Explorer](https://explorer.hyperlane.xyz) 和其他工具都可以使用注册表数据。
+
+## 规范注册表
+
+Hyperlane 核心团队完成的部署的元数据和工件将在此处提供：
+https://github.com/hyperlane-xyz/hyperlane-registry
+
+然而，我们鼓励社区成员将他们自己的部署添加到这个规范注册表中。贡献步骤如下：
+
+1. Fork 并克隆注册表仓库
+2. 使用 CLI 并将 `--registry` 标志设置为克隆仓库的本地路径
+3. 根据需要执行您的命令
+4. 将更改推送到您的 fork 并创建拉取请求
+
+## 自定义注册表
+
+只要注册表符合与规范注册表相同的布局和文件模式，就可以使用任何 Github 仓库 URL 或本地文件路径。
+
+CLI 有两个命令行参数用于配置它使用的注册表：
+
+- `--registry` 标志设置主要注册表，如果未设置则使用默认的 Github 注册表
+- `--overrides` 标志设置一个可选的附加路径，这对于强制覆盖默认数据很有用，例如在链的元数据中使用不同的 RPC URL。
+
+一旦您的自定义注册表添加/更新完成并经过测试，请考虑向规范注册表提交拉取请求，以便其他人也能从您的部署中受益。
+
+更多信息请参见 [CLI 参考页面](/docs/reference/cli.mdx)。
+
+## 使用方法（Javascript 和 Typescript）
+
+### 安装
+
+```bash
+# 使用 npm
+npm install @hyperlane-xyz/registry
+# 或使用 yarn
+yarn add @hyperlane-xyz/registry
+```
+
+### 获取内容
+
+#### 通过包（静态）
+
+访问注册表数据的最简单方法是直接从包中导入所需的部分：
+
+```ts
+// 通过基础包
+import { ethereum, ethereumAddresses } from "@hyperlane-xyz/registry";
+// 或通过子导出获得更优的包大小（如果您的打包工具支持）
+import { metadata, addresses } from "@hyperlane-xyz/registry/chains/ethereum";
+```
+
+#### 通过工具（动态）
+
+如果您需要确保获取最新数据，可以使用 `GithubRegistry` 类动态获取注册表内容。
+
+```ts
+import { GithubRegistry } from "@hyperlane-xyz/registry";
+const registry = new GithubRegistry();
+const chainMetadata = await registry.getMetadata();
+```

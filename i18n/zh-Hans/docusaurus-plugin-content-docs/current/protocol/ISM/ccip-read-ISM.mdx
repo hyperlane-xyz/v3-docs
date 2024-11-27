@@ -1,0 +1,146 @@
+# CCIP Read ISM
+
+使用 `CcipReadIsm` 为开发者提供了验证跨链消息的极大灵活性。最终，其他所有类型的 ISM 都可以实现为 CCIP Read ISM，因此在构建新类型的 ISM 时，建议构建 CCIP Read ISM，因为所有中继器集成工作都已完成。
+
+在使用 CCIP Read ISM 时需要注意一点：它们确实引入了对外部（相对于区块链而言）但可自托管的 API 的依赖。如果这对您的用例来说是一个严重的阻碍，您可能需要考虑其他消息验证技术。
+
+在构建 CCIP Read ISM 之前，值得熟悉一下 [CCIP Read 规范](https://eips.ethereum.org/EIPS/eip-3668)。该规范描述了一个通用协议，允许 EVM 兼容链上的智能合约查询和使用链下数据。
+
+## 工作原理
+
+中继器会持续监听从 Hyperlane [Mailbox](../../protocol/mailbox.mdx) 发出的 `Dispatch` 事件。当消息被发送并被中继器接收时，中继器将查询目标 ISM 以获取有关如何处理消息以及传递是否会成功的信息。
+
+:::info
+需要在您的 ISM 上正确设置 `moduleType` 变量，以便中继器知道这是一个 CCIP Read ISM。为确保配置正确，您可以继承 `@hyperlane-xyz/core` 中的 `AbstractCcipReadIsm`。
+:::
+
+中继器将使用要传递的消息内容调用 ISM 上的 `getOffchainVerifyInfo(bytes)` 函数。该函数应该以下面[接口](#接口)部分描述的 `OffchainLookup` 错误回滚。
+
+中继器将查询此回滚消息中指定的端点，并将提供的响应和原始消息传递给目标 `Mailbox` 的 `process(bytes,bytes)` 函数。
+
+## 接口
+
+`CcipReadIsm` 必须实现 `ICcipReadIsm` 接口，并应该扩展 `AbstractCcipReadIsm`，这是一个正确设置 `moduleType` 的便利合约。
+
+```solidity
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity >=0.8.0;
+
+import {IInterchainSecurityModule} from "../IInterchainSecurityModule.sol";
+
+interface ICcipReadIsm is IInterchainSecurityModule {
+    /// @dev https://eips.ethereum.org/EIPS/eip-3668
+    /// @param sender 发起调用的合约地址，通常是 address(this)
+    /// @param urls 用于查询链下数据的 URL
+    /// @param callData 链下服务需要的上下文来服务请求
+    /// @param callbackFunction 用链下信息调用的函数选择器
+    /// @param extraData 传递给 callbackFunction 的额外信息
+    error OffchainLookup(
+        address sender,
+        string[] urls,
+        bytes callData,
+        bytes4 callbackFunction,
+        bytes extraData
+    );
+
+    /**
+     * @notice 回滚并提供查询链下信息所需的数据，
+     * 通过源 mailbox 提交
+     * @dev 更多信息请参见 https://eips.ethereum.org/EIPS/eip-3668
+     * @param _message 帮助构建链下查询的数据
+     */
+    function getOffchainVerifyInfo(bytes calldata _message) external view;
+}
+```
+
+## 配置
+
+[ChainlinkISM](https://github.com/AlexBHarley/permissionless-chainlink-feeds) 是开发 CCIP Read ISM 时的一个很好的参考示例。`ChainlinkISM` 使用一组 Chainlink 预言机进行初始化，并验证提供的价格数据是否已被某些签名者子集签名。
+
+### API
+
+根据 CCIP Read，链下 API 需要返回以下形式的 JSON 数据：
+
+```json
+{
+  "data": "..."
+}
+```
+
+中继器将把这个 `data` 属性作为 `metadata` 参数传递给 `Mailbox.process(bytes metadata, bytes message)`。
+
+注意，在 Chainlink ISM 的情况下，数据接收者也作为验证 ISM，`data` 只是带有相关签名的原始交易，用于提交价格数据。`message` 属性在某种程度上是冗余的。
+
+### 合约
+
+在设置 ISM 时，`getOffchainVerifyInfo` 和 `verify` 函数是需要指定的重要函数。
+
+- `getOffchainVerifyInfo` 函数应该以 `OffchainLookup` 错误回滚，该错误指示中继器查询给定的 API 端点。`OffchainLookup` 错误允许提供一组 API 端点，因此您可以强制执行任何级别的冗余
+
+- `verify` 必须验证提供的 `metadata` 的合法性。同样，[ChainlinkISM 实现](https://github.com/AlexBHarley/permissionless-chainlink-feeds/blob/main/apps/contracts/contracts/ChainlinkAggregator.sol#L114)在为您自己的 ISM 开发此逻辑时可以作为有用的参考点。
+
+以下是 CCIP Read ISM 的基本框架，其中 ISM 也是消息的接收者，就像 Chainlink ISM 一样。
+
+```solidity
+pragma solidity ^0.8.13;
+
+import {AbstractCcipReadIsm} from "@hyperlane-xyz/core/contracts/isms/ccip-read/AbstractCcipReadIsm.sol";
+import {IInterchainSecurityModule, ISpecifiesInterchainSecurityModule} from "@hyperlane-xyz/core/contracts/interfaces/IInterchainSecurityModule.sol";
+import {IMailbox} from "@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol";
+import {Message} from "@hyperlane-xyz/core/contracts/libs/Message.sol";
+
+contract MyCcipReadIsm is AbstractCcipReadIsm, ISpecifiesInterchainSecurityModule {
+    using Message for bytes;
+    IMailbox mailbox;
+
+    ...
+
+    /**
+     * 无操作，所有操作都在 verify 函数中进行
+     */
+    function handle(uint32, bytes32, bytes calldata _report) public {}
+
+
+    /**
+     * @param _metadata ABI 编码的模块元数据
+     * @param _message 格式化的 Hyperlane 消息（参见 Message.sol）
+     */
+    function verify(
+        bytes calldata _metadata,
+        bytes calldata _message
+    ) external returns (bool) {
+        ...
+    }
+
+    function interchainSecurityModule()
+        external
+        view
+        returns (IInterchainSecurityModule)
+    {
+        return IInterchainSecurityModule(address(this));
+    }
+
+    function getOffchainVerifyInfo(
+        bytes calldata _message
+    ) external view override {
+        revert OffchainLookup(
+            address(this),
+            offchainUrls,
+            _message,
+            MyCcipReadIsm.process.selector,
+            _message
+        );
+    }
+
+    /**
+     * 为完全兼容 CCIP Read 规范而提供。无论在 `OffchainLookup` 错误中
+     * 指定了什么选择器，中继器都会直接调用 Mailbox
+     */
+    function process(
+        bytes calldata _metadata,
+        bytes calldata _message
+    ) external {
+        mailbox.process(_metadata, _message);
+    }
+}
+```

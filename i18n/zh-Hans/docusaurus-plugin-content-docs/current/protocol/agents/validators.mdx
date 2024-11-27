@@ -1,0 +1,62 @@
+# 验证器
+
+## 概述
+
+验证器作为[多重签名 ISM](../ISM/multisig-ISM.mdx)或[经济安全模块](../economic-security/economic-security.mdx)的一部分运行，负责完成 Hyperlane 协议的安全层。如果使用其他 ISM，则不需要验证器。他们负责通过在[邮箱](../mailbox.mdx)中发生新的调度时签署默克尔根（也称为检查点）来证明消息。签名必须对任何人（通常是中继器）都可用，以便获取并随消息一起提交到目标链。
+
+与许多其他协议不同，Hyperlane **没有**固定的验证器集合。任何人都可以运行自己的验证器，只要接收方合约指定了包含其验证器的[多重签名 ISM](../ISM/multisig-ISM.mdx)即可。
+
+验证器检查点是公开的。这确保了传输层是无需许可的，因为任何人都可以获取签名并调用 `Mailbox.process()` 来传递消息。中继器仅为消息发送者提供便利服务。
+
+验证器只签署已最终确定的检查点，这一点很重要，以避免损害协议的安全性。签署被重组出去的消息会导致在经济安全模块中被惩罚。验证器代理连接到单个链以检查新消息。如果验证多个链，必须运行此代理的多个实例。
+
+Hyperlane 正在开发一个用 Rust 实现的验证器二进制文件，任何人都可以轻松运行。在运营方面，验证器需要运行这个二进制文件，并能够访问他们正在验证的链的 RPC 提供商或节点。我们希望大多数 Hyperlane 验证器将来自每个链的现有节点运营者社区。
+
+:::info
+想要运行验证器？请参考[验证器指南](../../operate/validators/run-validators.mdx)。
+:::
+
+## 更多细节
+
+验证器代理使用两种密钥类型：一种用于在其验证的区块链上签署交易，另一种用于在以太坊兼容的 ECDSA 曲线上签署检查点。由于检查点是公开的，当验证器首次开始运营时，必须通过链上的 `announce` 交易宣布其检查点位置。这是验证器代理提交的唯一交易；区块链特定的密钥在其他情况下完全不使用。还可以选择手动宣布新的验证器，以避免配置区块链特定的密钥。验证器可以由任何人宣布。
+
+对于使用[多重签名 ISM](../../reference/ISM/multisig-ISM-interface.mdx)的消息，验证器通过调用 `MerkleTreeHook.latestCheckpoint()` 读取当前的默克尔根。
+
+### 多重签名 ISM 先决条件
+
+要验证来自源链的消息，验证器的检查点签名密钥必须在目标链接收方指定的[多重签名 ISM](../../reference/ISM/multisig-ISM-interface.mdx)中注册。这只能在部署 ISM 合约时完成，但可以通过在任何 [StaticThresholdAddressSetFactory](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/libs/StaticAddressSetFactory.sol#L10) 实现上发送 `deploy(validatorAddresses, threshold)` 交易来轻松完成。
+
+### AVS 运营者先决条件
+
+要为 EigenLayer AVS 运行验证器并提供[经济安全性](../economic-security/economic-security.mdx)，验证器必须注册为 AVS 运营者。更多详细信息请参见 [AVS 运营者指南](../../guides/avs-operator-guide.mdx)。
+
+## 架构
+
+验证器由两个主要任务组成：源链的索引器和用于发布签名默克尔根的检查点提交器。
+
+### 索引器
+
+验证器索引的唯一事件类型是来自 Merkle Tree Hook [合约](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/hooks/MerkleTreeHook.sol#L32)的 `InsertedIntoTree`，[邮箱](../mailbox.mdx)在每次调度新消息时都会调用该合约。这通过 RPC 发生，代理根据默克尔插入事件构建内存中的默克尔树，这些事件也缓存到本地 RocksDB 数据库中以便快速启动。每当调度新消息时，检查点提交器从内存树生成检查点并将其添加到处理队列中。
+
+### 检查点提交器
+
+检查点提交器使用 ECDSA 密钥来签署检查点并将其发布到高可用性存储。检查点的模式如下：
+
+```rust
+pub struct Checkpoint {
+    /// 默克尔树 hook 地址
+    pub merkle_tree_hook_address: H256,
+    /// 邮箱 / 默克尔树 hook 域
+    pub mailbox_domain: u32,
+    /// 检查点的根
+    pub root: H256,
+    /// 检查点的索引
+    pub index: u32,
+}
+```
+
+代理实现当前仅支持 AWS S3 作为检查点存储。Google Cloud Storage 已集成但存在[未解决的问题](https://github.com/hyperlane-xyz/hyperlane-monorepo/issues/4069)。Azure Blob Storage 的贡献仍在[进行中](https://github.com/eigerco/hyperlane-monorepo/pull/2)。
+
+### 活性影响
+
+根据多重签名 ISM 中配置的阈值，验证器停机可能会导致协议的活性停止。提交器优先处理新的检查点而不是旧的检查点，这样中继器可以首先获取较新消息的元数据，这些消息更可能尚未被传递。

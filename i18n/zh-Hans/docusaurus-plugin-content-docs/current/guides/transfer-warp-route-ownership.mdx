@@ -1,0 +1,120 @@
+import PrerequisitesPartial from "../partials/warp-routes/_prerequisites-config-symbol.mdx";
+import WarpReadSymbolChainPartial from "../partials/warp-routes/commands/_warp-read-symbol-chain.mdx";
+import WarpApplySymbolConfigDefaultPartial from "../partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx";
+
+# 如何转移 Hyperlane Warp Route 的所有权
+
+本指南提供了转移 Hyperlane Warp Route 所有权的分步指导。同时也解释了拥有 Warp Route 所涉及的责任、安全考虑因素和配置选项。
+
+## Warp Route 所有权概述
+
+在转移 Warp Route 的所有权之前，理解这种所有权的含义很重要。所有权授予对配置设置的控制权，如跨链安全模块（ISM）、验证器选项以及其他关键安全参数。
+
+:::info
+一旦在链上设置了 mailbox，任何人都可以部署 Warp Route。Warp Routes 通常由几个不同的群体部署 - Abacus Works 团队、资产发行方、链团队或应用程序团队。
+:::
+
+### 所有权概述
+
+- **责任：** 作为所有者，您需要承担管理安全配置的责任，包括 ISM 和验证器设置，以满足您特定的安全和运营目标。
+- **安全性和自主性**：所有权的选择通常取决于安全性和控制偏好。我们强烈建议在任何生产环境中使用多重签名钱包（如 Gnosis Safe）。团队可以选择**完全所有权**以获得完全自主权，或在多重签名钱包上选择**共同所有权**以共享安全管理。共同所有权能够在关键更新上实现协作决策，这可以增加用户和开发者的信任。
+
+### ISM、验证器和中继器选项
+
+在配置或转移 Warp Route 时，所有者在管理 ISM、验证器和中继器设置方面具有灵活性：
+
+- **ISM 自定义**：每个 Warp Route 可能需要根据安全需求定制 ISM 配置。所有者可以设置自定义 ISM 或使用 Hyperlane 的默认设置。
+- **验证器选项**：所有权允许您选择或管理验证器集。Hyperlane 可以处理验证器职责，因此运行自己的验证器是可选的。
+- **中继器支持**：Hyperlane 默认提供中继器服务，但团队可以运行自己的中继器以获得更多对安全性、可靠性和性能的控制。这种定制化使团队能够根据特定的性能、合规性或运营要求来调整消息处理。
+
+## Warp Route 所有权转移指南
+
+## 使用 Hyperlane CLI
+
+转移 warp route 所有权最快的方法之一是使用 [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli)。
+
+<PrerequisitesPartial />
+
+:::info
+如果您按照[部署 Warp Route](https://docs.hyperlane.xyz/docs/guides/deploy-warp-route) 指南操作，您可能使用单个私钥部署了 warp route。在生产环境中，建议使用多重签名钱包。
+:::
+
+要使用 Hyperlane CLI 进行确认，请找到您的代币符号和部署它的链：
+
+<WarpReadSymbolChainPartial />
+
+您应该能够选择要更新所有权的 warp route。
+
+运行 `warp read` 后，您应该看到类似的配置，其中 `owner` 设置为私钥地址：
+
+```yaml {3}
+yourchain:
+  mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  ...
+```
+
+默认情况下，`warp read` 会将输出保存到 `CURRENT_DIR/configs/warp-route-deployment.yaml`。按照以下步骤使用 CLI 将现有所有权转移到另一个地址。
+
+## 步骤 1：配置
+
+在 `warp-route-deployment.yaml` 中更新 `owner` 地址
+
+```diff title="warp-route-deployment.yaml"
+yourchain:
+  mailbox: '0x979Ca5202784112f4738403dBec5D0F3B9daabB9'
+- owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
++ owner: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+  interchainSecurityModule:
+    address: '0xd54d32cD6a62482497252D59E6cCC1445fF0b92d'
+    type: staticAggregationIsm
+    modules:
+      - owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+        address: '0xcE512189fF1BD41186E9eDda02BF321Fb1FC6eAc'
+        type: defaultFallbackRoutingIsm
+        domains: {}
+    threshold: 1
+  name: Ether
+  symbol: ETH
+  decimals: 18
+  totalSupply: 0
+  type: native
+```
+
+## 步骤 2：应用
+
+使用 CLI，通过提供代币符号和 warp route 配置来执行：
+
+<WarpApplySymbolConfigDefaultPartial />
+
+您应该会看到一系列链上交易被执行，最后会有一条消息表明 warp 配置已更新。
+
+## 步骤 3：确认
+
+要使用 Hyperlane CLI 确认所有者已成功更新，请使用您的代币符号和部署链运行以下命令：
+
+<WarpReadSymbolChainPartial />
+
+运行 `warp read` 后，您应该看到类似的配置，其中 `owner` 已更新：
+
+```yaml {3}
+yourchain:
+  mailbox: "0x979Ca5202784112f4738403dBec5D0F3B9daabB9"
+  owner: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+  interchainSecurityModule:
+    address: "0x8af9445d8A3FbFBd1D5dF185B8a4533Ab060Cf36"
+    type: staticAggregationIsm
+    modules:
+      - owner: "0xe738d6e51aad88F6F4ce6aB8827279cffFb94876"
+        address: "0xBe0232d5d45f9aD8322C2C4F84c39e64302Cd996"
+        type: defaultFallbackRoutingIsm
+        domains: {}
+    threshold: 1
+  name: Ether
+  symbol: ETH
+  decimals: 18
+  totalSupply: 0
+  type: native
+```
+
+完成这些步骤后，您已成功将 Warp Route 的所有权转移并验证到新地址。

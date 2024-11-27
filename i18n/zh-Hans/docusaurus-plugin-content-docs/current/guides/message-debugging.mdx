@@ -1,0 +1,149 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import CosmosMessageDelivered from "@site/src/components/CosmosMessageDelivered";
+
+# 消息调试
+
+###
+
+<details>
+  <summary>**从源交易中查找消息 ID**</summary>
+  <div>
+    <Tabs groupId="finding-message-id">
+    <TabItem value="evm" label="EVM 源链">
+    如果你的链受支持，最简单的方法是使用 [Hyperlane 浏览器](https://explorer.hyperlane.xyz)。如果你的链不受支持，可以通过查看源交易来找到消息 ID。
+
+    在源链的区块浏览器上查看源交易时，导航到 **Logs** 标签页。
+
+    **`DispatchId`** 日志包含消息 ID，作为主题编号 1（第二个主题）。
+
+    有时，链区块浏览器不会显示人类友好的 "DispatchId" 名称。在这种情况下，你可以通过它的主题 0 找到日志：`0x788dbc1b7152732178210e7f4d9d010ef016f9eafbe66786bd7169f56e0c353a`。
+
+    <figure>
+    ![](/img/message-debugging/dispatch-id-log-evm.png)
+    <figcaption>Arbiscan 上显示源交易 DispatchId 日志的示例。</figcaption>
+    </figure>
+
+    </TabItem>
+    <TabItem value="cosmos" label="Cosmos 源链">
+    在源链的区块浏览器上查看源交易时，导航到 **Event Logs** 标签页。
+
+    **Wasm Mailbox Dispatch Id** 日志包含消息 ID。
+
+    <figure>
+    ![](/img/message-debugging/dispatch-id-log-cosmos.png)
+    <figcaption>Mintscan 上显示源交易日志的示例。</figcaption>
+    </figure>
+    </TabItem>
+    </Tabs>
+  </div>
+</details>
+
+<details>
+  <summary>**调试发送到 Cosmos 链的消息**</summary>
+  <div>
+    目前，[Hyperlane 浏览器](https://explorer.hyperlane.xyz)不支持非 EVM 链。
+
+    要检查你的消息是否已送达，请选择目标链并在下面输入你的消息 ID：
+
+    <CosmosMessageDelivered />
+  </div>
+</details>
+
+<details>
+  <summary>**我的 warp route 转账显示已送达，但我看不到它**</summary>
+  <div>
+    我们可以通过两个步骤来调试这个问题：
+
+    **验证是否收到资金：**
+
+    <Tabs groupId="verifying-received-funds">
+    <TabItem value="evm" label="EVM 目标链">
+    1. 打开目标链的区块浏览器，导航到你预期的接收地址。
+    2. 如果你期望收到代币（例如 ERC-20），检查代币转账标签页中是否有代币转入你的地址。
+    3. 如果你期望收到原生代币（例如以太坊上的 ETH），检查"内部交易"标签页中是否有原生代币转入你的地址。
+    </TabItem>
+    <TabItem value="cosmos" label="Cosmos 目标链">
+    1. 打开目标链的区块浏览器，导航到你预期的接收地址。
+    2. 查看你的"Coins"或"Tokens"标签页，查找预期的余额。
+    3. 如果不清楚你的余额是否符合预期，请检查交易列表。寻找包含"Process"的任何交易。
+    </TabItem>
+    </Tabs>
+
+    **验证你的转账接收者**
+
+    <Tabs groupId="verifying-recipient">
+    <TabItem value="evm" label="EVM 源链">
+    在源链的区块浏览器上查看源交易时，导航到 **Logs** 标签页。
+
+    **`SentTransferRemote`** 日志包含接收者，作为主题编号 1（第二个主题）。
+
+    有时，链区块浏览器不会显示人类友好的 "SentTransferRemote" 名称。在这种情况下，你可以通过它的主题 0 找到日志：`0xd229aacb94204188fe8042965fa6b269c62dc5818b21238779ab64bdd17efeec`。
+
+    接收者地址是将接收 warp 代币的目标链上的账户。如果需要，地址左侧会填充零。
+
+    如果你的目标链是 EVM 链，日志将显示 `0x0000000000000000000000ffffffffffffffffffffffffffffffffffffffff`，表示 `0xffffffffffffffffffffffffffffffffffffffff` 是转账接收者。
+
+    如果你的目标链是 Cosmos 链，你可以使用[这样的工具](https://www.bech32converter.com)将十六进制内容转换为 bech32 地址。一些 Cosmos 链有不同的地址长度，所以要注意复制多少个字符。
+
+    <figure>
+    ![](/img/message-debugging/transfer-remote-evm.png)
+    <figcaption>Arbiscan 上显示源交易 DispatchId 日志的示例。</figcaption>
+    </figure>
+
+    </TabItem>
+    <TabItem value="cosmos" label="Cosmos 源链">
+
+    在源链的区块浏览器上查看源交易时，导航到 **Event Logs** 标签页。
+
+    包含 **Transfer Remote** 的日志包含消息 ID，例如：`Wasm Hpl Warp Native Transfer Remote`。
+
+    接收者地址是将接收 warp 代币的目标链上的账户。如果需要，地址左侧会填充零。
+
+    如果你的目标链是 EVM 链，你可以将十六进制内容转换为 EVM 地址。
+
+    如果你的目标链是 Cosmos 链，你可以使用[这样的工具](https://www.bech32converter.com)将十六进制内容转换为 bech32 地址。一些 Cosmos 链有不同的地址长度，所以要注意复制多少个字符。
+
+    <figure>
+    ![](/img/message-debugging/transfer-remote-cosmos.png)
+    <figcaption>Mintscan 上显示源交易日志的示例。</figcaption>
+    </figure>
+    </TabItem>
+    </Tabs>
+  </div>
+</details>
+
+<details>
+  <summary>**我的 Warp Route 转账接收者不是我想要的地址**</summary>
+  <div>
+    有时浏览器扩展钱包可能会相互竞争，你不常用的钱包地址可能会优先于你想要使用的钱包。我们已经看到这种情况在 **OKX 钱包**上发生过几次。请检查你所有钱包地址中的接收者地址。
+  </div>
+</details>
+
+<details>
+  <summary>**自己中继 EVM → EVM 消息**</summary>
+  <div>
+    使用 [Hyperlane CLI](/docs/reference/cli.mdx)，如果消息是在两个 EVM 链之间传递，你可以自己中继消息。
+
+    1. 按照[这些说明](/docs/reference/cli.mdx)在本地设置 CLI。
+    2. 按照[上述说明](#finding-a-message-id-from-an-origin-transaction)找到你的消息 ID。
+    3. 获取目标链上有资金账户的私钥。
+    3. 运行命令中继消息：
+    ```
+    HYP_KEY=<你的私钥> hyperlane status --relay --origin <源链> --destination <目标链> --id <消息ID>
+    ```
+
+    例如：
+    ```
+    HYP_KEY=0xffff00000000000000000000000000000000000000000000000000000000ffff hyperlane status --relay --origin base --destination blast --id 0xabcd00000000000000000000000000000000000000000000000000000000abcd
+    ```
+  </div>
+</details>
+
+<details>
+  <summary>**我的消息未送达，仍需帮助**</summary>
+  <div>
+    如果上述步骤没有帮助，你可以加入我们的 [Discord](https://discord.com/invite/hyperlane) 并在 **#support-forum** 频道创建新帖子。
+  </div>
+</details>

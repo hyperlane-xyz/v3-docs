@@ -1,0 +1,130 @@
+# 单元测试 - EVM
+
+在 Foundry 中对多链设置进行单元测试可能具有挑战性。因此，我们为您提供了一个轻量级的测试环境 `MockHyperlaneEnvironment`，让您可以对跨链应用程序进行单元测试，而无需分叉多个网络。
+
+大多数多链应用程序都将基于我们的 Mailbox 合约构建。因此，我们使用 `MockMailbox` 抽象了已部署邮箱的细节，我们的环境在同一条链上包含 `originMailbox` 和 `destinationMailbox`。在内部，我们将到达目标的消息存储在目标邮箱的 `inboundMessages` 映射中。我们通过将消息入队并使用 `MockMailbox.processNextInboundMessage()` 增加 `inboundProcessedNonce` 来模拟消息传递。
+
+简单消息传递 forge 测试的设置如下：
+
+### 发送消息
+
+```solidity
+contract SimpleMessagingTest is Test {
+    // 源和目标域（建议使用链ID）
+    uint32 origin = 1;
+    uint32 destination = 2;
+
+    // 两个邮箱将在同一条链上但地址不同
+    MockMailbox originMailbox;
+    MockMailbox destinationMailbox;
+
+    // 可以接收消息的合约
+    TestRecipient receiver;
+
+    function setUp() public {
+        originMailbox = new MockMailbox(origin);
+        destinationMailbox = new MockMailbox(destination);
+        originMailbox.addRemoteMailbox(destination, destinationMailbox);
+
+        receiver = new TestRecipient();
+    }
+
+    function testSendMessage() public {
+        string _message = "Aloha!";
+        originMailbox.dispatch(
+            destination,
+            TypeCasts.addressToBytes32(address(receiver)),
+            bytes(_message)
+        );
+        // 模拟消息传递到目标邮箱
+        destinationMailbox.processNextInboundMessage();
+        assertEq(string(receiver.lastData()), _message);
+    }
+}
+```
+
+### 测试基于 Router 的应用程序
+
+假设您正在测试继承自 `Router` 的 `TestCrosschainApp`：
+
+```solidity
+contract CrosschainAppTest is Test {
+    // 源和目标域（建议使用链ID）
+    uint32 origin = 1;
+    uint32 destination = 2;
+
+    function setUp() public {
+        environment = new MockHyperlaneEnvironment(origin, destination);
+
+        // 您的跨链应用程序
+        TestCrosschainApp originTelephone  = new TestCrosschainApp(environment.mailboxes(origin));
+        TestCrosschainApp destinationTelephone  = new TestCrosschainApp(environment.mailboxes(destination));
+
+        // 假设您正在继承来自 https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/client/Router.sol 的 Router 模式
+        originTelephone.enrollRemoteRouter(destinationTelephone);
+        destinationTelephone.enrollRemoteRouter(originTelephone);
+    }
+}
+```
+
+调用 `processNextPendingMessage()` 和 `processNextPendingMessageFromDestination()` 分别处理目标和源邮箱的入站消息。现在，您可以从源到目标以及从目标到源进行跨链调用：
+
+```solidity
+    function testRemoteTelephoneCallFromOrigin() public {
+        // 检查源上的行为
+        vm.expectEmit(true, true, true, false);
+        emit TelephoneRinging(destination,  TypeCasts.bytes32ToAddress(destinationTelephone), "Hello!"); // 源上的示例事件
+        originTelephone.callRemote(destination,  TypeCasts.bytes32ToAddress(destinationTelephone), "Hello!");
+
+        // 模拟消息传递 源 -> 目标
+        environment.processNextPendingMessage();
+
+        // 检查目标上的行为
+        assertEq(destinationTelephone.latestMessage(originTelephone) == "Hello!");
+    }
+
+    function testRemoteTelephoneCallFromDestination() public {
+        // 检查目标上的行为
+        vm.expectEmit(true, true, true, false);
+        emit TelephoneRinging(origin,  TypeCasts.bytes32ToAddress(originTelephone), "Howdy!"); // 目标上的示例事件
+        destinationTelephone.callRemote(origin,  TypeCasts.bytes32ToAddress(originTelephone), "Howdy!");
+
+         // 模拟消息传递 目标 -> 源
+        environment.processNextPendingMessageFromDestination();
+
+        // 检查源上的行为
+        assertEq(originTelephone.latestMessage(destinationTelephone) == "Howdy!");
+    }
+```
+
+如果您想为您的应用程序使用自己的 ISM，您可以通过将其传递给 Router 的 `initialize` 方法来覆盖邮箱提供的 `defaultIsm`，如下所示：
+
+```solidity
+contract CrosschainAppTest is Test {
+    // 源和目标域（建议使用链ID）
+    uint32 origin = 1;
+    uint32 destination = 2;
+
+    function setUp() public {
+        ...
+
+        TestIgp igp = new TestIgp(); // 作为钩子传递的示例 InterchainGasPaymaster
+
+        // 部署您自己的 ISM 合约以验证 originTelephone 和 destinationTelephone 之间的消息
+        TelephoneISM originIsm = new TelephoneISM(); // 源的本地 ISM
+        TelephoneISM destinationIsm = new TelephoneISM(); // 目标的本地 ISM
+
+
+        originTelephone.initialize(address(igp), address(originIsm), msg.sender);
+        originTelephone.initialize(address(igp), address(destinationIsm), msg.sender);
+
+        ...
+    }
+}
+```
+
+:::tip
+
+您可以在这里找到我们的单元测试设置示例：[InterchainAccountRouterTest](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/dae8b26ed65383844e4fbed7585deeb52da4e454/solidity/test/InterchainAccountRouter.t.sol#L38)
+
+:::

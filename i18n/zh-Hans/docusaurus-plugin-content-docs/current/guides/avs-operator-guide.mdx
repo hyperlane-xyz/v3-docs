@@ -1,0 +1,73 @@
+# Hyperlane AVS 运营商指南
+
+## 概述
+
+Hyperlane 验证器是负责安全的轻量级链下代理 - 它们观察源链上的 [Mailbox](../protocol/mailbox.mdx) 中的消息，并在需要时签署一个证明邮箱当前状态的默克尔根。
+
+这个签名被存储并公开可用（例如在 S3 存储桶中），然后被链下的中继器和链上的跨链安全模块使用。验证器之间_不_需要联网，也不需要达成共识。
+
+按照本指南，您将在协议运行的[**任何链**](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains)上运行 Hyperlane 验证器，包括 Arbitrum、Optimism、BSC、Base、Blast、Linea、Mode 和 Polygon。之后，您将通过与以太坊主网或 Holesky 上的 AVS 合约交互，将您的验证器与您的 EigenLayer 运营商关联。这个过程，就像整个 Hyperlane 框架一样，是开源和无需许可的 - 不需要白名单或质押最低限额。
+
+## 1. 安装 CLI
+
+使用 `npm install -g @hyperlane-xyz/cli` 安装最新版本的 `@hyperlane-xyz/cli` 包。详细的 CLI 安装说明可在[此处](https://docs.hyperlane.xyz/docs/reference/cli)获得。
+
+## 2. 运行验证器
+
+想要使用 Docker Compose 和 AWS 快速部署生产就绪环境的运营商可以参考 [Docker Compose 快速入门指南](../operate/docker-quickstart.mdx)。
+
+按照[此处](../operate/validators/run-validators.mdx)的验证器指南，使用 AWS 设置在 Hyperlane 网络内的[任何链](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains)上运行验证器。您也可以轻松地推广到其他存储提供商，如 [GCP](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156) 和 Azure，或其他密钥管理解决方案。
+
+确保您的 KMS 密钥在该链上有资金以宣布自己。
+
+### 监控
+
+您可以通过在验证器配置中指定的 `--metrics` 端口监控 EigenLayer 特定的端点。在[此处](https://docs.eigenlayer.xyz/eigenlayer/avs-guides/spec/api/)阅读更多关于示例端点和预期内容的信息。
+
+支持的端点包括：
+
+| 端点                        | 描述                                |
+| ---------------------------- | ------------------------------------------ |
+| **GET /eigen/node**          | 用于节点信息                              |
+| **GET /eigen/node/health**   | 用于节点健康状况                            |
+| **GET /eigen/node/services** | 用于列出节点正在运行的服务 |
+
+您需要验证器地址（签名密钥的地址）用于下一步。
+
+## 3. 设置密钥
+
+运营商密钥和 AVS 签名密钥之间有区别。运营商密钥仅用于与 AVS 合约交互，而 AVS 签名密钥用于主动操作，在我们的情况下将用于使用 Hyperlane 验证器签署检查点。
+
+## 4. 注册您的运营商
+
+首先，确保您已在主网或 Holesky 上[作为 EigenLayer 运营商](https://docs.eigenlayer.xyz/eigenlayer/operator-guides/operator-installation#operator-configuration-and-registration)使用您的运营商密钥注册。您只需要 ECDSA 密钥。
+
+接下来，要注册您的运营商到 Hyperlane AVS，您可以使用 Hyperlane CLI。通过创建 ECDSA 签名并将其与 AVS 签名密钥（即您上面的 Hyperlane 验证器地址，而不是私钥）一起提交，来注册您的运营商密钥（通过 EigenLayer CLI 生成）。
+
+```bash
+ hyperlane avs register --operatorKeyPath <PATH_TO_OPERATOR_KEY> \
+    --chain <AVS_NETWORK> \
+    --avsSigningKeyAddress <AVS_SIGNING_ADDRESS>
+```
+
+`AVS_NETWORK` 是您注册的网络，可以是 `Ethereum` 或 `Holesky`。
+
+您的 AVS 签名密钥可以在多个验证器之间重复使用，不需要为每个验证器额外注册。如果您为每个验证器使用不同的 AVS 签名密钥，则需要将每个密钥注册为运营商。
+
+### 确认注册
+
+要确认您在主网上已注册，请使用 Hyperlane CLI 运行 `hyperlane avs check --chain ethereum --operatorAddress <AVS_SIGNING_ADDRESS>` 并查看您的验证器地址是否在那里。此查询可能需要几分钟才能完成。
+
+此外，您可以在 [Etherscan](https://etherscan.io/address/0x272CF0BB70D3B4f79414E0823B426d2EaFd48910#readProxyContract#F12) 上的 `operatorRegistry` 函数下搜索您的地址，或在 EigenLayer 的 UI 上查看 [Ethereum](https://app.eigenlayer.xyz/avs/0xe8e59c6c8b56f2c178f63bcfc4ce5e5e2359c8fc) 或 [Holesky](https://holesky.eigenlayer.xyz/avs/0xc76e477437065093d353b7d56c81ff54d167b0ab)。
+
+:::success
+
+恭喜您注册了 Hyperlane AVS！
+
+现在任何 Hyperlane 消息接收者都可以利用您的验证器签名，帮助确保 rollup 互操作的安全。
+
+:::
+
+## 了解更多
+
+您可以在[此处](/docs/protocol/economic-security/hyperlane-avs.mdx)阅读更多关于 AVS 协议设计的信息。

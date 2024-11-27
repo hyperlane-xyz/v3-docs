@@ -1,0 +1,237 @@
+import TerminologyPartial from "/docs/partials/deploy-hyperlane/_terminology.mdx";
+import SetupKeysPartial from "/docs/partials/deploy-hyperlane/_setup-keys.mdx";
+import DeployContractsPartial from "/docs/partials/deploy-hyperlane/_deploy-contracts.mdx";
+import SendTestMessagesPartial from "/docs/partials/deploy-hyperlane/_send-test-messages.mdx";
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 快速入门：运行验证者
+
+:::tip
+
+- 本指南面向可能最终打算在类生产环境中运行 Hyperlane 代理的高级用户。它将介绍如何手动配置和运行代理的基础知识，但**这不是生产环境设置指南**。
+- 有关更详细的指南，请查看[验证者指南](docs/operate/validators/run-validators.mdx)
+
+:::
+
+<TerminologyPartial />
+
+## 运行验证者
+
+验证者为从你的链发送到远程链的消息提供安全保障。只有在使用[多重签名 ISM](docs/protocol/ISM/multisig-ISM.mdx)时才需要它们。在[这里](../protocol/agents/validators.mdx)了解更多关于验证者的工作原理。
+
+### 设置目录
+
+首先，将 `CONFIG_FILES` 环境变量设置为在[部署合约](#2-deploy-contracts)步骤中生成的代理配置的路径。例如：
+
+```bash
+export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
+```
+
+接下来，为你的验证者创建一个本地目录，用于写入其签名。记住这个路径，因为在配置验证者时你会需要它。
+
+:::danger
+验证者签名路径将作为[验证者公告交易](docs/guides/implementation-guide.mdx#validator-announce)的一部分写入链上。**注意不要泄露任何安全敏感或个人信息！**
+:::
+
+```sh
+# 为你要验证的链选择一个有意义的名称
+export VALIDATOR_SIGNATURES_DIR=/tmp/hyperlane-validator-signatures-<你的链名称>
+
+# 创建目录
+mkdir -p $VALIDATOR_SIGNATURES_DIR
+```
+
+:::warning
+
+在 Mac 上通过 Docker 运行代理时，你将无法挂载 `/tmp` 中的任何内容。为了解决这个问题，创建一个本地 `tmp` 目录来代替挂载。
+
+```sh
+# 创建一个可以被 docker 访问的本地 tmp 目录
+mkdir tmp
+
+# 为你要验证的链选择一个有意义的名称
+export VALIDATOR_SIGNATURES_DIR=tmp/hyperlane-validator-signatures-<你的链名称>
+
+# 创建目录
+mkdir -p $VALIDATOR_SIGNATURES_DIR
+```
+
+:::
+
+### 配置
+
+验证者可以配置多个参数。对于本指南，我们只关注其中几个：
+
+| 参数                     | 描述                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `--db`                    | 将持久数据写入磁盘的路径。                                                                     |
+| `--originChainName`       | 被验证的链的名称（例如 `ethereum`）。                                                          |
+| `--checkpointSyncer.type` | 在本指南中设置为 `localStorage`。                                                                         |
+| `--checkpointSyncer.path` | 验证者签名将被写入的本地目录路径。与 `$VALIDATOR_SIGNATURES_DIR` 相同。 |
+| `--validator.key`         | 你的验证者的十六进制私钥。                                                                     |
+
+:::info
+
+确保验证者密钥对应于设置 MultisigIsmConfig 时提供的地址。否则，你在上一步部署的多重签名 ISM 将无法验证从你的链发送的消息。
+
+:::
+
+要了解更多关于可以更改的所有参数，请阅读[代理配置参考](docs/operate/config-reference.mdx)。
+
+<Tabs groupId="docker">
+<TabItem value="docker" label="使用 Docker">
+
+**更新代理配置**
+
+除非你在 Linux 上运行 Docker，否则你还需要更新网络的代理配置。这是因为 Docker 在 Mac、Windows 或 Windows Server 上不支持[`host` 网络模式](https://docs.docker.com/network/drivers/host/)。
+
+为此，导航到 `$CONFIG_FILES` 的代理配置，并将所有 "localhost" 或 "127.0.0.1" 的实例替换为 `host.docker.internal`。例如：
+
+```json
+...
+"localnet1": {
+  ...
+  "rpcUrls": [
+    {
+      // "http": "http://localhost:8545"
+      // "http": "http://127.0.0.1:8545"
+      "http": "http://host.docker.internal:8545"
+    }
+  ],
+  ...
+},
+...
+```
+
+**挂载目录**
+
+使用 Docker 运行会增加一层复杂性，因为配置文件需要从 Docker 容器内部访问，而验证者签名需要从容器外部访问以供中继器读取。这是为了让中继器可以构建消息被多重签名 ISM 成功验证所需的元数据。
+
+要解决这个问题，你可以将文件系统上的目录挂载到容器中。在下面的参数中，我们：
+
+1. 将 `$CONFIG_FILES` 环境变量设置为容器内的固定路径。
+2. 将代理配置文件挂载到此固定路径并设为只读。
+3. 将持久数据目录挂载到容器内的固定路径。
+4. 将验证者签名目录挂载到容器内的固定路径。
+
+```sh
+...
+-e CONFIG_FILES=/config/agent-config.json \
+--mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
+--mount type=bind,source="$(pwd)"/hyperlane_db_validator_<你的链名称>,target=/hyperlane_db \
+--mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures \
+...
+```
+
+硬编码这些路径可以在为不同源链运行验证者的 docker 实例之间去重配置。这使得运行容器时更容易传递正确的参数。请参见下面的示例，其中对于不同的链，只需要配置不同的链名称和验证者密钥。
+
+```sh
+...
+./validator \
+--db /hyperlane_db \
+--originChainName <你的链名称> \
+--checkpointSyncer.type localStorage \
+--checkpointSyncer.path /tmp/validator-signatures \
+--validator.key <你的验证者密钥>
+...
+```
+
+</TabItem>
+<TabItem value="from-source" label="从源代码构建">
+
+**克隆和设置**
+
+首先，克隆 Hyperlane monorepo：
+
+```sh
+git clone git@github.com:hyperlane-xyz/hyperlane-monorepo.git
+```
+
+然后按照 `rust` 目录中的[设置说明](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md)进行操作。这应该会设置 `rustup` 以及 Rosetta 2（如果你使用的是 Apple Silicon）。
+
+```sh
+# 安装 rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# (仅限 apple silicon) 安装 rosetta 2
+softwareupdate --install-rosetta --agree-to-license
+```
+
+</TabItem>
+</Tabs>
+
+### 运行
+
+<Tabs groupId="docker">
+<TabItem value="docker" label="使用 Docker">
+
+现在你已经更好地理解了验证者参数的配置，拉取最新的 docker 镜像：
+
+```sh
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
+```
+
+在运行之前，确保所有需要挂载的目录都存在。这可能需要创建 `hyperlane_db_validator_<你的链名称>`（如果它还不存在）。
+
+```sh
+mkdir -p hyperlane_db_validator_<你的链名称>
+```
+
+最后，运行验证者：
+
+```sh
+docker run \
+  -it \
+  -e CONFIG_FILES=/config/agent-config.json \
+  --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
+  --mount type=bind,source="$(pwd)"/hyperlane_db_validator_<你的链名称>,target=/hyperlane_db \
+  --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
+  ./validator \
+  --db /hyperlane_db \
+  --originChainName <你的链名称> \
+  --checkpointSyncer.type localStorage \
+  --checkpointSyncer.path /tmp/validator-signatures \
+  --validator.key <你的验证者密钥>
+```
+
+</TabItem>
+
+<TabItem value="from-source" label="从源代码构建">
+
+按照设置说明后，你现在应该可以使用 `cargo` 运行验证者：
+
+```sh
+cargo run --release --bin validator -- \
+    --db ./hyperlane_db_validator_<你的链名称> \
+    --originChainName <你的链名称> \
+    --checkpointSyncer.type localStorage \
+    --checkpointSyncer.path $VALIDATOR_SIGNATURES_DIR \
+    --validator.key <你的验证者密钥>
+```
+
+:::note (可选) 直接运行二进制文件
+
+你也可以构建代理：
+
+```sh
+cargo build --release --bin validator
+```
+
+并直接运行二进制文件：
+
+```sh
+./target/release/validator \
+    --db ./hyperlane_db_validator_<你的链名称> \
+    --originChainName <你的链名称> \
+    --checkpointSyncer.type localStorage \
+    --checkpointSyncer.path $VALIDATOR_SIGNATURES_DIR \
+    --validator.key <你的验证者密钥>
+```
+
+:::
+
+</TabItem>
+</Tabs>

@@ -1,0 +1,130 @@
+import CliChainsPartial from "../partials/deploy-hyperlane/_cli-chains.mdx";
+
+# 如何使用 Hyperlane Warp Routes 创建代币桥
+
+本节将提供一个分步指南，介绍如何通过部署 Hyperlane Warp Route 合约来创建跨链代币桥。
+
+## 前提条件
+
+- [Hyperlane CLI](/docs/reference/cli.mdx)
+- 用于签署合约交易的私钥
+
+## 1. 配置
+
+### Warp Route 部署配置
+
+要部署路由，你需要一个 Warp Route 部署配置文件。有效的配置需要指定：
+
+- 这个 Warp Route 是为哪个链上的哪个代币创建的？
+- _可选：_ Hyperlane 连接详情，包括 [mailbox](/docs/reference/messaging/messaging-interface.mdx)、[跨链 gas](/docs/reference/hooks/interchain-gas.mdx) 和 [跨链安全模块](/docs/reference/ISM/specify-your-ISM.mdx) 的合约地址。
+- _可选：_ 代币标准 - 包括使用 ERC20 的同质化代币或使用 ERC721 的非同质化代币，以及使用 ERC4626 的收益代币。注意 ERC721 支持目前还处于实验阶段，某些 Hyperlane 工具可能暂不支持 NFT。
+
+创建配置最简单的方法是使用 CLI 的配置命令：
+
+```bash
+hyperlane warp init
+```
+
+此命令提供了一个交互式向导，直接在终端中提示你进行配置选择。你需要为配置的每个部分选择具体选项，如网络类型、要连接的链、代币类型以及是否使用可信 ISM。
+
+:::tip
+
+- 如果你的配置看起来正确，现在可以跳转到 [步骤 2：部署](#2-部署)。
+  或者继续阅读下面的内容，了解如何手动定义配置。
+- 如果你在设置代币桥时需要任何帮助，请在 Discord 的 #developers 频道寻求帮助或[联系我们](https://forms.gle/KyRTaWvo4XNmNvrq6)。
+  :::
+
+#### 部署配置模式
+
+你的配置由链名称到部署配置的映射组成。每个配置都设置了你要创建 Warp Route 的代币的详细信息。
+
+- **type**:
+  - 设置为 `collateral` 可为 ERC20/ERC721 代币创建基本的 Warp Route
+  - 设置为 `collateralVault` 可为将存入现有 ERC4626 金库的 ERC20 代币创建收益型 Warp Route
+  - 设置为 `native` 可为原生代币（如以太币）创建 Warp Route
+- **address:**
+  - 如果使用 `collateral`，则为要创建路由的 ERC20/ERC721 合约地址
+  - 如果使用 `collateralVault`，则为要存入抵押品的现有 ERC4626 金库地址
+- **isNft:** 如果为 ERC721 合约使用 `collateral`，设置为 `true`。
+
+#### 可选字段
+
+你可以在配置条目中指定以下可选值。如果未提供值，部署器将尝试从其他地方获取这些值。对于元数据（符号、名称、小数位），它将查询合约。对于地址（mailbox、ISM），它将检查注册表，可以是你的注册表（如果提供）或[默认注册表](/docs/reference/registries#default-registry)。
+
+- **symbol:** 代币符号
+- **name:** 代币名称
+- **decimals:** 代币的小数位数
+- **mailbox:** 用于发送和接收消息的 [mailbox](/docs/reference/messaging/messaging-interface.mdx) 合约地址
+- **interchainSecurityModule:** 用于验证跨链消息的[跨链安全模块](/docs/reference/ISM/specify-your-ISM.mdx)地址
+
+#### 示例
+
+有关使用本地 anvil 链的最小 Warp 部署配置示例，请参见 [`warp-route-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-route-deployment.yaml)。
+
+### 链配置
+
+<CliChainsPartial />
+
+:::warning
+
+在可能的情况下，请确保在 warp route 配置中**重用注册表/CLI 中的任何现有链**，而不是设置新的 mailbox。
+
+:::
+
+## 2. 部署 Warp Route
+
+配置就绪后，使用以下命令启动 Warp Route 部署：
+
+```bash
+hyperlane warp deploy
+```
+
+在部署期间，CLI 需要访问你的私钥来签署交易。你可以通过以下两种方式之一进行设置：
+
+1. **环境变量**：将你的私钥设置为 HYP_KEY，以避免每次都输入：
+
+   ```bash
+   export HYP_KEY=<your_private_key>
+   ```
+
+2. **手动输入**：或者，你可以在部署过程中收到提示时直接输入私钥。
+
+`hyperlane warp deploy` 命令将创建两个新的工件文件：
+
+1. `otherchain-yourchain-addresses.yaml`：包含新部署的 Warp Route 合约的地址。
+2. `otherchain-yourchain-config.yaml`：用于通过 CLI 和 Warp UI 与 Warp Route 交互的配置文件。
+
+这些文件将位于 `$HOME/.hyperlane/deployments/warp_routes/` 下。
+
+## 3. 测试
+
+你可以使用以下命令发起一个单位（wei）的测试转账：
+
+```bash
+hyperlane warp send --relay --symbol TOKEN
+```
+
+`--relay` 标志是可选的，它将中继消息到目标链。
+
+你也可以在后台运行一个仅为你的 warp route 传递消息的中继器：
+```bash
+hyperlane relayer --symbol TOKEN
+```
+
+你可以在设置了 warp route 的任意方向进行测试。但是，如果你部署了 `native` 和 `synthetic` warp routes，你必须选择部署了 `native` route 的源链。默认情况下，发送的金额是代币最小单位的 `1`。
+
+:::tip
+
+**下一步**
+
+- 如果你正在按照[将 Hyperlane 部署到新链](/docs/deploy-hyperlane#3-warp-route)指南操作，并想要连接其他链或使用 Abacus Works 转移到生产环境，请继续阅读[提交到注册表](/docs/deploy-hyperlane#4-submit-to-registry)指南。
+
+- 要通过 UI 与 Warp Routes 交互，请继续阅读 [Warp UI 文档](/docs/guides/deploy-warp-route-UI.mdx)。
+
+:::
+
+## 了解更多
+
+- 查看 [Warp Route](/docs/reference/applications/warp-routes) 参考页面，了解更多关于 Warp Route 接口和安全含义的信息。[接口](/docs/reference/applications/warp-routes#interface)部分介绍了如何调用 `transferRemote` 将代币转移到目标链上的指定接收者。注意，在调用 `transferRemote` 之前，你需要先进行代币授权。
+
+- Warp Route 是一种[路由器](docs/reference/libraries/router.mdx)应用程序，这种模式使你能够将多个链上的合约连接在一起。

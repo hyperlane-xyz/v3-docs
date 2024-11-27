@@ -12,7 +12,9 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "start:zh": "docusaurus start --locale zh-Hans",
+    "build:zh": "docusaurus build --locale zh-Hans"
   },
   "dependencies": {
     "@docusaurus/core": "3.0.1",

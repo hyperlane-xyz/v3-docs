@@ -1,0 +1,52 @@
+您需要设置和提供资金的三个密钥。
+
+:::tip
+
+开始时，您可以简化操作，对所有三个角色使用相同的十六进制密钥。
+
+:::
+
+<table>
+  <thead>
+    <tr>
+      <th>密钥角色</th>
+      <th>描述</th>
+      <th>资金需求</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>合约部署者</td>
+      <td>32 字节十六进制私钥</td>
+      <td>需要在所有要部署合约的链上提供资金。</td>
+    </tr>
+    <tr>
+      <td>验证器账户</td>
+      <td>
+        用于签署来自本地链的出站消息的验证器地址列表。开始时只需要一个验证器即可。
+      </td>
+      <td>
+        需要少量资金，以便验证器可以通过一次性交易在链上公布其签名的位置
+      </td>
+    </tr>
+    <tr>
+      <td>中继器账户</td>
+      <td>
+        您将运行的单个中继器需要在其将传递消息的每个链上都有一个账户
+      </td>
+      <td>
+        中继器必须在其所有中继消息的链上都有余额。
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+有关如何生成密钥的说明，请参阅 [代理密钥](/docs/operate/set-up-agent-keys) 部分。您的部署者密钥**必须**是十六进制密钥，而验证器和中继器密钥可以是十六进制或 AWS KMS。
+
+如果在使用 [Foundry 的 Anvil](https://github.com/foundry-rs/foundry/tree/master/crates/anvil) 的本地网络上部署，请使用以下命令为您新生成的账户提供资金。它使用预先提供资金的私钥之一向 `$YOUR_TARGET_ADDRESS` 环境变量中的地址转账 1 ETH。
+
+```bash
+cast send --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+  $YOUR_TARGET_ADDRESS \
+  --value 1000000000000000000
+```

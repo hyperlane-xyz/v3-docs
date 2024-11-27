@@ -1,0 +1,236 @@
+# 实现指南
+
+针对新的链架构的 Hyperlane 实现包括以下内容：
+
+1. [合约](#1-合约)：为应用程序开发者提供发送和接收消息的接口
+2. [代理](#2-代理)：通过添加安全性和中继消息来运行协议
+3. [应用程序](#3-应用程序)：使用协议并展示其功能的应用程序
+
+在开始之前，建议先查看协议文档。
+
+:::info
+
+如果您想深入了解，请查看一些当前可用的 Hyperlane 实现：
+
+- [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity)
+- [CosmWasm](https://github.com/many-things/cw-hyperlane)
+- [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/sealevel)
+- [Cairo](https://github.com/astraly-labs/hyperlane_starknet)
+- [Sway](https://github.com/hyperlane-xyz/fuel-contracts)
+- [Move](https://github.com/movementlabsxyz/hyperlane-monorepo/tree/v3-aptos)
+
+:::
+
+## 1. 合约
+
+以下描述了 Hyperlane 协议的链上合约规范。它使用 solidity 类型以便于理解，但所有内容都应该可以推广到其他语言。
+
+- `address` 应解释为本地链的地址类型。
+- `payable` 描述了允许调用者传递原生代币的函数。
+- 确保为所有重要的状态更改正确发出事件。
+- 清楚地记录任何与参考实现的偏差及其理由。
+
+### 需要考虑的事项
+
+**字节表示：**
+
+- 请注意，不同的链可能有不同的原生类型来表示字节。例如，StarkNet 使用 felt252 作为合约地址，这可能无法完全容纳其他链中使用的 32 字节地址。
+- 在处理跨链地址时，实现适当的转换和验证机制。
+
+**序列化：**
+
+- 特别注意消息字段的序列化方式，尤其是像消息体这样的可变长度数据。
+- 确保所使用的序列化方法（例如，abi.encodePacked 等效物）在不同的链实现中行为一致。
+
+### 消息
+
+消息是 Hyperlane 协议使用的核心数据结构。它是一个打包的数据结构，包含了将消息从一个域路由到另一个域所需的所有信息。
+
+- [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
+- [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-message/src/main.sw)
+- [CosmWasm](https://github.com/many-things/cw-hyperlane/blob/main/packages/interface/src/types/message.rs)
+- [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/main/hyperlane-core/src/types/message.rs)
+- [Cairo](https://github.com/astraly-labs/hyperlane_starknet/blob/main/cairo/crates/contracts/src/libs/message.cairo)
+
+```solidity
+struct Message {
+    // 源和目标邮箱的版本
+    uint8 version,
+    // 在源邮箱上唯一标识消息的 nonce
+    uint32 nonce,
+    // 源链的域
+    uint32 origin,
+    // 源链上的发送者地址
+    bytes32 sender,
+    // 目标链的域
+    uint32 destination,
+    // 目标链上的接收者地址
+    bytes32 recipient,
+    // 消息体的原始字节
+    bytes body
+}
+```
+
+### 邮箱
+
+邮箱是开发者用来发送和接收消息的入口点。确保 `localDomain` 是不可变的，以防止可能危及跨链安全的未授权更改。
+
+- [Solidity 接口](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMailbox.sol)
+
+实现：
+
+- [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Mailbox.sol)
+- [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-mailbox/src/main.sw)
+- [CosmWasm](https://github.com/many-things/cw-hyperlane/blob/main/contracts/core/mailbox/src/execute.rs)
+- [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/mailbox/src/processor.rs)
+- [Cairo](https://github.com/astraly-labs/hyperlane_starknet/blob/main/cairo/crates/contracts/src/mailbox.cairo)
+
+:::info
+
+除了默认和自定义钩子外，Hyperlane 还引入了**必需钩子**的概念，用于对所有调度进行后处理。确保在默认或自定义钩子之前调用必需钩子。
+
+:::
+
+#### dispatch
+
+将消息调度到目标域和接收者。
+
+```solidity
+function dispatch(
+    // 目标链的域
+    uint32 destination,
+    // 目标链上的接收者地址（作为 bytes32）
+    bytes32 recipient,
+    // 消息体的原始字节内容
+    bytes body
+) returns (
+    // 插入到邮箱的默克尔树中的消息 ID
+    bytes32 messageId
+);
+```
+
+将消息调度到目标域和接收者，并为默认钩子提供元数据。
+
+```solidity
+function dispatch(
+    // 目标链的域
+    uint32 destination,
+    // 目标链上的接收者地址（作为 bytes32）
+    bytes32 recipient,
+    // 消息体的原始字节内容
+    bytes body,
+    // 默认后调度钩子使用的元数据
+    bytes defaultHookMetadata
+) returns (
+    // 插入到邮箱的默克尔树中的消息 ID
+    bytes32 messageId
+);
+```
+
+将消息调度到目标域和接收者，并为自定义钩子提供元数据以替代默认钩子。
+
+```solidity
+function dispatch(
+    // 目标链的域
+    uint32 destination,
+    // 目标链上的接收者地址（作为 bytes32）
+    bytes32 recipient,
+    // 消息体的原始字节内容
+    bytes body,
+    // 自定义后调度钩子使用的元数据
+    bytes customHookMetadata,
+    // 用于替代默认钩子的自定义钩子
+    IPostDispatchHook customHook
+) returns (
+    // 插入到邮箱的默克尔树中的消息 ID
+    bytes32 messageId
+);
+```
+
+#### process
+
+尝试将 `message` 传递给其接收者。使用提供的 `metadata` 通过接收者的 ISM 验证 `message`。
+
+```solidity
+function process(
+    // ISM 用于验证消息的元数据
+    bytes metadata,
+    // 字节打包的消息
+    bytes message
+);
+```
+
+#### latestDispatchedId
+
+返回用于后调度钩子认证的最新调度消息 ID。
+
+```solidity
+function latestDispatchedId() public view returns (bytes32);
+```
+
+### 消息接收者
+
+想要接收消息的合约必须暴露以下处理程序。
+
+- [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/interfaces/IMessageRecipient.sol)
+- [Sway](https://github.com/hyperlane-xyz/fuel-contracts/blob/main/contracts/hyperlane-interfaces/src/lib.sw)
+- [CosmWasm](https://github.com/many-things/cw-hyperlane/blob/main/packages/interface/src/core/mod.rs)
+- [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/libraries/message-recipient-interface/src/lib.rs)
+- [Cairo](https://github.com/astraly-labs/hyperlane_starknet/blob/c0dbded927f340715bef8f6a8c6262f520ff3f1a/cairo/crates/contracts/src/interfaces.cairo#L131)
+
+```solidity
+function handle(
+    // 源链的域
+    uint32 origin,
+    // 源链上的发送者地址
+    bytes32 sender,
+    // 消息体的原始字节内容
+    bytes body
+);
+```
+
+他们可以选择指定一个安全模块来在消息被处理之前验证消息。
+
+```solidity
+function interchainSecurityModule() returns (address);
+```
+
+:::info
+
+在实现这三个合约之后，您可以通过调用 `Mailbox` 的 `dispatch` 函数来发送消息给接收者并断言接收者收到了消息，从而达到第一个里程碑来测试模拟消息传输。请参见[这里的 Foundry 测试用例](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/59e89afc5cbdec5362da5e13327eab4cb640b6b5/solidity/test/Messaging.t.sol#L29)。
+
+### 验证器公告
+
+验证器公告合约允许验证器注册其地址，以便中继器可以检索它们。这对于多重签名 ISM 的正常运行至关重要。
+
+:::info
+
+**静态模块管理** - 我们的 Solidity 实现将 MultisigISMs 定义为静态的并作为字节码的一部分，这在其他链上可能不可行。您可能需要为 ISM 实现动态模块。
+
+:::
+
+### 跨链气体支付
+
+跨链气体支付合约允许用户为消息传递支付气体费用。它还允许中继器收集这些付款。
+
+:::info
+
+实现对足够气体支付的稳健检查，考虑特定链的代币处理。我们的 solidity 实现收取原生消息值，但对于其他链，您可能需要收取特定代币并相应地调整气体开销和 `tokenExchangeRate`。
+
+:::
+
+- [Solidity](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/hooks/igp/InterchainGasPaymaster.sol)
+
+### 代理
+
+代理是运行 Hyperlane 协议的链下进程。它们负责消息传递和安全性。
+
+#### 中继器
+
+中继器负责将消息从源链传递到目标链。它们还负责收集和提供安全元数据。
+
+每个模块类型都意味着消息验证成功所需的不同元数据格式。中继器需要实现每个模块特征（例如[多重签名](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/main/hyperlane-core/src/traits/multisig_ism.rs)）。
+
+#### 消息处理器
+
+中继器将尝试在目标邮箱上处理消息（参见[消息处理器](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/fa424826c0132c135511e5316a6e559b574b3a8f/rust/main/agents/relayer/src/msg/processor.rs#L28)）。如果消息处理失败，它们将重试。

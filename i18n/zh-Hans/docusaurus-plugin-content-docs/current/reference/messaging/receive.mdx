@@ -1,0 +1,137 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import MessagingIsmDiagram from "@site/src/diagrams/messaging-isms.md";
+
+import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
+
+# 接收消息
+
+为了传递跨链消息，[中继器](/docs/operate/relayer/run-relayer.mdx)会调用 `Mailbox.process()`。
+
+该函数的参数包括要传递的消息，以及可以由中继器指定的任意元数据。
+
+`Mailbox` 会将消息和元数据传递给接收者的跨链安全模块（ISM）进行验证。如果 ISM 成功验证了消息，`Mailbox` 就会通过调用 `recipient.handle()` 将消息传递给接收者。
+
+<SimpleMessagingDiagram />
+
+:::info
+
+有关 Hyperlane 消息编码的更多详细信息，请参阅 [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol)
+
+:::
+
+## Handle
+
+当收到消息时，`Mailbox` 合约会调用此函数。
+
+:::danger
+为了确保只接受有效的跨链消息，限制对 Mailbox 地址的[访问控制](#访问控制)非常重要。
+:::
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+interface IMessageRecipient {
+    function handle(
+        uint32 origin,
+        bytes32 sender,
+        bytes calldata messageBody
+    ) external;
+}
+```
+
+**参数**
+
+- `origin`：源链的域
+- `sender`：源链上发送者的地址（以 bytes32 格式）
+- `messageBody`：消息体的原始字节内容
+
+:::info
+发送者地址会被左填充为 `bytes32` 以兼容不同寻址方式的虚拟机。为了方便起见，[`TypeCasts` 库](../libraries/typecasts.mdx)提供了以下实用工具。
+
+```solidity
+// alignment preserving cast
+function bytes32ToAddress(bytes32 _buf) internal pure returns (address) {
+    require(
+        uint256(_buf) <= uint256(type(uint160).max),
+        "TypeCasts: overflow"
+    );
+    return address(uint160(uint256(_buf)));
+}
+```
+
+:::
+
+</TabItem>
+
+</Tabs>
+
+### 访问控制
+
+如果合约只应接受来自跨链消息的调用，那么 `handle` 函数应该被限制为只能由 Mailbox 地址调用。
+
+为了方便起见，[`MailboxClient` 库](../libraries/mailboxclient.mdx)提供了以下实用工具。
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+modifier onlyMailbox() virtual {
+    require(
+        msg.sender == address(_mailbox),
+        "MailboxClient: sender not mailbox"
+    );
+    _;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### 示例
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+function handle(
+    uint32 _origin,
+    bytes32 _sender,
+    bytes calldata _message
+) external onlyMailbox {
+    // 处理消息
+    latestMessage = string(_message);
+    emit ReceivedMessage(_origin, _sender, _message);
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## 验证
+
+当收到消息时，Mailbox 会在调用消息接收者的 `handle` 之前，使用[跨链安全模块](../ISM/specify-your-ISM.mdx)进行安全验证。
+
+### 默认安全
+
+要查询默认 ISM 地址，您可以调用 `defaultIsm` 函数。
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+function defaultIsm() external view returns (IInterchainSecurityModule);
+```
+
+</TabItem>
+</Tabs>
+
+### 模块化安全
+
+为了利用 Hyperlane 的模块化安全特性，消息接收者可以指定一个自定义的跨链安全模块来**验证**传入消息的**任何内容**。当指定了自定义 ISM 时，Mailbox 将使用该模块进行验证。
+
+<MessagingIsmDiagram />
