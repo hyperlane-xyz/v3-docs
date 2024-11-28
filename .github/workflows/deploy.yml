@@ -4,8 +4,12 @@ on:
   push:
     branches:
       - main
+      - chinese-translation
     # 如果你想手动触发部署
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
