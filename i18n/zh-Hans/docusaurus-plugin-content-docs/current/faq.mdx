@@ -3,7 +3,7 @@
 <details>
   <summary>**什么是 Hyperlane？**</summary>
   <div>
-    <div>Hyperlane 是第一个为模块化区块链架构构建的通用且无需许可的互操作性框架。任何人都可以将 [Hyperlane 部署](./deploy-hyperlane.mdx)到任何区块链环境中，无论是第一层区块链、扩容层还是应用链，使该链能够与任何其他已部署 Hyperlane 的链进行无缝通信。</div>
+    <div>Hyperlane 是第一个为模块化区块链架构构建的通用且无需许可的互操作性框架。任何人都可以将 [Hyperlane 部署](/docs/deploy-hyperlane)到任何区块链环境中，无论是第一层区块链、扩容层还是应用链，使该链能够与任何其他已部署 Hyperlane 的链进行无缝通信。</div>
   </div>
 </details>
 
@@ -34,28 +34,28 @@
 <details>
   <summary>**我可以用 Hyperlane 构建什么？**</summary>
   <div>
-    <div>Hyperlane 的[消息接口](./reference/messaging/messaging-interface.mdx)允许 dapp 开发者在不同链上的智能合约之间发送任意字节。这可以用来创建跨链应用程序，即跨多个链的 dapp。作为灵感，看看一些基于 Hyperlane 构建的预构建应用程序，包括：Warp Routes，让用户可以将代币从一个链转移到另一个链；跨链账户：让用户可以进行跨链函数调用；跨链查询：让用户可以进行跨链视图调用</div>
+    <div>Hyperlane 的[消息接口](/docs/reference/messaging/messaging-interface)允许 dapp 开发者在不同链上的智能合约之间发送任意字节。这可以用来创建跨链应用程序，即跨多个链的 dapp。作为灵感，看看一些基于 Hyperlane 构建的预构建应用程序，包括：Warp Routes，让用户可以将代币从一个链转移到另一个链；跨链账户：让用户可以进行跨链函数调用；跨链查询：让用户可以进行跨链视图调用</div>
   </div>
 </details>
 
 <details>
   <summary>**Hyperlane 部署在哪里？**</summary>
   <div>
-    <div>已知部署的列表可以在[合约地址](./reference/contract-addresses.mdx)页面找到</div>
+    <div>已知部署的列表可以在[合约地址](/docs/reference/contract-addresses)页面找到</div>
   </div>
 </details>
 
 <details>
   <summary>**当我在 Hyperlane 上发送消息时会发生什么？**</summary>
   <div>
-    <div>更多详情请参见[发送](./reference/messaging/send.mdx)和[接收](./reference/messaging/receive.mdx)页面。简而言之，应用程序在源链上调用 `dispatch()` 函数，将消息插入到邮箱的 Merkle 树中。Hyperlane 中继器观察已发送的消息，并为接收者的跨链安全模块（ISM）组装元数据。中继器通过调用 `Mailbox.process()` 将消息传递给接收者。邮箱使用接收者的 ISM 验证消息，并调用 `recipient.handle()` 来传递消息。</div>
+    <div>更多详情请参见[发送](/docs/reference/messaging/send)和[接收](/docs/reference/messaging/receive)页面。简而言之，应用程序在源链上调用 `dispatch()` 函数，将消息插入到邮箱的 Merkle 树中。Hyperlane 中继器观察已发送的消息，并为接收者的跨链安全模块（ISM）组装元数据。中继器通过调用 `Mailbox.process()` 将消息传递给接收者。邮箱使用接收者的 ISM 验证消息，并调用 `recipient.handle()` 来传递消息。</div>
   </div>
 </details>
 
 <details>
   <summary>**如何查看我发送的消息的状态？**</summary>
   <div>
-    <div>将地址或交易哈希粘贴到 [Hyperlane 消息浏览器](https://explorer.hyperlane.xyz/)的搜索栏中，查看消息的状态和历史详情。如果消息由于某种原因发送失败，将会有错误消息指示可能出现了什么问题。有关如何调试未传递消息的更多信息，请参见[浏览器调试](/docs/guides/explorer/explorer-debugging.mdx)</div>
+    <div>将地址或交易哈希粘贴到 [Hyperlane 消息浏览器](https://explorer.hyperlane.xyz/)的搜索栏中，查看消息的状态和历史详情。如果消息由于某种原因发送失败，将会有错误消息指示可能出现了什么问题。有关如何调试未传递消息的更多信息，请参见[浏览器调试](/docs/guides/explorer/explorer-debugging)</div>
   </div>
 </details>
 

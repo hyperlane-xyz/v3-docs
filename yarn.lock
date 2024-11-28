@@ -5112,7 +5112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/plugin-content-docs@npm:3.6.3":
+"@docusaurus/plugin-content-docs@npm:3.6.3, @docusaurus/plugin-content-docs@npm:^3.6.3":
   version: 3.6.3
   resolution: "@docusaurus/plugin-content-docs@npm:3.6.3"
   dependencies:
@@ -15069,6 +15069,7 @@ __metadata:
     "@docusaurus/core": "npm:^3.6.3"
     "@docusaurus/module-type-aliases": "npm:^3.6.3"
     "@docusaurus/plugin-client-redirects": "npm:^3.6.3"
+    "@docusaurus/plugin-content-docs": "npm:^3.6.3"
     "@docusaurus/preset-classic": "npm:^3.6.3"
     "@docusaurus/theme-common": "npm:^3.6.3"
     "@docusaurus/theme-mermaid": "npm:^3.6.3"

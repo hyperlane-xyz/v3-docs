@@ -1,8 +1,6 @@
-import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
-
 # 部署 Hyperlane Warp Routes 的桥接 UI
 
-在您成功[部署 Warp Route](/docs/guides/deploy-warp-route.mdx) 之后，您有两个开箱即用的选项来设置前端 UI 以支持跨链代币转账：
+在您成功[部署 Warp Route](/docs/guides/deploy-warp-route) 之后，您有两个开箱即用的选项来设置前端 UI 以支持跨链代币转账：
 
 1. **[分叉、自定义和部署 Hyperlane Warp UI 模板](#fork--customize-the-ui)**
 2. **[使用托管的 Superbridge 实例](#superbridge)**
@@ -103,11 +101,9 @@ hyperlane relayer --symbol TOKEN
 
 为了改善用户体验，除了 UI 警告外，您还可以通过水龙头提供一些原生 gas 代币。要创建水龙头，请修改 Warp Route 合约以持有原生代币余额，与接收者共享。
 
-:::tip
+对于希望为自己的项目定制 Warp UI 或构建自己的跨链应用程序的开发者，我们建议您探索 [TypeScript SDK](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/typescript/sdk)。
 
-<TypescriptSdkPlaceholder />
-
-:::
+该 SDK 包含一组不断增长的实用工具和抽象，用于在不同协议（EVM、Cosmos、Solana）中与 Hyperlane 进行交互。
 
 ## 2. Superbridge
 
