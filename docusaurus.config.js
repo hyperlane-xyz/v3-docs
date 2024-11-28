@@ -18,11 +18,9 @@ const config = {
   // Set the production url of your site here
   url: "https://docs.hyperlane.xyz",
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
   // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
   organizationName: "hyperlane-xyz", // Usually your GitHub org/user name.
   projectName: "hyperlane-monorepo", // Usually your repo name.
 
@@ -34,7 +32,17 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "zh-Hans"],
+    localeConfigs: {
+      en: {
+        label: 'English',
+        htmlLang: 'en-US',
+      },
+      'zh-Hans': {
+        label: '简体中文',
+        htmlLang: 'zh-Hans',
+      },
+    },
   },
 
   plugins: [
@@ -496,9 +504,9 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
+        copyright: `Copyright ÂŠ ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
         <br>
-        Built IRL in New York 🗽 and London 💂🏼‍♂️`,
+        Built IRL in New York â–ª and London â–¬ï¸â€â‚ï¸`,
       },
       prism: {
         additionalLanguages: ["solidity", "diff", "bash"],
