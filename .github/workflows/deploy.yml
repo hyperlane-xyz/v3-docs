@@ -20,23 +20,25 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: yarn
 
       - name: Install dependencies
         run: |
           corepack enable
           yarn install --frozen-lockfile
+          
       - name: Build website
         run: |
           yarn build
+          ls -la build/
           cp build/404.html build/index.html
 
       # 部署到 GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/chinese-translation'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-          # 以下是可选的设置
+          force_orphan: true
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com

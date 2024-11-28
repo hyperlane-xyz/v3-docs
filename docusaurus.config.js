@@ -23,10 +23,10 @@ const config = {
   // GitHub pages deployment config.
   organizationName: 'polibee', // Usually your GitHub org/user name.
   projectName: 'v3-docs', // Usually your repo name.
-
+  deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
-  onBrokenLinks: "warn",
+  onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   
   markdown: {
@@ -420,7 +420,8 @@ const config = {
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/polibee/v3-docs/tree/main/",
-          routeBasePath: '/', // 
+          routeBasePath: '/',
+          showLastUpdateTime: true,
         },
         blog: false,
         theme: {
