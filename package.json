@@ -7,7 +7,6 @@
     "start": "docusaurus start",
     "dev": "docusaurus start --no-open",
     "build": "docusaurus build",
-    "vercel-build": "yarn clear && yarn build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",

@@ -16,15 +16,15 @@ const config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://hyp-v3-docs.vercel.app",
+  url: "https://docs.hyperlane.xyz",
   // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: "/",
 
   // GitHub pages deployment config.
-  organizationName: "polibee", // Usually your GitHub org/user name.
-  projectName: "v3-docs", // Usually your repo name.
+  organizationName: "hyperlane-xyz", // Usually your GitHub org/user name.
+  projectName: "hyperlane-monorepo", // Usually your repo name.
 
-  onBrokenLinks: "warn",
+  onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
@@ -379,7 +379,7 @@ const config = {
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/polibee/v3-docs/tree/main/",
+          editUrl: "https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -447,7 +447,7 @@ const config = {
             label: "⚙️ Agent Operators",
           },
           {
-            href: "https://github.com/polibee",
+            href: "https://github.com/hyperlane-xyz",
             label: "GitHub",
             position: "right",
           },
@@ -477,7 +477,7 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/polibee",
+                href: "https://github.com/hyperlane-xyz",
               },
             ],
           },
@@ -499,7 +499,7 @@ const config = {
             items: [
               {
                 label: "Bounties",
-                to: "https://github.com/search?q=org%3Apolibee+label%3Abounty+is%3Aopen+is%3Aissue&type=issues&s=&o=desc",
+                to: "https://github.com/search?q=org%3Ahyperlane-xyz+label%3Abounty+is%3Aopen+is%3Aissue&type=issues&s=&o=desc",
               },
               {
                 label: "Careers",
@@ -508,7 +508,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright ÂŠ ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
+        copyright: `Copyright ÂŠ ${new Date().getFullYear()} Hyperlane
         <br>
         Built IRL in New York âœ¨ and London ðŸ§â€â‚ï¸`,
       },
