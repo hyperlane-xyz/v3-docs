@@ -24,6 +24,8 @@ const config = {
   organizationName: 'polibee', // Usually your GitHub org/user name.
   projectName: 'v3-docs', // Usually your repo name.
 
+  trailingSlash: false,
+
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   

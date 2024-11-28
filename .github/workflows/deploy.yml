@@ -23,9 +23,13 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          corepack enable
+          yarn install --frozen-lockfile
       - name: Build website
-        run: yarn build
+        run: |
+          yarn build
+          cp build/404.html build/index.html
 
       # 部署到 GitHub Pages
       - name: Deploy to GitHub Pages
