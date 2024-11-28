@@ -2,7 +2,6 @@
   "buildCommand": "yarn install && yarn build",
   "outputDirectory": "build",
   "framework": "docusaurus-2",
-  "installCommand": "yarn install",
   "builds": [
     {
       "src": "package.json",
@@ -18,5 +17,9 @@
   "env": {
     "NODE_OPTIONS": "--max_old_space_size=4096",
     "NODE_ENV": "production"
+  },
+  "github": {
+    "enabled": true,
+    "silent": true
   }
 }
