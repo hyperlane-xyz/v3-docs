@@ -1,0 +1,61 @@
+# 在 Hyperlane Explorer 中配置新链
+
+Hyperlane 可以被任何人[部署](/docs/deploy-hyperlane.mdx)到任何链上，这种开放访问被称为无许可互操作性（PI）。然而，默认的 Hyperlane 代理无法识别 PI 链上的消息。要查看来自 PI 链的消息详情，首先需要使用该链的元数据配置浏览器。
+
+## 向 Hyperlane Explorer 添加链元数据
+
+1. 在浏览器的主页上，点击"源"或"目标"按钮打开链选择。这将打开链选择模态框。在那里，点击右上角的加号图标。
+
+![](/img/explorer-debugging/explorer-add-metadata.png)
+
+2. 在出现的表单中，使用符合 [ChainMetadata 模式](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts)的 JSON 或 YAML 输入链的元数据。
+
+3. 如果提供了有效的基于 Etherscan 的区块浏览器配置，Hyperlane Explorer 将使用它来查找所需的消息。如果没有，它将使用 RPC URL。注意，带有 API 密钥的浏览器（即使只是免费层级的密钥）运行更快且更可靠。
+
+### 链元数据示例
+
+**JSON 格式的最小示例：**
+
+```json
+{
+  "chainId": 11155111,
+  "name": "sepolia",
+  "protocol": "ethereum",
+  "rpcUrls": [{ "http": "https://foobar.com" }]
+}
+```
+
+**YAML 格式的详细示例：**
+
+```yaml
+# Yaml 元数据示例
+blockExplorers:
+  - apiUrl: https://api-sepolia.etherscan.io/api
+    family: etherscan
+    name: Etherscan
+    url: https://sepolia.etherscan.io
+blocks:
+  confirmations: 1
+  estimateBlockTime: 13
+  reorgPeriod: 2
+chainId: 11155111
+deployer:
+  name: Abacus Works
+  url: https://www.hyperlane.xyz
+displayName: Sepolia
+domainId: 11155111
+isTestnet: true
+name: sepolia
+nativeToken:
+  decimals: 18
+  name: Ether
+  symbol: ETH
+protocol: ethereum
+rpcUrls:
+  - http: https://ethereum-sepolia.publicnode.com
+  - http: https://ethereum-sepolia.blockpi.network/v1/rpc/public
+```
+
+:::info
+如果您消息中的源或目标 `domainId` 与其 `chainId` 不匹配，那么您必须在链配置中包含 `domainId` 字段。
+:::

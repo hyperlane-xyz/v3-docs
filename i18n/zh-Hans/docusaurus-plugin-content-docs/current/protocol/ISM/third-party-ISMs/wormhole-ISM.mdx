@@ -1,0 +1,13 @@
+# Wormhole ISM
+
+:::warning
+`WormholeISM` 即将推出，尚未实现。此页面仅供参考。随着设计的成熟，具体细节可能会发生变化。
+:::
+
+`WormholeISM` 编码了 [Wormhole](https://wormhole.com/) 跨链通信协议使用的安全模型。
+
+此 ISM 要求 19 个 [Wormhole 守护者](https://wormhole.com/network/#guardians) 中的 13 个证明 Hyperlane 消息的有效性。
+
+## 组合
+
+开发者可以使用 [聚合 ISM](../aggregation-ISM.mdx) 将 Wormhole ISM 与 [多重签名 ISM](../multisig-ISM.mdx) 组合，要求 n 个 Hyperlane 验证者中的 m 个**和** 19 个 Wormhole 守护者中的 13 个验证消息。

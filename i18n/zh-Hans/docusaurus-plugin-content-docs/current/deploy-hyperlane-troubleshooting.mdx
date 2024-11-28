@@ -1,0 +1,100 @@
+# 如何排查 Hyperlane 部署问题
+
+## 日志记录
+
+可以使用以下两个环境变量配置 Hyperlane 工具的日志级别和格式：
+- `LOG_LEVEL`：要过滤的日志级别。默认为 `info`。选项：`debug | info | warn | error | off`
+- `LOG_FORMAT`：日志输出的格式。默认为 `pretty`。选项：`pretty | json`
+
+[Hyperlane CLI](/docs/reference/cli.mdx) 也允许通过 `--log` 和 `--verbosity` 标志配置日志。
+
+## 链配置
+
+在你的工作目录中，你可能会找到按链名称组织的 `chains/` yaml 文件。这些 `metadata.yaml` 文件描述了在 Hyperlane 部署和应用程序中使用链所需的信息。
+
+你可以在此文件中为任何新链定义完整配置。可以配置的元数据在这个[示例配置](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)中定义。你还可以在 [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts) 中找到链元数据模式。
+
+这是两个本地 anvil 链的配置示例：
+
+```yaml
+---
+anvil1:
+  chainId: 31337
+  domainId: 31337
+  name: anvil1
+  protocol: ethereum
+  rpcUrls:
+    - http: http://localhost:8545
+  nativeToken:
+    name: Ether
+    symbol: ETH
+    decimals: 18
+anvil2:
+  chainId: 31338
+  domainId: 31338
+  name: anvil2
+  protocol: ethereum
+  rpcUrls:
+    - http: http://localhost:8555
+```
+
+你也可以通过提供要覆盖的字段来扩展核心链配置：
+
+```yaml
+---
+sepolia:
+  blocks:
+    confirmations: 2
+```
+
+### 覆盖 RPC URL
+
+你可以通过扩展核心链配置来覆盖 RPC URL。
+
+在下面的示例中，你可以看到如何定义 RPC 数组以及如何调整其中任何一个的重试参数。
+
+```yaml
+---
+demochain:
+  name: demochain
+  chainId: 123456
+  domainId: 123456
+  protocol: ethereum
+  rpcUrls:
+    - http: https://rpc-testnet.demochain.gg
+sepolia:
+  rpcUrls:
+    - http: https://rpc2.sepolia.org
+    - http: https://some-other-sepolia-rpc.gg
+      retry:
+        maxRequests: 10
+```
+
+### 覆盖交易设置
+
+交易覆盖是在形成交易请求时要包含的任何属性。例如：
+
+- `gasPrice`：数字 | 字符串
+- `maxFeePerGas`：数字 | 字符串
+- `maxPriorityFeePerGas`：数字 | 字符串
+- `nonce`：数字 | 字符串
+- `type`：数字
+- `ccipReadEnabled`：布尔值
+
+在下面的示例中，我们使用 7 gwei 的 gas 价格，硬编码 nonce，并为基础费用和优先级费用设置最大值。
+
+```yaml
+---
+sepolia:
+  transactionOverrides:
+    gasPrice: 7000000000 # 7 gwei
+    maxFeePerGas: 150000000000 # 150 gwei
+    maxPriorityFeePerGas: 40000000000 # 40 gwei
+    nonce: 1337
+```
+
+:::warning
+
+如果你在链配置中覆盖 nonce，请确保在交易成功时更新该值。
+
+:::

@@ -1,0 +1,109 @@
+# 常见问题
+
+<details>
+  <summary>**什么是 Hyperlane？**</summary>
+  <div>
+    <div>Hyperlane 是第一个为模块化区块链架构构建的通用且无需许可的互操作性框架。任何人都可以将 [Hyperlane 部署](/docs/deploy-hyperlane)到任何区块链环境中，无论是第一层区块链、扩容层还是应用链，使该链能够与任何其他已部署 Hyperlane 的链进行无缝通信。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**使用 Hyperlane 对区块链开发者有什么好处？**</summary>
+  <div>
+    <div>Hyperlane 为区块链和 dapp 开发者都提供了好处。
+对于区块链开发者来说，Hyperlane 部署扩展了对其他已部署 Hyperlane 的连接区块链上的用户、资产和有价值状态的可访问性。
+对于 dapp 开发者来说，Hyperlane 提供了跨多个区块链的无缝连接，使开发者能够创建跨链网络效应和流动性，用户可以从他们偏好的链上与应用程序交互。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**Hyperlane 如何保证安全？**</summary>
+  <div>
+    <div>Hyperlane 通过其具有跨链安全模块（ISM）的模块化安全堆栈来保证安全。开发者可以配置各种预构建的 ISM，将它们相互组合，甚至根据应用程序的需求创建自定义 ISM。
+模块化的安全方法确保 Hyperlane 将继续跟上安全模型的最新行业进展。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**谁是 Hyperlane 的验证者？**</summary>
+  <div>
+    <div>Hyperlane 通过具有 ISM 的模块化安全堆栈来保证安全。没有协议规定的安全模型，更不用说验证者集合了。也就是说，大多数 Hyperlane 部署都配置了默认 ISM，如果消息接收者没有指定 ISM 覆盖，则指定要使用的安全模型。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**我可以用 Hyperlane 构建什么？**</summary>
+  <div>
+    <div>Hyperlane 的[消息接口](/docs/reference/messaging/messaging-interface)允许 dapp 开发者在不同链上的智能合约之间发送任意字节。这可以用来创建跨链应用程序，即跨多个链的 dapp。作为灵感，看看一些基于 Hyperlane 构建的预构建应用程序，包括：Warp Routes，让用户可以将代币从一个链转移到另一个链；跨链账户：让用户可以进行跨链函数调用；跨链查询：让用户可以进行跨链视图调用</div>
+  </div>
+</details>
+
+<details>
+  <summary>**Hyperlane 部署在哪里？**</summary>
+  <div>
+    <div>已知部署的列表可以在[合约地址](/docs/reference/contract-addresses)页面找到</div>
+  </div>
+</details>
+
+<details>
+  <summary>**当我在 Hyperlane 上发送消息时会发生什么？**</summary>
+  <div>
+    <div>更多详情请参见[发送](/docs/reference/messaging/send)和[接收](/docs/reference/messaging/receive)页面。简而言之，应用程序在源链上调用 `dispatch()` 函数，将消息插入到邮箱的 Merkle 树中。Hyperlane 中继器观察已发送的消息，并为接收者的跨链安全模块（ISM）组装元数据。中继器通过调用 `Mailbox.process()` 将消息传递给接收者。邮箱使用接收者的 ISM 验证消息，并调用 `recipient.handle()` 来传递消息。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**如何查看我发送的消息的状态？**</summary>
+  <div>
+    <div>将地址或交易哈希粘贴到 [Hyperlane 消息浏览器](https://explorer.hyperlane.xyz/)的搜索栏中，查看消息的状态和历史详情。如果消息由于某种原因发送失败，将会有错误消息指示可能出现了什么问题。有关如何调试未传递消息的更多信息，请参见[浏览器调试](/docs/guides/explorer/explorer-debugging)</div>
+  </div>
+</details>
+
+<details>
+  <summary>**使用 Hyperlane 发送跨链消息是否意味着实时聊天和文本？**</summary>
+  <div>
+    <div>Hyperlane 是一个旨在让不同链上的智能合约相互交互的协议。当我们提到消息传递时，是指在智能合约之间发送任意字节，而不是点对点或文本消息。有几个 web3 项目适合聊天用例；考虑使用 [XMTP](https://xmtp.org/)、[Push](https://push.org/) 或 [Orbis](https://useorbis.com/) 进行这类消息传递。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**Hyperlane 是代币桥吗？**</summary>
+  <div>
+    <div>不完全是。Hyperlane 是一个通用消息传递（GMP）协议，允许区块链之间的通信。代币桥只是可以在 Hyperlane 之上构建的众多应用类型之一！</div>
+  </div>
+</details>
+
+<details>
+  <summary>**我是开发者。我的团队如何使用 Hyperlane 构建？**</summary>
+  <div>
+    <div>如果你正在阅读这个 FAQ，你已经找到了文档，这是一个很好的起点。也就是说，我们知道在实施过程中会出现问题，我们很乐意帮助你。Hyperlane 社区在 [Discord](http://discord.gg/hyperlane) 中经常活跃。开发者的反馈直接影响产品路线图。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**什么是 Abacus Works？**</summary>
+  <div>
+    <div>Abacus Works 是致力于 Hyperlane 的法律实体的名称。你可能在较早的帖子和存储库中遇到一些对 Abacus 的引用。Hyperlane 在 2022 年秋季从 Abacus 更名为 Hyperlane。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**如何加入 Hyperlane 社区？**</summary>
+  <div>
+    <div>你可以加入 [Discord](http://discord.gg/hyperlane) 或关注 Hyperlane [Twitter](http://twitter.com/hyperlane)，在那里你可以找到一个不断成长的开发者和爱好者社区，讨论跨链的未来。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**我对在 Hyperlane 工作感兴趣，在哪里可以看到职位空缺？**</summary>
+  <div>
+    <div>在[这里](https://jobs.lever.co/Hyperlane)查看我们的空缺职位。</div>
+  </div>
+</details>
+
+<details>
+  <summary>**如何为改进此文档做出贡献？**</summary>
+  <div>
+    <div>你可以通过[文档仓库](https://github.com/hyperlane-xyz)直接提交 PR 来编辑此文档。</div>
+  </div>
+</details>

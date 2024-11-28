@@ -1,0 +1,216 @@
+# 运行中继器
+
+:::tip
+
+- 关于 Hyperlane 中中继器的介绍，您可以查看[概述部分](/docs/operate/overview-agents.mdx)。
+- 我们建议您在尝试运行生产环境中继器之前，先阅读[**部署 Hyperlane 本地代理**](../../guides/deploy-hyperlane-local-agents.mdx)指南，了解如何在本地配置和运行中继器，以及[**运行验证器**](../validators/run-validators.mdx)文档。
+
+:::
+
+## 要求
+
+- RPC 节点
+  - 中继器使用 RPC 节点来读取源链和传递消息到目标链。中继器必须为所有源链和目标链配置 RPC 节点。
+- 一个或多个签名密钥
+  - 为了传递消息，中继器必须配置签名密钥以在每个目标链上提交交易（因此需要在这些链上有资金）。
+  - 中继器使用此密钥来签署 `Mailbox.process()` 交易。Hyperlane 中继器代理目前支持通过 API 密钥/密钥访问的 AWS KMS 密钥或原始十六进制私钥的配置。
+- 运行机器
+  - 中继器运营者可以自己编译 Rust 二进制文件，或运行 Abacus Works 提供的 Docker 镜像。二进制文件可以使用您喜欢的云服务运行。
+
+## 指南
+
+:::info
+
+- 本地代理设置展示了如何在您的_本地机器_上运行中继器，这**仅用于测试和开发目的**。
+- 我们强烈建议您遵循[本地代理指南](../../guides/deploy-hyperlane-local-agents.mdx)来了解如何在本地配置和运行中继器。
+
+:::
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+### 密钥
+
+中继器需要能够向多个目标链提交交易，因此需要访问用于签署交易的密钥。支持两种密钥类型：十六进制私钥（用于内存中签名）和基于 AWS KMS 的密钥（生产环境的最佳实践）。
+
+#### 十六进制密钥
+
+中继器可以使用十六进制私钥进行内存中签名来签署交易。这是测试或开发目的的推荐设置，但也可以在生产环境中使用。
+
+#### AWS KMS 密钥
+
+中继器可以使用 AWS KMS 密钥来签署交易。这是生产环境中继器的推荐设置。
+
+:::tip
+请参阅[代理密钥](../set-up-agent-keys.mdx)页面来设置您的十六进制或 AWS KMS 密钥。
+:::
+
+### 配置
+
+与本地设置一样，在配置中继器时应提供一些基本参数。
+
+| 参数                           | 描述                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--relayChains`                 | 在源链和目标链之间中继消息的链名称，用逗号分隔。例如：`ethereum,polygon,avalanche`。                                                                                                                                                                                                                                                          |
+| `--db`                          | 中继器应将持久数据写入磁盘的路径。在使用云设置时确保此路径持久存在。使用 Docker 时，确保将持久路径/卷挂载到容器中。更多信息请参见[配置参考](../config-reference.mdx#db)。                                                                     |
+| `--allowLocalCheckpointSyncers` | 如果为 `true`，将允许中继器在中继器的本地文件系统中查找验证器签名。在生产环境中，此值应为 `false`。如果您按照验证器本地设置说明在同一台机器上运行验证器，请将此值设置为 `true`，以便中继器可以访问本地验证器签名。 |
+
+:::info
+
+您的中继器同时接受命令行参数和环境变量作为配置。查看[代理配置](../agent-config.mdx)页面和[配置参考](../config-reference.mdx)以获取完整的配置可能性列表。
+
+:::
+
+当然，您也可以使用 [`CONFIG_FILES` 环境变量](../config-reference.mdx#config_files)提供额外配置文件的路径，以逗号分隔列表的形式。如果您选择在 Docker 中运行，请参阅[代理配置](../agent-config.mdx)的 docker 部分，了解如何将配置文件挂载到 Docker 容器中的提示。
+
+### 特定设置配置
+
+这些配置要求因您设置的环境而异。
+
+<Tabs groupId="keys">
+  <TabItem value="hexadecimal" label="十六进制密钥">
+如果您创建了[十六进制密钥](../set-up-agent-keys.mdx)，请按如下方式配置默认签名者：
+
+| 参数                  | 描述                                                                                            |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| `--defaultSigner.key` | 用于为所有链签署交易的十六进制私钥。例如：`1b3dead...beef`。 |
+
+  </TabItem>
+  <TabItem value="aws-kms" label="AWS KMS 密钥">
+如果您创建了 [AWS KMS 密钥](../set-up-agent-keys.mdx)，请按如下方式配置默认签名者：
+
+| 参数                    | 描述                                                                                                    |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `--defaultSigner.type`   | 设置为 `aws`。                                                                                              |
+| `--defaultSigner.id`     | 您的中继器的 AWS KMS 密钥别名，前缀为 `alias/`。例如：`alias/hyperlane-relayer-1`。 |
+| `--defaultSigner.region` | 您的 AWS KMS 密钥的区域。例如：`us-east-1`。                                                  |
+
+  </TabItem>
+</Tabs>
+
+对于特定链的签名者（即为每个链自定义要使用的密钥），请查看[配置参考](../config-reference.mdx)。
+
+## 开始中继
+
+### 设置
+
+生产环境的推荐安装方法是使用 Docker 镜像。
+
+<Tabs groupId="docker">
+  <TabItem value="docker" label="Docker 镜像">
+
+首先下载 docker 镜像：
+
+```bash
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
+```
+
+  </TabItem>
+  <TabItem value="from-source" label="从源码构建">
+
+**克隆和设置**
+
+首先，克隆 Hyperlane monorepo：
+
+```sh
+git clone git@github.com:hyperlane-xyz/hyperlane-monorepo.git
+```
+
+然后按照 `rust` 目录中的[设置说明](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/README.md)进行操作。这将设置 `rustup`，如果您使用的是 Apple Silicon，还会设置 Rosetta 2。
+
+```sh
+# 安装 rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# （仅限 apple silicon）安装 rosetta 2
+softwareupdate --install-rosetta --agree-to-license
+```
+
+构建中继器：
+
+```sh
+cargo build --release bin relayer
+```
+
+  </TabItem>
+</Tabs>
+
+### 运行代理
+
+如果中继器的密钥已使用 AWS KMS 配置，您必须将 AWS 访问密钥和密钥作为环境变量提供。
+
+| 环境变量                | 描述                                               |
+| ----------------------- | ----------------------------------------------------- |
+| `AWS_ACCESS_KEY_ID`     | 您的中继器的 AWS IAM 用户的访问密钥 ID。     |
+| `AWS_SECRET_ACCESS_KEY` | 您的中继器的 AWS IAM 用户的秘密访问密钥。 |
+
+如需复习，请查看[代理密钥](../set-up-agent-keys.mdx)指南。
+
+<Tabs groupId="docker">
+  <TabItem value="docker" label="使用 Docker">
+
+然后使用相关参数启动容器。例如，您的 AWS 配置：
+
+```sh
+docker run \
+  -it \
+  -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
+  -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
+  --mount ... \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
+  ./relayer \
+  --db /hyperlane_db \
+  --relayChains <chain_1_name>,<chain_2_name> \
+  --defaultSigner.type aws \
+  --defaultSigner.id alias/hyperlane-relayer-1 \
+  --defaultSigner.region us-east-1 \
+```
+
+:::info
+
+如果您在同一台机器上使用本地设置运行验证器，并运行本地中继器来访问这些验证器签名，请确保将您的本地验证器的签名目录[挂载](https://docs.docker.com/storage/bind-mounts/)到您的中继器中，使用与您[宣布验证器](../validators/run-validators.mdx#Announcing-your-validator)时相同的路径。
+
+例如，如果您的本地验证器正在将签名写入 `/tmp/hyperlane-validator-signatures-ethereum`，您应该为 Docker 容器挂载一个目录：
+
+```sh
+docker run \
+  -it \
+  -e CONFIG_FILES=/config/agent-config.json \
+  --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
+  --mount type=bind,source="$(pwd)"/hyperlane-validator-signatures-ethereum,target=/tmp/hyperlane-validator-signatures-ethereum,readonly \
+  --mount type=bind,source="$(pwd)"/hyperlane_db,target=/hyperlane_db \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
+  ./relayer \
+  --db /hyperlane_db \
+  --relayChains ethereum,polygon \
+  --defaultSigner.type aws \
+  --defaultSigner.id alias/hyperlane-relayer-1 \
+  --defaultSigner.region us-east-1
+```
+
+:::
+
+  </TabItem>
+  <TabItem value="from-source" label="从源码运行">
+
+使用相关参数运行二进制文件。例如，您的 AWS 配置：
+
+```sh
+export AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP
+export AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx
+
+# 运行中继器
+./target/release/relayer \
+  --db /hyperlane_db \
+  --relayChains <chain_1_name>,<chain_2_name> \
+  --defaultSigner.type aws \
+  --defaultSigner.id alias/hyperlane-relayer-1 \
+  --defaultSigner.region us-east-1 \
+```
+
+  </TabItem>
+</Tabs>
+
+### 索引
+
+中继器需要为源链索引所有历史消息。这些信息存储在磁盘上的本地数据库中（在配置中通过 `db` 设置）。这意味着首次运行中继器可能需要额外的时间来赶上当前状态。

@@ -1,0 +1,102 @@
+import PrerequisitesPartial from '../partials/core/_prerequisites-config-artifacts.mdx'
+import CoreReadChainPartial from '../partials/core/commands/_core-read-chain.mdx'
+import CoreApplyChainPartial from '../partials/core/commands/_core-apply-chain.mdx'
+
+# 如何转移 Hyperlane Mailbox 的所有权
+
+# 使用 Hyperlane CLI
+
+转移 mailbox 所有权最快的方法之一是使用 [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli)。
+
+<PrerequisitesPartial />
+
+:::info
+如果您按照[如何使用 Hyperlane 连接您的链](/docs/deploy-hyperlane)指南进行操作，您可能使用单个私钥作为所有者部署了 mailbox。在生产环境中，建议使用多重签名钱包。
+:::
+
+要使用 Hyperlane CLI 进行确认，请执行以下命令，将 `--chain` 设置为您部署 mailbox 的链的名称：
+
+<CoreReadChainPartial />
+
+运行 `core read` 后，您应该看到类似的配置，其中 `owner` 设置为私钥的地址：
+
+```yaml {8}
+defaultHook:
+  address: "0xE71AC7A1ccB822423576EfFdb0B74564C49BEcBA"
+  type: merkleTreeHook
+defaultIsm:
+  address: "0x89842f40928f81FC4415b39bfBFC3205eB6161cB"
+  relayer: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  type: trustedRelayerIsm
+owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+requiredHook:
+  address: "0x390d29a822C21F57B163F1173cD43382bd643401"
+  beneficiary: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  protocolFee: "0"
+  type: protocolFee
+```
+
+输出将保存到 `CURRENT_DIR/configs/core-config.yaml`。
+
+按照以下步骤使用 CLI 将现有所有权转移到另一个地址。
+
+## 步骤 1：更新配置
+
+在 `core-config.yaml` 中更新 `owner` 地址：
+
+```diff title="core-config.yaml"
+defaultHook:
+  address: "0xE71AC7A1ccB822423576EfFdb0B74564C49BEcBA"
+  type: merkleTreeHook
+defaultIsm:
+  address: "0x89842f40928f81FC4415b39bfBFC3205eB6161cB"
+  relayer: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  type: trustedRelayerIsm
+- owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
++ owner: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+requiredHook:
+  address: "0x390d29a822C21F57B163F1173cD43382bd643401"
+  beneficiary: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  protocolFee: "0"
+  type: protocolFee
+```
+
+## 步骤 2：应用更改
+
+使用 CLI 执行以下命令：
+
+<CoreApplyChainPartial />
+
+您应该会看到一系列链上交易被执行，最后会有一条消息表明 mailbox 已更新。
+
+## 步骤 3：确认
+
+要使用 Hyperlane CLI 进行确认，请执行以下命令：
+
+<CoreReadChainPartial />
+
+运行 `core read` 后，您应该看到类似的配置，其中显示了更新后的 `owner`：
+
+```yaml {8}
+defaultHook:
+  address: "0x67F8c06Fd2915728E9D21451E33FbDFbCcd63c44"
+  type: "merkleTreeHook"
+defaultIsm:
+  address: "0xac7D6df90fa937ADEfE7aD2d4905f0AEa170c467"
+  relayer: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  type: "trustedRelayerIsm"
+owner: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+requiredHook:
+  address: "0x1Cd94b4D9B5f0e3474a6bDB8b9503Ca84F53e548"
+  beneficiary: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  maxProtocolFee: "100000000000000000"
+  owner: "0xa5558cA30cd9952Ab0e2349C274a3736698bD60e"
+  protocolFee: "0"
+  type: "protocolFee"
+```
+
+完成这些步骤后，您已成功将 mailbox 的所有权转移并验证到新的地址。

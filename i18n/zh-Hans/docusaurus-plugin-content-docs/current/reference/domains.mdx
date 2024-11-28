@@ -1,0 +1,23 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import DomainsTable from '@site/src/components/DomainsTable';
+
+# 域标识符
+
+## 核心域
+
+此列表仅包括由 Abacus Works（我们的法律实体）管理的链上部署。任何人都可以[无需许可](../deploy-hyperlane.mdx)在任何链上部署 Hyperlane - 我们正在建立一个注册表来反映社区的无许可部署。
+
+Hyperlane 为每个支持的链使用唯一的 ID。在可能的情况下，Hyperlane 域 ID 与 EVM 链 ID 匹配，但由于我们也支持非 EVM 链，因此这一点并不能保证。
+
+在[发送消息](../your-first-message.mdx)时，用户必须提供目标链的域 ID。在[接收消息](./messaging/receive.mdx)时，接收者将获得源链的域 ID。
+
+<Tabs groupId="environment">
+<TabItem value="mainnet" label="主网">
+<DomainsTable environment="mainnet"/>
+</TabItem>
+<TabItem value="testnet" label="测试网">
+<DomainsTable environment="testnet"/>
+</TabItem>
+</Tabs>

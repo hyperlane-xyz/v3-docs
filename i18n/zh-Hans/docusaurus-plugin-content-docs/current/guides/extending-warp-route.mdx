@@ -1,0 +1,174 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PrerequisitesPartial from '/docs/partials/warp-routes/_prerequisites-config-symbol.mdx'
+import WarpReadSymbolChainPartial from '/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx'
+import WarpApplySymbolConfigDefaultPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx'
+import WarpApplySymbolConfigDefaultStrategyPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default-strategy.mdx'
+import WarpReadSymbolSelectPartial from '/docs/partials/warp-routes/_warp-read-symbol-selection.mdx'
+
+# 如何扩展现有的 Warp Route
+
+# 使用 Hyperlane CLI
+
+部署 warp route 后，你可能想要将其扩展到新的链上。扩展 warp route 涉及在目标链上部署新的代币合约并将现有代币与其关联。
+
+你可以使用 [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli) 扩展现有的 warp route。
+
+<PrerequisitesPartial />
+
+:::warning
+Gnosis Safe 用户：拥有 warp route 的 EOA 必须是 Safe 签名者或[代理人](https://docs.safe.global/core-api/transaction-service-guides/delegates)才能提议更新交易。
+:::
+
+如果你已经有 warp 配置，可以跳到[步骤 1](#step-1-configuration)。
+
+要使用 Hyperlane CLI 生成 warp route 配置，请在已部署的链上定位你的代币符号：
+
+<WarpReadSymbolChainPartial />
+
+<WarpReadSymbolSelectPartial />
+
+然后你可以选择要扩展的 warp route。
+
+运行 `hyperlane warp read` 后，CLI 将显示类似以下的配置：
+
+```yaml
+basesepolia:
+  mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "1"
+  remoteRouters:
+    "11155111": "0x8A73F6E36735d8C4b9A00Af910746173050B754E"
+  type: "synthetic"
+sepolia:
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  remoteRouters:
+    "84532": "0x26243aaD2d03AAbafaCE785808Ae64fc32aFB8A1"
+  type: "native"
+```
+
+这个特定的配置有 2 个链：basesepolia 和 sepolia。这意味着消息可以在两个链之间中继。
+
+默认情况下，`warp read` 会将输出保存到 `CURRENT_DIR/configs/warp-route-deployment.yaml`。按照以下步骤将链添加到现有的 warp route。
+
+## 步骤 1：配置
+通过添加新链的配置来更新 `warp-route-deployment.yaml`。
+
+```diff title="warp-route-deployment.yaml"
+sepolia:
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  remoteRouters:
+    "84532": "0x26243aaD2d03AAbafaCE785808Ae64fc32aFB8A1"
+  type: "native"
+basesepolia:
+  mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "1"
+  remoteRouters:
+    "11155111": "0x8A73F6E36735d8C4b9A00Af910746173050B754E"
+  type: "synthetic"
++ holesky:
++   mailbox: "0x46f7C5D896bbeC89bE1B19e4485e59b4Be49e9Cc"
++   owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
++   name: "Ether"
++   symbol: "ETH"
++   decimals: 18
++   totalSupply: "1"
++   type: "synthetic"
+```
+
+:::warning
+EOA 用户：扩展配置的 `owner` 必须与前置条件步骤中的 EOA 地址匹配，以避免部署失败。
+:::
+
+## 步骤 2：应用
+
+使用 CLI，执行适用于你的 warp route 所有者设置的命令：
+
+<Tabs>
+  <TabItem value="eoa" label="EOA">
+    <WarpApplySymbolConfigDefaultPartial />
+  </TabItem>
+  <TabItem value="gnosis" label="Gnosis Safe">
+    使用此模板定义并保存 Gnosis Safe 策略：
+    ```yaml
+    basesepolia:
+      submitter:
+          type: "gnosisSafe"
+          chain: "basesepolia"
+          safeAddress: "0x518489F9ed41Fc35BCD23407C484F31897067ff0"
+    sepolia:
+      submitter:
+          type: "gnosisSafe"
+          chain: "sepolia"
+          safeAddress: "0x518489F9ed41Fc35BCD23407C484F31897067ff0"
+    holesky:
+      submitter:
+          type: "gnosisSafe"
+          chain: "holesky"
+          safeAddress: "0x1f9090aaE28b8a3dCeaDf281B0F12828e676c326"
+    ```
+    在这种情况下，每个链都是一个带有各自 Safe 地址的 Gnosis Safe 策略。必须**接受** Safe 提议才能完成 warp route 扩展。
+    <WarpApplySymbolConfigDefaultStrategyPartial />
+  </TabItem>
+</Tabs>
+
+执行后，你应该看到在链上执行了一批交易，以及一条表示 warp 配置已更新的最终消息。
+
+## 步骤 3：确认
+
+要使用 Hyperlane CLI 确认 warp route 已成功扩展，请在已部署的链上运行以下命令，使用你的代币符号：
+
+<WarpReadSymbolChainPartial />
+
+运行 `warp read` 后，确认 warp route 已扩展：
+```yaml {23-34} 
+basesepolia:
+  mailbox: "0x6966b0E55883d49BFB24539356a2f8A673E02039"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: 0
+  remoteRouters:
+    "17000": "0x9B18AfD7aB869C6B011F44638ff71786447B785B"
+    "11155111": "0x4e63147e72d029Eb8b37F375B3837B2644622686"
+  type: native
+sepolia:
+  mailbox: "0xfFAEF09B3cd11D9b20d1a19bECca54EEC2884766"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "0"
+  remoteRouters:
+    "17000": "0x9B18AfD7aB869C6B011F44638ff71786447B785B"
+    "84532": "0xB38cc797Ccc6D8763439a07CEa052AF253281de6"
+  type: "synthetic"
+holesky:
+  mailbox: "0x46f7C5D896bbeC89bE1B19e4485e59b4Be49e9Cc"
+  owner: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  name: "Ether"
+  symbol: "ETH"
+  decimals: 18
+  totalSupply: "0"
+  remoteRouters:
+    "84532": "0xB38cc797Ccc6D8763439a07CEa052AF253281de6"
+    "11155111": "0x4e63147e72d029Eb8b37F375B3837B2644622686"
+  type: "synthetic"

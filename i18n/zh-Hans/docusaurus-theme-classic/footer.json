@@ -1,0 +1,34 @@
+{
+  "link.title.Docs": {
+    "message": "文档",
+    "description": "The title of the footer docs section"
+  },
+  "link.title.Community": {
+    "message": "社区",
+    "description": "The title of the footer community section"
+  },
+  "link.title.More": {
+    "message": "更多",
+    "description": "The title of the footer more section"
+  },
+  "link.item.label.Tutorial": {
+    "message": "教程",
+    "description": "The label of footer link with label=Tutorial linking to /docs/intro"
+  },
+  "link.item.label.Discord": {
+    "message": "Discord",
+    "description": "The label of footer link with label=Discord linking to https://discord.gg/hyperlane"
+  },
+  "link.item.label.Twitter": {
+    "message": "Twitter",
+    "description": "The label of footer link with label=Twitter linking to https://twitter.com/hyperlane_xyz"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/hyperlane-xyz"
+  },
+  "copyright": {
+    "message": "Copyright © 2024 Hyperlane. Built with Docusaurus.",
+    "description": "The footer copyright"
+  }
+}

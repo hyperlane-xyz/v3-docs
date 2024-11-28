@@ -1,0 +1,13 @@
+部署需要了解将要交互的所有链的基本信息。如果目标链尚未在 [Hyperlane 注册表](https://github.com/hyperlane-xyz/hyperlane-registry)中，您必须为它们指定链元数据。详细信息请参见 [CLI 参考](/docs/reference/cli.mdx)。
+
+要查看当前已知的链，运行以下命令：
+```bash
+hyperlane registry list
+```
+
+要为其他链创建链元数据配置，运行以下命令：
+```bash
+hyperlane registry init
+```
+
+或者您可以手动定义配置。有关其模式，请参见 [ChainMetadata 类型](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts#L62)。示例请参见 [chain-config.yaml](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml)。

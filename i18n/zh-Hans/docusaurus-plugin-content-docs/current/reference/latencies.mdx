@@ -1,0 +1,18 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import ReorgPeriodTable from "@site/src/components/ReorgPeriodTable";
+
+# 延迟
+
+验证者必须等待一定数量的区块被挖出后，才能被认为是有效的和[重组安全](https://www.alchemy.com/overviews/what-is-a-reorg)的。如果没有这个等待期，验证者可能会被惩罚，因为他们可能签署了一个不再有效的检查点。
+
+请参考以下部分了解 Hyperlane 验证者使用的区块最终确定性配置。
+
+<Tabs groupId="environment">
+<TabItem value="mainnet" label="主网">
+<ReorgPeriodTable environment="mainnet"/>
+</TabItem>
+<TabItem value="testnet" label="测试网">
+<ReorgPeriodTable environment="testnet"/>
+</TabItem>
+</Tabs>

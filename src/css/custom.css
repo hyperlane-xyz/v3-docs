@@ -14,6 +14,9 @@
   --ifm-color-primary-lighter: #2c72d9;
   --ifm-color-primary-lightest: #4985de;
   --docusaurus-highlighted-code-line-bg: #CDDCF4;
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -26,4 +29,46 @@
   --ifm-color-primary-lighter: #A7C2EC;
   --ifm-color-primary-lightest: #CDDCF4;
   --docusaurus-highlighted-code-line-bg: #2058ad;
+}
+
+/* 中文字体优化 */
+html[lang='zh-Hans'] {
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  --ifm-font-family-monospace: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+/* 中文文档特殊样式 */
+html[lang='zh-Hans'] .markdown > h1:first-child {
+  font-size: 2.2em;
+}
+
+html[lang='zh-Hans'] .markdown > h2 {
+  font-size: 1.8em;
+}
+
+html[lang='zh-Hans'] .markdown > h3 {
+  font-size: 1.5em;
+}
+
+/* 优化代码块中的中文显示 */
+html[lang='zh-Hans'] pre, 
+html[lang='zh-Hans'] code {
+  font-family: var(--ifm-font-family-monospace);
+}
+
+/* 优化搜索结果中的中文显示 */
+.search-result-match {
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+/* 语言切换下拉菜单样式优化 */
+.dropdown__menu {
+  min-width: 120px;
+}
+
+.language-footer {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }

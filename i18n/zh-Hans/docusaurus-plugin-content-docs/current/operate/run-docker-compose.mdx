@@ -1,0 +1,53 @@
+# 使用 Docker Compose 运行
+
+有时候不依赖长长的 docker 命令会更好。使用 Docker compose 运行与使用原始 Docker 非常相似，你可以在 [Docker 文档](https://docs.Docker.com/compose/compose-file/)中找到完整的格式规范。
+
+这是一个运行验证者的 `docker-compose` 文件示例，它应该能满足你大部分需求。
+
+```json
+{
+  "chains": {
+    "ethereum": {
+      "customRpcUrls": "https://node1.com,https://node2.com,https://node3.com"
+    }
+  },
+  "originChainName": "ethereum",
+  "validator": {
+    "id": "alias/validator-signer-ethereum",
+    "type": "aws",
+    "region": "us-east-1"
+  },
+  "checkpointSyncer": {
+    "bucket": "signatures-ethereum",
+    "region": "us-east-1",
+    "type": "s3"
+  },
+  "reorgPeriod": 1,
+  "interval": 30,
+  "metricsPort": "9090"
+}
+```
+
+```yaml
+services:
+  ethereum-validator:
+    image: gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
+    command: ./validator
+    ports:
+      - "9090:9090/tcp"
+    environment:
+      CONFIG_FILES: /ethereum_validator.json
+      AWS_ACCESS_KEY_ID: somesecretkey
+      AWS_SECRET_ACCESS_KEY: somesecretkey
+    configs:
+      - ethereum_validator.json
+configs:
+  ethereum_validator.json:
+    file: ./ethereum_validator.json
+```
+
+上面的配置包含了很多占位值，你当然需要用真实的值来替换它们。
+
+你还可以指定多个服务，所以如果你正在运行多个验证者，可以在 `services` 下指定每一个。
+
+要运行 compose 配置，使用 `docker compose up` 命令，使用 `docker compose down` 命令进行清理。完整的命令行文档可以在 [docker 网站](https://docs.docker.com/engine/reference/commandline/compose/)上找到。

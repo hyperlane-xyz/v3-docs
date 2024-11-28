@@ -1,0 +1,53 @@
+# OP Stack Hook
+
+Optimism 和其他 [OP Stack](https://stack.optimism.io/) rollups 有自己的 L1 和 L2 之间的消息传递接口，称为 `CrossDomainMessenger`。通过此接口传递的消息受益于 rollup [结算层](https://stack.optimism.io/docs/understand/landscape/#execution)的安全性。
+
+```solidity
+function sendMessage(
+    address _target,
+    bytes calldata _message,
+    uint32 _gasLimit
+) external payable;
+```
+
+为了在 Hyperlane 中提供这种安全性选项，我们创建了一个 Hook 和 ISM 组合，可以透明地配置以重用原生 OP Stack 接口。
+
+有关 Hook 和 ISM 地址，请参见[地址](../contract-addresses.mdx)页面。
+
+## 工作原理
+
+OPStackHook 将 messageId 发送到 L1CrossDomainMessenger，后者将其注册为带有 ETH 存款和消息数据的 Optimism `TransactionDeposited` 事件，这些数据会被 rollup 节点获取。
+rollup 节点调用预编译合约 `L2CrossDomainMessenger` 的 relayMessage 函数，该函数反过来调用配置的 OptimismISM 合约，将 messageId 设置在 verifiedMessageId 映射中，指向原始的 L1 发送者（即用户）。中继器只携带消息而没有元数据，等待 Optimism 节点进行获取并对 Optimism 进行存储写入，然后消息传递就得到验证。
+
+```mermaid
+flowchart TB
+    subgraph Origin L1[源 L1]
+      Sender[发送者]
+      M_O[(Mailbox)]
+      Hook[OPStackHook]
+      L_1[(L1CrossDomainMessenger)]
+
+      Sender -- "dispatch(...)" --> M_O
+      M_O -- "postDispatch(message)" --> Hook
+      Hook -- "sendMessage(messageId)" --> L_1
+    end
+
+    M_O -. "中继" .-> M_D
+    L_1 -. "rollup 节点" .-> L_2
+
+    subgraph Destination L2[目标 L2]
+      Recipient[接收者]
+      M_D[(Mailbox)]
+      ISM{OPStackISM}
+      L_2[(L2CrossDomainMessenger)]
+
+      M_D -- "verify(..., message)" --> ISM
+      M_D -- "handle(...)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+
+      L_2 -- "verifyMessageId(messageId)" --> ISM
+    end
+
+    style L_1 fill:#ff0402
+    style L_2 fill:#ff0402
+```

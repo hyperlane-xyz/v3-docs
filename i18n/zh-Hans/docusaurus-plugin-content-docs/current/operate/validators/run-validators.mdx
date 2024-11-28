@@ -1,0 +1,244 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 运行验证器
+
+:::tip
+
+- 关于 Hyperlane 中验证器的介绍，您可以查看[概述部分](/docs/operate/overview-agents.mdx)。
+:::
+
+按照本指南，您可以在协议已部署的任何现有[链](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains)上运行 Hyperlane 验证器。Hyperlane 验证器是基于每个源链运行的，这些说明是针对单个链编写的。
+
+## 要求
+
+- 安全的签名密钥
+
+  - 验证器使用此密钥对 `Mailbox` 的最新默克尔根进行签名。保护此密钥的安全非常重要。如果密钥被泄露，攻击者可能会尝试伪造消息，导致验证器被惩罚。
+  - Hyperlane 验证器代理目前支持使用通过 API 密钥/密钥访问的 AWS KMS 密钥以及十六进制明文密钥进行签名。更多信息请参见[代理密钥](../set-up-agent-keys.mdx)。
+
+- 公开可读的存储
+
+  - 验证器将其签名写入公开可访问、高可用性的存储中，以便[中继器](../../protocol/agents/relayer.mdx)可以聚合这些签名。
+  - Hyperlane 验证器代理目前支持使用上述相同的 AWS API 密钥将签名存储在 AWS S3 上，以及将签名存储在本地文件系统中用于测试。
+
+- 该设计是[开源的](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/56be527d691a11a1ff2de4a390fd0dae8bb77347/typescript/infra/src/agents)，并且可以推广到其他存储和密钥解决方案。目前有一个社区提交的[GCS PR](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/3156)正在进行中。
+
+- 运行机器
+
+  - 验证器可以自己编译 Rust 二进制文件，或运行 Abacus Works 提供的 Docker 镜像。二进制文件可以使用您喜欢的云服务运行。您甚至可以在不同地区运行多个实例以实现高可用性，因为 Hyperlane 没有"双重签名"的概念。
+  - 硬件要求和成本很低 - 验证器通常从 2核 / 2GB RAM / 4GB 存储的配置开始，典型成本约为每月75美元。
+
+- RPC 节点
+  - 验证器会进行简单的视图调用，以从他们正在验证的链上的 [Mailbox](../../protocol/mailbox.mdx) 合约中读取默克尔根。您必须使用自己的 RPC URL，而不是任何公共的 URL。
+
+:::caution
+
+运行 Polygon 主网的验证器需要访问归档节点。这是因为验证器应该只在根被最终确定后才签名，而 Polygon 需要 256 个区块确认才能达到最终性。
+
+:::
+
+## 指南
+
+作为回顾 - 在运行生产验证器之前，您需要：
+
+1. 为您的验证器创建用于签名的密钥，请参阅[代理密钥](../set-up-agent-keys.mdx)文档。
+2. 设置验证器签名的发布目标位置，请参阅 [AWS 签名存储桶设置](validator-signatures-aws.mdx)指南。
+
+## 配置
+
+:::tip
+
+经验丰富的运营者可能更喜欢使用 [Terraform 部署代理](../deploy-with-terraform.mdx)或社区提交的 [Ansible playbook](https://github.com/polkachu/hyperlane)。这个过程将自动创建代理密钥、验证器存储桶、权限以及在 AWS 上运行验证器集群所需的任何其他辅助设置。
+
+:::
+
+与本地设置一样，在配置验证器时应提供一些基本参数。
+
+| 参数                                           | 描述                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------ |
+| `--db`                                        | 将持久数据写入磁盘的路径。                                         |
+| `--originChainName`                           | 被验证的链的名称。例如：`ethereum`。                               |
+| `--chains.[originChainName].customRpcUrls`    | 覆盖验证器用于源链的默认 RPC URL。                                |
+| `--chains.[originChainName].blocks.reorgPeriod` | 验证器在签署 `Mailbox` 默克尔根之前需要等待的区块确认数。         |
+
+:::info
+
+您的验证器可以同时接受命令行参数和环境变量作为配置。查看[代理配置](../agent-config.mdx)页面和[配置参考](../config-reference.mdx)以获取完整的配置可能性列表。
+
+:::
+
+当然，您也可以使用 [`CONFIG_FILES` 环境变量](../config-reference.mdx#config_files)提供以逗号分隔的其他配置文件路径列表。如果您选择在 Docker 中运行，请参阅[代理配置](../agent-config.mdx)的 docker 部分，了解如何将配置文件挂载到 Docker 容器中的提示。
+
+### 特定设置配置
+
+这些配置要求因设置环境的不同而异。
+
+**检查点签名者配置**
+
+<Tabs groupId="production-setup">
+<TabItem value="hex-key" label="十六进制密钥">
+
+| 参数                                    | 描述                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `--validator.key`                       | 您的验证器的私钥，用于签署默克尔根。                                                     |
+| `--chains.${localChainName}.signer.key` | 您的验证器的私钥，将用于提交链上交易，公开宣布您的验证器的检查点同步器。               |
+
+</TabItem>
+<TabItem value="aws-kms" label="AWS KMS">
+
+| 参数                 | 描述                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------- |
+| `--validator.region` | 您的 AWS KMS 密钥所在的区域。例如：`us-east-1`。                                              |
+| `--validator.type`   | 设置为 `aws` 字面值。                                                                          |
+| `--validator.id`     | 您的验证器的 AWS KMS 密钥的别名，前缀为 `alias/`。例如：`alias/hyperlane-validator-signer-${originChainName}`。 |
+
+</TabItem>
+</Tabs>
+
+**交易签名者配置**
+
+此步骤中配置的密钥需要少量资金来发送初始公告交易。
+
+<Tabs groupId="signer-setup">
+<TabItem value="hex-key-evm" label="十六进制密钥 (EVM)">
+这与检查点签名者的本地配置相同。
+
+| 参数                                    | 描述                                                                                     |
+| --------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `--chains.${localChainName}.signer.key` | 您的验证器的私钥，将用于提交链上交易，公开宣布您的验证器的检查点同步器。               |
+
+</TabItem>
+<TabItem value="aws-kms-evm" label="AWS KMS (EVM)">
+
+| 参数                                        | 描述                                                                                           |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `--chains.${originChainName}.signer.type`   | 设置为 `aws` 字面值。                                                                          |
+| `--chains.${originChainName}.signer.region` | 您的 AWS KMS 密钥所在的区域。例如：`us-east-1`。                                              |
+| `--chains.${originChainName}.signer.id`     | 您的验证器的 AWS KMS 密钥的别名，前缀为 `alias/`。例如：`alias/hyperlane-validator-signer-${originChainName}`。 |
+
+</TabItem>
+<TabItem value="hex-key-cosmos" label="十六进制密钥 (Cosmos)">
+
+| 参数                                        | 描述                                                                                         |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `--chains.${originChainName}.signer.type`   | 设置为 `cosmosKey` 字面值。                                                                  |
+| `--chains.${originChainName}.signer.prefix` | 设置为与链的地址格式相关联的前缀字面值。例如：`osmo`。                                      |
+| `--chains.${originChainName}.key`           | 您的验证器的十六进制私钥，将用于提交链上交易，公开宣布您的验证器的检查点同步器。           |
+
+</TabItem>
+</Tabs>
+
+**检查点同步器配置**
+
+<Tabs groupId="production-setup">
+<TabItem value="local-setup" label="本地设置">
+
+| 参数                  | 描述                                                                                                                                                                                                                                                |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--checkpointSyncer.type` | 设置为 `localStorage`。                                                                                                                                                                                                                                     |
+| `--checkpointSyncer.path` | 您的本地目录的路径，其中验证器签名将被写入。这应该是 `$MY_VALIDATOR_SIGNATURES_DIRECTORY` 的值来自本地设置。例如：`--checkpointSyncer.path='/tmp/hyperlane-validator-signatures-ethereum'`。 |
+
+:::warning
+
+注意，中继器**必须**配置为 `--allowLocalCheckpointSyncers` 才能从此验证器读取签名。
+
+:::
+
+</TabItem>
+<TabItem value="production-setup" label="生产设置 (AWS)">
+
+| 参数                    | 描述                                                                                           |
+| ----------------------- | ---------------------------------------------------------------------------------------------- |
+| `--checkpointSyncer.type` | 设置为 `s3` 字面值。                                                                          |
+| `--checkpointSyncer.bucket` | 您的 AWS S3 存储桶的名称，其中验证器签名将被写入。例如：`hyperlane-validator-signatures-${originChainName}`。 |
+| `--checkpointSyncer.region` | 您的 AWS S3 存储桶所在的区域。例如：`us-east-1`。                                           |
+
+</TabItem>
+</Tabs>
+
+## 运行验证器
+
+### 使用 Docker
+
+您可以使用以下命令运行验证器：
+
+```bash
+docker run \
+  -it \
+  -e AWS_ACCESS_KEY_ID=ABCDEFGHIJKLMNOP \
+  -e AWS_SECRET_ACCESS_KEY=xX-haha-nice-try-Xx \
+  --mount type=bind,source=/path/to/hyperlane_db,target=/hyperlane_db \
+  gcr.io/abacus-labs-dev/hyperlane-validator:2f7c0c9-20230808 \
+  --db /hyperlane_db \
+  --originChainName ethereum \
+  --validator.region us-east-1 \
+  --validator.type aws \
+  --validator.id alias/hyperlane-validator-signer-ethereum \
+  --checkpointSyncer.type s3 \
+  --checkpointSyncer.bucket hyperlane-validator-signatures-ethereum \
+  --checkpointSyncer.region us-east-1
+```
+
+### 使用二进制文件
+
+您可以使用以下命令运行验证器：
+
+```bash
+./target/release/validator \
+  --db /hyperlane_db \
+  --originChainName ethereum \
+  --validator.region us-east-1 \
+  --validator.type aws \
+  --validator.id alias/hyperlane-validator-signer-ethereum \
+  --checkpointSyncer.type s3 \
+  --checkpointSyncer.bucket hyperlane-validator-signatures-ethereum \
+  --checkpointSyncer.region us-east-1
+```
+
+## 设计参考
+
+```mermaid
+flowchart TB
+    V(("验证器"))
+    Relayer((中继器))
+
+    subgraph Origin
+      Sender
+      M_O[(邮箱)]
+      POS[权益证明]
+
+      Sender -- "dispatch(destination, recipient, body)" --> M_O
+    end
+
+    subgraph Cloud
+      aws[(元数据\n数据库)]
+    end
+
+    M_O -. "索引" .-> Relayer
+    M_O -. "索引" .-> V
+    POS == "质押" === V
+
+    V -- "签名" --> aws
+
+    subgraph Destination
+      Recipient
+      M_D[(邮箱)]
+      ISM[MultisigISM]
+
+      M_D -- "verify(metadata, [origin, sender, body])" --> ISM
+      M_D -- "handle(origin, sender, body)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+    end
+
+    Relayer -- "process()" --> M_D
+
+    aws -. "元数据" .-> Relayer
+    aws -. "moduleType()" .- ISM
+
+    POS -. "validators()" .- ISM
+
+    click ISM https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/MultisigIsm.sol
+
+    style Sender fill:#efab17
+    style Recipient fill:#efab17

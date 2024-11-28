@@ -1,0 +1,49 @@
+# Hyperlane CLI
+
+## 概述
+
+Hyperlane CLI 是将 Hyperlane 合约部署到新链的官方命令行工具。它还包括用于与已部署合约和注册表交互的实用工具。
+
+已发布版本可在 [NPM](https://www.npmjs.com/package/@hyperlane-xyz/cli) 上获取。源代码可在 [Github monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/typescript/cli) 中找到。
+
+## 设置
+
+:::tip
+
+需要 [Node 18](https://nodejs.org/en/download) 或更新版本
+
+:::
+
+要全局安装 CLI，请使用 `npm install -g` 命令。这将使 `hyperlane` 命令在您的终端的任何位置都可用。
+
+```bash
+# 使用 NPM 安装
+npm install -g @hyperlane-xyz/cli
+# 或卸载旧版本
+npm uninstall -g @hyperlane-xyz/cli
+```
+
+或者，对于运行单个命令，您可以使用 `npx` 或 `dlx`：
+
+```bash
+# 通过 NPM 的 npx 命令运行
+npx @hyperlane-xyz/cli
+# 或通过 Yarn 的 dlx 命令
+yarn dlx @hyperlane-xyz/cli
+```
+
+## 使用方法
+
+要查看可用命令及其参数的列表，请运行 `hyperlane --help`。
+
+一些常见的命令选项包括：
+- `--version`：显示您当前安装的 CLI 版本
+- `--registry`：设置用于链元数据和合约地址的注册表 URI
+- `--overrides`：为规范注册表数据设置额外的覆盖路径
+- `log`：设置 CLI 的日志格式（默认为 pretty）
+- `verbosity`：设置 CLI 的日志级别（默认为 info）
+- `key`：设置用于签署交易的密钥（默认为 HYP_KEY 环境变量）
+
+## 注册表
+
+默认情况下，CLI 将从[规范 Hyperlane 注册表](https://github.com/hyperlane-xyz/hyperlane-registry)获取链元数据和合约地址，但会将新的配置和部署写入到您的本地文件系统。更多信息请参见[注册表页面](/docs/reference/registries.mdx)。

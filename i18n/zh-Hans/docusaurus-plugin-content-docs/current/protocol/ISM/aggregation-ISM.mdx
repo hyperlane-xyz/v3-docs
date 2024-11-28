@@ -1,0 +1,33 @@
+# 聚合 ISM
+
+开发者可以使用 `AggregationISM` 来组合多个 ISM 的安全性。简单来说，`AggregationISM` 要求 `n` 个 ISM 中的 `m` 个验证特定的跨链消息。
+
+开发者可以为每个源链配置一组 `n` 个 ISM，以及验证消息所需的 ISM 数量。
+
+`AggregationISM` 可以聚合任何 ISM 的安全性。例如，用户可以部署一个带有自己验证者集合的[多重签名 ISM](multisig-ISM.mdx)，并部署一个 `AggregationISM` 来聚合该 ISM 和 Hyperlane 默认 ISM。
+
+## 接口
+
+`AggregationISM` 必须实现 `IAggregationIsm` 接口。
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IAggregationIsm.sol
+
+```
+
+## 配置
+
+[Hyperlane monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo) 包含一个 `AggregationISM` 实现，应用开发者可以直接使用这个实现，指定他们想要的配置。
+
+开发者可以为每个源链配置一组 `n` 个 ISM，以及验证消息所需的 ISM 数量。
+
+`AggregationISM` 可以聚合任何 ISM 的安全性。例如，用户可以部署一个带有自己验证者集合的[多重签名 ISM](./multisig-ISM.mdx)，并部署一个 `AggregationISM` 来聚合该 ISM 和 Hyperlane 默认 ISM。
+
+## 定制
+
+hyperlane-monorepo 包含一个抽象的 `AggregationISM` 实现，应用开发者可以分叉它。
+
+开发者只需要实现 `modulesAndThreshold()` 函数。
+
+通过创建自定义实现，应用开发者可以根据其应用的需求定制 `AggregationISM` 提供的安全性。
+
+例如，自定义实现可以要求低价值消息由[多重签名 ISM](./multisig-ISM.mdx)验证，而高价值消息_还需要_由 Wormhole ISM 验证。

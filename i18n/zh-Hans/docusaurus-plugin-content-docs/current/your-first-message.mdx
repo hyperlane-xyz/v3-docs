@@ -1,0 +1,47 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
+import AddressTable from "@site/src/components/AddressTable";
+import MessageQuickstart from "@site/src/components/MessageQuickstart";
+
+# 发送你的第一个跨链消息
+
+本教程演示如何[发送](./reference/messaging/send.mdx)跨链消息到预部署的 `TestRecipient` 合约。
+
+<SimpleMessagingDiagram />
+
+发送消息只需调用 `Mailbox.dispatch`。确保你在源链上有一个带有资金的账户。
+
+<MessageQuickstart />
+
+:::tip
+你可以在 [explorer.hyperlane.xyz](https://explorer.hyperlane.xyz/) 上通过搜索你的 `Mailbox.dispatch` 调用的**交易哈希**来查看消息的进度。
+:::
+
+## 检查结果
+
+`TestRecipient` 有以下[处理](./reference/messaging/receive.mdx)实现：
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/test/TestRecipient.sol#L30-L38
+
+```
+
+</TabItem>
+
+</Tabs>
+
+查看日志以查看你的消息传递！
+
+<details>
+  <summary>测试网 `TestRecipient` 地址</summary>
+  <AddressTable environment="testnet" contract="testRecipient" />
+</details>
+
+<details>
+  <summary>测试网 `Mailbox` 地址</summary>
+  <AddressTable environment="testnet" contract="mailbox" />
+</details>

@@ -1,0 +1,14 @@
+import RouterDiagram from '@site/src/diagrams/router.md'
+
+# `Router` 库
+
+希望编写一次合约并在多个链上部署的应用程序开发者应该考虑使用 [`Router`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/Router.sol) 模式进行构建。
+
+在这种模式中，应用程序的合约实例部署在每个应用程序支持的链上。每个实例都知道其他链上实例的地址。这些实例使用 Hyperlane 与远程链上的实例进行信息和状态的双向通信。
+
+<RouterDiagram/>
+
+使用这种模式的开发者可以继承 `Router` 混入合约。`Router` 是一个 [`MailboxClient`](./mailboxclient.mdx)，它跟踪远程链上其他 `Router` 合约地址。这允许 `Router` 直接向其他 Router 发送消息，而无需指定地址。它还允许 `Router` 拒绝来自其他不受信任发送者的消息。
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/client/Router.sol
+```

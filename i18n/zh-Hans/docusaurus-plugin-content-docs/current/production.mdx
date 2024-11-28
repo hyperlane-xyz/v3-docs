@@ -1,0 +1,15 @@
+# 如何将 Hyperlane 部署投入生产
+
+要将你的 Hyperlane 部署投入生产环境，请按照以下步骤设置链的核心部署并配置 warp route 部署。
+
+### 1. 核心部署
+
+首先，你需要设置和生产化 Hyperlane 部署的核心组件。
+
+- [更新邮箱默认 ISM](/guides/update-mailbox-default-ism.mdx)：更新与邮箱合约关联的跨链安全模块（ISM）。ISM 作为关键的安全层，验证链之间的消息。确保默认 ISM 设置符合你的安全要求。
+- [转移邮箱所有权](/guides/transfer-mailbox-ownership.mdx)：将邮箱合约的所有权转移给生产就绪的所有者账户。这一步通过确保只有受信任的方可以控制其配置来保护邮箱。
+
+### 2. Warp Route 部署
+
+- [移除受信任的中继器](/guides/remove-trusted-relayer.mdx)：移除可能最初配置的任何测试或开发中继器。在生产环境中，确保只使用受信任的安全中继器，以防止未经授权的消息中继。
+- [转移 Warp Route 所有权](/guides/transfer-warp-route-ownership.mdx)：将 Warp Route 的所有权转移给指定的生产所有者。这一步确保只有受信任的方可以控制关键的 Warp Route 设置，如 ISM 配置、验证者选项和中继器设置。

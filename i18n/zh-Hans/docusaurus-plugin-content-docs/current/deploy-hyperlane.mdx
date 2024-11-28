@@ -1,0 +1,195 @@
+# 如何将您的链与 Hyperlane 连接
+
+:::info
+本指南将帮助您尽快将 Hyperlane 部署到您的新链上以进行测试，而不是生产环境。这包括核心邮箱和 ISM 合约以及您要桥接的资产的 warp route 合约。
+
+要查看已支持的链，请访问 [Registry](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains)。
+
+如果您需要任何帮助，请在 Discord 上的 #developers 频道联系我们或[联系我们](https://forms.gle/KyRTaWvo4XNmNvrq6)。
+:::
+
+## 先决条件
+
+任何人只要具备以下工件和资产就可以开始这个快速入门指南：
+- 一个新的、自定义的或预先存在的网络，包括以下元数据：
+    - 链名称，例如 `ethereum`
+    - 链 ID，例如 `1`
+    - RPC URL，例如 `https://eth.llamarpc.com`
+- 部署者钱包/EOA 私钥或助记词
+    - 这个 EOA 应该在您的自定义链和任何您将要传递消息的链上都有资金
+- [Hyperlane CLI](/docs/reference/cli.mdx)
+
+## 1) Registry
+
+让我们创建一个自定义链配置，运行：
+
+```bash
+hyperlane registry init
+```
+
+按照提示设置您的链元数据。设置区块或 gas 属性是可选的。
+
+现在，在 `$HOME/.hyperlane/chains` 下，您会找到一个以您的自定义链名称命名的新文件夹，以及该文件夹中名为 `metadata.yaml` 的文件。
+
+<details> 
+  <summary>
+    `$HOME/.hyperlane/chains/yourchain/metadata.yaml` 中的配置示例内容
+  </summary>
+
+   ```yaml
+    # yaml-language-server: $schema=../schema.json
+    blockExplorers:
+      - apiUrl: https://explorer.yourchain.com/api
+        apiKey: XXXX # 有助于避免合约验证 API 的速率限制
+        family: etherscan #您使用的浏览器，也支持 routescan 或 blockscout
+        name: Chainscan
+        url: https://explorer.yourchain.com
+    chainId: 171717
+    displayName: Chain Name
+    domainId: 171717
+    isTestnet: true # 可选
+    name: yourchain
+    nativeToken:
+      name: Ether
+      symbol: ETH
+      decimals: 18
+    protocol: ethereum
+    rpcUrls:
+      - http: https://hyper-lane-docs.rpc.caldera.xyz/http
+    ```
+</details>
+
+## 2) Core
+
+接下来，让我们配置、部署和测试您的自定义链的核心合约。
+
+### 初始化配置
+
+1. 从您的本地环境，将您的已有资金的部署者地址的私钥或助记词设置为 `HYP_KEY`。例如：`export HYP_KEY='<YOUR_PRIVATE_KEY>'`
+2. 从同一个终端实例，运行：
+    
+  ```bash
+  hyperlane core init
+  ```
+<details>
+  <summary>
+    部署配置将被写入 `./configs/core-config.yaml`
+  </summary>
+  
+  ```yaml
+  owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  defaultIsm:
+    type: trustedRelayerIsm
+    relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  defaultHook:
+    type: merkleTreeHook
+  requiredHook:
+    owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+    type: protocolFee
+    beneficiary: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+    maxProtocolFee: "100000000000000000"
+    protocolFee: "0"
+  ```
+    
+</details>
+
+
+### 部署合约
+
+要部署合约，运行：
+
+```bash
+hyperlane core deploy
+```
+
+使用箭头和回车键从主网列表底部选择您的自定义链。
+所有合约部署需要几分钟时间。
+<details> 
+  <summary>
+    在 `$HOME/.hyperlane/chains` 下，您会找到一个以您的自定义链名称命名的新文件夹，以及该文件夹中名为 `addresses.yaml` 的文件
+  </summary>
+  ```yaml
+    staticMerkleRootMultisigIsmFactory: "0x6906cb4741d3E2322E9f9aA645DfC8AB6F122c47"
+    staticMessageIdMultisigIsmFactory: "0x3CE97a32d9C8294691cBd2baC09B078EDa75c429"
+    staticAggregationIsmFactory: "0x81f969fDBF48278Ce09685Ce48e03388B6785aF4"
+    staticAggregationHookFactory: "0x3d864A3c25F61E3c3A7d02e980453A6E1f0a92A6"
+    domainRoutingIsmFactory: "0xC4c01f7B03f0fFa77A0265C600dEF7Ad28BCa5A2"
+    proxyAdmin: "0xABb7175d5F123172E7B7Fa467CC9fE4C2FEdb942"
+    mailbox: "0x5F58d75A9caDE4e2b191313223978dF049f93b81"
+    interchainAccountRouter: "0x43c0745b0dE9Cb780816a24ddE63d79Ca99B5dE8"
+    interchainAccountIsm: "0x9C96dC8f4257413225d6B5C47d1afbafc39B269F"
+    validatorAnnounce: "0xE3bd39BF92DB385dE6313D6070b035bD934378CB"
+    testRecipient: "0xa58462b1943Be1469Ed58db690C78583BA34Fd2E"
+    ```
+</details>
+    
+### 发送测试消息
+
+要发送测试消息，运行：
+
+```bash
+hyperlane send message --relay
+```
+
+`--relay` 标志是可选的，它将消息传递到目标链。
+
+您也可以在后台运行一个中继器：
+
+```bash
+hyperlane relayer --chains yourchain,sepolia
+```
+
+:::note
+**🎉 恭喜！您已成功向您的自定义链发送了消息**
+:::
+
+
+## 3) Warp Route
+
+现在您的链上已经有了 Hyperlane 邮箱和核心合约，是时候在您的链和任何其他 Hyperlane 链之间设置代币桥接了。
+
+继续查看 [部署 Warp Route](/docs/guides/deploy-warp-route.mdx) 文档了解更多详情。
+
+## 4) 提交到 Registry
+
+如果您希望其他链也能与您连接并将其投入生产，请提交 registry PR。
+
+### 确保信息完整
+确保您的元数据完整：
+- 在文件夹内添加 `logo.svg` 文件
+- 包含标识部署团队的 `Deployer` 信息
+- 如果链是测试网，则指示 `isTestnet` 为 `true`
+- 如果您有 gnosis safe 服务，添加 api url `gnosisSafeTransactionServiceUrl`
+- 对 yaml 文件进行 lint 处理并按字母顺序排序
+
+### 提交到 Github
+
+首先，导航到您的 registry 本地实例并提交更改
+
+```bash
+cd ~/.hyperlane && git init && git add . && git commit
+```
+
+然后，将本地 registry 与规范 registry 同步
+
+```bash
+git remote add canonical git@github.com:hyperlane-xyz/hyperlane-registry.git
+git pull canonical main --rebase
+```
+
+最后，将本地 registry 推送到 github fork 并提交 PR。请在您的 PR 中包含一个 [changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md)。
+
+:::note
+**恭喜！您已成功将 Hyperlane 部署到您的链并将您的工作添加到 Hyperlane registry**
+
+感谢您为无需许可的互操作性的未来做出贡献 🫡
+:::
+
+### 投入生产
+#### 社区运行的基础设施
+作为公共产品，Hyperlane 的核心开发团队 - Abacus Works - 可以免费帮助您将主网链投入生产。您可以在 PR 中请求这个服务，每两周添加一批新链。
+
+这包括运行一个将您的链连接到网络的中继器，将您的链添加到 [Explorer](https://explorer.hyperlane.xyz/)，并在您的链的默认验证器集中运行一个验证器。没有持续的成本或锁定 - 您可以随时选择将中继器迁移到自托管选项或更改验证器集。
+
+#### 自托管基础设施
+像 Stride 这样具有 devops 经验的链选择运行自己的中继器。虽然这确实有一些运营负担，但这允许他们按照自己的节奏更快地添加新链。此外，他们可以选择设置或补贴与中继相关的跨链 gas 成本。有关更多信息，请参阅 [运营](/docs/operate/relayer/run-relayer.mdx) 文档。

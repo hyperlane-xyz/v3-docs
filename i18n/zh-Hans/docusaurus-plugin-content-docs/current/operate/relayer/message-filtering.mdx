@@ -1,0 +1,66 @@
+# 消息过滤
+_配置要中继的消息和要忽略的消息_
+
+默认情况下，中继器将尝试将从其源链发送的消息传递到任何已配置的目标链。
+
+中继器可能希望进一步过滤它们尝试传递的消息。例如，构建跨链应用程序的开发者可能希望运行一个中继器，该中继器只传递发送到该应用程序的消息。同样，一些中继器可能希望只将消息中继到可用链的子集。
+
+中继器可以**可选地**通过设置 `--whitelist` 或 `--blacklist` 环境变量来过滤它们传递的消息。另请参阅[配置参考](../config-reference.mdx)的白名单部分。
+
+这些配置是具有以下格式的字符串化 JSON 对象：
+
+```typescript
+// 匹配规则列表。如果列表中的任何元素与消息匹配，
+// 则该消息匹配。
+type MatchingList = Array<ListElement>;
+
+// 如果提供的任何值匹配，则匹配消息。
+interface ListElement {
+    originDomain?: NumericFilter
+    senderAddress?: HashFilter
+    destinationDomain?: NumericFilter
+    recipientAddress?: HashFilter
+}
+
+type NumericFilter = Wildcard | U32 | Array<U32>;
+type HashFilter = Wildcard | H256 | Array<H256>;
+
+// 32位无符号整数
+type U32 = number | string;
+// 256位哈希（也可以更少）以十六进制编码
+type H256 = string;
+// 匹配任何内容
+type Wildcard = "*";
+```
+
+白名单和黑名单都具有"任意"语义。换句话说，中继器将传递匹配白名单过滤器中_任何一个_的消息，并忽略匹配黑名单过滤器中_任何一个_的消息。
+
+例如，以下用作白名单的配置将确保中继器会中继任何发送到以太坊的消息，从地址 `0xca7f632e91B592178D83A70B404f398c0a51581F` 发送到 Celo 或 Avalanche 的任何消息，以及发送到 Arbitrum 或 Optimism 上地址 `0xca7f632e91B592178D83A70B404f398c0a51581F` 的任何消息。
+
+```json
+[
+    {
+        "senderAddress": "*",
+        "destinationDomain": ["1"],
+        "recipientAddress": "*"
+    },
+    {
+        "senderAddress": "0xca7f632e91B592178D83A70B404f398c0a51581F",
+        "destinationDomain": ["42220", "43114"],
+        "recipientAddress": "*"
+    },
+    {
+        "senderAddress": "*",
+        "destinationDomain": ["42161", "420"],
+        "recipientAddress": "0xca7f632e91B592178D83A70B404f398c0a51581F"
+    }
+]
+```
+
+一个有效的配置可能如下所示：
+
+```bash
+--whitelist='[{"senderAddress":"*","destinationDomain":["1"],"recipientAddress":"*"},{"senderAddress":"0xca7f632e91B592178D83A70B404f398c0a51581F","destinationDomain":["42220","43114"],"recipientAddress":"*"},{"senderAddress":"*","destinationDomain":["42161","420"],"recipientAddress":"0xca7f632e91B592178D83A70B404f398c0a51581F"}]'
+```
+
+黑名单优先于白名单，即如果一条消息同时匹配白名单_和_黑名单，它将不会被传递。

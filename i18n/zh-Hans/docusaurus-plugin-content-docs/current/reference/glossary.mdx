@@ -1,0 +1,111 @@
+---
+description: Hyperlane 协议中常用术语列表
+---
+
+# 术语表
+
+## 代理（Agent）
+
+Hyperlane [代理](../protocol/agents.mdx)是读取和写入 Hyperlane 智能合约状态的链下参与者。
+
+代理示例包括[验证器](../protocol/agents/validators.mdx)和[中继器](../protocol/agents/relayer.mdx)。
+
+## 聚合 ISM（Aggregation ISM）
+
+[聚合 ISM](../protocol/ISM/aggregation-ISM.mdx) 是一种跨链安全模块，它通过要求 `n` 个 [ISM](glossary.mdx#interchain-security-module) 中的 `m` 个验证特定的跨链消息来聚合多个 ISM 的安全性。
+
+## 检查点（Checkpoint）
+
+检查点是一个（默克尔根，索引）元组，对应于[邮箱](glossary.mdx#mailbox)增量默克尔树在特定时间点的状态。
+
+[验证器](glossary.mdx#validator)的检查点签名用于[多重签名 ISM](glossary.mdx#multisig-ism)。
+
+## 抵押链（Collateral chain）
+
+对于[Warp 路由](glossary.mdx#warp-route)，是指[抵押代币](glossary.mdx#collateral-token)被存入 Warp 路由的链。
+
+## 抵押代币（Collateral token）
+
+对于[Warp 路由](glossary.mdx#warp-route)，是指在[抵押链](glossary.mdx#collateral-chain)上存入以在远程[合成链](glossary.mdx#synthetic-chain)上创建包装代币的代币。
+
+## 默认 ISM（Default ISM）
+
+如果消息接收者没有指定自己的 ISM，将用于验证入站消息的[跨链安全模块](glossary.mdx#interchain-security-module)。
+
+## 域（Domain）
+
+特定链的唯一标识符，Hyperlane 协议用它来确定消息的来源和目标。
+
+可能与 EVM 链 ID 相同，但并非总是如此。有关已知 Hyperlane 域 ID 的列表，请参见[域](domains/)。
+
+## 跨链账户（ICA）
+
+允许用户进行跨链智能合约调用的[中间件](glossary.mdx#middleware)智能合约。
+
+例如，DAO 可以使用跨链账户在远程链上拥有合约。
+
+更多信息请参见[跨链账户](../reference/applications/interchain-account.mdx)。
+
+## 跨链气体支付者（Interchain gas paymaster）
+
+由[中继器](glossary.mdx#relayer)部署的智能合约，在源链上接受目标链消息传递的付款。
+
+更多信息请参见[跨链气体支付](../protocol/interchain-gas-payment.mdx)。
+
+## 跨链查询（IQS）
+
+允许用户进行跨链视图调用的[中间件](glossary.mdx#middleware)智能合约。
+
+例如，智能合约可以使用跨链查询来查找来自远程链的预言机汇率或代币余额。
+
+## 跨链安全模块（ISM）
+
+[跨链安全模块](../protocol/ISM/modular-security.mdx)（ISM）是为 Hyperlane 的跨链[邮箱](../protocol/mailbox.mdx)提供安全性的智能合约。
+
+ISM 负责验证在目标链上传递的跨链消息是否_确实_在源链上发送。
+
+## 邮箱（Mailbox）
+
+可以说是最重要的 Hyperlane 智能合约，[邮箱](../protocol/interchain-gas-payment.mdx)提供了一个开发者可以用来[发送](./messaging/send.mdx)和[接收](./messaging/receive.mdx)跨链消息的接口。
+
+## 中间件（Middleware）
+
+发送和接收消息并提供面向开发者 API 的智能合约。开发者应使用此 API 而不是直接与[邮箱](glossary.mdx#mailbox)交互。
+
+中间件示例包括[跨链账户-ICA](glossary.mdx#interchain-accounts-ica)和[跨链查询-IQS](glossary.mdx#interchain-queries-iqs)。
+
+## 多重签名 ISM（Multisig ISM）
+
+[多重签名 ISM](../protocol/ISM/multisig-ISM.mdx) 是一种[跨链安全模块](glossary.mdx#interchain-security-module)，它使用 `n` 个[验证器](glossary.mdx#validator)中的 `m` 个的签名来验证特定的跨链消息。
+
+## 无许可互操作性（Permissionless Interoperability）
+
+任何人都可以将 Hyperlane 部署到任何链上，无论是第 1 层、rollup 还是应用链，使该链能够无缝通信。Hyperlane 协议的开放设计被称为无许可互操作性（PI）。由 Hyperlane 核心团队以外的机构部署的链被称为"PI 链"。
+
+## 中继器（Relayer）
+
+[中继器](../protocol/agents/relayer.mdx)是负责将消息从其源链传递到目标链的 Hyperlane [代理](glossary.mdx#agent)。
+
+中继器是不受信任的，任何人都可以运营中继器。
+
+## 路由 ISM（Routing ISM）
+
+[路由 ISM](../protocol/ISM/routing-ISM.mdx) 是一种[跨链安全模块](glossary.mdx#interchain-security-module)，它根据正在传递的消息委托给不同的 ISM。
+
+例如，路由 ISM 可以根据发送消息的源链使用不同的 ISM。
+
+## 合成链（Synthetic chain）
+
+对于[Warp 路由](glossary.mdx#warp-route)，是指铸造包装代币的链。这些包装代币由在[抵押链](glossary.mdx#collateral-chain)上锁定的[抵押代币](glossary.mdx#collateral-token)支持。
+
+## 验证器（Validator）
+
+[验证器](../protocol/agents/validators.mdx)是负责验证源链发送的消息的 Hyperlane [代理](glossary.mdx#agent)。
+
+[多重签名 ISM](glossary.mdx#multisig-ism) 使用验证器签名为入站消息提供安全性。
+
+## Warp 路由（Warp Route）
+
+[Warp 路由](applications/warp-routes.mdx#overview)是 Hyperlane 对代币桥接概念的实现，允许您通过 Hyperlane 无需许可地将任何类 ERC20 资产转移到任何链。
+
+阅读更多关于如何[部署 Warp 路由](../guides/deploy-warp-route.mdx)的信息。

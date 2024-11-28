@@ -1,0 +1,13 @@
+# Optimistic ISM
+
+优先考虑安全性而非活性
+
+:::warning
+`OptimisticISM` 即将推出，尚未实现。此页面仅供参考。随着设计的成熟，具体细节可能会发生变化。
+:::
+
+`OptimisticISM` 编码了由 [Optics](https://docs.celo.org/protocol/bridge/optics) 开创并被 [Synapse](https://docs.synapseprotocol.com/synapse-interchain-network-sin/synapse-interchain-network/deep-dive-optimistic-pos)、[Nomad](https://docs.nomad.xyz/the-nomad-protocol/verification-mechanisms/optimistic-verification) 和 [Connext](https://blog.connext.network/optimistic-bridges-fb800dc7b0e0) 采用的 optimistic 验证安全模型。
+
+`OptimisticISM` 依赖于消息验证后的欺诈窗口期，在此期间，配置在 `OptimisticISM` 上的 `n` 个 **watchers** 中的 `m` 个有机会将消息标记为欺诈，从而防止消息被传递给接收者。
+
+**这种安全模型优先考虑安全性而非活性；**增加的消息延迟允许添加第二层安全性（watchers），而不会显著增加 gas 成本。

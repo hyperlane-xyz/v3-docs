@@ -1,0 +1,62 @@
+# 代理配置
+
+所有代理都使用相同的配置方法，这是一种多层配置方法，允许轻松覆盖默认配置。每一层都会覆盖前一层中重叠的值。
+
+## 配置层级
+
+1. 来自"默认部署"的基础配置位于[代码库](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/main/config)中，所有这些配置都会自动加载。
+2. 通过 `CONFIG_FILES` 环境变量传入的配置文件会在下一步加载；这个环境变量应该是一个逗号分隔的 JSON 文件路径列表，这些文件将按照从前到后的顺序加载。
+3. 接下来会读取带有 `HYP_` 前缀的环境变量。
+4. 然后读取带有 `HYP_<AGENT>_` 前缀的环境变量，这些变量仅适用于当前代理。例如，`RELAYER`、`VALIDATOR` 和 `SCRAPER` 只会读取它们各自的前缀。
+5. 最后读取命令行参数。
+
+## 命令行参数
+
+命令行参数在应用程序名称后添加，例如 `./relayer --originChainNames="test1,test2,test3"`
+
+支持以下格式：
+
+* `--argName argValue`
+* `--argName "argValue"`
+* `--argName 'argValue'`
+* `--argName=argValue`
+* `--argName="argValue"`
+* `--argName='argValue'`
+
+参数名称不区分大小写，所以在本指南中我们可能会以驼峰式显示它们以便于阅读，但 `--argName` 等同于 `--ARGNAME` 和 `--argname`。
+
+示例：
+
+* `{ "db": "/path/to/dir" }` 可以通过 `--db "/path/to/dir"` 设置
+* `{ "chains": { "ethereum": { "name": "ethereum" } } }` （简写为 `chains.ethereum.name` 或 `chains.<chain_name>.name`）可以通过 `--chains.ethereum.name ethereum` 设置
+* `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` （简写为 `chains.<chain_name>.customrpcurls`）可以通过 `--chains.avalanche.customrpcurls "https://some-url.com"` 设置
+
+## 环境变量
+
+对于不需要保密且不需要每次运行时更改的内容，配置文件格式是首选的设置方式，因为它是最容易检查和编辑的格式。文件中的每个配置值都可以作为环境变量设置，只要使用正确的名称，但是有一些环境变量（如 `CONFIG_FILES`）不能在配置文件中设置。
+
+`HYP_` 和 `HYP_<AGENT>_` 是等效的前缀，唯一的区别是它们的加载顺序，它们可以引用配置文件中的所有配置值。
+
+环境变量名称将是这两个前缀之一，然后是由下划线分隔的大写路径组件，指向配置值。
+
+例如：
+
+* `{ "db": "/path/to/dir" }` 可以通过 `HYP_DB="/path/to/dir"` 或 `HYP_RELAYER_DB="/path/to/dir"` 设置
+* `{ "chains": { "ethereum": { "name": "ethereum" } } }` （简写为 `chains.ethereum.name` 或 `chains.<chain_name>.name`）可以通过 `HYP_CHAINS_ETHEREUM_NAME="ethereum"` 或 `HYP_VALIDATOR_CHAINS_ETHEREUM_NAME="ethereum"` 或 `HYP_RELAYER_CHAINS_ETHEREUM_NAME="ethereum"` 等设置
+* `{ "chains": { "avalanche": { "customRpcUrls": "https://some-url.com" } }  }` （简写为 `chains.<chain_name>.customrpcurls`）可以通过 `HYP_CHAINS_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` 或 `HYP_VALIDATOR_AVALANCHE_CUSTOMRPCURLS="https://some-url.com"` 等设置
+
+## Docker 中的配置文件
+
+在 Docker 中运行代理会增加一层复杂性，因为配置文件需要在 Docker 容器内可访问。可以在[代码库](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/main/config)中找到的基础配置已经是提供的 Docker 镜像的一部分，默认情况下会加载所有这些配置。
+
+挂载单个配置文件可以使用标志 `--mount type=bind,source=$LOCAL_CONFIG_PATH,target=/config/$CONFIG_NAME,readonly`，然后将配置文件添加到 `CONFIG_FILES` 中以便加载。
+
+挂载整个目录可以使用标志 `--mount source=$LOCAL_CONFIG_DIR_PATH,target=/config,readonly`，然后将你想要加载的单个配置文件添加到 `CONFIG_FILES` 中。
+
+例如，假设你在本地机器的路径 `/home/workspace/ethereum.json` 有一个配置文件，并想用它运行验证者。
+
+```bash
+docker run -it --mount type=bind,source=/home/workspace/ethereum.json,target=/config/ethereum.json,readonly -e CONFIG_FILES=/config/ethereum.json $DOCKER_IMAGE ./validator
+```
+
+`source` 路径是你本地机器上的路径，`target` 路径是源路径内容在 Docker 容器内可用的位置，`CONFIG_FILES` 应该指定来自目标路径的配置。

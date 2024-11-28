@@ -1,0 +1,108 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# 覆盖默认 ISM
+
+开发者可以通过在其应用中实现 `ISpecifiesInterchainSecurityModule` 接口来指定或覆盖默认的 ISM。
+
+:::info
+如果没有指定 ISM，或者指定的 ISM 是空地址，将使用目标链 Mailbox 上配置的默认 ISM。
+:::
+
+## ISM 接口
+
+ISM 必须实现 `IInterchainSecurityModel()` 接口。这个实现可以根据应用的需求进行配置、组合和定制。
+
+具体来说，这个接口必须在实现 `handle()` 的同一个智能合约中实现。
+
+该接口包含两个函数：`verify` 和 `moduleType`。
+
+<details>
+<summary>`IInterchainSecurityModule` 接口</summary>
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+interface IInterchainSecurityModule {
+    /**
+     * @notice Returns the security model's type
+     * @dev Called by the Mailbox contract when dispatching a message
+     * @return The security model type ID
+     */
+    function moduleType() external view returns (uint8);
+
+    /**
+     * @notice Verifies interchain messages
+     * @dev Called by a Mailbox contract before delivering a message
+     * @param _metadata ABI encoded metadata needed for verification
+     * @param _message Hyperlane formatted interchain message
+     * @return True if the message was verified
+     */
+    function verify(bytes calldata _metadata, bytes calldata _message)
+        external
+        returns (bool);
+}
+```
+
+</TabItem>
+</Tabs>
+</details>
+
+### Verify
+
+ISM 必须实现的主要函数是 `verify()`。[Mailbox](../mailbox.mdx) 在将消息传递给接收者之前会调用 `IInterchainSecurityModule.verify()`。如果 `verify()` 回滚或返回 `false`，消息将不会被传递。
+
+#### 参数：
+
+- `_metadata`：由[中继器](../agents/relayer.mdx)提供的任意字节。通常，这些字节是特定于 ISM 的。例如，[多重签名 ISM](multisig-ISM.mdx) 的 `_metadata` 必须包含验证者签名。
+
+- `_message`：由待验证的 Hyperlane 消息组成。ISM 可以使用它来检查被验证消息的详细信息。例如，[多重签名 ISM](multisig-ISM.mdx) 可以根据消息的源链更改验证者集合。
+
+:::warning
+有关传递给 `verify()` 的 Hyperlane 消息格式的更多信息，请参见 [`Message.sol`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/libs/Message.sol) 库。
+:::
+
+```solidity
+/**
+ * @notice Verifies interchain messages
+ * @dev Called by a Mailbox contract before delivering a message
+ * @param _metadata ABI encoded metadata needed for verification
+ * @param _message Hyperlane formatted interchain message
+ * @return True if the message was verified
+ */
+function verify(bytes calldata _metadata, bytes calldata _message)
+    external
+    returns (bool);
+```
+
+### 模块类型
+
+ISM 必须实现的第二个函数是 `moduleType()`。
+
+```solidity
+/**
+ * @notice Returns the security model's type
+ * @dev Called by the Mailbox contract when dispatching a message
+ * @return The security model type ID
+ */
+function moduleType() external view returns (uint8);
+```
+
+这用于向[中继器](../agents/relayer.mdx)指示在 `_metadata` 中应包含什么。ISM **必须**返回支持的模块类型之一。
+
+```solidity
+enum Types {
+    UNUSED,
+    ROUTING,
+    AGGREGATION,
+    LEGACY_MULTISIG,
+    MERKLE_ROOT_MULTISIG,
+    MESSAGE_ID_MULTISIG,
+    NULL, // 用于中继器不携带元数据的情况
+    CCIP_READ,
+    ARB_L2_TO_L1,
+    WEIGHTED_MERKLE_ROOT_MULTISIG,
+    WEIGHTED_MESSAGE_ID_MULTISIG,
+    OP_L2_TO_L1
+}

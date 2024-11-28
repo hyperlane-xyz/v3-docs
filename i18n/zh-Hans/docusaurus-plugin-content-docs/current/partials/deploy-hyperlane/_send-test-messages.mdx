@@ -1,0 +1,8 @@
+您可以通过在链对之间发送测试消息来检查一切是否正常工作。
+使用 CLI 发起消息。
+
+```bash
+hyperlane send message --key $PRIVATE_KEY
+```
+
+`send message` 命令会在消息被分发时通知您。稍等片刻后，将显示传递确认。如果消息传递超时，很可能是上述步骤中的验证器或中继器设置存在问题。要进行故障排除，请首先查看源链中继器日志。如果您需要进一步帮助，请在 [Discord](https://discord.gg/hyperlane) 上联系我们。

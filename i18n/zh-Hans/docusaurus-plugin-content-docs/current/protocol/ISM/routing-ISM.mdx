@@ -1,0 +1,29 @@
+# 路由 ISM
+
+开发者可以使用 `RoutingISM` 将消息验证委托给不同的 ISM。这允许开发者根据消息内容或应用上下文更改安全模型。
+
+这个 ISM 只是根据消息的源链切换安全模型。一个简单的用例是为每个链使用不同的[多重签名 ISM](multisig-ISM.mdx)验证者集合。
+
+最终，你可以想象一个 `DomainRoutingIsm` 根据源链使用的共识协议类型，路由到不同的基于轻客户端的 ISM。
+
+## 接口
+
+`RoutingISM` 必须实现 `IRoutingIsm` 接口。
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IRoutingIsm.sol
+
+```
+
+## 配置
+
+hyperlane-monorepo 包含一个 `RoutingISM` 实现，即 `DomainRoutingIsm` 和 `DefaultFallbackRoutingIsm`，应用开发者可以直接使用这些实现，指定他们想要的配置。
+
+## 定制
+
+hyperlane-monorepo 包含一个抽象的 `RoutingISM` 实现，应用开发者可以分叉它。
+
+开发者只需要实现 `route()` 函数。
+
+通过创建自定义实现，应用开发者可以根据其应用的需求定制 `RoutingISM` 提供的安全性。
+
+例如，自定义实现可以根据消息的内容或接收消息的应用状态来更改安全模型。

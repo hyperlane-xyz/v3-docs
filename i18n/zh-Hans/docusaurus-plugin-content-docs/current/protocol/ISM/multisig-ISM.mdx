@@ -1,0 +1,73 @@
+# 多重签名 ISM
+
+_通过验证者共识验证消息_
+
+`MultisigISM` 是最常用的 ISM 类型之一。这些 ISM 验证 `n` 个[验证者](../agents/validators.mdx)中的 `m` 个是否已证明特定跨链消息的有效性。
+
+## 多重签名模块类型
+
+有两种类型的 `MultisigISM` 模块：
+
+```solidity
+  enum Types {
+      ...
+      MERKLE_ROOT_MULTISIG,
+      MESSAGE_ID_MULTISIG,
+      ...
+  }
+```
+
+### MerkleRootMultisigIsmMetadata
+
+**类型：`Types.MERKLE_ROOT_MULTISIG`**
+
+**元数据格式：**
+
+| **组件**                              | **长度（字节）** | **描述**                                |
+| ------------------------------------ | --------------- | -------------------------------------- |
+| 第 1 组件                             | 32              | 源 Merkle 树地址                        |
+| 第 2 组件                             | 4               | 消息 ID 在 Merkle 树中的索引             |
+| 第 3 组件                             | 32              | 已签名的检查点消息 ID                    |
+| 第 4 组件                             | 1024            | Merkle 证明                             |
+| 第 5 组件                             | 4               | 已签名的检查点索引（从证明和索引计算得出）  |
+| 第 6 组件（长度 = 阈值 * 65 字节）      | 阈值 * 65       | 验证者签名                              |
+
+### MessageIdMultisigIsmMetadata
+
+**类型：`Types.MESSAGE_ID_MULTISIG`**
+
+**元数据格式：**
+
+| **组件**                              | **长度（字节）** | **描述**           |
+| ------------------------------------ | --------------- | ----------------- |
+| 第 1 组件                             | 32              | 源 Merkle 树地址    |
+| 第 2 组件                             | 32              | 已签名的检查点根     |
+| 第 3 组件                             | 4               | 已签名的检查点索引   |
+| 第 4 组件（长度 = 阈值 * 65 字节）      | 阈值 * 65       | 验证者签名          |
+
+<!-- ```mermaid block-beta columns 4 a["[32 bytes] Origin merkle tree address"]:2 b["[32 bytes] Signed checkpoint root"]:2 c["[4 bytes] Signed checkpoint index"]:1 block:group:3 d["[65 bytes] Validator signatures"] e["[65 bytes] Validator signatures"] f["[65 bytes] Validator signatures"] end ``` -->
+
+## 接口
+
+`MultisigISM` 必须实现 `IMultisigIsm` 接口。
+
+```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/isms/IMultisigIsm.sol
+
+```
+
+## 配置
+
+hyperlane-monorepo 包含 [`MultisigISM` 实现](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/solidity/contracts/isms/multisig)（包括一个[旧版本](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/LegacyMultisigIsm.sol)和更多通过工厂部署的[gas 高效版本](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/isms/multisig/StaticMultisigIsm.sol)），应用开发者可以直接使用这些实现，指定他们想要的配置。
+
+要配置 `MultisigISM` 实例：
+
+1. 开发者在每个源链上定义 `n` 个验证者集合。
+2. 设置一个阈值，指定确认消息所需的验证者签名数量（`m`）。
+
+验证者签名**不**特定于某个 ISM。换句话说，开发者可以配置他们的 `MultisigISM` 使用在 Hyperlane 上运行的**任何**验证者。
+
+## 定制
+
+对于更具体的用例，开发者可以分叉 Hyperlane monorepo 中提供的抽象 `MultisigISM` 实现。主要的定制涉及实现 `validatorsAndThreshold()` 函数。
+
+自定义实现允许开发者调整安全模型以满足其应用的需求。例如，自定义实现可以根据被验证消息的内容来改变所需的签名数量。
