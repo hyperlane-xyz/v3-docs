@@ -17,10 +17,10 @@
     "build:zh": "docusaurus build --locale zh-Hans"
   },
   "dependencies": {
-    "@docusaurus/core": "3.0.1",
-    "@docusaurus/plugin-client-redirects": "3.0.1",
-    "@docusaurus/preset-classic": "3.0.1",
-    "@docusaurus/theme-mermaid": "3.0.1",
+    "@docusaurus/core": "^3.6.3",
+    "@docusaurus/plugin-client-redirects": "^3.6.3",
+    "@docusaurus/preset-classic": "^3.6.3",
+    "@docusaurus/theme-mermaid": "^3.6.3",
     "@easyops-cn/docusaurus-search-local": "^0.37.4",
     "@hyperlane-xyz/core": "5.8.1",
     "@hyperlane-xyz/registry": "6.1.0",
@@ -35,9 +35,9 @@
     "remark-math": "6"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.0.1",
-    "@docusaurus/tsconfig": "3.0.1",
-    "@docusaurus/types": "3.0.1",
+    "@docusaurus/module-type-aliases": "^3.6.3",
+    "@docusaurus/tsconfig": "^3.6.3",
+    "@docusaurus/types": "^3.6.3",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "remark-code-import": "^1.2.0",

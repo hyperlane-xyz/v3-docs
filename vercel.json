@@ -1,0 +1,21 @@
+{
+  "buildCommand": "yarn build",
+  "outputDirectory": "build",
+  "framework": "docusaurus-2",
+  "installCommand": "yarn install",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "env": {
+    "NODE_OPTIONS": "--max_old_space_size=4096"
+  }
+}
