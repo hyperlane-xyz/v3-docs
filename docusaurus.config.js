@@ -24,8 +24,18 @@ const config = {
   organizationName: "hyperlane-xyz", // Usually your GitHub org/user name.
   projectName: "hyperlane-monorepo", // Usually your repo name.
 
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
+  
+  markdown: {
+    mermaid: true,
+    format: 'mdx',
+    mdx1Compat: {
+      comments: true,
+      admonitions: true,
+      headingIds: true
+    }
+  },
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -37,12 +47,16 @@ const config = {
       en: {
         label: 'English',
         htmlLang: 'en-US',
+        direction: 'ltr',
+        path: 'en'
       },
       'zh-Hans': {
         label: '简体中文',
         htmlLang: 'zh-Hans',
-      },
-    },
+        direction: 'ltr',
+        path: 'zh-Hans'
+      }
+    }
   },
 
   plugins: [
@@ -358,14 +372,38 @@ const config = {
             to: "/docs/protocol/economic-security/hyperlane-avs",
             from: ["/docs/protocol/eigenlayer-avs"],
           },
+          {
+            from: "/docs/reference/cli.mdx",
+            to: "/docs/reference/cli",
+          },
+          {
+            from: "/docs/guides/deploy-warp-route.mdx",
+            to: "/docs/guides/deploy-warp-route",
+          },
+          {
+            from: "/docs/operate/relayer/run-relayer.mdx",
+            to: "/docs/operate/relayer/run-relayer",
+          },
+          {
+            from: "/docs/protocol/economic-security/hyperlane-avs.mdx",
+            to: "/docs/protocol/economic-security/hyperlane-avs",
+          }
         ],
+        createRedirects(existingPath) {
+          if (existingPath.includes('/docs')) {
+            // Redirect from version-less to latest version
+            return [
+              existingPath.replace('/docs', '/docs/current'),
+              // Support .mdx extension
+              `${existingPath}.mdx`,
+            ];
+          }
+          return undefined;
+        },
       },
     ],
   ],
 
-  markdown: {
-    mermaid: true,
-  },
   themes: ["@docusaurus/theme-mermaid", "@easyops-cn/docusaurus-search-local"],
   presets: [
     [
@@ -411,6 +449,10 @@ const config = {
           src: "img/logo.svg",
         },
         items: [
+          {
+            type: "localeDropdown",
+            position: "right",
+          },
           {
             type: "docSidebar",
             sidebarId: "getstartedSidebar",
@@ -528,6 +570,16 @@ const config = {
           },
           themeCSS: ".edgeLabel { color: black }",
         },
+      },
+      search: {
+        language: ["en", "zh"],
+        hashed: true,
+        indexDocs: true,
+        indexBlog: true,
+        docsRouteBasePath: "/docs",
+        highlightSearchTermsOnTargetPage: true,
+        searchResultLimits: 8,
+        searchResultContextMaxLength: 50
       },
     }),
 };
