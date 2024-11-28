@@ -420,7 +420,9 @@ const config = {
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/polibee/v3-docs/tree/main/",
+          routeBasePath: '/', // 
         },
+        blog: false,
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
