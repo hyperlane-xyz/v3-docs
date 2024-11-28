@@ -18,9 +18,11 @@ const config = {
   // Set the production url of your site here
   url: "https://docs.hyperlane.xyz",
   // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
   // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
   organizationName: "hyperlane-xyz", // Usually your GitHub org/user name.
   projectName: "hyperlane-monorepo", // Usually your repo name.
 
@@ -32,17 +34,7 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "zh-Hans"],
-    localeConfigs: {
-      en: {
-        label: 'English',
-        htmlLang: 'en-US',
-      },
-      'zh-Hans': {
-        label: '简体中文',
-        htmlLang: 'zh-Hans',
-      },
-    },
+    locales: ["en"],
   },
 
   plugins: [
@@ -379,7 +371,7 @@ const config = {
           ],
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/",
+          editUrl: "https://github.com/hyperlane-xyz/v3-docs/tree/main/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -405,16 +397,12 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: "Hyperlane Docs",
+        title: "Hyperlane",
         logo: {
-          alt: "Hyperlane Logo",
+          alt: "Hyperlane logo",
           src: "img/logo.svg",
         },
         items: [
-          {
-            type: "localeDropdown",
-            position: "right",
-          },
           {
             type: "docSidebar",
             sidebarId: "getstartedSidebar",
@@ -508,9 +496,9 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright ÂŠ ${new Date().getFullYear()} Hyperlane
+        copyright: `Copyright © ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
         <br>
-        Built IRL in New York âœ¨ and London ðŸ§â€â‚ï¸`,
+        Built IRL in New York 🗽 and London 💂🏼‍♂️`,
       },
       prism: {
         additionalLanguages: ["solidity", "diff", "bash"],
