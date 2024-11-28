@@ -16,13 +16,13 @@ const config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://docs.hyperlane.xyz",
+  url: 'https://polibee.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
-  baseUrl: "/",
+  baseUrl: '/v3-docs/',
 
   // GitHub pages deployment config.
-  organizationName: "polibee", // Usually your GitHub org/user name.
-  projectName: "v3-docs", // Usually your repo name.
+  organizationName: 'polibee', // Usually your GitHub org/user name.
+  projectName: 'v3-docs', // Usually your repo name.
 
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
