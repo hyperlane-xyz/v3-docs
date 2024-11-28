@@ -23,7 +23,6 @@ export default function DefaultValidators({ environment }: DefaultValidatorsProp
             <h2 className="mb-4">
               <a
                 href={`#${chain}`}
-                className="!text-inherit no-underline hover:no-underline"
                 style={{ color: 'inherit' }}
               >
                 {displayName ?? camelToTitle(name)} ({domainId})
