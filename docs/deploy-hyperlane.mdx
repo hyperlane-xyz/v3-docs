@@ -86,19 +86,19 @@ hyperlane core init
   </summary>
 
 ```yaml
-owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
 # The address that owns and manages the deployed contracts. This account has admin privileges.
+owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
 
-defaultIsm:
-  type: trustedRelayerIsm
-  relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
 # The default Interchain Security Module (ISM) configuration.
-# - `type`: Specifies the type of ISM. Here, it uses a trusted relayer ism.
-# - `relayer`: The address of the relayer responsible for processing interchain messages.
+defaultIsm:
+  #`type`: Specifies the type of ISM. Here, it uses a trusted relayer ism.
+  type: trustedRelayerIsm
+  #`relayer`: The address of the relayer responsible for processing interchain messages.
+  relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
 
 defaultHook:
+  # A hook configuration that specifies the use of a Merkle Tree.
   type: merkleTreeHook
-# A hook configuration that specifies the use of a Merkle Tree.
 
 requiredHook:
   # The owner address responsible for managing the hook configuration.
