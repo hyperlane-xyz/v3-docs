@@ -101,16 +101,16 @@ defaultHook:
 # A hook configuration that specifies the use of a Merkle Tree.
 
 requiredHook:
-  owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
   # The owner address responsible for managing the hook configuration.
-  type: protocolFee
+  owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
   # The type of hook. This one applies a protocol fee mechanism.
-  beneficiary: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  type: protocolFee
   # The address that receives the protocol fees.
-  maxProtocolFee: "100000000000000000"
+  beneficiary: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
   # The maximum fee allowed by the protocol, in wei.
-  protocolFee: "0"
+  maxProtocolFee: "100000000000000000"
   # The current fee charged by the protocol, set to 0 for testing purposes.
+  protocolFee: "0"
 ```
 
 </details>
