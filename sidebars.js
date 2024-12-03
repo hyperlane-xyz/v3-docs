@@ -544,12 +544,12 @@ const sidebars = {
               id: "reference/addresses/interchain-account-router",
               label: "Interchain Account Router",
             },
-            {
-              type: "doc",
-              id: "reference/addresses/ism-validator",
-              label: "Default ISM Validator Addresses",
-            },
           ],
+        },
+        {
+          type: "doc",
+          id: "reference/default-ism-validators",
+          label: "Default ISM Validators",
         },
         {
           type: "doc",

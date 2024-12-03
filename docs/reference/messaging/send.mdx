@@ -9,7 +9,7 @@ import SimpleMessagingDiagram from "@site/src/diagrams/messaging-simple.md";
 
 To send interchain messages, developers call `Mailbox.dispatch()`.
 
-This function takes as parameters the message contents, the destination chain ID, and the recipient address. Each message get inserted as a leaf into an [incremental merkle tree](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f) stored by the `Mailbox`. Hyperlane's proof of stake protocol uses this merkle tree to verify fraud proofs.
+This function takes as parameters the message contents, the destination chain ID, and the recipient address. Each message gets inserted as a leaf into an [incremental merkle tree](https://medium.com/@josephdelong/ethereum-2-0-deposit-merkle-tree-13ec8404ca4f) stored by the `Mailbox`. Hyperlane's proof of stake protocol uses this merkle tree to verify fraud proofs.
 
 <SimpleMessagingDiagram />
 
