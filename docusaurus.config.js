@@ -38,10 +38,15 @@ const config = {
   },
 
   plugins: [
+    "my-loaders",
     [
       "@docusaurus/plugin-client-redirects",
       {
         redirects: [
+          {
+            from: ["/docs/reference/addresses/ism-validator"],
+            to: "/docs/reference/default-ism-validators",
+          },
           {
             to: "/docs/guides/implementation-guide",
             from: [

@@ -101,7 +101,14 @@ These files will be located under `$HOME/.hyperlane/deployments/warp_routes/`.
 You can initiate a test transfer of a single wei with the following command:
 
 ```bash
-hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/TOKEN/corechain-yourchain-config.yaml
+hyperlane warp send --relay --symbol TOKEN
+```
+
+The `--relay` flag is optional and will relay the message to the destination chain.
+
+You can also run a relayer that delivers only for your warp route in the background with:
+```bash
+hyperlane relayer --symbol TOKEN
 ```
 
 You can test in either direction between where you have the warp route set. However, if you deployed `native` and `synthetic` warp routes, you must select the origin with the `native` route deployed. By default, the amount sent is `1` of the smallest unit of the token.

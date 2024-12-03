@@ -46,7 +46,7 @@ To get started, you can simplify by using the same hexadecimal key for all three
 
 For instructions on how to generate keys, see the [agent keys](/docs/operate/set-up-agent-keys) section. Your deployer key **must** be a hexadecimal key, while validator and relayer keys can be hexadecimal or AWS KMS.
 
-If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_TARGET_ADDRESS` environment variable.
+If deploying on a local network using [Foundry's Anvil](https://github.com/foundry-rs/foundry/tree/master/crates/anvil), use the following command to fund your newly-generated account. It uses one of the pre-funded private keys to transfer 1 ETH to the address in the `$YOUR_TARGET_ADDRESS` environment variable.
 
 ```
 cast send $YOUR_TARGET_ADDRESS \

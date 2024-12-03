@@ -131,10 +131,13 @@ To send a test message, run:
 hyperlane send message --relay
 ```
 
-Currently core self-relay only works **from Holesky** **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
+The `--relay` flag is optional and will deliver the message to the destination chain.
 
-Support in the CLI for other origin chains is being added; chains that are not supported will output `Error: No fallback hook config found`.
+You can also run a relayer in the background with
 
+```bash
+hyperlane relayer --chains yourchain,sepolia
+```
 
 :::note
 **🎉 Congrats! You have successfully sent a message to your custom chain**
