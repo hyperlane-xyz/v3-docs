@@ -16,6 +16,13 @@ module.exports = function () {
             url: false,
             buffer: false,
             process: false,
+            querystring: false,
+            path: false,
+            os: false,
+            fs: false,
+            net: false,
+            tls: false,
+            child_process: false,
           },
         },
       };
