@@ -11,15 +11,16 @@ If you need any help, reach out on #developers on Discord or [get in touch](http
 ## Prerequisites
 
 Anyone can begin this quickstart guide once they have the following artifacts & assets available:
+
 - A new, custom, or pre-existing network of your choice, including the following metadata:
-    - A chain name, e.g. `ethereum`
-    - A chain ID, e.g. `1`
-    - A RPC URL, e.g. `https://eth.llamarpc.com`
+  - A chain name, e.g. `ethereum`
+  - A chain ID, e.g. `1`
+  - A RPC URL, e.g. `https://eth.llamarpc.com`
 - A deployer wallet/EOA private key or seed phrase
-    - This EOA should be funded on your custom chain and any chain you will be passing messages to & from
+  - This EOA should be funded on your custom chain and any chain you will be passing messages to & from
 - [Hyperlane CLI](/docs/reference/cli.mdx)
 
-## 1) Registry
+## 1. Registry
 
 Let’s create a custom chain config, run:
 
@@ -36,30 +37,37 @@ Now, under `$HOME/.hyperlane/chains` you will find a new folder named with your 
     Example content of this config at `$HOME/.hyperlane/chains/yourchain/metadata.yaml`
   </summary>
 
-   ```yaml
-    # yaml-language-server: $schema=../schema.json
-    blockExplorers:
-      - apiUrl: https://explorer.yourchain.com/api
-        apiKey: XXXX # helpful to avoid rate limiting on the contract verification API
-        family: etherscan #explorer you're using, also supporting routescan or blockscout
-        name: Chainscan
-        url: https://explorer.yourchain.com
-    chainId: 171717
-    displayName: Chain Name
-    domainId: 171717
-    isTestnet: true # optional
-    name: yourchain
-    nativeToken:
-      name: Ether
-      symbol: ETH
-      decimals: 18
-    protocol: ethereum
-    rpcUrls:
-      - http: https://hyper-lane-docs.rpc.caldera.xyz/http
-    ```
+```yaml
+# yaml-language-server: $schema=../schema.json
+# Metadata for your custom chain
+
+blockExplorers:
+  - apiUrl: https://explorer.yourchain.com/api
+    apiKey: XXXX # helpful to avoid rate limiting on the contract verification API
+    family: etherscan #explorer you're using, also supporting routescan or blockscout
+    name: Chainscan
+    url: https://explorer.yourchain.com
+blocks:
+  confirmations: 1
+  estimateBlockTime: 1
+  reorgPeriod: 0
+chainId: 171717
+displayName: Chain Name
+domainId: 171717
+isTestnet: true # optional
+name: yourchain
+nativeToken:
+  name: Ether
+  symbol: ETH
+  decimals: 18
+protocol: ethereum
+rpcUrls:
+  - http: https://hyper-lane-docs.rpc.caldera.xyz/http
+```
+
 </details>
 
-## 2) Core
+## 2. Core
 
 Next, let’s configure, deploy and test your custom chain’s core contracts.
 
@@ -67,32 +75,45 @@ Next, let’s configure, deploy and test your custom chain’s core contracts.
 
 1. From your local environment, set the private key or seed phrase of your funded deployer address to `HYP_KEY`. For example: `export HYP_KEY='<YOUR_PRIVATE_KEY>'`
 2. From the same terminal instance, run:
-    
-  ```bash
-  hyperlane core init
-  ```
+
+```bash
+hyperlane core init
+```
+
 <details>
   <summary>
     The deployment config will be written to `./configs/core-config.yaml`
   </summary>
-  
-  ```yaml
-  owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
-  defaultIsm:
-    type: trustedRelayerIsm
-    relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
-  defaultHook:
-    type: merkleTreeHook
-  requiredHook:
-    owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
-    type: protocolFee
-    beneficiary: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
-    maxProtocolFee: "100000000000000000"
-    protocolFee: "0"
-  ```
-    
-</details>
 
+```yaml
+# The address that owns and manages the deployed contracts. This account has admin privileges.
+owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+
+# The default Interchain Security Module (ISM) configuration.
+defaultIsm:
+  #`type`: Specifies the type of ISM. Here, it uses a trusted relayer ism.
+  type: trustedRelayerIsm
+  #`relayer`: The address of the relayer responsible for processing interchain messages.
+  relayer: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+
+defaultHook:
+  # A hook configuration that specifies the use of a Merkle Tree.
+  type: merkleTreeHook
+
+requiredHook:
+  # The owner address responsible for managing the hook configuration.
+  owner: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  # The type of hook. This one applies a protocol fee mechanism.
+  type: protocolFee
+  # The address that receives the protocol fees.
+  beneficiary: "0x16F4898F47c085C41d7Cc6b1dc72B91EA617dcBb"
+  # The maximum fee allowed by the protocol, in wei.
+  maxProtocolFee: "100000000000000000"
+  # The current fee charged by the protocol, set to 0 for testing purposes.
+  protocolFee: "0"
+```
+
+</details>
 
 ### Deploy contracts
 
@@ -102,27 +123,30 @@ To deploy contracts, run:
 hyperlane core deploy
 ```
 
-Use the arrows and enter to select your custom chain from the bottom of the mainnet list. 
-It will take a few minutes for all contracts to deploy.
-<details> 
+Use the arrows and enter to select your custom chain from the bottom of the mainnet list. It will take a few minutes for all contracts to deploy.
+
+<details>
   <summary>
-    Under `$HOME/.hyperlane/chains` you will find a new folder named with your custom chain’s name, and a file named `addresses.yaml` within that folder
+    Under `$HOME/.hyperlane/chains` you will find a new folder named with your
+    custom chain’s name, and a file named `addresses.yaml` within that folder
   </summary>
-  ```yaml
-    staticMerkleRootMultisigIsmFactory: "0x6906cb4741d3E2322E9f9aA645DfC8AB6F122c47"
-    staticMessageIdMultisigIsmFactory: "0x3CE97a32d9C8294691cBd2baC09B078EDa75c429"
-    staticAggregationIsmFactory: "0x81f969fDBF48278Ce09685Ce48e03388B6785aF4"
-    staticAggregationHookFactory: "0x3d864A3c25F61E3c3A7d02e980453A6E1f0a92A6"
-    domainRoutingIsmFactory: "0xC4c01f7B03f0fFa77A0265C600dEF7Ad28BCa5A2"
-    proxyAdmin: "0xABb7175d5F123172E7B7Fa467CC9fE4C2FEdb942"
-    mailbox: "0x5F58d75A9caDE4e2b191313223978dF049f93b81"
-    interchainAccountRouter: "0x43c0745b0dE9Cb780816a24ddE63d79Ca99B5dE8"
-    interchainAccountIsm: "0x9C96dC8f4257413225d6B5C47d1afbafc39B269F"
-    validatorAnnounce: "0xE3bd39BF92DB385dE6313D6070b035bD934378CB"
-    testRecipient: "0xa58462b1943Be1469Ed58db690C78583BA34Fd2E"
-    ```
+
+```yaml
+staticMerkleRootMultisigIsmFactory: "0x6906cb4741d3E2322E9f9aA645DfC8AB6F122c47"
+staticMessageIdMultisigIsmFactory: "0x3CE97a32d9C8294691cBd2baC09B078EDa75c429"
+staticAggregationIsmFactory: "0x81f969fDBF48278Ce09685Ce48e03388B6785aF4"
+staticAggregationHookFactory: "0x3d864A3c25F61E3c3A7d02e980453A6E1f0a92A6"
+domainRoutingIsmFactory: "0xC4c01f7B03f0fFa77A0265C600dEF7Ad28BCa5A2"
+proxyAdmin: "0xABb7175d5F123172E7B7Fa467CC9fE4C2FEdb942"
+mailbox: "0x5F58d75A9caDE4e2b191313223978dF049f93b81"
+interchainAccountRouter: "0x43c0745b0dE9Cb780816a24ddE63d79Ca99B5dE8"
+interchainAccountIsm: "0x9C96dC8f4257413225d6B5C47d1afbafc39B269F"
+validatorAnnounce: "0xE3bd39BF92DB385dE6313D6070b035bD934378CB"
+testRecipient: "0xa58462b1943Be1469Ed58db690C78583BA34Fd2E"
+```
+
 </details>
-    
+
 ### Send test message
 
 To send a test message, run:
@@ -131,32 +155,36 @@ To send a test message, run:
 hyperlane send message --relay
 ```
 
-Currently core self-relay only works **from Holesky** **to your custom chain**. When dispatch is successful, you should see that the message was self-relayed!
+The `--relay` flag is optional and will deliver the message to the destination chain.
 
-Support in the CLI for other origin chains is being added; chains that are not supported will output `Error: No fallback hook config found`.
+You can also run a relayer in the background with
 
+```bash
+hyperlane relayer --chains yourchain,sepolia
+```
 
-:::note
+:::success
 **🎉 Congrats! You have successfully sent a message to your custom chain**
 :::
 
+## 3. Warp Route
 
-## 3) Warp Route
-
-Now that you have a Hyperlane mailbox and core contracts on your chain, it’s time to set up token bridging between your chain and any other Hyperlane chain. 
+Now that you have a Hyperlane mailbox and core contracts on your chain, it’s time to set up token bridging between your chain and any other Hyperlane chain.
 
 Continue on to the [Deploy a Warp Route](/docs/guides/deploy-warp-route.mdx) docs for more details.
 
-## 4) Submit to Registry
+## 4. Submit to Registry
 
-If you want other chains to connect with you as well as to take this to production, make a registry PR. 
+If you want other chains to connect with you as well as to take this to production, make a registry PR.
 
 ### Ensure complete info
+
 Make sure your metadata is complete:
+
 - add a `logo.svg` file inside the folder
 - include `Deployer` information identifying the team deploying
 - indicate `isTestnet` `true` if the chain is testnet
--  add the api url `gnosisSafeTransactionServiceUrl` if you have a gnosis safe service
+- add the api url `gnosisSafeTransactionServiceUrl` if you have a gnosis safe service
 - lint the yaml files and order alphabetically
 
 ### Commit to Github
@@ -176,17 +204,20 @@ git pull canonical main --rebase
 
 Finally, push local registry to github fork and submit a PR. Please include a [changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) in your PR.
 
-:::note
+:::success
 **Congrats! You have successfully deployed Hyperlane to your chain and added your work to the Hyperlane registry**
 
 Thank you for contributing to the future of permissionless interop 🫡
 :::
 
 ### Take to Production
+
 #### Community-Run Infra
+
 As a public good, a core dev team for Hyperlane - Abacus Works - can help take your mainnet chain to production free of charge. Feel free to request this in your PR, new chain batches are added every two weeks.
 
-This includes running a relayer connecting your chain to the network, adding your chain to the [Explorer](https://explorer.hyperlane.xyz/), and running one of the validators in your chain's default validator set. There is no ongoing cost or lock-in - at any time you can choose to migrate your relayer to a self-hosted option or change your validator set. 
+This includes running a relayer connecting your chain to the network, adding your chain to the [Explorer](https://explorer.hyperlane.xyz/), and running one of the validators in your chain's default validator set. There is no ongoing cost or lock-in - at any time you can choose to migrate your relayer to a self-hosted option or change your validator set.
 
 #### Self-Host Infra
+
 Chains with devops experience, like Stride, choose to run their own relayer. While this does have some operations burden, this allows them to add new chains even faster at their pace. In addition, they can choose to set or subsidize the interchain gas costs related to relaying. See the [Operate](/docs/operate/relayer/run-relayer.mdx) docs for more information.

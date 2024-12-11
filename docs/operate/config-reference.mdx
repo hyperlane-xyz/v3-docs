@@ -6,7 +6,7 @@ import TabItem from '@theme/TabItem';
 
 ## CONFIG_FILES
 
-**Description:** (Env only) List of additional configuration file paths to load in order (such as those in `hyperlane-monorepo/rust/config`). They will be merged first to last, so if both the first one and the last one specify a specific config path, the value set in the last file listed will be used.
+**Description:** (Env only) List of additional configuration file paths to load in order (such as those in `hyperlane-monorepo/rust/main/config`). They will be merged first to last, so if both the first one and the last one specify a specific config path, the value set in the last file listed will be used.
 
 These files must be accessible within the filesystem your agent has access to. If you're running in Docker, see [the agent configuration guide](./agent-config.mdx#config-files-with-docker) for tips on mounting your config files into your Docker container.
 
@@ -1070,7 +1070,7 @@ export HYP_METRICSPORT=9090
 </TabItem>
 </Tabs>
 
-## log.fmt
+## log.format
 
 **Description:** Configuration for the log module. This controls logging.
 
@@ -1083,13 +1083,13 @@ export HYP_METRICSPORT=9090
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
 ```bash
---log.fmt pretty
+--log.format pretty
 ```
 </TabItem>
 
 <TabItem value="env" label="As Env">
 ```bash
-export HYP_LOG_FMT="pretty"
+export HYP_LOG_FORMAT="pretty"
 ```
 </TabItem>
 
@@ -1097,7 +1097,7 @@ export HYP_LOG_FMT="pretty"
 ```json
 {
     "log": {
-        "fmt": "pretty"
+        "format": "pretty"
     }
 }
 ```

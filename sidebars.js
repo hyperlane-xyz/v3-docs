@@ -87,6 +87,11 @@ const sidebars = {
           label: "Deploy a Bridge UI",
         },
         {
+          type: "doc",
+          id: "guides/local-testnet-setup",
+          label: "Local Setup: Sending Messages between Anvil Nodes",
+        },
+        {
           type: "category",
           label: "Warp Routes",
           collapsible: true,
@@ -539,12 +544,12 @@ const sidebars = {
               id: "reference/addresses/interchain-account-router",
               label: "Interchain Account Router",
             },
-            {
-              type: "doc",
-              id: "reference/addresses/ism-validator",
-              label: "Default ISM Validator Addresses",
-            },
           ],
+        },
+        {
+          type: "doc",
+          id: "reference/default-ism-validators",
+          label: "Default ISM Validators",
         },
         {
           type: "doc",
