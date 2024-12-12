@@ -109,6 +109,11 @@ const sidebars = {
             },
             {
               type: "doc",
+              id: "protocol/warp-routes/warp-routes-canonical-transfer-guide",
+              label: "Fast/Canonical Warp Routes",
+            },
+            {
+              type: "doc",
               id: "guides/extending-warp-route",
               label: "Extending a Warp Route",
             },

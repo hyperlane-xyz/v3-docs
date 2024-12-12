@@ -53,21 +53,34 @@ When Alice wants to bridge back to ethereum, the reverse happens. The yield rout
 
 ### Yield Route Deployment Steps
 
-Using the Hyperlane CLI, deploy a USDC EvmHypOwnerCollateral and EvmHypSynthetic tokens on ethereum and yourchain, respectively: 1. Run `hyperlane warp init` to generate a warp route config: 1. Select `yourchain` and `ethereum` using space, and hit enter. 2. For ethereum, select `collateralVault`, accept the mailbox, and enter the USDC vault address on yourchain. - Alternatively, you can select `collateralVaultRebase` which is a yield route variant that distribute yields to users by increasing their holding amount. 3. For yourchain, select `synthetic` and accept the mailbox. - If you selected `collateralVaultRebase`, you must pair it with a `syntheticRebase` 2. Run `hyperlane warp deploy` to deploy the warp route.
+Using the Hyperlane CLI, deploy a USDC EvmHypOwnerCollateral and EvmHypSynthetic tokens on ethereum and yourchain, respectively:
 
-For more in-depth details on these steps, follow the [Bridge a Token](/docs/guides/deploy-warp-route) guide.
+#### 1. Run `hyperlane warp init` to generate a warp route config:
+
+1.  Select `yourchain` and `ethereum` using space, and hit enter.
+2.  For ethereum, select `collateralVault`, accept the mailbox, and enter the USDC vault address on yourchain.
+    - Alternatively, you can select `collateralVaultRebase` which is a yield route variant that distribute yields to users by increasing their holding amount.
+3.  For yourchain, select `synthetic` and accept the mailbox.
+
+    - If you selected `collateralVaultRebase`, you must pair it with a `syntheticRebase`
+
+#### 2. Run `hyperlane warp deploy` to deploy the warp route.
 
 ### Claiming Yield
 
 Depending on the yield route variant, yield can be claimed by either calling `HypERC4626OwnerCollateral.sweep()` or `HypERC4626Collateral.rebase()` on their respective contracts.
 
-**🎉 Congrats! You have now created a new yield route with your vault. Bridged user assets can now earn passive yield while present in the origin warp route.**
+:::success
+🎉 Congrats! You have now created a new yield route with your vault. Bridged user assets can now earn passive yield while present in the origin warp route.
+:::
 
 :::warning
 Please note that this collateralization strategy takes on certain ISM trust assumptions, and there is inherent risk that the underlying [ERC-4626 vault](https://ethereum.org/en/developers/docs/standards/tokens/erc-4626/) becomes under-collateralized.
 :::
 
 ## Resources
+
+For more in-depth details on these steps, follow the [Bridge a Token](/docs/guides/deploy-warp-route) guide.
 
 Check out some additional information, published by the Hyperlane supporting team, Cheese Chain, and the Ethereum Foundation:
 
