@@ -167,9 +167,7 @@ After sending the message, check the following:
 2. Messages time out:
 
    - **Reason:** Anvil doesn't auto-mine blocks by default, causing validators or relayers to wait indefinitely for new blocks.
-   - **Solution:**
-     - Make sure to use the `--block-time 1 flag` when starting Anvil to auto-mine blocks every second.
-     - Alternatively, configure the validator and relayer to use 0 confirmations for faster processing during testing.
+   - **Solution:** Make sure to use the `--block-time 1 flag` when starting Anvil to auto-mine blocks every second.
 
 3. Validator mismatch or misconfiguration:
 
