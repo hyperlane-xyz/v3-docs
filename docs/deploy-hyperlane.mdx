@@ -1,11 +1,11 @@
 # How to Connect Your Chain with Hyperlane
 
 :::info
-This guide will help you deploy Hyperlane to your new chain as quickly as possible for testing, not production. This includes the core mailbox and ISM contracts as well as warp route contracts for assets you’re bridging.
 
-To see which chains are already supported, visit the [Registry](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).
+- This guide will help you deploy Hyperlane to your new chain as quickly as possible for testing, not production. This includes the core mailbox and ISM contracts as well as warp route contracts for assets you’re bridging.
+- To see which chains are already supported, visit the [Registry](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).
+- If you need any help, reach out on #developers on Discord or [get in touch](https://forms.gle/KyRTaWvo4XNmNvrq6).
 
-If you need any help, reach out on #developers on Discord or [get in touch](https://forms.gle/KyRTaWvo4XNmNvrq6).
 :::
 
 ## Prerequisites
@@ -146,6 +146,12 @@ testRecipient: "0xa58462b1943Be1469Ed58db690C78583BA34Fd2E"
 ```
 
 </details>
+
+:::warning
+
+`getStorageAt()` Compatibility: Some chains may not utilize the `getStorageAt()` API. If your deployment encounters related issues, refer to the [Troubleshooting Guide](./deploy-hyperlane-troubleshooting#getstorageat-compatibility).
+
+:::
 
 ### Send test message
 

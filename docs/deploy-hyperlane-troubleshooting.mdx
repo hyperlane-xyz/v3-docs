@@ -82,7 +82,6 @@ Transaction overrides are any properties to include when forming transaction req
 In the example below we're using a gas price of 7 gwei, hardcoding the nonce, and setting a maximum value for the base and priority fees.
 
 ```yaml
----
 sepolia:
   transactionOverrides:
     gasPrice: 7000000000 # 7 gwei
@@ -96,3 +95,14 @@ sepolia:
 If you are overriding the nonce in the chain configuration, ensure you are updating the value on successful transactions.
 
 :::
+
+## `getStorageAt()` Compatibility
+
+Some chains do not natively support the `getStorageAt()` API. If you're deploying on one of these chains and encounter issues, review the changes made to the Hyperlane codebase in this [commit](https://github.com/hyperlane-xyz/hyperlane-monorepo/commit/871df7a4dce203ff5cf23ae654d03743dc00ea61).
+
+To deploy Hyperlane on these chains follow the steps:
+
+1. Clone the [repo](https://github.com/hyperlane-xyz/hyperlane-monorepo)
+2. Apply the changes in the [commit](https://github.com/hyperlane-xyz/hyperlane-monorepo/commit/871df7a4dce203ff5cf23ae654d03743dc00ea61).
+3. Build the project from the root directory: `yarn build`
+4. Run the Hyperlane CLI from the root directory: `yarn workspace @hyperlane-xyz/cli hyperlane`
