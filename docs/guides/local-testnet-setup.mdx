@@ -35,7 +35,7 @@ We will run two Anvil nodes with unique chain IDs.
 - On a first terminal, start the first Anvil node:
 
   ```bash
-  anvil --port 8545 --chain-id 31337
+  anvil --port 8545 --chain-id 31337 --block-time 1
   ```
 
   - Runs on `http://localhost:8545`.
@@ -44,7 +44,7 @@ We will run two Anvil nodes with unique chain IDs.
 - In a new terminal, start the second Anvil node: :
 
   ```bash
-  anvil --port 8546 --chain-id 31338
+  anvil --port 8546 --chain-id 31338 --block-time 1
   ```
 
   - Runs on `http://localhost:8546`.
@@ -142,6 +142,40 @@ For local testing, the `--relay` flag automatically relays the message to the de
 
 :::
 
-Review the logs on `anvilnode1` and `anvilnode2` to confirm the message was sent and received.
+After sending the message, check the following:
 
-🎉 There you go, you've sent a message between two local Anvil nodes using Hyperlane!
+- Validator Logs: Look for entries indicating that signatures were generated and stored.
+- Relayer Logs: Look for successful metadata retrieval and message processing.
+- Anvil Logs: Ensure blocks were mined to process the transactions.
+
+:::success
+🎉 You've sent a message between two local Anvil nodes using Hyperlane!
+:::
+
+## Troubleshooting
+
+1. “Could not fetch metadata” warning:
+
+   - **Reason:** This occurs when the relayer cannot retrieve validator signatures required to process a message. Common causes:
+     - The validator key lacks testnet funds.
+     - The validator has not announced its storage locations.
+   - **Solution:**
+     Ensure the validators have announced their storage locations. Run the following command for each validator:
+     ```bash
+     hyperlane validator announce
+     ```
+     - Check validator logs for a message such as: `Validator has announced signature storage location, locations: ["file:///tmp/hyperlane-validator-signatures-local"].`
+     - Verify that each validator has a unique signature storage path (`--checkpointSyncer.path`) to prevent overwriting.
+     - Confirm that the relayer has read access to the storage paths.
+
+2. Messages time out:
+
+   - **Reason:** Anvil doesn't auto-mine blocks by default, causing validators or relayers to wait indefinitely for new blocks.
+   - **Solution:**
+     - Make sure to use the `--block-time 1 flag` when starting Anvil to auto-mine blocks every second.
+     - Alternatively, configure the validator and relayer to use 0 confirmations for faster processing during testing.
+
+3. Validator mismatch or misconfiguration:
+
+   - **Reason:** The ISM configuration on the destination chain does not match the validator key(s) used by the origin chain.
+   - **Solution:** Check that the ISM configuration includes the correct validator addresses. Validator logs can help identify the announced addresses.
