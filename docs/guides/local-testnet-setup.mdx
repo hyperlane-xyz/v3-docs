@@ -160,11 +160,7 @@ After sending the message, check the following:
      - The validator key lacks testnet funds.
      - The validator has not announced its storage locations.
    - **Solution:**
-     Ensure the validators have announced their storage locations. Run the following command for each validator:
-     ```bash
-     hyperlane validator announce
-     ```
-     - Check validator logs for a message such as: `Validator has announced signature storage location, locations: ["file:///tmp/hyperlane-validator-signatures-local"].`
+     - Ensure the validators have announced their storage locations. Check validator logs for a message such as: `Validator has announced signature storage location, locations: ["file:///tmp/hyperlane-validator-signatures-local"].`
      - Verify that each validator has a unique signature storage path (`--checkpointSyncer.path`) to prevent overwriting.
      - Confirm that the relayer has read access to the storage paths.
 
