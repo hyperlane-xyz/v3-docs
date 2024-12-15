@@ -1,0 +1,18 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import AddressTable from "@site/src/components/AddressTable";
+
+# Test Recipient
+
+<Tabs groupId="environment">
+<TabItem value="mainnet" label="Mainnet">
+
+<AddressTable environment="mainnet" contract="testRecipient" />
+
+</TabItem>
+<TabItem value="testnet" label="Testnet">
+
+<AddressTable environment="testnet" contract="testRecipient" />
+
+</TabItem>
+</Tabs>

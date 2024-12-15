@@ -1,14 +1,16 @@
-# Configuring Permissionless Chains
+# Configuring New Chains in the Hyperlane Explorer
 
-Hyperlane can be [permissionlessly deployed](/docs/deploy-hyperlane.mdx) to any chain, but messages on PI chains cannot be identified by the default Hyperlane agents. To view details about messages from PI chains, first configure the explorer with metadata about that chain.
+Hyperlane can be [deployed](/docs/deploy-hyperlane.mdx) to any chain by anyone, this open access is called Permissionless Interoperability (PI). However the messages on PI chains cannot be identified by the default Hyperlane Agents. To view details about messages from PI chains, first configure the explorer with metadata about that chain.
 
-To begin, click either the Origin or the Destination button on the explorer's home page. This will open the chain selection modal. From there, click the plus icon in the top-right.
+## Adding Chain Metadata to Hyperlane Explorer
+
+1. On the Explorer’s homepage, click either the Origin or Destination button to open the chain selection. This will open the chain selection modal. From there, click the plus icon in the top-right.
 
 ![](/img/explorer-debugging/explorer-add-metadata.png)
 
-The displayed form accepts JSON or YAML confirming to the [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
+2. On the form that appears, enter the chain’s metadata using JSON or YAML conforming to the [ChainMetadata schema](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
 
-If a valid Etherscan-based block explorer config is provided, the Hyperlane Explorer will utilize it to find the desired messages. If not, it will use the RPC URL. Note, Explorers with api keys (even just free-tier keys), perform faster and more reliably.
+3. If a valid Etherscan-based block explorer config is provided, the Hyperlane Explorer will utilize it to find the desired messages. If not, it will use the RPC URL. Note, Explorers with API keys (even just free-tier keys), perform faster and more reliably.
 
 ### Chain Metadata Examples
 
