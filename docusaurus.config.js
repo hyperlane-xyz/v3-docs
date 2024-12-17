@@ -501,7 +501,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Abacus Works, core developer for Hyperlane
+        copyright: `Copyright © ${new Date().getFullYear()} Abacus Works, Inc., a core developer team working on Hyperlane
         <br>
         Built IRL in New York 🗽 and London 💂🏼‍♂️`,
       },
