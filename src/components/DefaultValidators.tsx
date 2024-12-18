@@ -14,7 +14,7 @@ export default function DefaultValidators({ environment }: DefaultValidatorsProp
     <>
       {chainNames.map((chain) => {
         const config = defaultMultisigConfigs[chain];
-        if (!config) return null;
+        if (!config || (environment === 'mainnet' && config.validators.length <= 1)) return null;
 
         const { name, displayName, domainId } = chainMetadata[chain];
 
