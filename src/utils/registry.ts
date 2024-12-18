@@ -1,8 +1,11 @@
 import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
-import { defaultMultisigConfigs, type ChainMetadata, type ChainName } from "@hyperlane-xyz/sdk";
+import { type ChainMetadata, type ChainName } from "@hyperlane-xyz/sdk";
 import { useMemo } from "react";
 
 const ABACUS_WORKS_DEPLOYER_NAME = "abacus works";
+
+// Pre-mainnet chains
+const FILTER_LIST = ['soneium'];
 
 // Chains that Abacus Works has deployed (formerly known as 'core' chains)
 export function getAbacusWorksChains(
@@ -16,13 +19,12 @@ export function getAbacusWorksChains(
       ABACUS_WORKS_DEPLOYER_NAME;
     // Filter to only mainnets or testnets
     const isRightChainType = !!metadata.isTestnet === isTestnet;
-    // Filter out Mainnet chains that are deployed but not enrolled in the default ISMs
-    const config = defaultMultisigConfigs[metadata.name];
-    const isEnrolled = !metadata.isTestnet ? config?.validators.length > 1 : true;
     // If required, filter to chains that have a mailbox addresses in the registry
     const hasMailboxAddress =
       !requireMailbox || !!chainAddresses[metadata.name]?.mailbox;
-    return isRightDeployer && isRightChainType && hasMailboxAddress && isEnrolled;
+    // Filter out chains in FILTER_LIST
+    const isFiltered = FILTER_LIST.includes(metadata.name);
+    return isRightDeployer && isRightChainType && hasMailboxAddress && !isFiltered;
   });
 }
 
