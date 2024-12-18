@@ -67,7 +67,7 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
       ```
 
    These steps **compile the Solana programs**, which is needed for deployment.
-   To verify the build output, check the target/deploy directory for `.so` files: `ls ../../target/deploy`
+   To verify the build output, check the target/deploy directory for `.so` files in `hyperlane-monorepo/rust/sealevel/target/deploy`
 
 ### Step 2: Prepare for Deployment
 
@@ -75,6 +75,12 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
 
    ```bash
    sh -c "$(curl -sSfL https://release.solana.com/v1.18.18/install)"
+   ```
+
+   After installing you can verify the version with:
+
+   ```bash
+   solana --version
    ```
 
 2. Create a **Solana keypair**. This key pays for the deployment and will be the owner of the deployed programs. An existing funded key can be used if you'd like.
@@ -104,26 +110,29 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
 
    For example, the existing SOL Warp Route between Solana and Eclipse lives in `rust/sealevel/environments/mainnet3/warp-routes/eclipsesol`.
 
-2. Configure the parameters of your Warp Route in a JSON file named `token-config.json`, based on the `serde_json` serialization of the [TokenConfig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/client/src/warp_route.rs#L114) Rust struct. The value to set for the `interchainGasPaymaster`, can be found in the [core deployment artifacts](#before-you-start).
+2. Inside the directory you just created, create a configuration file named `token-config.json`.
 
-   - The example below shows a testnet **Native to Synthetic Warp Route** that transfers SOL from Solana and mints synthetic SOL on Eclipse. You can also check [this configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/environments/mainnet3/warp-routes/eclipsesol/token-config.json) of a production SOL Warp Route.
-     ```json
-     {
-        "solanatestnet": {
-            "type": "native",
-            "decimals": 9,
-            "interchainGasPaymaster": "<from core program addresses, choose the overhead igp>"
-        },
-        "eclipsetestnet": {
-            "type": "synthetic",
-            "decimals": 9,
-            "name": "Solana (testnet)",
-            "symbol": "SOL",
-            "uri": "<permalink to the metadata.json file you merged into hyperlane-registry>"
-            "interchainGasPaymaster": "<from core program addresses, choose the overhead igp>"
-        }
-     }
-     ```
+   Configure the parameters of your Warp Route based on the `serde_json` serialization of the [TokenConfig](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/client/src/warp_route.rs#L114) Rust struct. The value to set for the `interchainGasPaymaster`, can be found in the [core deployment artifacts](#before-you-start).
+
+   The example below shows a testnet **Native to Synthetic Warp Route** that transfers SOL from Solana and mints synthetic SOL on Eclipse. You can also check [this configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/a5afd20f3ae69ccb3289d845d44b99dbdcde2c62/rust/sealevel/environments/mainnet3/warp-routes/eclipsesol/token-config.json) of a production SOL Warp Route.
+
+   ```json
+   {
+       "solanatestnet": {
+           "type": "native",
+           "decimals": 9,
+           "interchainGasPaymaster": "<from core program addresses, choose the overhead igp>"
+       },
+       "eclipsetestnet": {
+           "type": "synthetic",
+           "decimals": 9,
+           "name": "Solana (testnet)",
+           "symbol": "SOL",
+           "uri": "<permalink to the metadata.json file you merged into hyperlane-registry>"
+           "interchainGasPaymaster": "<from core program addresses, choose the overhead igp>"
+       }
+   }
+   ```
 
 3. (Optional) If your warp route creates a Synthetic token, you can open a PR to the `hyperlane-registry` with metadata to associate with this token (example PR [here](https://github.com/hyperlane-xyz/hyperlane-registry/pull/142)). The `hyperlane-registry` also gives your Warp Route visibility within the Hyperlane ecosystem.
 
@@ -149,7 +158,7 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
    warp-route deploy \
    --warp-route-name <YOUR-WARP-ROUTE-NAME> \
    --environment testnet4 \
-   --built-so-dir ../../target/deploy
+   --built-so-dir ../target/deploy
    ```
 
    :::info
