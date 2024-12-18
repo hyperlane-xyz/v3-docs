@@ -27,6 +27,7 @@ const config = {
   projectName: "hyperlane-monorepo", // Usually your repo name.
 
   onBrokenLinks: "throw",
+  onBrokenAnchors: "throw",
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
