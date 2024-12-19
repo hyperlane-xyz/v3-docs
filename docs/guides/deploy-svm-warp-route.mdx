@@ -144,21 +144,20 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
 
    - The funding should be enough to cover rent for all accounts related to the Warp Route, pay for transaction fees, and fund the [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts (more on this below). For reference, the observed rent from one Hyperlane Warp Route account is `2.35 SOL` on Solana and `0.025 ETH` on Eclipse, so it's a good idea to fund the key with at least `5 SOL` / `0.05 ETH`.
 
-2. Run the following command to deploy the warp route:
+2. Deploy the warp route with `warp-route deploy`:
 
-   ```bash
-   # run from `rust/sealevel/client`
-   warp-route deploy
-   ```
-
-   Example usage with the required parameters:
+   Example usage:
 
    ```bash
    cargo run -- -k ./warp-route-deployer-key.json \
    warp-route deploy \
    --warp-route-name <YOUR-WARP-ROUTE-NAME> \
-   --environment testnet4 \
-   --built-so-dir ../target/deploy
+   --environment mainnet3 \
+   --environments-dir ../environments \
+   --built-so-dir ../target/deploy \
+   --token-config-file ../environments/mainnet3/warp-routes/<YOUR-WARP-ROUTE-NAME>/token-config.json \
+   --chain-config-file ../environments/mainnet3/chain-config.json \
+   --ata-payer-funding-amount 10000000
    ```
 
    :::info
