@@ -62,11 +62,11 @@ Use your L2's canonical bridge to transfer 100% of the `ETH` receipt token from 
 
 ### 4) Deploy a Native Warp Route
 
-Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `ETH` EvmHypNative warp route:
+Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypCollateral ↔ yourchain `ETH` EvmHypNative warp route:
 
 1. Run `hyperlane warp init` and complete the following flow:
    1. Select `ethereum` and `yourchain` using space, and hit enter.
-   2. For ethereum, select `native` and accept the mailbox.
+   2. For ethereum, select `collateral` and accept the mailbox.
    3. For yourchain, select `native` and accept the mailbox.
 2. Before executing the deployment, ensure yourchain’s `metadata.yaml` has a `blockExplorers` field defined. This will be needed for contract verification in order to easily collateralize yourchain's warp route.
 3. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
@@ -89,9 +89,8 @@ Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypNative ↔ yourchain `ET
          - token: ethereum|yourchain|0x3e5bB1a03fef5DB15A320885E6A0C8Bff8b656bd
        decimals: 18
        name: Ether
-       standard: EvmHypNative
+       standard: EvmHypCollateral
        symbol: ETH
-
    ```
 
 ### 5) Collateralize Your Warp Route
