@@ -1,8 +1,11 @@
 import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
-import type { ChainMetadata, ChainName } from "@hyperlane-xyz/sdk";
+import { type ChainMetadata, type ChainName } from "@hyperlane-xyz/sdk";
 import { useMemo } from "react";
 
 const ABACUS_WORKS_DEPLOYER_NAME = "abacus works";
+
+// Pre-mainnet chains
+const FILTER_LIST = ['soneium'];
 
 // Chains that Abacus Works has deployed (formerly known as 'core' chains)
 export function getAbacusWorksChains(
@@ -19,7 +22,9 @@ export function getAbacusWorksChains(
     // If required, filter to chains that have a mailbox addresses in the registry
     const hasMailboxAddress =
       !requireMailbox || !!chainAddresses[metadata.name]?.mailbox;
-    return isRightDeployer && isRightChainType && hasMailboxAddress;
+    // Filter out chains in FILTER_LIST
+    const isFiltered = FILTER_LIST.includes(metadata.name);
+    return isRightDeployer && isRightChainType && hasMailboxAddress && !isFiltered;
   });
 }
 
