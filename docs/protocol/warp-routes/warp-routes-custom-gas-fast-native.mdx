@@ -66,7 +66,7 @@ Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypCollateral ↔ yourchain
 
 1. Run `hyperlane warp init` and complete the following flow:
    1. Select `ethereum` and `yourchain` using space, and hit enter.
-   2. For ethereum, select `collateral` and accept the mailbox.
+   2. For ethereum, select `collateral`, accept the mailbox, and provide the `token` address (NOT the dummy receipt token).
    3. For yourchain, select `native` and accept the mailbox.
 2. Before executing the deployment, ensure yourchain’s `metadata.yaml` has a `blockExplorers` field defined. This will be needed for contract verification in order to easily collateralize yourchain's warp route.
 3. Run `hyperlane warp deploy` and confirm the warp deploy config is as expected.
@@ -91,6 +91,7 @@ Using the Hyperlane CLI, deploy an ethereum `ETH` EvmHypCollateral ↔ yourchain
        name: Ether
        standard: EvmHypCollateral
        symbol: ETH
+       token: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
    ```
 
 ### 5) Collateralize Your Warp Route
