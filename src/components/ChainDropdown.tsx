@@ -1,4 +1,4 @@
-import { CoreMainnets, CoreTestnets } from "@hyperlane-xyz/registry";
+import { useAbacusWorksChainNames } from "../utils/registry";
 
 type Props = {
   chains: string[];
@@ -39,8 +39,12 @@ export default function ChainDropdown({
   );
 }
 
-export const TestnetChainDropdown = (props: Omit<Props, "chains">) =>
-  ChainDropdown({ chains: CoreTestnets, ...props });
+export function TestnetChainDropdown(props: Omit<Props, "chains">) {
+  const chains = useAbacusWorksChainNames(true);
+  return ChainDropdown({ chains, ...props });
+}
 
-export const MainnetChainDropdown = (props: Omit<Props, "chains">) =>
-  ChainDropdown({ chains: CoreMainnets, ...props });
+export function MainnetChainDropdown(props: Omit<Props, "chains">) {
+  const chains = useAbacusWorksChainNames(false);
+  return ChainDropdown({ chains, ...props });
+}

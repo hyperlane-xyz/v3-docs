@@ -14,11 +14,11 @@ If you're only intending to run a Validator for testing or development purposes,
 
 Follow the instructions in [Agent Keys](../set-up-agent-keys.mdx) to generate an AWS IAM user and either a KMS or a hexadecimal key. You will use this key's credentials in the following steps.
 
-:::note
-Note that the IAM user is required for setting up the S3 bucket, so is required regardless of the type of key used.
-:::
-
 ### 2. Create an S3 bucket
+
+:::info
+Note that Step 1 (creating the IAM user) is required for setting up the S3 bucket, so is required regardless of the type of key used.
+:::
 
 Your Validator will post their signatures to this bucket.
 
@@ -50,37 +50,28 @@ Your Validator IAM user will need write permissions, and it should be publicly r
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": [
-                "s3:GetObject",
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "${BUCKET_ARN}",
-                "${BUCKET_ARN}/*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "${USER_ARN}"
-            },
-            "Action": [
-                "s3:DeleteObject",
-                "s3:PutObject"
-            ],
-            "Resource": "${BUCKET_ARN}/*"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": ["${BUCKET_ARN}", "${BUCKET_ARN}/*"]
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${USER_ARN}"
+      },
+      "Action": ["s3:DeleteObject", "s3:PutObject"],
+      "Resource": "${BUCKET_ARN}/*"
+    }
+  ]
 }
 ```
 
 :::tip
 
-Advanced users may consider using the [S3 terraform module](../deploy-with-terraform.mdx#iam--kms) instead to create the S3 bucket with the correct permissions.
+Advanced users may consider using the [S3 Terraform module](../deploy-with-terraform.mdx#iam--kms) instead to create the S3 bucket with the correct permissions.
 
 :::

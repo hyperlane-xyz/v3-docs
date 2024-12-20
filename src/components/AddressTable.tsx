@@ -1,15 +1,12 @@
-import {
-  chainAddresses,
-  chainMetadata,
-  CoreMainnets,
-  CoreTestnets,
-} from "@hyperlane-xyz/registry";
+import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
+import { useAbacusWorksChainNames } from "../utils/registry";
 
 export type Environment = "testnet" | "mainnet";
 
 type Props<K extends string> = {
   contract: K;
   environment: Environment;
+  withChainId: boolean;
 };
 
 export function capitalize(str: string) {
@@ -29,8 +26,9 @@ export function camelToTitle(camelCaseString: string) {
 export default function AddressTable<K extends string>({
   contract,
   environment,
+  withChainId = false,
 }: Props<K>) {
-  const chainNames = environment === "mainnet" ? CoreMainnets : CoreTestnets;
+  const chainNames = useAbacusWorksChainNames(environment !== "mainnet");
 
   return (
     <table>
@@ -38,6 +36,7 @@ export default function AddressTable<K extends string>({
         <tr>
           <th>Chain</th>
           <th>Domain</th>
+          {withChainId && <th>Chain ID</th>}
           <th>Address</th>
           <th>Explorer</th>
         </tr>
@@ -53,6 +52,7 @@ export default function AddressTable<K extends string>({
             <tr key={chain}>
               <td>{targetMetadata.displayName ?? capitalize(chain)}</td>
               <td>{targetMetadata.domainId}</td>
+              {withChainId && <td>{targetMetadata.chainId}</td>}
               <td>
                 <code>{address}</code>
               </td>

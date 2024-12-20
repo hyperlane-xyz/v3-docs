@@ -1,8 +1,10 @@
-import PrerequisitesPartial from '/docs/partials/warp-routes/_prerequisites-config-symbol.mdx'
-import WarpReadSymbolChainPartial from '/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx'
-import WarpApplySymbolConfigDefaultPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx'
+import PrerequisitesPartial from "/docs/partials/warp-routes/_prerequisites-config-symbol.mdx";
+import WarpReadSymbolChainPartial from "/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx";
+import WarpApplySymbolConfigDefaultPartial from "/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx";
 
 # How to Remove Trusted Relayer ISM from Warp Route
+
+This guide explains how to remove the default Trusted Relayer ISM from your Warp Route using the Hyperlane CLI. Removing the Trusted Relayer ISM is a crucial step when preparing your Warp Route for production.
 
 # Using the Hyperlane CLI
 
@@ -40,6 +42,7 @@ yourchain:
         domains: {}
     threshold: 1
 ```
+
 This particular config has a `trustedRelayerIsm` as part of the `staticAggregationIsm`.
 
 This means that the `relayer` address will be allowed to call the Warp Route’s `handle()` function. In other words, the `relayer` can execute arbitrary messages on the Warp Route. This may be undesirable in cases outside of the self-relaying feature.
@@ -47,7 +50,8 @@ This means that the `relayer` address will be allowed to call the Warp Route’s
 By default, `warp read` will save the output to `CURRENT_DIR/configs/warp-route-deployment.yaml`. Follow these steps using the CLI to transfer the existing ownership to another address.
 
 ## Step 1: Configuration
-Update the `warp-route-deployment.yaml` by **removing** the `trustedRelayerIsm` block from `modules` . Alternatively, you can configure the entire `modules` block as desired.
+
+Update the `warp-route-deployment.yaml` by **removing** the `trustedRelayerIsm` block from `modules`. Alternatively, you can configure the entire `modules` block as desired.
 
 ```diff title="warp-route-deployment.yaml"
 yourchain:
@@ -83,10 +87,9 @@ You should see a batch of transactions executed on chain, and a final message in
 
 ## Step 3: Confirm
 
-To confirm that the trusted relayer was successfully removed using the Hyperlane CLI, run the folllowing command with your token symbol and the chain it is deployed on:
+To confirm that the trusted relayer was successfully removed using the Hyperlane CLI, run the following command with your token symbol and the chain it is deployed on:
 
 <WarpReadSymbolChainPartial />
-
 
 After running `warp read`, confirm that the trusted relayer ISM has been removed from your warp route (In this example, it should only contain the remaining `defaultFallbackRoutingIsm`). You should see a similar config under `interchainSecurityModule`:
 

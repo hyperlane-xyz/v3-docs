@@ -1,5 +1,15 @@
 # How to Go to Production with your Hyperlane Deployment
 
-In order to bring your new Hyperlane deployment to production, you must prepare your chain's new core and warp route deployments.
+To launch your Hyperlane deployment into a production environment, follow these steps to set up your chain’s core deployment and configure warp route deployments.
 
-To begin, start with [productionizing your Hyperlane core deployment](/core-production.mdx).
+### 1. Core Deployment
+
+To being you'll need to set up and productionize the core components of your Hyperlane deployment.
+
+- [Update Mailbox Default ISM](/guides/update-mailbox-default-ism.mdx): Update the Interchain Security Module (ISM) associated with the Mailbox contract. The ISM acts as a critical security layer, verifying messages between chains. Ensure that the default ISM settings align with your security requirements.
+- [Transfer Mailbox Ownership](/guides/transfer-mailbox-ownership.mdx): Transfer ownership of the Mailbox contract to a production-ready owner account. This step secures the Mailbox by ensuring only trusted parties have control over its configuration.
+
+### 2. Warp Route Deployment
+
+- [Remove Trusted Relayer](/guides/remove-trusted-relayer.mdx): Remove any test or development relayers that may have been configured initially. In production, ensure that only trusted, secure relayers are used to prevent unauthorized message relaying.
+- [Transfer Warp Route Ownership](/guides/transfer-warp-route-ownership.mdx): Transfer ownership of the Warp Route to the designated production owner. This step ensures that only trusted parties have control over critical Warp Route settings, such as ISM configurations, Validator options, and relayer settings.

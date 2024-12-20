@@ -1,0 +1,24 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import AddressTable from "@site/src/components/AddressTable";
+
+# Mailbox
+
+:::warning
+Hyperlane domain IDs are not guaranteed to match chain IDs.
+
+Please refer to the [Domains](../domains.mdx) page for the full list of Hyperlane domain IDs.
+:::
+
+<Tabs groupId="environment">
+<TabItem value="mainnet" label="Mainnet">
+
+<AddressTable environment="mainnet" contract="mailbox" withChainId />
+
+</TabItem>
+<TabItem value="testnet" label="Testnet">
+
+<AddressTable environment="testnet" contract="mailbox" withChainId />
+
+</TabItem>
+</Tabs>

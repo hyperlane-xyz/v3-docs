@@ -1,10 +1,35 @@
-import PrerequisitesPartial from '/docs/partials/warp-routes/_prerequisites-config-symbol.mdx'
-import WarpReadSymbolChainPartial from '/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx'
-import WarpApplySymbolConfigDefaultPartial from '/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx'
+import PrerequisitesPartial from "/docs/partials/warp-routes/_prerequisites-config-symbol.mdx";
+import WarpReadSymbolChainPartial from "/docs/partials/warp-routes/commands/_warp-read-symbol-chain.mdx";
+import WarpApplySymbolConfigDefaultPartial from "/docs/partials/warp-routes/commands/_warp-apply-symbol-config-default.mdx";
 
 # How to Transfer Ownership of Your Hyperlane Warp Route
 
-# Using the Hyperlane CLI
+This guide provides a step-by-step guide to transferring ownership of your Hyperlane Warp Route. It also explains the responsibilities, security considerations, and configuration options that come with owning a Warp Route.
+
+## Warp Route Ownership Overview
+
+Before transferring ownership of your Warp Route, it’s important to understand what this ownership entails. Ownership grants control over configuration settings, such as the Interchain Security Module (ISM), Validator options, and other parameters critical to security.
+
+:::info
+Once a mailbox is set up on the chain, anyone can deploy a Warp Route. Warp Routes are commonly deployed by a few different groups - the Abacus Works team, the asset issuer, the chain team, or the application team. 
+:::
+
+### Overview of Ownership
+
+- **Responsibilities:** As the owner, you take on responsibilities that include managing security configurations, like the ISM and Validator settings, to meet your specific security and operational goals.
+- **Security & Autonomy**: Ownership choices often come down to security and control preferences. We strongly recommend using a multisig like a Gnosis Safe for any production setups. Teams can choose **full ownership** for complete autonomy, or **joint ownership** on the multisig to share security management. Joint ownership enables collaborative decision-making on critical updates, which can increase trust for users and developers.
+
+### ISM, Validator, and Relayer Options
+
+When configuring or transferring a Warp Route, owners have flexibility in managing ISM, Validator, and Relayer settings:
+
+- **ISM Customization**: Each Warp Route may require a tailored ISM configuration depending on security needs. Owners can set up a custom ISM or use Hyperlane’s default setup.
+- **Validator Options**: Ownership allows you to choose or manage your Validator set. Hyperlane can handle Validator responsibilities by default, making it optional to run your own.
+- **Relayer Support**: Hyperlane provides Relayer services by default, but teams can operate their own Relayers for more control over security, reliability, and costs. This customization enables teams to tailor message handling to fit specific performance, compliance, or operational requirements.
+
+## Warp Route Ownership Transfer Guide
+
+## Using the Hyperlane CLI
 
 One of the quickest way to transfer a warp route ownership is by using the [Hyperlane CLI](https://docs.hyperlane.xyz/docs/reference/cli).
 
@@ -32,6 +57,7 @@ yourchain:
 By default, `warp read` will save the output to `CURRENT_DIR/configs/warp-route-deployment.yaml`. Follow these steps using the CLI to transfer the existing ownership to another address.
 
 ## Step 1: Configuration
+
 Update `owner` address in the `warp-route-deployment.yaml`
 
 ```diff title="warp-route-deployment.yaml"
@@ -66,7 +92,7 @@ You should see a batch of transactions executed on chain, and a final message in
 
 ## Step 3: Confirm
 
-To confirm that the owner was successfully updated using the Hyperlane CLI, run the folllowing command with your token symbol and the chain it is deployed on:
+To confirm that the owner was successfully updated using the Hyperlane CLI, run the following command with your token symbol and the chain it is deployed on:
 
 <WarpReadSymbolChainPartial />
 

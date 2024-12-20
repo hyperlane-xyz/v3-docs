@@ -1,16 +1,22 @@
 import TypescriptSdkPlaceholder from "/docs/partials/ts-sdk-placeholder.mdx";
 
-# How to Deploy a Bridge UI for Your Hyperlane Warp Route
+# Deploying a Bridge UI for Hyperlane Warp Routes
 
-After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route.mdx), you may want to deploy a front-end UI to faciliate interchain token transfers. You can fork the [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) and customize it to fit your needs.
+After you've successfully [deployed a Warp Route](/docs/guides/deploy-warp-route.mdx), you have two out-of-the-box options for setting up a frontend UI to support interchain token transfers:
 
-## Configure & Customize the UI
+1. **[Fork, customize, and deploy the Hyperlane Warp UI template](#fork--customize-the-ui)**
+2. **[Use a managed Superbridge instance](#superbridge)**
 
-Follow the [customization instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) for details on how to configure the UI's tokens and change the default branding assets/theme.
+## 1. Hyperlane Warp UI Template
 
-## Registry
+The [Hyperlane Warp UI template](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template) is a prebuilt Next.JS app you can easily customize and deploy.
 
-By default, the app will use the canonical Hyperlane registry published on NPM. To use use a different registry, you can set a URL using the `NEXT_PUBLIC_REGISTRY_URL` environment variable.
+- **Configuration**: Follow the [configuration instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/README.md) for details on how to configure the Warp UI Web application and run it locally.
+- **Customization**: Follow the [customization instructions](https://github.com/hyperlane-xyz/hyperlane-warp-ui-template/blob/main/CUSTOMIZE.md) for details on how to configure the UI's tokens and change the default branding assets/theme.
+
+### Registry
+
+By default, the app will use the canonical Hyperlane registry published on NPM. To use a different registry, you can set a URL using the `NEXT_PUBLIC_REGISTRY_URL` environment variable.
 
 ### Warp Route Config Example
 
@@ -21,39 +27,39 @@ Here's an example config for a Warp Route that connects USDC on Sepolia to Alfaj
   tokens: [
     {
       // The ChainName of the token
-      chainName: 'sepolia',
+      chainName: "sepolia",
       // See https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/token/TokenStandard.ts
       standard: TokenStandard.EvmHypCollateral,
       // The token metadata (decimals, symbol, name)
       decimals: 6,
-      symbol: 'USDC',
-      name: 'USD Coin',
+      symbol: "USDC",
+      name: "USD Coin",
       // The router address
-      addressOrDenom: 'YOUR_ROUTER_ADDRESS_1',
+      addressOrDenom: "YOUR_ROUTER_ADDRESS_1",
       // The address of the underlying collateral token
-      collateralAddress: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      collateralAddress: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
       // A path to a token logo image
-      logoURI: '/logos/usdc.png',
+      logoURI: "/logos/usdc.png",
       // The list of tokens this one is connected to
-      connections: [ { token: 'ethereum|alfajores|YOUR_ROUTER_ADDRESS_2' } ]
+      connections: [{ token: "ethereum|alfajores|YOUR_ROUTER_ADDRESS_2" }],
     },
     {
-      chainName: 'alfajores',
+      chainName: "alfajores",
       standard: TokenStandard.EvmHypSynthetic,
       decimals: 6,
-      symbol: 'USDC',
-      name: 'USD Coin',
-      addressOrDenom: 'YOUR_ROUTER_ADDRESS_2',
-      logoURI: '/logos/usdc.png',
-      connections: [ { token: 'ethereum|alfajores|YOUR_YOUR_ROUTER_ADDRESS_2' } ]
-    }
-  ]
+      symbol: "USDC",
+      name: "USD Coin",
+      addressOrDenom: "YOUR_ROUTER_ADDRESS_2",
+      logoURI: "/logos/usdc.png",
+      connections: [{ token: "ethereum|alfajores|YOUR_YOUR_ROUTER_ADDRESS_2" }],
+    },
+  ];
 }
 ```
 
 #### Chain Config Example
 
-Chain metadata can also be configured as needed. These are the same configs as the those used with the CLI for any of its deploy or send command (for example, those from the [deploy guide](/docs/deploy-hyperlane.mdx)).
+Chain metadata can also be configured as needed. These are the same configs as those used with the CLI for any of its deploy or send command (for example, those from the [deploy guide](/docs/deploy-hyperlane.mdx)).
 
 ```typescript
 {
@@ -77,22 +83,58 @@ anvil1: {
 
 Since the UI is a Next.js app, you can use your favorite hosting service to host it. We recommend [Vercel](https://vercel.com), which works well with Next. [AWS Amplify](https://aws.amazon.com/amplify) is another popular option.
 
-* Sign up for [Vercel](https://vercel.com/)
-* Create a new project
-* Connect it to your Git repo
-* Hit Deploy!
+1. Sign up for [Vercel](https://vercel.com/)
+2. Create a new project and connect it to your GitHub repo
+3. Hit Deploy!
 
 And that's it! Now you and your users can use the UI to send tokens from the collateral chain to remote chains, from one remote chain to another, and from any remote chain back to the collateral chain.
+
+
+:::tip
+If there is no production relayer running for these chains, you can run a lightweight CLI relayer that delivers only for your warp route in the background with:
+```bash
+hyperlane relayer --symbol TOKEN
+```
+This will allow you to test the warp UI locally or for a quick demo without needing to run a full production relayer in the cloud.
+:::
 
 ### Return gas
 
 A common problem with token bridges like Warp Routes is that a user may transfer a token like USDC to a new chain, but only afterwards realize that they do not have the native gas token to move those tokens anywhere including back.
 
-Besides warning users in the UI about ensuring they have gas, you can also faucet them some native gas tokens to improve their initial experience. To achieve this faucet, you can modify the Warp Route contracts to hold some balance of the native token and share that with recipients. In addition, you could build an off-chain service which just observes for [`ReceivedTransferRemote events`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/token/libs/TokenRouter.sol) and transfers the native gas token to the recipient.
-
+To improve the user experience, you could provide some native gas tokens via a faucet, in addition to UI warnings. To create a faucet, modify the Warp Route contracts to hold a balance of the native token to share with recipients.
 
 :::tip
 
 <TypescriptSdkPlaceholder />
 
 :::
+
+## 2. Superbridge
+
+[Superbridge](https://superbridge.app) is a custom bridge provider, they manage bridge frontends for hundreds of rollups, various tokens and different ecosystems.
+
+Getting a managed Superbridge for your warp route is a hassle free approach to operating your bridge. A few of their most popular Hyperlane powered bridges are [Renzo's ezETH bridge](https://renzo.superbridge.app) and [Elixir's deUSD bridge](https://elixir.superbridge.app). With a managed bridge instance, Superbridge will handle hosting, theming, upgrades & user support requests for your warp route.
+
+They've also built a handy feature that allows for self-service testing of recently deployed warp routes.
+
+### Testing your warp route
+
+1. Navigate to the [Superbridge Hyperlane Playground](https://hyperlane.superbridge.app)
+2. Click the settings cog and then click Customize ![](/img/deploy-warp-ui/superbridge-settings.png)
+3. Paste in the YAML file you generated when deploying your warp routes ![](/img/deploy-warp-ui/superbridge-paste-yaml.png)
+4. The specified tokens and networks will now be available for bridging.
+
+:::tip
+
+If any tokens or networks are missing after you've pasted in the YAML file, it's possible Superbridge doesn't support Hyperlane on this network just yet. [Reach out](mailto:support@superbridge.app) to Superbridge to see what the timeline is for adding support.
+
+:::
+
+### Bridging Widget
+
+In addition to the hosted UI, Superbridge offers a bridging widget, so you can embed your bridge in your own site. Checkout their [Widget Demos](https://widget-demos.superbridge.app/) site for an overview of all the configuration options available.
+
+### Go to Production
+
+To bring your warp route to production with Superbridge, [reach out to the Superbridge team](mailto:alex@superbridge.app). They can typically get a frontend up and running in about a day.

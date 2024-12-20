@@ -2,21 +2,22 @@ import CliChainsPartial from "/docs/partials/deploy-hyperlane/_cli-chains.mdx";
 
 # How to Bridge a Token with Hyperlane Warp Routes
 
-Permissionlessly create an interchain token bridge by deploying Hyperlane Warp Route contracts.
+This section provides a step-by-step walkthrough for creating an interchain token bridge by deploying Hyperlane Warp Route contracts.
 
 ## Prerequisites
 
-* [Hyperlane CLI](/docs/reference/cli.mdx)
-* A private key for contract transaction signing
+- [Hyperlane CLI](/docs/reference/cli.mdx)
+- A private key for contract transaction signing
 
 ## 1. Configuration
 
 ### Warp Route deployment config
 
 To deploy the route, you will need a Warp Route deployment config file. A valid config will specify:
-* Which token, on which chain, is this Warp Route being created for?
-* _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](/docs/reference/messaging/messaging-interface.mdx), [interchain gas](/docs/reference/hooks/interchain-gas.mdx), and [interchain security modules](/docs/reference/ISM/specify-your-ISM.mdx).
-* _Optional:_ The token standard - this includes fungible tokens using ERC20 or NFTs using ERC721, as well as ERC4626 yield-bearing tokens. Note ERC721 support is experimental and some Hyperlane tooling won't work for NFTs yet.
+
+- Which token, on which chain, is this Warp Route being created for?
+- _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](/docs/reference/messaging/messaging-interface.mdx), [interchain gas](/docs/reference/hooks/interchain-gas.mdx), and [interchain security modules](/docs/reference/ISM/specify-your-ISM.mdx).
+- _Optional:_ The token standard - this includes fungible tokens using ERC20 or NFTs using ERC721, as well as ERC4626 yield-bearing tokens. Note ERC721 support is experimental and some Hyperlane tooling won't work for NFTs yet.
 
 The easiest way to create one is with the CLI's config command:
 
@@ -24,79 +25,106 @@ The easiest way to create one is with the CLI's config command:
 hyperlane warp init
 ```
 
+This command provides a walkthrough, prompting you for configuration choices directly in the terminal. You will be asked to select specific options for each part of the configuration, such as the network type, chains to connect, token type, and whether to use trusted ISMs.
+
 :::tip
 
-If your config looks correct, you can now skip to [Step 2: Deployment](#2-deployment).
-Or see below for details on how to define your config manually.
-
-:::
+- If your config looks correct, you can now skip to [Step 2: Deployment](#2-deployment).
+  Or see below for details on how to define your config manually.
+- If you need any help setting up a token bridge, reach out on #developers on Discord or [get in touch](https://forms.gle/KyRTaWvo4XNmNvrq6).
+  :::
 
 #### Deployment config schema
 
-Your config consist of a map of chain names to deployment configs. Each config sets details about the token for which you are creating a Warp Route.
+Your config consists of a map of chain names to deployment configs. Each config sets details about the token for which you are creating a Warp Route.
 
-* **type**:
-    - Set this to `collateral` to create a basic Warp Route for an ERC20/ERC721 token
-    - Set this to `collateralVault` to create a yield-bearing Warp Route for an ERC20 token that deposits into an existing ERC4626 vault
-    - Set this to `native` to create a Warp Route for a native token (e.g. ether)
-* **address:**
-    - If using `collateral`, the address of the ERC20/ERC721 contract for which to create a route
-    - If using `collateralVault`, the address of the existing ERC4626 vault to deposit collateral into
-* **isNft:** If using `collateral` for an ERC721 contract, set to `true`.
+- **type**:
+  - Set this to `collateral` to create a basic Warp Route for an ERC20/ERC721 token
+  - Set this to `collateralVault` to create a yield-bearing Warp Route for an ERC20 token that deposits into an existing ERC4626 vault
+  - Set this to `native` to create a Warp Route for a native token (e.g. ether)
+- **address:**
+  - If using `collateral`, the address of the ERC20/ERC721 contract for which to create a route
+  - If using `collateralVault`, the address of the existing ERC4626 vault to deposit collateral into
+- **isNft:** If using `collateral` for an ERC721 contract, set to `true`.
 
 #### Optional fields
 
 You may specify the following optional values in your config entries. If no values are provided, the deployer will attempt to pull these values from elsewhere. In the case of metadata (symbol, name decimals), it will query the contract. For addresses (mailbox, ISM) it will check the registry, either yours (if provided) or the [default](/docs/reference/registries#default-registry).
 
-* **symbol:** The token symbol
-* **name:** The token name
-* **decimals:** The number of decimal places for the token
-* **mailbox:** The address of the [mailbox](/docs/reference/messaging/messaging-interface.mdx) contract to use to send and receive messages
-* **interchainSecurityModule:** The address of an [interchain security modules](/docs/reference/ISM/specify-your-ISM.mdx) to verify interchain messages
+- **symbol:** The token symbol
+- **name:** The token name
+- **decimals:** The number of decimal places for the token
+- **mailbox:** The address of the [mailbox](/docs/reference/messaging/messaging-interface.mdx) contract to use to send and receive messages
+- **interchainSecurityModule:** The address of an [interchain security modules](/docs/reference/ISM/specify-your-ISM.mdx) to verify interchain messages
 
 #### Example
 
 For a minimal Warp deployment config example using local anvil chains, see [`warp-route-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-route-deployment.yaml).
 
-### Chain configs
+### Chain Configurations
 
 <CliChainsPartial />
 
-## 2. Deployment
+:::warning
 
-### Deploy
+Where possible, be sure to **reuse any existing chains** from the registry/CLI in your warp route config instead of setting up a new mailbox.
 
-Run the following command to initiate the Warp Route deployment:
+:::
+
+## 2. Deploy the Warp Route
+
+Once your configuration is ready, initiate the Warp Route deployment with:
 
 ```bash
 hyperlane warp deploy
 ```
 
-Once finished, the CLI will create two new artifact files: `otherchain-yourchain-addresses.yaml` and `otherchain-yourchain-config.yaml` under `$HOME/.hyperlane/deployments/warp_routes/`. 
+During deployment, the CLI requires access to your private key to sign transactions. You can set this up in one of two ways:
 
-The first file contains addresses for the newly deployed Warp Route contracts. The second is a config file which can be used with the CLI and Warp UI to interact with the new Warp Route.
+1. **Environment Variable**: Set your private key as HYP_KEY to avoid entering it each time:
+
+   ```bash
+   export HYP_KEY=<your_private_key>
+   ```
+
+2. **Manual Entry**: Alternatively, you can enter the private key directly when prompted during deployment.
+
+The `hyperlane warp deploy` command will create two new artifact files:
+
+1. `otherchain-yourchain-addresses.yaml`: Contains addresses for the newly deployed Warp Route contracts.
+2. `otherchain-yourchain-config.yaml`: A config file for interacting with the Warp Route via the CLI and Warp UI.
+
+These files will be located under `$HOME/.hyperlane/deployments/warp_routes/`.
 
 ## 3. Testing
 
 You can initiate a test transfer of a single wei with the following command:
 
 ```bash
-hyperlane warp send --relay --warp $HOME/.hyperlane/deployments/warp_routes/TOKEN/corechain-yourchain-config.yaml
+hyperlane warp send --relay --symbol TOKEN
 ```
 
-You can test in either direction between where you have the warp route set. However, if you deployed `native` and `synthetic` warp routes, you must select the origin with the `native` route deployed. By default, the amount sent is `1` of the smallest unit of the token.
+The `--relay` flag is optional and will relay the message to the destination chain.
+
+You can also run a relayer that delivers only for your warp route in the background with:
+
+```bash
+hyperlane relayer --symbol TOKEN
+```
+
+You can test in either direction between where you have the warp route set. However, if you deployed `native` or `collateral` warp route, you must select the origin where the route corresponding to where that `native` or `collateral` type is deployed. By default, the amount sent is `1` of the smallest unit of the token.
 
 :::tip
 
 **Next Steps**
 
-- If you were following the [Deploy Hyperlane to a new chain](/docs/deploy-hyperlane#3-warp-route) guide, and want other chains to connect with you, as well as to take this to production with Abacus Works, follow the [Submit to Registry](/docs/deploy-hyperlane#4-submit-to-registry) guide.
+- If you were following the [Deploy Hyperlane to a new chain](/docs/deploy-hyperlane#3-warp-route) guide and want to connect other chains or move to production with Abacus Works, continue with the [Submit to Registry](/docs/deploy-hyperlane#4-submit-to-registry) guide.
 
-- If you want interact with Warp Routes using a UI. Continue on to the [Warp UI docs](/docs/guides/deploy-warp-route-UI.mdx) for details on how to set it up.
+- For interacting with Warp Routes via a UI, continue to the [Warp UI docs](/docs/guides/deploy-warp-route-UI.mdx).
 
 :::
 
-## Learn More 
+## Learn More
 
 - Check out the [Warp Route](/docs/reference/applications/warp-routes) reference page for more information on the interface and security implications of a Warp Route. The [interface](/docs/reference/applications/warp-routes#interface) section covers calling `transferRemote` to transfer tokens to a specified recipient on a destination chain. Note that you'll have to prompt for a token approval prior to calling `transferRemote`.
 

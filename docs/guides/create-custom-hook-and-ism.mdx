@@ -42,7 +42,7 @@ You can implement and utilize your own hook and ISM pattern as per your requirem
 Hooks currently expect metadata to be formatted with the [`StandardHookMetadata` library](../reference/libraries/hookmetadata.mdx).
 :::
 
-You can also inherit from our `AbstractMessageIdAuthorizedIsm` which allows for access control for a intermediate `verifyMessageId` function call which sets in storage the messageId to true if received from the authorized `AbstractMessageIdAuthHook` hook. This pattern is used currently in the [`OpStackHook`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/ef2ece300e71a30e8f4f59e5b26e21eea012d43b/solidity/contracts/hooks/OPStackHook.sol#L33C8-L33C8) \<> [`OpStackIsm`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/ef2ece300e71a30e8f4f59e5b26e21eea012d43b/solidity/contracts/isms/hook/OPStackIsm.sol#L31) pattern.
+You can also inherit from our `AbstractMessageIdAuthorizedIsm` which allows for access control for an intermediate `verifyMessageId` function call which sets in storage the messageId to true if received from the authorized `AbstractMessageIdAuthHook` hook. This pattern is used currently in the [`OpStackHook`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/ef2ece300e71a30e8f4f59e5b26e21eea012d43b/solidity/contracts/hooks/OPStackHook.sol#L33C8-L33C8) \<> [`OpStackIsm`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/ef2ece300e71a30e8f4f59e5b26e21eea012d43b/solidity/contracts/isms/hook/OPStackIsm.sol#L31) pattern.
 
 ### Workflow
 
@@ -131,7 +131,7 @@ mailbox.dispatch(
   - on receiving the message for the relayer, the mailbox will call your ISM contract (specified in your recipient address) which checks if the messageId in the `verifiedMessages` mapping is true and returns true to the mailbox and vice versa.
 
 :::warning
-`AbstractMessageIdAuthorizedIsm` can send `msg.value` through `postDispatch` calls and we utilize the `verifiedMessages`' little endian 255 bits for storing the `msg.value` and the top bit for the actual receipt of the messageId delivery. Therefore, you can send upto 2^255 amount of value of the native token from origin and the destination ISM can only receive 2^255 amount of value of native token on the destination chain.
+`AbstractMessageIdAuthorizedIsm` can send `msg.value` through `postDispatch` calls and we utilize the `verifiedMessages`' little endian 255 bits for storing the `msg.value` and the top bit for the actual receipt of the messageId delivery. Therefore, you can send up to 2^255 amount of value of the native token from origin and the destination ISM can only receive 2^255 amount of value of native token on the destination chain.
 :::
 
 ### Access Control

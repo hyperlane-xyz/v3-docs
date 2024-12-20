@@ -36,6 +36,8 @@ hyperlane core init --advanced
 
 When asked about the ISM type, choose `messageIdMultisigIsm`. In the context of this guide, we will be using a 1/1 multisig, so choose a threshold of `1` and enter the address of your key.
 
+When asked about the default hook type and required hook type, choose `merkleTreeHook`.
+
 ### Dry Run a Core Deployment
 
 :::note
@@ -78,7 +80,7 @@ We are now ready to generate an agent config using our deployed contracts that w
 hyperlane registry agent-config --chains chain1
 ```
 
-Set the `CONFIG_FILES` enviroment variable to the path of the agent config generated.
+Set the `CONFIG_FILES` environment variable to the path of the agent config generated.
 ```bash
 export CONFIG_FILES=/full/path/to/configs/agent-config.json
 ```

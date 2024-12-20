@@ -39,7 +39,7 @@ There are six steps in this guide:
 
 ## 3. Run a validator
 
-Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](../protocol/ISM/multisig-ISM.mdx). Learn more about what validators do [here](../protocol/agents/validators.mdx).
+Validators provide the security for messages sent _from_ your chain to remote chains. They're only required when using a [Multisig ISM](docs/protocol/ISM/multisig-ISM.mdx). Learn more about what validators do [here](../protocol/agents/validators.mdx).
 
 ### Setup directories
 
@@ -52,7 +52,7 @@ export CONFIG_FILES=/full/path/to/configs/agent-config-{timestamp}.json
 Next, create a local directory for your validator to write its signatures to. Remember the path, as you will need this when configuring your validator.
 
 :::danger
-The validator signatures path will be written on-chain as part of the [validator announcement transaction](./implementation-guide.mdx#validator-announce). **Be careful not to reveal any security-sensitive or personal information!**
+The validator signatures path will be written on-chain as part of the [validator announcement transaction](docs/guides/implementation-guide.mdx#validator-announce). **Be careful not to reveal any security-sensitive or personal information!**
 :::
 
 ```sh
@@ -98,7 +98,7 @@ Make sure the validator key corresponds to the address provided when setting up 
 
 :::
 
-To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
+To learn more about all the parameters you can change, read the [agent configuration reference](docs/operate/config-reference.mdx).
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
@@ -145,7 +145,7 @@ To solve this issue, you can mount directories on your file system into the cont
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration between docker instances running validators for different origin chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the chain name and validator key.
+Hardcoding these paths deduplicates the configuration between docker instances running validators for different origin chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the chain name and validator key.
 
 ```sh
 ...
@@ -189,7 +189,7 @@ softwareupdate --install-rosetta --agree-to-license
 Now that you understand more about configuring validator arguments, pull the latest docker image:
 
 ```sh
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
 ```
 
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_validator_<your_chain_name>` if it does not exist yet.
@@ -207,7 +207,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_validator_<your_chain_name>,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures \
-  gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
   ./validator \
   --db /hyperlane_db \
   --originChainName <your_chain_name> \
@@ -255,11 +255,11 @@ And run the binary directly:
 </TabItem>
 </Tabs>
 
-For further information, check out the [Validators guide](../operate/validators/run-validators.mdx).
+For further information, check out the [Validators guide](docs/operate/validators/run-validators.mdx).
 
 ## 4. Run a relayer
 
-Relayers deliver interchain messages sent between the local and remote chains. Learn more about what relayers do [here](../protocol/agents/relayer.mdx).
+Relayers deliver interchain messages sent between the local and remote chains. Learn more about what relayers do [here](docs/protocol/agents/relayer.mdx).
 
 You should already have set the `CONFIG_FILES` environment variable to the path of the agent config generated in the [agent configs](#agent-configs) step. If not, do so now.
 
@@ -269,7 +269,7 @@ export CONFIG_FILES=/full/path/to/configs/agent-config.json
 
 ### Configure
 
-There are numerous parameters that validators can be configured with. For this guide, we are concerned with just a handful:
+There are numerous parameters that relayers can be configured with. For this guide, we are concerned with just a handful:
 
 | Parameter                       | Description                                                                              |
 | ------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -280,10 +280,10 @@ There are numerous parameters that validators can be configured with. For this g
 | `--metrics-port`                | Optional. The port to expose prometheus metrics on, defaults to `9090`.                  |
 
 :::tip
-Your set of relay chains should include both the origin chain and destination chain.
+Your set of relay chains should include both the origin chain and the destination chain.
 :::
 
-To learn more about all the parameters you can change, read the [agent configuration reference](../operate/config-reference.mdx).
+To learn more about all the parameters you can change, read the [agent configuration reference](docs/operate/config-reference.mdx).
 
 <Tabs groupId="docker">
 <TabItem value="docker" label="Using Docker">
@@ -306,7 +306,7 @@ For the relayer, we provide almost the same arguments to Docker as the validator
 ...
 ```
 
-Hardcoding these paths deduplucates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
+Hardcoding these paths deduplicates the configuration between docker instances running relayers for different sets of chains. This makes it easier to pass the right arguments when running the container. See the example below, where the only items to be configured differently for different chains are the list of chains to relay between and the relayer key.
 
 </TabItem>
 <TabItem value="from-source" label="Building from source">
@@ -337,13 +337,13 @@ softwareupdate --install-rosetta --agree-to-license
 If you haven't already pulled the Docker image, do this now by running:
 
 ```sh
-docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821
+docker pull --platform linux/amd64 gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0
 ```
 
 Before running, ensure that all directories you need to mount are present. This may involve creating `hyperlane_db_relayer` if it does not exist yet.
 
 ```sh
-mkdir -p hyperlane_db_validator_<your_chain_name>
+mkdir -p hyperlane_db_relayer
 ```
 
 Finally, run the relayer:
@@ -355,7 +355,7 @@ docker run \
   --mount type=bind,source=$CONFIG_FILES,target=/config/agent-config.json,readonly \
   --mount type=bind,source="$(pwd)"/hyperlane_db_relayer,target=/hyperlane_db \
   --mount type=bind,source="$(pwd)"/$VALIDATOR_SIGNATURES_DIR,target=/tmp/validator-signatures,readonly \
-  gcr.io/abacus-labs-dev/hyperlane-agent:7a8478b-20240703-113821 \
+  gcr.io/abacus-labs-dev/hyperlane-agent:agents-v1.0.0 \
   ./relayer \
   --db /hyperlane_db \
   --relayChains <chain_1_name>,<chain_2_name> \
@@ -377,7 +377,7 @@ cargo run --release --bin relayer -- \
     --metrics-port 9091
 ```
 
-The metrics port is overriden to avoid clashing with the validator.
+The metrics port is overridden to avoid clashing with the validator.
 
 :::note (optional) Run the binary directly
 
@@ -403,7 +403,7 @@ And run the binary directly:
 </TabItem>
 </Tabs>
 
-For further information, check out the [Relayer guide](../operate/relayer/run-relayer.mdx).
+For further information, check out the [Relayer guide](docs/operate/relayer/run-relayer.mdx).
 
 ## 5. Send test messages
 

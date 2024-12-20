@@ -1,4 +1,13 @@
 # `StandardHookMetadata` Library
 
+The `StandardHookMetadata` library provides utilities for handling and formatting metadata used in Hyperlane hooks. This library enables you to pack and extract information such as gas limits, refund addresses, and custom metadata for messages.
+
+- **Parse Metadata**: Functions like `variant`, `msgValue`, `gasLimit`, and `refundAddress` help you extract specific metadata fields from ABI-encoded data.
+- **Custom Metadata**: `getCustomMetadata` retrieves any additional metadata beyond the standard fields.
+- **Format Metadata**: `formatMetadata` lets you construct ABI-encoded metadata with fields like gas limit, refund address, and custom data.
+
+## StandardHookMetadata Library
+
 ```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/hooks/libs/StandardHookMetadata.sol
+
 ```

@@ -9,7 +9,23 @@ import DomainsTable from '@site/src/components/DomainsTable';
 
 This list includes only the deployments on chains that are managed by Abacus Works (our legal entity). Anybody can deploy Hyperlane on any chain [permissionlessly](../deploy-hyperlane.mdx) - we are building a registry to reflect the community's permissionless deployments.
 
-Hyperlane uses unique IDs for each Hyperlane-supported chain. When possible Hyperlane domain IDs match EVM chain IDs, but this is not guaranteed as we support non-EVM chains as well.
+Hyperlane uses unique IDs for each Hyperlane-supported chain. When possible Hyperlane domain IDs match EVM chain IDs, but this is **not guaranteed** as we support non-EVM chains as well.
+
+:::warning
+Some Hyperlane domain IDs do not match their corresponding EVM chain IDs, such as:
+- `immutablezkevmmainnet`
+- `rarichain`
+- `rootstockmainnet`
+- `alephzeroevmmainnet`
+- `chilizmainnet`
+- `lumiaprism`
+- `superpositionmainnet`
+- `flowmainnet`
+- `metal`
+- `polynomialfi`
+
+Please refer to the table below for the full list of Hyperlane domain IDs.
+:::
 
 When [sending a message](../your-first-message.mdx), users must provide the domain ID of the destination chain. When [receiving a message](./messaging/receive.mdx), the recipient will be passed the domain ID of the origin chain.
 
