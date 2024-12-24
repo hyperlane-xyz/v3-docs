@@ -144,7 +144,7 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
 
    - The funding should be enough to cover rent for all accounts related to the Warp Route, pay for transaction fees, and fund the [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts (more on this below). For reference, the observed rent from one Hyperlane Warp Route account is `2.35 SOL` on Solana and `0.025 ETH` on Eclipse, so it's a good idea to fund the key with at least `5 SOL` / `0.05 ETH`.
 
-2. Deploy the warp route with `warp-route deploy`:
+2. Deploy the warp route using the `warp-route deploy` subcommand from the `rust/sealevel/client` directory:
 
    Example usage:
 
@@ -160,19 +160,26 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
    --ata-payer-funding-amount 10000000
    ```
 
+   - Overview of CLI flags:
+     - `--warp-route-name`: should match the directory name picked for the Warp Route earlier
+     - `--environment`: keep as `mainnet3`
+     - `--environments-dir ../environments`: keep as `../environments`
+     - `--built-so-dir`: keep as `../../target/deploy`, as it points to the compilation output directory of Warp Route programs
+     - `--token-config-file`: point this to the `token-config.json` file created earlier
+     - `--chain-config-file`: keep as `../environments/mainnet3/chain-config.json`, as this file has been pre-populated with chain settings for all Hyperlane-supported chains
+     - `--ata-payer-funding-amount`: this flag specifies by how much to fund the Warp Route [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts on both chains the deployment happens on. It's expressed in the lowest currency denomination, which means that it's interpreted as Lamports on Solana and Gwei on Eclipse (since it uses ETH as its native currency). In the command below, the value `10000000` works out to `0.001` ETH and `0.001` SOL, which is enough for an initial deployment. ATA payers can always be topped up later, so it’s fine to pick a small value. For reference, every Warp Route transfer costs the ATA payer `0.000000001 SOL` (on Solana) and `0.000021 ETH` (on Eclipse) on the destination chain.
+
+   <br />
+
    :::info
    Note that since our goal was to make this tooling accessible to developers as soon as possible, it's not as reliable as we would hope. Please get in touch through a [GitHub issue](https://github.com/hyperlane-xyz/hyperlane-monorepo/issues) or via the `developers` channel on [Discord](https://discord.gg/2BYk6kV7) if you run into issues.
    :::
 
-   - Overview of CLI flags:
-     - `--warp-route-name` - should match the directory name picked for the Warp Route earlier
-     - `--environment` - keep as `mainnet3`
-     - `--environments-dir ../environments` - keep as `../environments`
-     - `--built-so-dir` - keep as `../../target/deploy`, as it points to the compilation output directory of Warp Route programs
-     - `--token-config-file` - point this to the `token-config.json` file created earlier
-     - `--chain-config-file` - keep as `../environments/mainnet3/chain-config.json`, as this file has been pre-populated with chain settings for all Hyperlane-supported chains
-     - `--ata-payer-funding-amount` - this flag specifies by how much to fund the Warp Route [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts on both chains the deployment happens on. It's expressed in the lowest currency denomination, which means that it's interpreted as Lamports on Solana and Gwei on Eclipse (since it uses ETH as its native currency). In the command below, the value `10000000` works out to `0.001` ETH and `0.001` SOL, which is enough for an initial deployment. ATA payers can always be topped up later, so it’s fine to pick a small value. For reference, every Warp Route transfer costs the ATA payer `0.000000001 SOL` (on Solana) and `0.000021 ETH` (on Eclipse) on the destination chain.
-   - The script is unlikely to work from the first try due to network congestion and program size, but the script should be idempotent and skip contracts that were already deployed / initialized. Errors like `Error: 11 write transactions failed` or `Error: Custom: Invalid blockhash` can always be retried by re-running the command. If retriable errors persist, consider increasing the compute unit price [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/44e0ff0733baf0da4d2b0304915f5f6cce92ffc7/rust/sealevel/client/src/cmd_utils.rs#L76).
+   #### Troubleshotting tips
+
+   - The script is unlikely to work from the first try due to network congestion and program size, but the script should be idempotent and skip contracts that were already deployed/initialized.
+
+     - Errors like `Error: 11 write transactions failed` or `Error: Custom: Invalid blockhash` can always be retried by re-running the command. If retriable errors persist, consider increasing the compute unit price [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/44e0ff0733baf0da4d2b0304915f5f6cce92ffc7/rust/sealevel/client/src/cmd_utils.rs#L76).
 
      - For other error types, you may need to close the buffers and programs of your deployer key and redeploy everything from scratch. To display buffers and programs and close them one by one, follow the commands below. Closing programs also helps recover their rent deposit.
 
@@ -186,12 +193,17 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
        ```
 
    - To increase the odds of the deployment succeeding faster, you can set a private RPC url in the `--chain-config-file` passed to the script. (e.g. in `solanamainnet.rpcUrls.http`)
-   - If deploying a synthetic, the command below will create a new token mint and use the metadata token extension to set the token name, symbol, and metadata json using the fields in the `--token-config-file` file
-
-   - Run `warp-route deploy`
+   - If deploying a synthetic token, the command below will create a new token mint and use the metadata token extension to set the token name, symbol, and metadata json using the fields in the `--token-config-file` file, run `warp-route deploy`:
      ```bash
      # run from `rust/sealevel/client`
-     cargo run -- -k ./warp-route-deployer-key.json warp-route deploy --warp-route-name eclipsesol --environment mainnet3 --environments-dir ../environments --built-so-dir ../../target/deploy --token-config-file ../environments/mainnet3/warp-routes/eclipsesol/token-config.json  --chain-config-file ../environments/mainnet3/chain-config.json --ata-payer-funding-amount 10000000
+     cargo run -- -k ./warp-route-deployer-key.json warp-route deploy \
+      --warp-route-name eclipsesol \
+      --environment mainnet3 \
+      --environments-dir ../environments \
+      --built-so-dir ../../target/deploy \
+      --token-config-file ../environments/mainnet3/warp-routes/eclipsesol/token-config.json  \
+      --chain-config-file ../environments/mainnet3/chain-config.json \
+      --ata-payer-funding-amount 10000000
      ```
 
 ## Interacting with the Warp Route
@@ -202,7 +214,9 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
 
     ```bash
     # run from `rust/sealevel/client`
-    cargo run -- -k ./warp-route-deployer-key.json -u <CHAIN_RPC_URL> token query --program-id <PROGRAM_ID> synthetic
+    cargo run -- -k ./warp-route-deployer-key.json \
+    -u <CHAIN_RPC_URL> token query \
+    --program-id <PROGRAM_ID> synthetic
     ```
 
     Replace:
@@ -238,7 +252,8 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
     Look for the balance of the recipient on the destination chain, by querying the Mint Account address:
 
     ```bash
-    spl-token balance --owner ./warp-route-deployer-key.json -u <DESTINATION_CHAIN_RPC_URL> <MINT_ACCOUNT_ADDRESS>
+    spl-token balance --owner ./warp-route-deployer-key.json \
+    -u <DESTINATION_CHAIN_RPC_URL> <MINT_ACCOUNT_ADDRESS>
     ```
 
     - The final parameter here is the SPL token ID. So if this is a synthetic warp route you want to check the balance of, you need to use the Mint address from a prior query you made a few steps ago.
