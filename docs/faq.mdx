@@ -28,16 +28,7 @@ If you’re reading this FAQ, you’ve found the docs which is a great place to 
 
 ## Technical Questions
 
-**How is Hyperlane secured?**  
-Hyperlane is secured by its modular security stack featuring Interchain Security Modules (ISMs). Developers can configure various pre-built ISMs, compose them with each other, or even create custom ISMs based on their application's needs.
-
-A modular approach to security ensures that Hyperlane will continue to stay up to the latest industry advances in security models.
-
-**Who are the Hyperlane validators?**  
-Hyperlane is secured with a modular security stack featuring ISMs. There is no protocol-enshrined security model, let alone validator set. That said, most Hyperlane deployments are configured with a Default ISM, which specifies the security model to use if the message recipient has not specified an ISM override.
-
-**Where is Hyperlane deployed?**  
-A list of known deployments can be found on the [contract addresses](./reference/addresses/mailbox-addresses.mdx) page.
+### Messaging
 
 **What happens when I send a message on Hyperlane?**  
 See the [send](./reference/messaging/send.mdx) and [receive](./reference/messaging/receive.mdx) pages for more details. In summary:
@@ -61,6 +52,35 @@ For chat use cases, consider [XMTP](https://xmtp.org/), [Push](https://push.org/
 **Is Hyperlane a token bridge?**  
 Not exactly. Hyperlane is a general message passing (GMP) protocol that allows communication between blockchains. Token bridges are just one of many types of applications that can be built on top of Hyperlane!
 
+### Deployment
+
+**Where is Hyperlane deployed?**  
+A list of known deployments can be found on the [contract addresses](./reference/addresses/mailbox-addresses.mdx) page.
+
+### Advanced Topics
+
+**How is Hyperlane secured?**  
+Hyperlane is secured by its modular security stack featuring Interchain Security Modules (ISMs). Developers can configure various pre-built ISMs, compose them with each other, or even create custom ISMs based on their application's needs.
+A modular approach to security ensures that Hyperlane will continue to stay up to the latest industry advances in security models.
+
+**Who are the Hyperlane validators?**  
+Hyperlane is secured with a modular security stack featuring ISMs. There is no protocol-enshrined security model, let alone validator set. That said, most Hyperlane deployments are configured with a Default ISM, which specifies the security model to use if the message recipient has not specified an ISM override.
+
+**How many validators does Hyperlane have, and who operates them?**  
+The number of validators depend on the Interchain Security Module (ISM) configuration. The Default ISM uses a specific validator set, and you can view the details such as threshold, operator and address [here](./reference/default-ism-validators).
+
+**How can we ensure message integrity?**  
+Hyperlane's message security is driven by the Interchain Security Module (ISM) configuration. By default, messages rely on the Default ISM's validator set, which requires a quorum of validators to sign for security. In the unlikely event of a validator compromise, the security of messages could be impacted. However, developers have the flexibility to configure their own ISM, enabling them to customize and strengthen the security model to suit their application's needs.
+
+**Does the source chain receive confirmation whether the transaction was executed on the destination chain?**  
+Currently, the source chain does not automatically receive a confirmation of execution from the destination chain. However, this functionality can be added by customizing the `handle` function on the destination chain. For more information, refer to the [handle function](./reference/messaging/receive#handle).
+
+**Why are outbound message IDs stored in the Merkle tree?**  
+Outbound message IDs are stored in the Merkle tree to efficiently track and verify messages. This mechanism ensures validators can accurately detect and sign new messages as they are created.
+
+**Why do validators call `MerkleTreeHook.latestCheckpoint()`?**  
+Validators use the [`MerkleTreeHook.latestCheckpoint()`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/5e9b8ba7ab0f54e92b3cf32806fae95eb23ad0f8/solidity/contracts/hooks/MerkleTreeHook.sol#L49) function to determine when new transactions need to be indexed. This polling mechanism ensures validators can immediately start signing new messages without the need to backfill the entire tree.
+
 ## Community & Contributions
 
 **How can I join the Hyperlane community?**  
@@ -71,3 +91,6 @@ Check out our open roles [here](https://jobs.lever.co/Hyperlane).
 
 **How can I contribute to improve this documentation?**  
 You can make a PR to edit this documentation directly via the [docs repo](https://github.com/hyperlane-xyz/v3-docs).
+
+**Where can I get support or ask questions about Hyperlane?**  
+You can get support and ask questions on our [Hyperlane Discord](https://discord.com/invite/hyperlane), where the community and team are active and ready to assist.
