@@ -87,7 +87,7 @@ To learn more about all the parameters you can change, read the [agent configura
 
 Unless you are running Docker on Linux, you will also need to update the agent configuration for your network. This is because Docker does not support the [`host` network mode](https://docs.docker.com/network/drivers/host/) on Mac, Windows or Windows Server.
 
-To do this, navigate to the agent-configuration at `$CONFIG_FILES` and replace all instances of "localhost" or "127.0.0.1" in to `host.docker.internal`. For example:
+To do this, navigate to the agent-configuration at `$CONFIG_FILES` and replace all instances of "localhost" or "127.0.0.1" into `host.docker.internal`. For example:
 
 ```json
 ...
