@@ -216,13 +216,14 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
     # run from `rust/sealevel/client`
     cargo run -- -k ./warp-route-deployer-key.json \
     -u <CHAIN_RPC_URL> token query \
-    --program-id <PROGRAM_ID> synthetic
+    --program-id <PROGRAM_ID> <TOKEN_TYPE>
     ```
 
     Replace:
 
         - `<CHAIN_RPC_URL>`: e.g., https://api.devnet.solana.com
         - `<PROGRAM_ID>`: base58 address from program-ids.json (located in your warp-route directory).
+        - `<TOKEN_TYPE>`: native|synthetic|collateral
 
     If deploying a synthetic token, query the Mint Authority account to check out the metadata:
 
