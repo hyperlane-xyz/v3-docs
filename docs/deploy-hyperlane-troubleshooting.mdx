@@ -1,6 +1,8 @@
 # How to Troubleshoot Your Hyperlane Deployment
 
-## Logging
+## General Troubleshooting
+
+### Logging
 
 Logging levels and formats can be configured for Hyperlane tooling using the following two environment variables:
 
@@ -9,13 +11,16 @@ Logging levels and formats can be configured for Hyperlane tooling using the fol
 
 The [Hyperlane CLI](/docs/reference/cli.mdx) also allows configuring logging via the `--log` and `--verbosity` flags.
 
-## Chain configuration
+### Chain configuration
 
 Within your working directory, you may find a `chains/` yaml files organized by chain name. These `metadata.yaml` files describe the information needed to use the chain in Hyperlane deployments and apps.
 
 You can define a full configuration for any new chain in this file. The metadata that can be configured is defined in this [example configuration](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/chain-config.yaml). You can also find the chain metadata schema at [chainMetadataTypes.ts](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/sdk/src/metadata/chainMetadataTypes.ts).
 
 Here's an example configuration for two local anvil chains:
+
+<details>
+<summary>Example: Two Local Anvil Chains</summary>
 
 ```yaml
 anvil1:
@@ -38,6 +43,8 @@ anvil2:
     - http: http://localhost:8555
 ```
 
+</details>
+
 You can also extend a core chain config by providing the fields to be overridden:
 
 ```yaml
@@ -46,11 +53,12 @@ sepolia:
     confirmations: 2
 ```
 
-### Override RPC URLs
+#### Override RPC URLs
 
 You can override the RPC urls by extending the core chain config.
 
-In the example below, you can see how to define an array of RPCs and also adjust the retry parameters for any of them.
+<details>
+<summary>Example: Define RPC URLs array and adjust retry settings</summary>
 
 ```yaml
 demochain:
@@ -68,7 +76,9 @@ sepolia:
         maxRequests: 10
 ```
 
-### Override transaction settings
+</details>
+
+#### Override transaction settings
 
 Transaction overrides are any properties to include when forming transaction requests. For example:
 
@@ -96,7 +106,42 @@ If you are overriding the nonce in the chain configuration, ensure you are updat
 
 :::
 
-## `eth_getStorageAt()` Compatibility
+## Agent Troubleshooting
+
+### Validator Troubleshooting
+
+- `Validator has not announced any storage locations` Warning:
+
+  - **Reason**: This occurs when the relayer cannot retrieve validator signatures required to process a message.
+  - **Solution**:
+    - Ensure the validators have announced their storage locations. Check validator logs for a message such as:
+      `Validator has announced signature storage location, locations: ["file:///tmp/hyperlane-validator-signatures-local"]`
+    - Verify that each validator has a unique signature storage path (`--checkpointSyncer.path`) to prevent overwriting.
+    - Confirm that the relayer has read access to the storage paths.
+
+- “No ISM Found for Origin" Error
+
+  - **Reason**: This occurs when the Interchain Security Module (ISM) on your chain does not recognize the origin chain.
+  - **Solution**:
+    - Ensure the ISM configuration includes the Validators for the origin chain.
+    - If it doesn't, add validators for the origin chain to your ISM.
+    - Restart the relayer after updating the ISM configuration.
+
+### Relayer Troubleshooting
+
+- Relayer Selecting Incorrect ISM
+  - **Reason**: This error occurs when the Interchain Security Module (ISM) on your chain does not recognize the origin chain.
+  - **Solution**:
+    - Check your chain's ISM deployment configuration.
+    - Set the ISM type during deployment to ensure the correct one is used:
+    ```yaml
+    { "ismType": "messageIdMultisig", "validators": ["<validator_address>"] }
+    ```
+    - Verify the ISM address in the relayer configuration.
+
+## Advanced Compatibility Troubleshooting
+
+### `eth_getStorageAt()` Compatibility
 
 Some chains do not natively support the [`eth_getStorageAt()`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getstorageat) API. If you're deploying on one of these chains and encounter issues, review the changes made to the Hyperlane codebase in this [commit](https://github.com/hyperlane-xyz/hyperlane-monorepo/commit/871df7a4dce203ff5cf23ae654d03743dc00ea61).
 
