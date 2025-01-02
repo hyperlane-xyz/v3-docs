@@ -1,4 +1,4 @@
-# How to Troubleshoot Your Hyperlane Deployment
+# Hyperlane Troubleshooting Guide
 
 ## General Troubleshooting
 
@@ -11,7 +11,7 @@ Logging levels and formats can be configured for Hyperlane tooling using the fol
 
 The [Hyperlane CLI](/docs/reference/cli.mdx) also allows configuring logging via the `--log` and `--verbosity` flags.
 
-### Chain configuration
+### Chain Configuration
 
 Within your working directory, you may find a `chains/` yaml files organized by chain name. These `metadata.yaml` files describe the information needed to use the chain in Hyperlane deployments and apps.
 
@@ -106,11 +106,24 @@ If you are overriding the nonce in the chain configuration, ensure you are updat
 
 :::
 
+### Message Delivery Issues
+
+#### Long Message Delivery Times or Timeouts
+
+Delays or timeouts in message delivery often result from RPC issues, such as overloaded endpoints, or from chains that produce blocks only on demand.
+
+To identify the issue, check for logs indicating RPC-related problems such as: `Deprioritizing an inner provider in FallbackProvider`
+
+To address these delays:
+
+- **Check RPC Health:** Ensure RPC endpoints are responsive.
+- **Configure Chains with On-Demand Blocks:** For these chains, set the reorgPeriod to 0. This ensures that agents always look at the tip of the chain, avoiding delays caused by block finalization processes.
+
 ## Agent Troubleshooting
 
 ### Validator Troubleshooting
 
-- `Validator has not announced any storage locations` Warning:
+- **`Validator has not announced any storage locations` Warning:**
 
   - **Reason**: This occurs when the relayer cannot retrieve validator signatures required to process a message.
   - **Solution**:
@@ -119,7 +132,7 @@ If you are overriding the nonce in the chain configuration, ensure you are updat
     - Verify that each validator has a unique signature storage path (`--checkpointSyncer.path`) to prevent overwriting.
     - Confirm that the relayer has read access to the storage paths.
 
-- `No ISM Found for Origin` Error
+- **`No ISM Found for Origin` Error**
 
   - **Reason**: This occurs when the Interchain Security Module (ISM) does not recognize the origin chain.
   - **Solution**:
@@ -129,12 +142,37 @@ If you are overriding the nonce in the chain configuration, ensure you are updat
 
 ### Relayer Troubleshooting
 
-- Relayer Selecting Incorrect ISM
-  - **Reason**: This error occurs when the Interchain Security Module (ISM) on your chain does not recognize the origin chain.
-  - **Solution**:
-    - Check your chain's ISM deployment configuration and verify the ISM address in the relayer configuration
+#### Checking Pending Messages in the Queue
 
-## Advanced Compatibility Troubleshooting
+If messages are stuck in the relayer queue or not being processed, use the `list_operations` endpoint to inspect the relayer's queue:
+
+```shell
+curl http://0.0.0.0:9090/list_operations?destination_domain=<destination_domain_id>
+```
+
+This endpoint provides the status of messages in the queue and can help identify why they are not being delivered.
+
+#### Debugging with Logs
+
+For detailed insights, enable debug logging and monitor the relayer's activity: `HYP_LOG_LEVEL=debug`. Once logs are captured, you can use them to locate issues with specific message IDs.
+
+#### Retrying Messages
+
+After reviewing the logs, you can trigger an immediate retry of all pending messages using the `message_retry` endpoint:
+
+```shell
+curl --location 'http://127.0.0.1:9090/message_retry' \
+--header 'Content-Type: application/json' \
+--data '[{"messageid": "*", "origindomain": "*", "senderaddress": "*", "destinationdomain": "*", "recipientaddress": "*"}]'
+```
+
+Make sure that you use the most recent version of the relayer and capture all logs for debugging.
+
+#### Relayer Selecting Incorrect ISM
+
+Ensure the Interchain Security Module (ISM) on your chain is configured correctly. An incorrect ISM can result in messages not being processed. Verify the ISM address in your configuration and ensure it matches your deployment setup.
+
+## Advanced Troubleshooting
 
 ### `eth_getStorageAt()` Compatibility
 
