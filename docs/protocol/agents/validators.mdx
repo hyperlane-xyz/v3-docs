@@ -22,6 +22,8 @@ The Validator agent uses two key types: one for signing transactions on the bloc
 
 For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.
 
+Validators use the `MerkleTreeHook.latestCheckpoint() function to determine when new transactions need to be indexed. This polling mechanism ensures validators can start signing new messages without the need to backfill the entire tree.
+
 ### Multisig ISM Prerequisites
 
 To validate messages from an origin chain, the Validator's checkpoint signing key must be registered in the [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx) specified by the destination chain recipient. This can only be done when the ISM contract is deployed, but this is easily done by sending a `deploy(validatorAddresses, threshold)` transaction on any implementation of [StaticThresholdAddressSetFactory](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/be4617b18ba638e0ef5a5326614bc4f8c58d25f9/solidity/contracts/libs/StaticAddressSetFactory.sol#L10).
@@ -60,3 +62,7 @@ The only checkpoint storage that is currently supported by the agent implementat
 ### Liveness implications
 
 Depending on the threshold configured in the Multisig ISM, Validator downtime can halt liveness of the protocol. The submitter prioritizes new checkpoints over old ones, so that the Relayer can fetch metadata for newer messages first, which are more likely to not have been delivered yet.
+
+### Default ISM Validators
+
+The number of validators depend on the Interchain Security Module (ISM) configuration. The Default ISM uses a specific validator set, you can view the Validator details such as threshold, operator and addresses [here](../../reference/default-ism-validators).
