@@ -119,9 +119,9 @@ If you are overriding the nonce in the chain configuration, ensure you are updat
     - Verify that each validator has a unique signature storage path (`--checkpointSyncer.path`) to prevent overwriting.
     - Confirm that the relayer has read access to the storage paths.
 
-- “No ISM Found for Origin" Error
+- `No ISM Found for Origin` Error
 
-  - **Reason**: This occurs when the Interchain Security Module (ISM) on your chain does not recognize the origin chain.
+  - **Reason**: This occurs when the Interchain Security Module (ISM) does not recognize the origin chain.
   - **Solution**:
     - Ensure the ISM configuration includes the Validators for the origin chain.
     - If it doesn't, add validators for the origin chain to your ISM.
@@ -132,12 +132,7 @@ If you are overriding the nonce in the chain configuration, ensure you are updat
 - Relayer Selecting Incorrect ISM
   - **Reason**: This error occurs when the Interchain Security Module (ISM) on your chain does not recognize the origin chain.
   - **Solution**:
-    - Check your chain's ISM deployment configuration.
-    - Set the ISM type during deployment to ensure the correct one is used:
-    ```yaml
-    { "ismType": "messageIdMultisig", "validators": ["<validator_address>"] }
-    ```
-    - Verify the ISM address in the relayer configuration.
+    - Check your chain's ISM deployment configuration and verify the ISM address in the relayer configuration
 
 ## Advanced Compatibility Troubleshooting
 
