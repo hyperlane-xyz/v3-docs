@@ -34,13 +34,12 @@ struct StandardHookMetadata {
 ### Examples
 
 ```solidity
-  StandardHookMetadata.formatMetadata(
+  bytes memory hookMetadata = StandardHookMetadata.formatMetadata(
     0,                   // ETH message value
     200000,              // 200k gas limit
     address(this),       // refund address
     bytes("")            // custom metadata
-  })
-);
+  });
 ```
 
 </TabItem>
