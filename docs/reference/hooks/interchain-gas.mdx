@@ -34,14 +34,12 @@ struct StandardHookMetadata {
 ### Examples
 
 ```solidity
-bytes memory metadata = abi.encodePacked(
-  StandardHookMetadata({
-    variant: 1,               // only variant supported by this hook
-    msgValue: 0,              // unused by this hook
-    gasLimit: 100000,         // override default gas limit
-    refundAddress: msg.sender // override default refund address
-  })
-);
+  bytes memory hookMetadata = StandardHookMetadata.formatMetadata(
+    0,                   // ETH message value
+    200000,              // 200k gas limit
+    address(this),       // refund address
+    bytes("")            // custom metadata
+  });
 ```
 
 </TabItem>
