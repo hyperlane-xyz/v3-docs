@@ -2,9 +2,7 @@
 
 ## xERC20 Deployments
 
-Warp Routes support [`xERC20` tokens](https://github.com/defi-wonderland/xERC20).
-
-Here's how to configure `xERC20` for Warp Route usage:
+Warp Routes support [`xERC20` tokens](https://github.com/defi-wonderland/xERC20). Follow these steps to configure `xERC20` for Warp Route usage:
 
 1. **Ownership Transfer**: 
 - Ensure that the ownership of the `xERC20` contract is transferred to a secure multisig for security purposes. This step is crucial to prevent unauthorized changes. 
@@ -15,7 +13,7 @@ Here's how to configure `xERC20` for Warp Route usage:
 
 ## FiatToken Deployments
 
-Warp Routes support [Circle's Bridged USDC in the form of a minter for `FiatToken`](https://github.com/circlefin/stablecoin-evm) (See more on the repo for documentation) There are three roles that are relevant on the `FiatToken` and `MasterMinter` contracts:
+Warp Routes support [Circle's Bridged USDC in the form of a minter for `FiatToken`](https://github.com/circlefin/stablecoin-evm) (See more on the repo for documentation). There are three roles that are relevant on the `FiatToken` and `MasterMinter` contracts:
 
 1. `MasterMinter` owner is the account that can set controllers and minters.
 2. `MasterMinter` controller is the account that can set the mint limits for its assigned minters.
