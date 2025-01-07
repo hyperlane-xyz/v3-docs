@@ -25,6 +25,8 @@ const sidebars = {
     {
       type: "category",
       label: "Quickstart",
+      collapsed: false,
+      collapsible: true,
       items: [
         {
           type: "doc",
@@ -39,7 +41,7 @@ const sidebars = {
         {
           type: "doc",
           id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshoot",
+          label: "Troubleshooting",
         },
       ],
     },
