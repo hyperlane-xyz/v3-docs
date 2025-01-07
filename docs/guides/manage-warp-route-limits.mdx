@@ -8,7 +8,7 @@ Warp Routes support [`xERC20` tokens](https://github.com/defi-wonderland/xERC20)
 - Ensure that the ownership of the `xERC20` contract is transferred to a secure multisig for security purposes. This step is crucial to prevent unauthorized changes. 
 - The [`xERC20` contract](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol) uses OpenZeppelin's `Ownable` interface. Use the `transferOwnership` function to complete this step.
 2. **Mint Limit Configuration**:
-- Set appropriate mint and burn limits for the Warp Route contract. This configuration must be done by the owner of the `xERC20` contract from the `setLimits` function.
+- Set appropriate mint and burn limits for the Warp Route contract. This configuration must be done by the owner of the `xERC20` contract from the [`setLimits`](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L85) function.
 - Ensure limits are appropriate for the expected volume to prevent disruptions. Review and adjust the limits based on transaction volumes and expected usage patterns.
 
 ## FiatToken Deployments
