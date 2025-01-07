@@ -1,6 +1,19 @@
 # Manage Warp Route Limits on xERC20 and FiatToken
 
-## FiatToken deploys
+## xERC20 Deployments
+
+Warp Routes support [`xERC20` tokens](https://github.com/defi-wonderland/xERC20).
+
+Here's how to configure `xERC20` for Warp Route usage:
+
+1. **Ownership Transfer**: 
+- Ensure that the ownership of the `xERC20` contract is transferred to a secure multisig for security purposes. This step is crucial to prevent unauthorized changes. 
+- The [`xERC20` contract](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol) uses OpenZeppelin's `Ownable` interface. Use the `transferOwnership` function to complete this step.
+2. **Mint Limit Configuration**:
+- Set appropriate mint and burn limits for the Warp Route contract. This configuration must be done by the owner of the `xERC20` contract from the `setLimits` function.
+- Ensure limits are appropriate for the expected volume to prevent disruptions. Review and adjust the limits based on transaction volumes and expected usage patterns.
+
+## FiatToken Deployments
 
 Warp Routes support [Circle's Bridged USDC in the form of a minter for `FiatToken`](https://github.com/circlefin/stablecoin-evm) (See more on the repo for documentation) There are three roles that are relevant on the `FiatToken` and `MasterMinter` contracts:
 
@@ -8,12 +21,12 @@ Warp Routes support [Circle's Bridged USDC in the form of a minter for `FiatToke
 2. `MasterMinter` controller is the account that can set the mint limits for its assigned minters.
 3. `MasterMinter` minter is the account that can actually call `mint` on `FiatToken`. 
 
-Owner and controller should be typically set to a Safe multisig, the minter is the warp route contract address on the local chain.
+Owner and controller should be typically set to a Safe multisig for enhanced security, the minter is the warp route contract address on the local chain.
 
 There are three actions that should be set on the `MasterMinter` contract to be ready for usage:
 
 1. As the owner, remove the previous test controller via the [`removeController(address _controller)` function](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/Controller.sol#L87C14-L87C51)
 2. As the owner, you should set the controller and minter via the [`configureController(address controller, address worker)` funcition](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/Controller.sol#L70). The controller can be the same as the owner, the minter should be the warp route address.
-3. As the controller, you should set the mint limit for the minter via the [`configureMinter(uint256 _newAllowance)` function](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/MintController.sol#L116). This limit is not being continously reset, so either set it to a suficiently large value (like `cast max-uint`) or monitor the usage and adjust accordingly.
+3. As the controller, you should set the mint limit for the minter via the [`configureMinter(uint256 _newAllowance)` function](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/MintController.sol#L116). This limit is not being continuously reset, so either set it to a sufficiently large value (like `cast max-uint`) or monitor the usage and adjust accordingly.
 
 
