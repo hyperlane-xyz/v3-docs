@@ -5,10 +5,12 @@
 Warp Routes support [`xERC20` tokens](https://github.com/defi-wonderland/xERC20). Follow these steps to configure `xERC20` for Warp Route usage:
 
 1. **Ownership Transfer**: 
-- Ensure that the ownership of the `xERC20` contract is transferred to a secure multisig for security purposes. This step is crucial to prevent unauthorized changes. 
-- The [`xERC20` contract](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol) uses OpenZeppelin's `Ownable` interface. Use the `transferOwnership` function to complete this step.
+- Ensure that the ownership of the [`xERC20` contract](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol) is transferred to a secure multisig for security purposes. This step is crucial to prevent unauthorized changes. 
+- The `xERC20` contract uses OpenZeppelin's `Ownable` interface. Use the `transferOwnership` function to complete this step.
 2. **Mint Limit Configuration**:
-- Set appropriate mint and burn limits for the Warp Route contract. This configuration must be done by the owner of the `xERC20` contract from the [`setLimits`](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L85) function.
+- The minting and burning limits for the Warp Route contract are managed through the [`setLimits`](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L85) function in the `xERC20` contract. This function must be called by the contract owner.
+  - The `xERC20` contract uses a 24-hour window to manage limits. This is defined by the [`_DURATION`](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L13) variable, which is set to 1 days (24 hours). The current available limits are calculated dynamically using the [`_getCurrentLimit`](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L234) function.
+  - If 24 hours (`_DURATION`) have passed since the last use, the limit will automatically restore to the full `maxLimit`.
 - Ensure limits are appropriate for the expected volume to prevent disruptions. Review and adjust the limits based on transaction volumes and expected usage patterns.
 
 ## FiatToken Deployments
