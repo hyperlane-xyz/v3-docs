@@ -21,9 +21,7 @@ Warp Routes support [Circle's Bridged USDC in the form of a minter for `FiatToke
 2. **`MasterMinter` controller** is the account that can set the mint limits for its assigned minters.
 3. **`MasterMinter` minter** is the account that can actually call `mint` on `FiatToken`. 
 
-The owner and controller should typically be set to a Safe multisig for enhanced security, the minter is the Warp Route contract address on the local chain.
-
-Mint limits for `FiatToken` are absolute, meaning they do not reset automatically and must be updated if required.
+The owner and controller should typically be set to a Safe multisig for enhanced security, the minter is the Warp Route contract address on the local chain. Mint limits for `FiatToken` are absolute, meaning they do not reset automatically and must be updated if required.
 
 There are three actions that should be set on the `MasterMinter` contract to be ready for usage:
 
