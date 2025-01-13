@@ -32,10 +32,29 @@ struct StandardHookMetadata {
 </TabItem>
 </Tabs>
 
-#### Metadata Fields
+The `StandardHookMetadata` struct defines the fields required for metadata encoding:
 
-- `msgValue`: Represents the payment value in the origin chain’s native token.
-- `gasLimit`: Specifies the gas allocated for the `handle` function on the destination chain. Ensure this matches your simulation results.
+- `variant`: Specifies the metadata format version (`1`).
+- `msgValue`: Amount of native token sent with the message.
+- `gasLimit`: Gas limit for the `handle` function on the destination chain. Ensure this matches your simulation results.
+- `refundAddress`: Address to refund unused gas payments.
+
+To encode this metadata, use the `StandardHookMetadata.formatMetadata` library function. Direct encoding of the struct with `abi.encodePacked` is not supported in Solidity.
+
+#### Example Usage
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
+
+```solidity
+// Example: Encoding metadata using StandardHookMetadata
+bytes memory metadata = StandardHookMetadata.formatMetadata(
+    0,               // ETH message value
+    200000,          // Custom gas limit
+    address(this),   // Refund address
+    bytes("")        // Optional custom metadata
+);
+```
 
 ### Determine and Override the Gas Limit
 
@@ -48,20 +67,6 @@ struct StandardHookMetadata {
 
 - Calculate the required `gasLimit` based on the simulation.
 - Pass the updated `gasLimit` in your metadata to prevent transaction reverts.
-
-#### Example:
-
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity
-  bytes memory hookMetadata = StandardHookMetadata.formatMetadata(
-    0,                   // ETH message value
-    200000,              // 200k gas limit
-    address(this),       // refund address
-    bytes("")            // custom metadata
-  });
-```
 
 </TabItem>
 </Tabs>
