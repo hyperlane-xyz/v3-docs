@@ -3,17 +3,13 @@ import TabItem from "@theme/TabItem";
 
 # Post-Dispatch Interchain Gas Payment
 
-During the post-dispatch hook, the `InterchainGasPaymaster` contract will revert if payment is insufficient to cover the relayer's _anticipated_ costs. The relayer will honor quotes from `dispatch` time.
+During the post-dispatch hook, the `InterchainGasPaymaster` contract will revert if payment is insufficient to cover the relayer's _anticipated_ costs. The gas quote calculated at `dispatch` time must align with the relayer’s anticipated costs.
 
 ## Gas Limit
 
-When none is specified, the `gasLimit` for metering the `handle` call uses a static default of `50_000`.
+The default `gasLimit` for metering the handle call is a static default of `50_000` gas. This is sufficient for simple operations but may not be enough for more complex `handle` functions.
 
-:::tip
-We recommend developers benchmark their [`handle` implementations](../messaging/receive.mdx#handle) in unit tests to determine a reasonable `gasLimit` to use.
-:::
-
-If you expect the `handle` function to consume more than this default, you should override the [default `gasLimit` in metadata](#metadata).
+If your handle function performs complex operations or requires more gas, you must override the [default `gasLimit` in metadata](#metadata) to avoid transaction reverts. Benchmark your [`handle` implementations](../messaging/receive.mdx#handle) in unit tests to determine a reasonable `gasLimit` to use.
 
 ### Metadata
 
@@ -31,7 +27,30 @@ struct StandardHookMetadata {
 }
 ```
 
-### Examples
+</TabItem>
+</Tabs>
+
+#### Metadata Fields
+
+- `msgValue`: Represents the payment value in the origin chain’s native token.
+- `gasLimit`: Specifies the gas allocated for the `handle` function on the destination chain. Ensure this matches your simulation results.
+
+### Determine and Override the Gas Limit
+
+1. Simulate and Benchmark Gas Usage:
+
+- Use tools like Tenderly or Foundry to simulate your transaction and measure gas consumption.
+- If gas usage exceeds `50,000` gas, calculate an appropriate `gasLimit` and update your metadata.
+
+2. Update Your Metadata:
+
+- Calculate the required `gasLimit` based on the simulation.
+- Pass the updated `gasLimit` in your metadata to prevent transaction reverts.
+
+#### Example:
+
+<Tabs groupId="lang">
+<TabItem value="sol" label="Solidity">
 
 ```solidity
   bytes memory hookMetadata = StandardHookMetadata.formatMetadata(
@@ -95,7 +114,9 @@ The `quoteGasPayment` function calculates fees for the relayer's anticipated cos
 
 ## Retrying
 
-If the `handle` call consumes more gas than quoted, the relayer will not submit a process transaction. In this case, additional gas can be paid for with the `payForGas` function.
+If the `handle` call consumes more gas than quoted, the relayer will not submit a process transaction. This issue often occurs due to insufficient gas payment during the initial `dispatch`.
+
+In this case, additional gas can be paid for with the `payForGas` function.
 
 <Tabs groupId="lang">
 <TabItem value="sol" label="Solidity">
@@ -113,3 +134,54 @@ If the `handle` call consumes more gas than quoted, the relayer will not submit 
 
 </TabItem>
 </Tabs>
+
+## Using the Hyperlane Explorer for Debugging
+
+The Hyperlane Explorer is a powerful tool to debug cross-chain message issues, including gas payments and relayer behavior.
+
+### Key Features
+
+- **Message Status**: View the current status of your message (e.g., "Retry: GasPaymentRequirementNotMet").
+- **Gas Payment Details**: Check the gas amount paid (Origin IGP gas amount) and the amount required by the relayer.
+- **Simulate Calldata**: Use the "View calldata details" option to simulate transactions on tools like Tenderly.
+
+## Troubleshooting
+
+This section covers common issues developers encounter with Interchain Gas Payments, along with potential solutions.
+
+### `GasPaymentRequirementNotMet` Warning:
+
+- **Reason:** This occurs when the gas payment provided during `dispatch` does not meet the relayer's calculated requirement.
+
+- **Solution:**
+  - Use `quoteGasPayment` to calculate the required payment for the destination domain and gas limit.
+  - Verify that `msg.value` in your metadata covers the relayer’s quoted fee.
+  - Check the message status in the Hyperlane Explorer. Look for: `Retry(GasPaymentRequirementNotMet)`.
+
+### High Testnet Gas Prices:
+
+- **Reason:** Some testnets have limited gas token liquidity, which results in inflated gas prices.
+
+- **Solution:**
+  - Simulate the transaction to estimate realistic gas costs.
+  - Be aware that testnet relayers may charge higher fees due to low token availability.
+  - Consider testing on a different network with lower gas token prices, if possible.
+
+### Fallback Routing and Overpayment Warning:
+
+- **Reason:** `msg.value` exceeds the required gas payment, triggering the fallback routing hook.
+
+- **Solution:**
+  - Verify that your quoting logic (`quoteDispatch`) matches the relayer's anticipated fees.
+  - Avoid overestimating `gasLimit` values without first benchmarking the `handle` function.
+  - Simulate the transaction to confirm appropriate payment.
+
+### Unexpectedly Large Gas Quotes:
+
+- **Reason:** A very high `gasLimit` was set, leading to excessively large gas quotes.
+
+- **Solution:**
+
+  - Double-check the `gasLimit` specified in your metadata.
+  - Use `quoteGasPayment` to calculate the required fee the `gasLimit`.
+  - Adjust the `gasLimit` to match the estimated gas consumption of your `handle` function.
