@@ -4681,13 +4681,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/core@npm:5.9.0":
-  version: 5.9.0
-  resolution: "@hyperlane-xyz/core@npm:5.9.0"
+"@hyperlane-xyz/core@npm:5.9.1":
+  version: 5.9.1
+  resolution: "@hyperlane-xyz/core@npm:5.9.1"
   dependencies:
     "@arbitrum/nitro-contracts": "npm:^1.2.1"
     "@eth-optimism/contracts": "npm:^0.6.0"
-    "@hyperlane-xyz/utils": "npm:8.0.0"
+    "@hyperlane-xyz/utils": "npm:8.1.0"
     "@layerzerolabs/lz-evm-oapp-v2": "npm:2.0.2"
     "@openzeppelin/contracts": "npm:^4.9.3"
     "@openzeppelin/contracts-upgradeable": "npm:^4.9.3"
@@ -4696,7 +4696,7 @@ __metadata:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
     "@types/sinon-chai": "*"
-  checksum: d39334e15714d9c791b2149f5a6ac354e8ca1e804fff385559ee08c53f5bd6d1f87c029c081c57c14274fc00794601df584cbc4f7824af0cce412d077e52153c
+  checksum: d7fb1daf90df1c8faaed81b85f99151f88fdbb7a2411c646c74f0783271a75b6bbc59fa71761401a2cbdd0fd99e6414dfd67b7ac6fb8f82d85976bd93f2eadcc
   languageName: node
   linkType: hard
 
@@ -4710,17 +4710,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/sdk@npm:8.0.0":
-  version: 8.0.0
-  resolution: "@hyperlane-xyz/sdk@npm:8.0.0"
+"@hyperlane-xyz/sdk@npm:8.1.0":
+  version: 8.1.0
+  resolution: "@hyperlane-xyz/sdk@npm:8.1.0"
   dependencies:
     "@arbitrum/sdk": "npm:^4.0.0"
     "@aws-sdk/client-s3": "npm:^3.577.0"
     "@chain-registry/types": "npm:^0.50.14"
     "@cosmjs/cosmwasm-stargate": "npm:^0.32.4"
     "@cosmjs/stargate": "npm:^0.32.4"
-    "@hyperlane-xyz/core": "npm:5.9.0"
-    "@hyperlane-xyz/utils": "npm:8.0.0"
+    "@hyperlane-xyz/core": "npm:5.9.1"
+    "@hyperlane-xyz/utils": "npm:8.1.0"
     "@safe-global/api-kit": "npm:1.3.0"
     "@safe-global/protocol-kit": "npm:1.3.0"
     "@safe-global/safe-deployments": "npm:1.37.8"
@@ -4736,7 +4736,7 @@ __metadata:
   peerDependencies:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
-  checksum: 0804c39c87b6f390696b4edde009d73ffd42e5569bdff313ae572f0a499005626554798301c34c0fa7643b3d53170202e1c6adc30b1a4835fadbf96ef098f4d1
+  checksum: 391a6ec03bf3c026e4bbe8a6e2663be0857af8bbb7224fea30f3c546443e378b386686884fe6d014e1f3081f8a1c26cba9ca8a152f5839d1a3777867eb9edf36
   languageName: node
   linkType: hard
 
@@ -4755,9 +4755,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/utils@npm:8.0.0":
-  version: 8.0.0
-  resolution: "@hyperlane-xyz/utils@npm:8.0.0"
+"@hyperlane-xyz/utils@npm:8.1.0":
+  version: 8.1.0
+  resolution: "@hyperlane-xyz/utils@npm:8.1.0"
   dependencies:
     "@cosmjs/encoding": "npm:^0.32.4"
     "@solana/web3.js": "npm:^1.95.4"
@@ -4766,7 +4766,7 @@ __metadata:
     lodash-es: "npm:^4.17.21"
     pino: "npm:^8.19.0"
     yaml: "npm:2.4.5"
-  checksum: d5d593606e27f8c1d3de5ad46f29a3c6868755e08e6d50ec319dcbec497b8e363b2964063618c4b21df7dbfe794e1cf694b11322006967dcd2d3303e1ce9a413
+  checksum: 1955e38282e385a3f4ffef2c2763d511fc1de600347e205e90e2a25ba0948311d4e73fbd5682309dee63f7305c5560d7629f65e589289da74143cf7c5858e972
   languageName: node
   linkType: hard
 
@@ -14347,7 +14347,7 @@ __metadata:
     "@easyops-cn/docusaurus-search-local": "npm:^0.37.4"
     "@hyperlane-xyz/core": "npm:5.8.3"
     "@hyperlane-xyz/registry": "npm:6.14.0"
-    "@hyperlane-xyz/sdk": "npm:8.0.0"
+    "@hyperlane-xyz/sdk": "npm:8.1.0"
     "@mdx-js/react": "npm:^3.0.0"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"
