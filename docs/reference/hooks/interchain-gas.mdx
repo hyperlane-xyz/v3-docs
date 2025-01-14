@@ -58,15 +58,16 @@ bytes memory metadata = StandardHookMetadata.formatMetadata(
 
 ### Determine and Override the Gas Limit
 
-1. Simulate and Benchmark Gas Usage:
+1. **Simulate and Benchmark Gas Usage**:
 
-- Use tools like Tenderly or Foundry to simulate your transaction and measure gas consumption.
+- Use tools like Tenderly or Foundry to simulate the `handle` function on your message recipient. Ensure the `from` address is set to the Mailbox contract on your chain.
 - If gas usage exceeds `50,000` gas, calculate an appropriate `gasLimit` and update your metadata.
+- Use the [call-to-action in the Hyperlane Explorer](https://github.com/hyperlane-xyz/hyperlane-explorer/blob/03634076049bfce1611b4e41d1aa81910eab2962/src/features/messages/cards/TransactionCard.tsx#L326-L333) to simulate transactions from the message details.
 
-2. Update Your Metadata:
+2. **Update Your Metadata**:
 
 - Calculate the required `gasLimit` based on the simulation.
-- Pass the updated `gasLimit` in your metadata to prevent transaction reverts.
+- Pass the updated `gasLimit` in your metadata to ensure the relayer will deliver your message.
 
 </TabItem>
 </Tabs>
