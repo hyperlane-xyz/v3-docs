@@ -1,99 +1,134 @@
 # Deploy an EVM \<-> SVM Warp Route
 
+## Prerequisites
+
+Ensure you have the following installed and configured:
+
+- [Hyperlane Monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo)
+- Rust (latest stable version)
+- Yarn and Node.js (latest stable version)
+- Solana CLI tools
+
+## Walkthrough
+
+### Step 1: Create the Warp Route Directory
 
 1. In `./rust/sealevel/environments/${environment}`, create a directory called `warp-routes`
-    
-2. In there, create a new directory called whatever you want to name your warp route deployment, e.g. `environments/mainnet3/warp-routes/pzeth`
-    
-3. If you want to, open a PR to the `hyperlane-registry` with metadata to associate with the synthetic token in the warp route. Example [here](https://github.com/hyperlane-xyz/hyperlane-registry/pull/142)
-    
-    1. Although not critical, for the `image` field try to pick a source that is unlikely to break the URL
-5. From here on, to deploy on the SVM side you can also follow our official guide for tips: https://docs.hyperlane.xyz/docs/guides/deploy-svm-warp-route
-6. Create `token-config.json` for the SVM part, e.g.
-    
-    ```bash
-    {
-      "solana": {
-        "type": "synthetic",
-        "decimals": 9,
-        "name": "Renzo Restaked LST",
-        "symbol": "pzETH",
-        "uri": "<https://raw.githubusercontent.com/hyperlane-xyz/hyperlane-registry/12660fd34d30e960a748d87408a8d88f634f7454/deployments/warp_routes/pzETH/ethereum-solana-metadata.json>",
-        "interchainGasPaymaster": "5FG1TUuhXGKdMbbH8uHEnUghazD4aVfEPAgKLNGNx3SL",
-        "remoteDecimals": 18
-      }
-    }
-    ```
-    
-    - Often EVM tokens have 18 decimals, which are too large for the SVM. The pattern is to bridge them into SOL as 9 decimals. This can be done using `remoteDecimals: 18`
+2. Inside `warp-routes`, create a new directory for your Warp Route deployment, e.g., e.g. `environments/mainnet3/warp-routes/pzeth`
+3. **Optional:** If you want to, open a PR to the `hyperlane-registry` with metadata to associate with the synthetic token in the Warp Route. Example [here](https://github.com/hyperlane-xyz/hyperlane-registry/pull/142).
+
+   - **Tip:** Although not critical, for the `image` field try to pick a source that is unlikely to break the URL
+
+### Step 2: Deploy on the SVM Side
+
+4. From here on, to deploy on the SVM side you can also follow our official guide for tips: [Deploy SVM Warp Route](https://docs.hyperlane.xyz/docs/guides/deploy-svm-warp-route)
+5. Create `token-config.json` for the SVM configuration, e.g.
+
+   ```bash
+   {
+     "solana": {
+       "type": "synthetic",
+       "decimals": 9,
+       "name": "Renzo Restaked LST",
+       "symbol": "pzETH",
+       "uri": "<https://raw.githubusercontent.com/hyperlane-xyz/hyperlane-registry/12660fd34d30e960a748d87408a8d88f634f7454/deployments/warp_routes/pzETH/ethereum-solana-metadata.json>",
+       "interchainGasPaymaster": "5FG1TUuhXGKdMbbH8uHEnUghazD4aVfEPAgKLNGNx3SL",
+       "remoteDecimals": 18
+     }
+   }
+   ```
+
+   - Often EVM tokens have 18 decimals, which are too large for the SVM. The pattern is to bridge them into SOL as 9 decimals. This can be done using `remoteDecimals: 18`.
+
+6. Run the deployment command:
+
+   ```bash
+   cargo run -- -k ~/solana-mainnet-deployer-keypair.json warp-route deploy \
+   --warp-route-name pzeth  \
+   --environment mainnet3  \
+   --environments-dir ../environments  \
+   --built-so-dir ../../target/deploy  \
+   --token-config-file ../environments/mainnet3/warp-routes/pzeth/token-config.json  \
+   --chain-config-file ../environments/mainnet3/chain-config.json  \
+   --ata-payer-funding-amount 50000000
+   ```
+
+### Step 3: Deploy on the Ethereum Side
+
+7. Deploy the Ethereum Warp Route contract, which will also enroll the SVM router based on the yaml token config.
+
+   1. Check out the monorepo branch from this [PR#4447](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/4447)
+   2. Build the TS code from project root: `yarn && yarn build`
+   3. Run the CLI from source: `yarn workspace @hyperlane-xyz/cli hyperlane`
+   4. Create a YAML Warp Route configuration file using this template and steps:
+
+      - Set `interchainSecurityModule: "0x0000000000000000000000000000000000000000"` to use the default ISM set in the destination chain Mailbox
+      - Set the `gas` to a ceiling of the compute units you expect the SVM message delivery transaction to take. For instance, Hyperlane Warp Routes have gas set to `300`. It's important for this to be an upper limit - the relayer will not deliver Warp Route transfer messages otherwise, because senders would pay an insufficient amount to have them delivered.
+
+      ```json
+      ethereum:
+        interchainSecurityModule: "0x0000000000000000000000000000000000000000"
+        isNft: false
+        mailbox: "0xc005dc82818d67AF737725bD4bf75435d065D239"
+        owner: "0xa7ECcdb9Be08178f896c26b7BbD8C3D4E844d9Ba"
+        token: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+        type: collateral
+        gas: 300000
+      eclipsemainnet:
+        foreignDeployment: "D6k6T3G74ij6atCtBiWBs5TbFa1hFVcrFUSGZHuV7q3Z"
+        mailbox: "EitxJuv2iBjsg2d7jVy2LDC1e2zBrx4GB5Y9h2Ko3A9Y"
+        owner: "9bRSUPjfS3xS6n5EfkJzHFTRDa4AHLda8BU2pP4HoWnf"
+        interchainSecurityModule: "0x0000000000000000000000000000000000000000"
+        type: synthetic
+        gas: 300000
+      ```
+
+   5. Deploy using the Hyperlane CLI:
+      - Run the deploy command, pointing to your YAML Warp Route config: `yarn workspace @hyperlane-xyz/cli hyperlane warp deploy --config /path/to/config/warp-route-deployment.yaml`
+      - You’ll have the deployment artifact logged by the command, and also stored in your filesystem registry (currently `~/.hyperlane`).
+   6. Confirm the deployment using the Hyperlane CLI:
+      ```bash
+      $ cast call 0x1D622da2ce4C4D9D4B0611718cb3BcDcAd008DD4 'routers(uint32)(bytes32)' $DESTINATION_DOMAIN --rpc-url $(rpc ethereum) 1399811149
+      0xe9792265ec273ffc17731af890d3e9963e9d744e7b99f02491911ce1bb75b8cb
+      ```
+
+### Step 4: Update the SVM token-config.json
+
+8. Back to Solana tooling now, update the `token-config.json` with the foreign deployment:
+
+   The fields for `ethereum` should be set to values from the Warp Route contract artifact. `token` should be set to `collateralAddressOrDenom` (the address of the token being bridge), and `foreignDeployment` should be set to `addressOrDenom` (the address of the Warp Route contract, like `HypERC20Collateral`).
+
+   ```bash
+   {
+     "solana": {
+       "type": "synthetic",
+       "decimals": 9,
+       "name": "Renzo Restaked LST",
+       "symbol": "pzETH",
+       "uri": "<https://raw.githubusercontent.com/hyperlane-xyz/hyperlane-registry/12660fd34d30e960a748d87408a8d88f634f7454/deployments/warp_routes/pzETH/ethereum-solana-metadata.json>",
+       "interchainGasPaymaster": "5FG1TUuhXGKdMbbH8uHEnUghazD4aVfEPAgKLNGNx3SL",
+       "remoteDecimals": 18
+     },
+     "ethereum": {
+       "type": "collateral",
+       "decimals": 18,
+       "token": "0x8c9532a60e0e7c6bbd2b2c1303f63ace1c3e9811",
+       "foreignDeployment": "0x1D622da2ce4C4D9D4B0611718cb3BcDcAd008DD4"
+     }
+   }
+   ```
+
+### Step 5: Deployment
+
+9. Run the final deployment command:
 
 ```bash
-cargo run -- -k ~/solana-mainnet-deployer-keypair.json warp-route deploy --warp-route-name pzeth --environment mainnet3 --environments-dir ../environments --built-so-dir ../../target/deploy --token-config-file ../environments/mainnet3/warp-routes/pzeth/token-config.json  --chain-config-file ../environments/mainnet3/chain-config.json --ata-payer-funding-amount 50000000
+cargo run -- -k ~/solana-mainnet-deployer-keypair.json warp-route deploy  \
+--warp-route-name pzeth \
+--environment mainnet3 \
+--environments-dir ../environments \
+--built-so-dir ../../target/deploy \
+--token-config-file ../environments/mainnet3/warp-routes/pzeth/token-config.json  \
+--chain-config-file ../environments/mainnet3/chain-config.json  \
+--ata-payer-funding-amount 50000000
 ```
-
-3. Deploy the ethereum warp route contract, which will also enroll the SVM router based on the yaml token config
-	1. check out the monorepo branch from this PR: https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/4447
-	2. build the TS code from project root: `yarn && yarn build`
-	3. to run the cli from source: `yarn workspace @hyperlane-xyz/cli hyperlane`
-    1. Using the hyperlane-CLI:
-        
-        - Create a yaml warp route config using this template:
-		- Set `interchainSecurityModule: "0x0000000000000000000000000000000000000000"` to use the default ISM set in the destination chain Mailbox
-		- set the `gas` to a ceiling of the compute units you expect the SVM message delivery transaction to take. For instance, Hyperlane Warp Routes have gas set to `300`. It's important for this to be an upper limit - the relayer will not deliver Warp Route transfer messages otherwise, because senders would pay an insufficient amount to have them delivered.
-        
-        ```json
-        ethereum:
-          interchainSecurityModule: "0x0000000000000000000000000000000000000000"
-          isNft: false
-          mailbox: "0xc005dc82818d67AF737725bD4bf75435d065D239"
-          owner: "0xa7ECcdb9Be08178f896c26b7BbD8C3D4E844d9Ba"
-          token: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
-          type: collateral
-          gas: 300000
-        eclipsemainnet:
-          foreignDeployment: "D6k6T3G74ij6atCtBiWBs5TbFa1hFVcrFUSGZHuV7q3Z"
-          mailbox: "EitxJuv2iBjsg2d7jVy2LDC1e2zBrx4GB5Y9h2Ko3A9Y"
-          owner: "9bRSUPjfS3xS6n5EfkJzHFTRDa4AHLda8BU2pP4HoWnf"
-          interchainSecurityModule: "0x0000000000000000000000000000000000000000"
-          type: synthetic
-          gas: 300000
-        ```
-        
-        - run the deploy command, pointing to your yaml warp route config: ``yarn workspace @hyperlane-xyz/cli hyperlane warp deploy --config /path/to/config/warp-route-deployment.yaml`
-        - You’ll have the deployment artifact logged by the command, and also stored in your filesystem registry (currently `~/.hyperlane`).
-4. You can confirm this works
-    
-    ```bash
-    $ cast call 0x1D622da2ce4C4D9D4B0611718cb3BcDcAd008DD4 'routers(uint32)(bytes32)' $DESTINATION_DOMAIN --rpc-url $(rpc ethereum) 1399811149
-    0xe9792265ec273ffc17731af890d3e9963e9d744e7b99f02491911ce1bb75b8cb
-    ```
-    
-5. Back to Solana tooling now, update the token-config.json with the foreign deployment:
-    
-    1. The fields for `ethereum` should be set to values from the warp route contract artifact. `token` should be set to `collateralAddressOrDenom` (the address of the token being bridge), and `foreignDeployment` should be set to `addressOrDenom` (the address of the Warp Route contract, like `HypERC20Collateral`).
-    
-    ```bash
-    {
-      "solana": {
-        "type": "synthetic",
-        "decimals": 9,
-        "name": "Renzo Restaked LST",
-        "symbol": "pzETH",
-        "uri": "<https://raw.githubusercontent.com/hyperlane-xyz/hyperlane-registry/12660fd34d30e960a748d87408a8d88f634f7454/deployments/warp_routes/pzETH/ethereum-solana-metadata.json>",
-        "interchainGasPaymaster": "5FG1TUuhXGKdMbbH8uHEnUghazD4aVfEPAgKLNGNx3SL",
-        "remoteDecimals": 18
-      },
-      "ethereum": {
-        "type": "collateral",
-        "decimals": 18,
-        "token": "0x8c9532a60e0e7c6bbd2b2c1303f63ace1c3e9811",
-        "foreignDeployment": "0x1D622da2ce4C4D9D4B0611718cb3BcDcAd008DD4"
-      }
-    }
-    ```
-    
-6. Deploy again!
-    
-    ```bash
-    cargo run -- -k ~/solana-mainnet-deployer-keypair.json warp-route deploy --warp-route-name pzeth --environment mainnet3 --environments-dir ../environments --built-so-dir ../../target/deploy --token-config-file ../environments/mainnet3/warp-routes/pzeth/token-config.json  --chain-config-file ../environments/mainnet3/chain-config.json --ata-payer-funding-amount 50000000
-    ```
