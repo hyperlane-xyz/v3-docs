@@ -5,7 +5,7 @@ import { useMemo } from "react";
 const ABACUS_WORKS_DEPLOYER_NAME = "abacus works";
 
 // Pre-mainnet chains
-const FILTER_LIST = ['soneium'];
+const FILTER_LIST = [];
 
 // Chains that Abacus Works has deployed (formerly known as 'core' chains)
 export function getAbacusWorksChains(
