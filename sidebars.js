@@ -124,6 +124,11 @@ const sidebars = {
               id: "guides/deploy-evm-svm-warp-route",
               label: "Deploy an EVM <> SVM Warp Route",
             },
+            {
+              type: "doc",
+              id: "guides/manage-warp-route-limits",
+              label: "Mangaging Warp Route Limits",
+            },
           ],
         },
         {
