@@ -11,7 +11,7 @@ The `gasLimit` is set based on the cost of calling `handle` on the destination c
 
 The default `gasLimit` for metering the handle call is a static default of `50_000` gas. This is sufficient for simple operations but may not be enough for more complex `handle` functions.
 
-If your handle function performs complex operations or requires more gas, you must override the [default `gasLimit` in metadata](#metadata) to avoid transaction reverts. Benchmark your [`handle` implementations](../messaging/receive.mdx#handle) in unit tests to determine a reasonable `gasLimit` to use.
+If your `handle` function performs complex operations or requires more gas, you must override the [default `gasLimit` in metadata](#metadata) to avoid transaction reverts. Benchmark your [`handle` implementations](../messaging/receive.mdx#handle) in unit tests to determine a reasonable `gasLimit` to use.
 
 ### Metadata
 
@@ -98,12 +98,13 @@ The gas overhead is set as part of the destination gas configuration. This corre
 
 Interchain Gas Payment requirements are calculated using oraclized gas prices and exchange rates between the origin and destination chains.
 
-IGP contracts may be configured with gas oracles, which are responsible for tracking remote token gas prices and exchange rates. This allows the `quoteGasPayment` function to provide an accurate quote for the price of gas on a remote chain, denominated in the local chain's native token.
+IGP contracts may be configured with gas oracles, which are responsible for tracking remote token gas prices and exchange rates. Developers should use the [`quoteDispatch`](./overview.mdx#quote-dispatch-fees) function on the Mailbox contract to calculate gas fees. The `quoteDispatch` accounts for system-level overhead and ensures accurate fee calculation for the entire `dispatch` process.
 
 :::info
 
 - Exchange rates and gas prices are up to the relayer to decide. A spread may be charged to account for drift and operating costs.
-  :::
+
+:::
 
 Eventually, a relayer will be able to automatically update their gas oracles in order to ensure that their IGP always quotes a fair price for remote gas.
 
@@ -193,18 +194,9 @@ This section covers common issues developers encounter with Interchain Gas Payme
 - **Reason:** This occurs when the gas payment provided during `dispatch` does not meet the relayer's calculated requirement.
 
 - **Solution:**
-  - Use `quoteGasPayment` to calculate the required payment for the destination domain and gas limit.
+  - Use `quoteDispatch` to calculate the aggregate fee required for a `dispatch` call to be successful.
   - Verify that `msg.value` in your metadata covers the relayer’s quoted fee.
   - Check the message status in the Hyperlane Explorer. Look for: `Retry(GasPaymentRequirementNotMet)`.
-
-### High Testnet Gas Prices
-
-- **Reason:** Some testnets have limited gas token liquidity, which results in inflated gas prices.
-
-- **Solution:**
-  - Simulate the transaction to estimate realistic gas costs.
-  - Be aware that testnet relayers may charge higher fees due to low token availability.
-  - Consider testing on a different network with lower gas token prices, if possible.
 
 ### Fallback Routing and Overpayment Warning
 
@@ -222,5 +214,5 @@ This section covers common issues developers encounter with Interchain Gas Payme
 - **Solution:**
 
   - Double-check the `gasLimit` specified in your metadata.
-  - Use `quoteGasPayment` to calculate the required fee the `gasLimit`.
+  - Verify that your quoting logic (`quoteDispatch`) matches the relayer's anticipated fees.
   - Adjust the `gasLimit` to match the estimated gas consumption of your `handle` function.
