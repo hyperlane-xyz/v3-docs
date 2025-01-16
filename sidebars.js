@@ -180,6 +180,28 @@ const sidebars = {
           ],
         },
         {
+          type: "category",
+          label: "Hyperlane Explorer",
+          link: {
+            type: "doc",
+            id: "guides/explorer/explorer",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "guides/explorer/configuring-pi-chains",
+              label: "Configuring New Chains in the Hyperlane Explorer",
+            },
+            {
+              type: "doc",
+              id: "guides/explorer/graphql-api",
+              label: "GraphQL API",
+            },
+          ],
+        },
+        {
           type: "doc",
           id: "guides/create-custom-hook-and-ism",
           label: "Create a Hook/ISM",
@@ -444,28 +466,6 @@ const sidebars = {
               type: "doc",
               id: "reference/libraries/hookmetadata",
               label: "Standard Hook Metadata",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Hyperlane Explorer",
-          link: {
-            type: "doc",
-            id: "guides/explorer/explorer",
-          },
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "guides/explorer/configuring-pi-chains",
-              label: "Configuring New Chains in the Hyperlane Explorer",
-            },
-            {
-              type: "doc",
-              id: "guides/explorer/graphql-api",
-              label: "GraphQL API",
             },
           ],
         },

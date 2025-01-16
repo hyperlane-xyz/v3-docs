@@ -308,10 +308,6 @@ const config = {
             from: ["/docs/build-with-hyperlane/explorer/configuring-pi-chains"],
           },
           {
-            to: "/docs/guides/explorer/rest-api",
-            from: ["/docs/build-with-hyperlane/explorer/rest-api"],
-          },
-          {
             to: "/docs/guides/explorer/graphql-api",
             from: ["/docs/build-with-hyperlane/explorer/graphql-api"],
           },
