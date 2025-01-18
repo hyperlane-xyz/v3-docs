@@ -19,46 +19,46 @@ To complete the following walkthrough, you should have the following available:
   - This specific yield route variant distributes vault yields to the **owner**. There is an alternative setup where yields are distributed to the users (EvmHypCollateral & EvmHypSyntheticRebase). For most of this guide, we will refer to the former variants. The concepts remain the same.
 
 :::info
-For the sake of this walkthrough, the “origin” network will refer to the network on which the yield is generated (e.g. ethereum has a USDC lending vault that has claimable yield. A synthetic USDC is minted on the destination chain called yourchain).
+For the sake of this walkthrough, the “origin” network will refer to the network on which the yield is generated (e.g. Ethereum has a USDC lending vault that has claimable yield. A synthetic USDC is minted on the destination chain called yourchain).
 :::
 
-Below is the bridging flow between ethereum and yourchain
+Below is the bridging flow between Ethereum and yourchain
 
-**Bridge USDC: ethereum → yourchain**
+**Bridge USDC: Ethereum → yourchain**
 
 ```mermaid
 flowchart LR
-    A[ethereum:<br>Alice] -->|Deposit USDC| B[yourchain:<br>EvmHypOwnerCollateral]
-    B -->|USDC Deposit into Vault| C[ethereum:<br>ERC-4626 Vault]
+    A[Ethereum:<br>Alice] -->|Deposit USDC| B[yourchain:<br>EvmHypOwnerCollateral]
+    B -->|USDC Deposit into Vault| C[Ethereum:<br>ERC-4626 Vault]
     C -->|Yield Generation| C
     B ==>|Bridge| E[yourchain:<br>EvmHypSynthetic]
     E -->|Mint Synthetic USDC| F[yourchain:<br>Alice]
-    C[ethereum:<br>ERC-4626 Vault] -->|Withdraw Yield| G[ethereum:<br>Vault Owner]
+    C[Ethereum:<br>ERC-4626 Vault] -->|Withdraw Yield| G[Ethereum:<br>Vault Owner]
 ```
 
-In this example, Alice wants to bridge USDC between ethereum and yourchain. The yield route will transfer her USDC to a yield-bearing ERC-4626 vault, and then mint her synthetic USDC on yourchain. Notice that the yield route owner can claim yields generated from that vault.
+In this example, Alice wants to bridge USDC between Ethereum and yourchain. The yield route will transfer her USDC to a yield-bearing ERC-4626 vault, and then mint her synthetic USDC on yourchain. Notice that the yield route owner can claim yields generated from that vault.
 
-**Bridge USDC: yourchain → ethereum**
+**Bridge USDC: yourchain → Ethereum**
 
 ```mermaid
 flowchart LR
     A[yourchain:<br>Alice] -->|Burn Synthetic USDC| B[yourchain:<br>EvmHypSynthetic]
-    B ==>|Bridge| C[ethereum:<br>EvmHypOwnerCollateral]
-    D[ethereum:<br>ERC-4626 Vault] -->|USDC Withdraw from Vault| C
-    C -->|Withdraw USDC| F[ethereum:<br>Alice]
+    B ==>|Bridge| C[Ethereum:<br>EvmHypOwnerCollateral]
+    D[Ethereum:<br>ERC-4626 Vault] -->|USDC Withdraw from Vault| C
+    C -->|Withdraw USDC| F[Ethereum:<br>Alice]
 
 ```
 
-When Alice wants to bridge back to ethereum, the reverse happens. The yield route will burn her synthetic USDC, withdraw the USDC from the vault on ethereum, and return her USDC.
+When Alice wants to bridge back to Ethereum, the reverse happens. The yield route will burn her synthetic USDC, withdraw the USDC from the vault on Ethereum, and return her USDC.
 
 ### Yield Route Deployment Steps
 
-Using the Hyperlane CLI, deploy a USDC EvmHypOwnerCollateral and EvmHypSynthetic tokens on ethereum and yourchain, respectively:
+Using the Hyperlane CLI, deploy a USDC EvmHypOwnerCollateral and EvmHypSynthetic tokens on Ethereum and yourchain, respectively:
 
 #### 1. Run `hyperlane warp init` to generate a warp route config:
 
-1.  Select `yourchain` and `ethereum` using space, and hit enter.
-2.  For ethereum, select `collateralVault`, accept the mailbox, and enter the USDC vault address on yourchain.
+1.  Select `yourchain` and `Ethereum` using space, and hit enter.
+2.  For Ethereum, select `collateralVault`, accept the mailbox, and enter the USDC vault address on yourchain.
     - Alternatively, you can select `collateralVaultRebase` which is a yield route variant that distribute yields to users by increasing their holding amount.
 3.  For yourchain, select `synthetic` and accept the mailbox.
 
