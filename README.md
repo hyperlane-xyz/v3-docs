@@ -12,7 +12,6 @@ Most of this is simply serialized content from `@hyperlane-xyz` NPM packages (se
 
 ```
 yarn install
-yarn
 ```
 
 ### Local Development
@@ -29,7 +28,7 @@ This command starts a local development server and opens up a browser window. Mo
 yarn build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+This command generates static content into the `build` directory and can be served using any content hosting service.
 
 **Important Note:** Always ensure your build completes successfully before pushing changes. Broken builds disrupt the deployment process. Use `yarn build` locally to verify everything works as expected.
 
@@ -55,7 +54,7 @@ The documentation content is written in MDX format and is located in the `docs` 
 
 #### Existing content
 
-If you find anything that is confusing or can be improved in an existing document, you can click **"Edit this page" at the bottom of the page**, which will redirect to the GitHub edit form of that document. Make your changes and submit a pull request (PR).
+If you find anything that is confusing or can be improved in an existing document, you can click **"Edit this page" at the bottom of the page**, which will redirect to the GitHub edit form of that document. Submit a pull request (PR) with your changes.
 
 #### New content
 
