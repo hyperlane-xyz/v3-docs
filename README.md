@@ -75,4 +75,9 @@ When adding a new page:
 
 If there's something overlooked in this `README.md` or if any instructions are unclear, remember you can also contribute to improve it. **Fork, modify and PR to our repository!**
 
+
+## Licensing
+This project incorporates components that are licensed under different terms. The core Hyperlane contracts use the Apache License 2.0, while some other components may use different licenses such as MIT. Due to this multi-license structure, we cannot provide a single license statement that covers the entire project. Users are strongly encouraged to review the specific LICENSE files in each subproject or component they intend to use. For detailed licensing information, please refer to the individual LICENSE files in the relevant subdirectories or repositories.
+
+
 All contributions are welcome!
