@@ -28,6 +28,6 @@ There are three actions that should be set on the `MasterMinter` contract to be 
 1. **Remove the previous test controller:**: 
 - As the owner, remove the previous test controller via the [`removeController(address _controller)` function](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/Controller.sol#L87C14-L87C51)
 2. **Set the controller and minter:**
-- As the owner, you should set the controller and minter via the [`configureController(address controller, address worker)` funcition](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/Controller.sol#L70). The controller can be the same as the owner, the minter should be the warp route address.
+- As the owner, you should set the controller and minter via the [`configureController(address controller, address worker)` function](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/Controller.sol#L70). The controller can be the same as the owner, the minter should be the warp route address.
 3. **Set the mint limit for the minter:**
 - As the controller, you should set the mint limit for the minter via the [`configureMinter(uint256 _newAllowance)` function](https://github.com/circlefin/stablecoin-evm/blob/master/contracts/minting/MintController.sol#L116). This limit is not being continuously reset, so either set it to a sufficiently large value (like `cast max-uint`) or monitor the usage and adjust accordingly.
