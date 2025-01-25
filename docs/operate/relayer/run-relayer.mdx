@@ -9,12 +9,12 @@
 
 ## Requirements
 
-- RPC nodes
+- **RPC nodes**
   - A Relayer uses RPC nodes to read the origin chain(s), and deliver messages to the destination chain(s). The Relayer must be configured with an RPC node for all origin and destination chains.
-- One or more signing keys
+- **One or more signing keys**
   - In order to deliver messages, the Relayer must be configured with a signing key to submit transactions on each destination chain (thus need funds on those chains).
   - The Relayer uses this key to sign `Mailbox.process()` transactions. The Hyperlane Relayer agent currently supports configuration with AWS KMS keys that are accessed via API keys/secrets or raw hexadecimal private keys.
-- A machine to run on
+- **A machine to run on**
   - Relayer operators can compile the Rust binary themselves, or run a Docker image provided by Abacus Works. The binary can be run using your favorite cloud service.
 
 ## Guide
@@ -47,6 +47,51 @@ See the [Agent Keys](../set-up-agent-keys.mdx) page to set up your Hexadecimal o
 
 ### Configuration
 
+#### RPC Configuration
+
+Hyperlane Validators and Relayers can use **multiple RPC URLs** to improve reliability and redundancy. The setup varies based on the chain type.
+
+<Tabs groupId="rpc-config">
+  
+<TabItem value="evm" label="EVM Chains">
+
+EVM-based chains support configuring multiple RPC endpoints for redundancy and can specify how they are used.
+
+- **Configure multiple RPCs:** Use [`customRpcUrls`](../config-reference.mdx#chainschain_namecustomrpcurls).
+- **RPC Selection Mode ([`rpcConsensusType`](../config-reference.mdx#chainschain_namerpcconsensustype))**:
+  - **Fallback**: The agent tries the first URL and switches to the next if needed.
+  - **Quorum**: Requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+
+</TabItem>
+
+<TabItem value="cosmos" label="Cosmos Chains">
+
+Cosmos-based chains require both **RPC and gRPC endpoints** for proper operation.
+
+- **Configure multiple RPCs:** Use [`customRpcUrls`](../config-reference.mdx#chainschain_namecustomrpcurls).
+- **Configure gRPC endpoints:** Use [`customGrpcUrls`].
+- **Fallback Mechanism:** Cosmos agents always use **fallback mode**.
+
+</TabItem>
+
+<TabItem value="svm" label="SVM Chains">
+
+SVM-based chains support configuring multiple RPC endpoints, but **only a single RPC is used**.
+
+- **Configure RPCs:** Use [`customRpcUrls`](../config-reference.mdx#chainschain_namecustomrpcurls).
+
+:::caution
+
+For **SVM chains**, only a **single RPC URL** is used. here is no fallback or quorum-based selection mechanism.
+
+:::
+
+</TabItem>
+
+</Tabs>
+
+#### Configuration Settings
+
 Like the local setup, there are a few base arguments you should provide when configuring your Relayer.
 
 | Argument                        | Description                                                                                                                                                                                                                                                                                                                                               |
@@ -54,6 +99,9 @@ Like the local setup, there are a few base arguments you should provide when con
 | `--relayChains`                 | Comma separated names of the origin and destination chains to relay messages between. For example: `ethereum,polygon,avalanche`.                                                                                                                                                                                                                          |
 | `--db`                          | The path to where the Relayer should write persistent data to disk. Ensure this path to be persistent when using cloud setups. When using Docker, make sure to mount the persistent path/volume into the container. See [config-reference](../config-reference.mdx#db) for more info.                                                                     |
 | `--allowLocalCheckpointSyncers` | If `true`, this will allow the Relayer to look for Validator signatures on the Relayer's local filesystem. In a production environment, this should be `false`. If you're running a Validator on the same machine by following the Validator local setup instructions, set this to `true` so that your Relayer can access the local Validator signatures. |
+| `--chains.[originChainName].customRpcUrls`      | Override the default RPC URLs used by the Validator for your origin chain.                              |
+| `--chains.[originChainName].customGrpcUrls`     | Configure multiple gRPC endpoints for Cosmos chains, similar to `customRpcUrls`. |
+| `--chains.[originChainName].rpcConsensusType`   | Defines how multiple RPC URLs are used. |
 
 :::info
 
@@ -61,7 +109,7 @@ Your Relayer takes both command line arguments and environment variables as conf
 
 :::
 
-Of course, you can also provide the path to additional configuration files as a comma separated list with the [`CONFIG_FILES` environment variable](../config-reference.mdx#config_files). If you choose to run in Docker, see the docker section of [agent configuration](../agent-config.mdx) for tips on mounting your config files into your Docker container.
+You can also provide the path to additional configuration files as a comma separated list with the [`CONFIG_FILES` environment variable](../config-reference.mdx#config_files). If you choose to run in Docker, see the docker section of [agent configuration](../agent-config.mdx) for tips on mounting your config files into your Docker container.
 
 ### Setup-specific configuration
 
