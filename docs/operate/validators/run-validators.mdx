@@ -40,7 +40,7 @@ Operating a Validator for Polygon mainnet requires access to an archive node. Th
 
 ## Guide
 
-### Prerequisites
+### Pre-Requisites
 
 As a recap - before running a production Validator you need to have:
 
@@ -108,6 +108,8 @@ Like the local setup, there are a few base arguments you should provide when con
 | `--originChainName`                             | Name of the chain being validated. For example: `ethereum`.                                             |
 | `--chains.[originChainName].customRpcUrls`      | Override the default RPC URLs used by the Validator for your origin chain.                              |
 | `--chains.[originChainName].blocks.reorgPeriod` | Number of block confirmations the Validator needs to wait for before signing the `Mailbox` merkle root. |
+| `--chains.[originChainName].customGrpcUrls`     | Configure multiple gRPC endpoints for Cosmos chains, similar to `customRpcUrls`. |
+| `--chains.[originChainName].rpcConsensusType`   | Defines how multiple RPC URLs are used. |
 
 :::info
 
@@ -115,7 +117,7 @@ Your Validator takes both command line arguments and environment variables as co
 
 :::
 
-Of course, you can also provide the path to additional configuration files as a comma separated list with the [`CONFIG_FILES` environment variable](../config-reference.mdx#config_files). If you choose to run in Docker, see the docker section of [agent configuration](../agent-config.mdx) for tips on mounting your config files into your Docker container.
+You can also provide the path to additional configuration files as a comma separated list with the [`CONFIG_FILES` environment variable](../config-reference.mdx#config_files). If you choose to run in Docker, see the docker section of [agent configuration](../agent-config.mdx) for tips on mounting your config files into your Docker container.
 
 ### Setup-specific configuration
 
