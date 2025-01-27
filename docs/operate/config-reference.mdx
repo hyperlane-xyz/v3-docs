@@ -1,8 +1,7 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # Configuration reference
-
 
 ## CONFIG_FILES
 
@@ -22,9 +21,9 @@ Not supported as an argument
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export CONFIG_FILES='./config/ethereum/my-config.json,./config/ethereum/my-validator-config.json'
-```
+  ```bash export
+  CONFIG_FILES='./config/ethereum/my-config.json,./config/ethereum/my-validator-config.json'
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -50,10 +49,10 @@ Not supported in configuration files
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_*="...."
-export HYP_CHAINS_ETHEREUM_*="...."
-```
+  ```bash 
+  export HYP_CHAINS_${CHAIN_NAME}_*="...." 
+  export HYP_CHAINS_ETHEREUM_*="...."
+   ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -89,10 +88,10 @@ export HYP_CHAINS_ETHEREUM_*="...."
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_NAME="$DOMAIN_NAME"
-export HYP_CHAINS_ETHEREUM_NAME="ethereum"
-```
+  ```bash 
+  export HYP_CHAINS_${CHAIN_NAME}_NAME="$DOMAIN_NAME" export
+  HYP_CHAINS_ETHEREUM_NAME="ethereum" 
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -132,10 +131,8 @@ export HYP_CHAINS_ETHEREUM_NAME="ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_DOMAIN="$DOMAIN_NAME"
-export HYP_CHAINS_ETHEREUM_DOMAIN=1
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_DOMAIN="$DOMAIN_NAME" export
+  HYP_CHAINS_ETHEREUM_DOMAIN=1 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -173,10 +170,8 @@ export HYP_CHAINS_ETHEREUM_DOMAIN=1
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS"
-export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS" export
+  HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -218,10 +213,10 @@ export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_INTERCHAINGASPAYMASTER="$IGP_ADDRESS"
-export HYP_CHAINS_ETHEREUM_INTERCHAINGASPAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_INTERCHAINGASPAYMASTER="$IGP_ADDRESS"
+  export
+  HYP_CHAINS_ETHEREUM_INTERCHAINGASPAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -263,10 +258,9 @@ export HYP_CHAINS_ETHEREUM_INTERCHAINGASPAYMASTER="0x6cA0B6D22da47f091B7613223cD
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_VALIDATORANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS"
-export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}
+  _VALIDATORANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS" export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -308,10 +302,9 @@ export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFF
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS"
-export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}
+  _MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS" export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -352,9 +345,7 @@ export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_SIGNER_*="...."
-```
+  ```bash export HYP_CHAINS_${CHAIN_NAME}_SIGNER_*="...." ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -384,6 +375,7 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_*="...."
 **Type:** `Enum ("hexKey" | "aws" | "cosmosKey" | "node")`
 
 Accepted values for the different VMs are:
+
 - EVM: `hexKey` (ECDSA) or `aws` (ECDSA)
 - sealevel: `hexKey` (ED25519)
 - cosmos: `cosmosKey`
@@ -397,9 +389,7 @@ Accepted values for the different VMs are:
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey"
-```
+  ```bash export HYP_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -442,9 +432,9 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_TYPE="hexKey"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
-```
+  ```bash export HYP_CHAINS_${CHAIN_NAME}
+  _SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -487,9 +477,8 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum"
-```
+  ```bash export HYP_CHAINS_${CHAIN_NAME}
+  _SIGNER_ID="alias/validator-signer-ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -528,9 +517,7 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_CHAINS_${CHAIN_NAME}_SIGNER_REGION="us-east-1"
-```
+  ```bash export HYP_CHAINS_${CHAIN_NAME}_SIGNER_REGION="us-east-1" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -568,10 +555,8 @@ export HYP_CHAINS_${CHAIN_NAME}_SIGNER_REGION="us-east-1"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_PROTOCOL="ethereum"
-export HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_PROTOCOL="ethereum" export
+  HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -602,9 +587,9 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 
 **Description:** How to communicate with the provider
 
-* `"single"` uses a basic http connection
-* `"fallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
-* `"quorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+- `"single"` uses a basic http connection
+- `"fallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
+- `"quorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
 
 **Requires:** `chains.<chain_name>.protocol = "ethereum" | undefined`
 
@@ -622,10 +607,8 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_RPCCONSENSUSTYPE="single"
-export HYP_CHAINS_ETHEREUM_RPCCONSENSUSTYPE="single"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_RPCCONSENSUSTYPE="single" export
+  HYP_CHAINS_ETHEREUM_RPCCONSENSUSTYPE="single" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -665,10 +648,9 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_CUSTOMRPCURLS="$CONNECTION_URLS"
-export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_CUSTOMRPCURLS="$CONNECTION_URLS" export
+  HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -724,14 +706,12 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_0_HTTPS="$CONNECTION_URL_0"
-export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_1_HTTPS="$CONNECTION_URL_1"
-export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_2_HTTPS="$CONNECTION_URL_2"
-export HYP_CHAINS_ETHEREUM_RPCURLS_0_HTTPS="http://127.0.0.1:8545"
-export HYP_CHAINS_ETHEREUM_RPCURLS_1_HTTPS="http://127.0.0.1:8546"
-export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547"
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_0_HTTPS="$CONNECTION_URL_0"
+  export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_1_HTTPS="$CONNECTION_URL_1" export
+  HYP_CHAINS_${CHAIN_NAME}_RPCURLS_2_HTTPS="$CONNECTION_URL_2" export
+  HYP_CHAINS_ETHEREUM_RPCURLS_0_HTTPS="http://127.0.0.1:8545" export
+  HYP_CHAINS_ETHEREUM_RPCURLS_1_HTTPS="http://127.0.0.1:8546" export
+  HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -764,6 +744,47 @@ export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547"
 </TabItem>
 </Tabs>
 
+## chains.`<chain_name>`.customGrpcUrls
+
+:::info
+
+Connections to Cosmos chains require **both** RPC and gRPC URLs. There is **no `rpcConsensusType` configuration** for Cosmos chains, and gRPC URLs always operate in **fallback mode**—if the first URL fails, the next one is used.
+
+:::
+
+**Description:** Comma-separated gRPC URLs used to connect to the provider. Similar to [`customRpcUrls`](#chainschain_namecustomrpcurls).
+
+**Type:** `string` (comma-separated list of URLs without spaces)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--chains.${CHAIN_NAME}.customgrpcurls "$CONNECTION_URLS"
+--chains.cosmos.customgrpcurls "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+  ```sh 
+  export HYP_CHAINS_${CHAIN_NAME}_CUSTOMGRPCURLS="$CONNECTION_URLS" 
+  export HYP_CHAINS_COSMOS_GRPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+  ```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "chains": {
+        "cosmos": {
+            "rpcUrls": "<connection_urls>",
+            "grpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+        }
+    }
+}
+```
+</TabItem>
+</Tabs>
+
 ## chains.`<chain_name>`.index.from
 
 **Description:** Height at which to start indexing contracts.
@@ -783,10 +804,8 @@ export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8547"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_INDEX_FROM=0
-export HYP_CHAINS_ETHEREUM_INDEX_FROM=16271503
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_INDEX_FROM=0 export
+  HYP_CHAINS_ETHEREUM_INDEX_FROM=16271503 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -828,10 +847,8 @@ export HYP_CHAINS_ETHEREUM_INDEX_FROM=16271503
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHAINS_${CHAIN_NAME}_INDEX_CHUNK=1999
-export HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999
-```
+  ```sh export HYP_CHAINS_${CHAIN_NAME}_INDEX_CHUNK=1999 export
+  HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -856,7 +873,6 @@ export HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999
 
 ## defaultsigner
 
-
 :::info
 
 Because each VM supports a different signer type, the default signer can only support a single VM type. For instance, if the default signer is a ECDSA one, it will only be able to sign on EVM chains.
@@ -879,9 +895,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_DEFAULTSIGNER_*="...."
-```
+  ```bash export HYP_DEFAULTSIGNER_*="...." ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -911,9 +925,7 @@ export HYP_DEFAULTSIGNER_*="...."
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_DEFAULTSIGNER_TYPE="hexKey"
-```
+  ```bash export HYP_DEFAULTSIGNER_TYPE="hexKey" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -947,9 +959,9 @@ export HYP_DEFAULTSIGNER_TYPE="hexKey"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
-```
+  ```bash export
+  HYP_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -984,9 +996,7 @@ export HYP_DEFAULTSIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875e
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_DEFAULTSIGNER_ID="alias/validator-signer-ethereum"
-```
+  ```bash export HYP_DEFAULTSIGNER_ID="alias/validator-signer-ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1021,9 +1031,7 @@ export HYP_DEFAULTSIGNER_ID="alias/validator-signer-ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_DEFAULTSIGNER_REGION="us-east-1"
-```
+  ```bash export HYP_DEFAULTSIGNER_REGION="us-east-1" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1056,9 +1064,7 @@ export HYP_DEFAULTSIGNER_REGION="us-east-1"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_METRICSPORT=9090
-```
+  ```sh export HYP_METRICSPORT=9090 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1088,9 +1094,7 @@ export HYP_METRICSPORT=9090
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_LOG_FORMAT="pretty"
-```
+  ```bash export HYP_LOG_FORMAT="pretty" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1122,9 +1126,7 @@ export HYP_LOG_FORMAT="pretty"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_LOG_LEVEL="info"
-```
+  ```bash export HYP_LOG_LEVEL="info" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1156,9 +1158,7 @@ export HYP_LOG_LEVEL="info"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_ORIGINCHAINNAME="ethereum"
-```
+  ```sh export HYP_ORIGINCHAINNAME="ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1188,9 +1188,7 @@ export HYP_ORIGINCHAINNAME="ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_VALIDATOR_*="...."
-```
+  ```bash export HYP_VALIDATOR_*="...." ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1220,9 +1218,7 @@ export HYP_VALIDATOR_*="...."
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_VALIDATOR_TYPE="hexKey"
-```
+  ```bash export HYP_VALIDATOR_TYPE="hexKey" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1256,9 +1252,9 @@ export HYP_VALIDATOR_TYPE="hexKey"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
-```
+  ```bash export
+  HYP_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1293,9 +1289,7 @@ export HYP_VALIDATOR_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_VALIDATOR_ID="alias/validator-signer-ethereum"
-```
+  ```bash export HYP_VALIDATOR_ID="alias/validator-signer-ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1330,9 +1324,7 @@ export HYP_VALIDATOR_ID="alias/validator-signer-ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export HYP_VALIDATOR_REGION="us-east-1"
-```
+  ```bash export HYP_VALIDATOR_REGION="us-east-1" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1365,9 +1357,7 @@ export HYP_VALIDATOR_REGION="us-east-1"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHECKPOINTSYNCER_TYPE="localStorage"
-```
+  ```sh export HYP_CHECKPOINTSYNCER_TYPE="localStorage" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1401,9 +1391,7 @@ export HYP_CHECKPOINTSYNCER_TYPE="localStorage"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer"
-```
+  ```sh export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1438,9 +1426,7 @@ export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
-```
+  ```sh export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1475,9 +1461,7 @@ export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum"
-```
+  ```sh export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1512,9 +1496,7 @@ export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_CHECKPOINTSYNCER_REGION="us-east-1"
-```
+  ```sh export HYP_CHECKPOINTSYNCER_REGION="us-east-1" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1547,9 +1529,7 @@ export HYP_CHECKPOINTSYNCER_REGION="us-east-1"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_INTERVAL=30
-```
+  ```sh export HYP_INTERVAL=30 ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1580,11 +1560,14 @@ For the scraper, this is the connection string to a postgresql database.
 --db "/tmp/hyp/validator/ethereum-cache"
 
 # Relayer
+
 --db "/tmp/hyp/relayer/ethereum-cache"
 
 # Scraper
+
 --db "postgresql://postgres:password@localhost:5432/dbname"
-```
+
+````
 </TabItem>
 
 <TabItem value="env" label="As Env">
@@ -1597,7 +1580,8 @@ export HYP_DB="/tmp/hyp/relayer/ethereum-cache"
 
 # Scraper
 export HYP_DB="postgresql://postgres:password@localhost:5432/dbname"
-```
+````
+
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1605,7 +1589,7 @@ For the validator:
 
 ```json
 {
-    "db": "/tmp/hyp/validator/ethereum-cache"
+  "db": "/tmp/hyp/validator/ethereum-cache"
 }
 ```
 
@@ -1613,7 +1597,7 @@ For the relayer:
 
 ```json
 {
-    "db": "/tmp/hyp/relayer/ethereum-cache"
+  "db": "/tmp/hyp/relayer/ethereum-cache"
 }
 ```
 
@@ -1621,9 +1605,10 @@ For the scraper:
 
 ```json
 {
-    "db": "postgresql://postgres:password@localhost:5432/dbname"
+  "db": "postgresql://postgres:password@localhost:5432/dbname"
 }
 ```
+
 </TabItem>
 </Tabs>
 
@@ -1645,9 +1630,7 @@ For the scraper:
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_RELAYCHAINS="arbitrum,ethereum,bsc"
-```
+  ```sh export HYP_RELAYCHAINS="arbitrum,ethereum,bsc" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1673,19 +1656,21 @@ export HYP_RELAYCHAINS="arbitrum,ethereum,bsc"
 type gaspaymentenforcement = Array<GasPaymentEnforcementPolicy>;
 
 type GasPaymentEnforcementPolicy =
-( // fields specific to each type...
-    // No requirements - all messages are processed regardless of gas payment
-    { type: "none" }
-    // Messages that have paid a minimum amount will be processed
-  & { type: "minimum", payment: U256 }
-    // Required amount of gas on the foreign chain has been paid according
-    // to on-chain fee quoting. `gasfraction` defaults to "1 / 2".
-  & { type: "onChainFeeQuoting", gasfraction?: GasFraction }
-) | { // all types have the following fields...
-    // If a message matches, this policy will be used.
-    // If no matching list is specified, all messages will match.
-    matchingList?: MatchingList
-};
+  | // fields specific to each type...
+  // No requirements - all messages are processed regardless of gas payment
+  ({
+      type: "none";
+    } & {
+      // Messages that have paid a minimum amount will be processed
+      type: "minimum";
+      payment: U256;
+    } & { type: "onChainFeeQuoting"; gasfraction?: GasFraction }) // to on-chain fee quoting. `gasfraction` defaults to "1 / 2". // Required amount of gas on the foreign chain has been paid according
+  | {
+      // all types have the following fields...
+      // If a message matches, this policy will be used.
+      // If no matching list is specified, all messages will match.
+      matchingList?: MatchingList;
+    };
 
 // A list of matching rules. A message matches if any of the list
 // elements matches the message.
@@ -1693,10 +1678,10 @@ type MatchingList = Array<MatchingListElement>;
 
 // Matches a message if any of the provided values matches.
 interface MatchingListElement {
-    originDomain?: NumericFilter
-    senderAddress?: HashFilter
-    destinationDomain?: NumericFilter
-    recipientAddress?: HashFilter
+  originDomain?: NumericFilter;
+  senderAddress?: HashFilter;
+  destinationDomain?: NumericFilter;
+  recipientAddress?: HashFilter;
 }
 
 type NumericFilter = Wildcard | U32 | Array<U32>;
@@ -1815,10 +1800,10 @@ type MatchingList = Array<MatchingListElement>;
 
 // Matches a message if any of the provided values matches.
 interface MatchingListElement {
-    originDomain?: NumericFilter
-    senderAddress?: HashFilter
-    destinationDomain?: NumericFilter
-    recipientAddress?: HashFilter
+  originDomain?: NumericFilter;
+  senderAddress?: HashFilter;
+  destinationDomain?: NumericFilter;
+  recipientAddress?: HashFilter;
 }
 
 type NumericFilter = Wildcard | U32 | Array<U32>;
@@ -1872,9 +1857,7 @@ export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d04
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_TRANSACTIONGASLIMIT="250000000"
-```
+  ```sh export HYP_TRANSACTIONGASLIMIT="250000000" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1904,9 +1887,7 @@ export HYP_TRANSACTIONGASLIMIT="250000000"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220"
-```
+  ```sh export HYP_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1936,9 +1917,7 @@ export HYP_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220"
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
-export HYP_ALLOWLOCALCHECKPOINTSYNCERS=false
-```
+  ```sh export HYP_ALLOWLOCALCHECKPOINTSYNCERS=false ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1966,9 +1945,7 @@ Not supported as an argument
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE"
-```
+  ```bash export AWS_ACCESS_KEY_ID="AKIAIOSFODNN7EXAMPLE" ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1992,9 +1969,9 @@ Not supported as an argument
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```bash
-export AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-```
+  ```bash export
+  AWS_SECRET_ACCESS_KEY="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" 
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
