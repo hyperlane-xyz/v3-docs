@@ -133,7 +133,8 @@ Not supported in configuration files
 <TabItem value="env" label="As Env">
   ```sh 
   export HYP_CHAINS_${CHAIN_NAME}_DOMAIN="$DOMAIN_NAME" 
-  export HYP_CHAINS_ETHEREUM_DOMAIN=1 ```
+  export HYP_CHAINS_ETHEREUM_DOMAIN=1 
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -173,7 +174,8 @@ Not supported in configuration files
 <TabItem value="env" label="As Env">
   ```sh 
   export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS" 
-  export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70" ```
+  export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70" 
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -486,7 +488,8 @@ Accepted values for the different VMs are:
 
 <TabItem value="env" label="As Env">
   ```bash 
-  export HYP_CHAINS_${CHAIN_NAME} _SIGNER_ID="alias/validator-signer-ethereum" ```
+  export HYP_CHAINS_${CHAIN_NAME} _SIGNER_ID="alias/validator-signer-ethereum" 
+  ```
 </TabItem>
 
 <TabItem value="config" label="As Config">
@@ -1617,14 +1620,12 @@ For the scraper, this is the connection string to a postgresql database.
 --db "/tmp/hyp/validator/ethereum-cache"
 
 # Relayer
-
 --db "/tmp/hyp/relayer/ethereum-cache"
 
 # Scraper
-
 --db "postgresql://postgres:password@localhost:5432/dbname"
+```
 
-````
 </TabItem>
 
 <TabItem value="env" label="As Env">
@@ -1637,7 +1638,7 @@ export HYP_DB="/tmp/hyp/relayer/ethereum-cache"
 
 # Scraper
 export HYP_DB="postgresql://postgres:password@localhost:5432/dbname"
-````
+```
 
 </TabItem>
 
