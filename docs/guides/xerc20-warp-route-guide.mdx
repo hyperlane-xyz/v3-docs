@@ -1,0 +1,77 @@
+# Create your xERC20 Token Bridge
+
+## Prerequisites
+
+To complete this walkthrough, you should have:
+
+1. **An origin and destination network of choice**, between which you’d like to deploy the xERC20 warp route.
+2. **The address of an xERC20 or xERC20Lockbox** on the origin and destination chain. 
+3. **Hyperlane CLI installed** and a **wallet private key set as the `HYP_KEY` environment variable**, funded on both origin and destination networks.
+
+### Step 1: Initialize a New Warp Route
+
+Run the following command to generate a warp route configuration:
+
+```bash
+hyperlane warp init
+```
+
+1. Select **Ethereum** (origin) and **YourChain** (destination) using space, then hit enter.
+2. For Ethereum (origin), choose **xERC20** or **xERC20Lockbox**, and enter the contract address. 
+3. For YourChain (destination), choose **xERC20** or **xERC20Lockbox**, and enter the contract address. 
+
+:::info
+Choosing Between xERC20 and xERC20Lockbox:
+
+- **xERC20Lockbox**: Use this if your token is already deployed on the origin chain and requires a wrapped version for cross-chain transfers.
+- **xERC20**: Use this if your token natively implements xERC20 and does not require a lockbox.
+
+If you're unsure, review your token’s contract structure or deployment history to determine the correct choice.
+:::
+
+### Step 2: Deploy the xERC20 Warp Route
+
+Run the following command to deploy the warp route:
+
+```bash
+hyperlane warp deploy
+```
+
+This deploys the *Hyperlane adapter contracts**, either:
+
+- **HypXERC20Lockbox** (if using xERC20Lockbox)
+- **HypXERC20** (if using xERC20)
+
+*The CLI does not deploy non-Hyperlane contracts (e.g., existing ERC20 contracts). Those should already be deployed.*
+
+### Step 3: Configure Minting Permissions
+
+Once the xERC20 warp route contracts are deployed, you must configure minting permissions for the destination token.
+
+Set the mint limit using the [`setLimits` function](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L85) in your xERC20 contract.
+
+### Step 4: Test Cross-Chain Transfers
+
+Test transferring tokens across chains using:
+
+```bash
+hyperlane warp send --symbol <token_symbol> --amount <amount>
+```
+
+- Replace `<token_symbol>` with your token.
+- Replace `<amount>` with the number of tokens to transfer.
+
+### 
+
+🎉 Congrats! You have successfully created an **xERC20 Warp Route**. Your xERC20 tokens can now move across chains!
+
+:::warning
+Please note that cross-chain operations rely on **Interchain Security Modules (ISMs)**, and there are inherent risks, such as ISM trust assumptions.
+:::
+
+## Resources
+
+For more resources on deploying xERC20 warp routes, check out:
+
+- [xERC20 Token Standard](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol)
+- [xERC20 Token transfer limits](./xerc20-transfer-limits.md)
