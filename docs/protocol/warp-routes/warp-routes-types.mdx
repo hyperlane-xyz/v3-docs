@@ -28,7 +28,7 @@ See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blo
 
 ### Collateral-Backed ERC20 Warp Routes
 
-Implemented in `HypERC20Collateral.sol`, collateral warp routes enable the transfer of ERC20 tokens across chains by locking them as collateral.
+Implemented in `HypERC20Collateral.sol`, collateral warp routes enable ERC20 tokens to be locked as collateral on the source chain and then used to mint a synthetic representation on the destination chain.
 
 #### Features
 
@@ -41,7 +41,7 @@ See [the implementation](https://github.com/hyperlane-xyz/hyperlane-monorepo/blo
 
 ### Synthetic ERC20 Warp Routes
 
-Implemented in `HypERC20.sol`, synthetic warp routes create new tokens on destination chains that represent tokens from the origin chain.
+Implemented in `HypERC20.sol`, synthetic warp routes mint new tokens on the destination chain that represent the original tokens from the source chain. The original tokens are not transferred but remain locked.
 
 #### Features
 

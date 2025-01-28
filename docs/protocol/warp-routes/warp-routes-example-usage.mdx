@@ -1,6 +1,6 @@
 # Warp Routes: Example Usage
 
-Warp Route combinations allow developers to tailor cross-chain transfers for specific use cases. Below are examples of commonly used combinations and configurations.
+Warp Routes define how assets move between chains, whether as native tokens, synthetic representations, or collateral-backed assets. The choice of route depends on the asset type and the desired behavior on the destination chain.
 
 ## Warp Route Combinations
 
@@ -14,11 +14,12 @@ This type of route should only be used when both networks have native tokens of 
 
 #### Setup
 
-- HypNative contract deployed on both chains.
+- **HypNative** contract deployed on both chains.
 
 #### Example Flow
 
 ```
+Transaction Type: Direct Native Transfer
 From: Ethereum (ETH)
 To: inEVM (ETH)
 Amount: 1 ETH
@@ -43,12 +44,13 @@ This route creates a synthetic representation of a native token on another chain
 
 #### Setup
 
-- HypNative contract deployed on native token chain.
-- HypERC20 (synthetic) contract deployed on other chain.
+- **HypNative** contract deployed on the origin chain where the native asset exists.
+- **HypERC20** contract deployed on the destination chain where the synthetic token is minted.
 
 #### Example Flow
 
 ```
+Transaction Type: Minting Synthetic Token from Native Token
 From: Celo (CELO)
 To: Optimism (wCELO)
 Amount: 100 CELO
@@ -73,14 +75,15 @@ This route allows for the creation of synthetic tokens based on collateralized E
 
 #### Setup
 
-- HypERC20Collateral contract deployed on ERC20 chain.
-- HypERC20 (synthetic) contract deployed on other chain.
+- **Collateral contract (HypERC20Collateral)** is deployed on the source chain where the original asset exists.
+- **Synthetic contract (HypERC20)** is deployed on the destination chain, where the asset is minted.
 
 #### Example Flow
 
 ```
-From: Ethereum (USDC)
-To: Arbitrum (wUSDC)
+Transaction Type: Minting Synthetic Token from Collateral Token
+From: Ethereum (USDC - Original Asset) - Collateral Source
+To: Arbitrum (wUSDC - Minted Synthetic Asset) - Synthetic Destination
 Amount: 1000 USDC
 ```
 
