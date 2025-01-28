@@ -16,10 +16,10 @@ This section provides a step-by-step walkthrough for creating an interchain toke
 To deploy the route, you will need a Warp Route deployment config file. A valid config will specify:
 
 - Which token, on which chain, is this Warp Route being created for?
-- _Optional:_ Hyperlane connection details including contract addresses for the [mailbox](/docs/reference/messaging/messaging-interface.mdx), [interchain gas](/docs/reference/hooks/interchain-gas.mdx), and [interchain security modules](/docs/reference/ISM/specify-your-ISM.mdx).
-- _Optional:_ The token standard - this includes fungible tokens using ERC20 or NFTs using ERC721, as well as ERC4626 yield-bearing tokens. Note ERC721 support is experimental and some Hyperlane tooling won't work for NFTs yet.
+- _Optional:_ Hyperlane connection details, such as contract addresses for the [Mailbox](/docs/reference/messaging/messaging-interface.mdx), [Interchain Gas](/docs/reference/hooks/interchain-gas.mdx), and [Interchain Security Modules](/docs/reference/ISM/specify-your-ISM.mdx).
+- _Optional:_ Token standard, including ERC20 (fungible tokens), ERC721 (NFTs), and ERC4626 (yield-bearing tokens). Note ERC721 support is experimental and some Hyperlane tooling won't work for NFTs yet.
 
-The easiest way to create one is with the CLI's config command:
+The easiest way to create a Warp Route deployment config file is with the CLI's config command:
 
 ```bash
 hyperlane warp init
@@ -60,6 +60,14 @@ You may specify the following optional values in your config entries. If no valu
 #### Example
 
 For a minimal Warp deployment config example using local anvil chains, see [`warp-route-deployment.yaml`](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/cli/examples/warp-route-deployment.yaml).
+
+:::tip
+
+- Learn more about Warp Route types and the different configurations in the following sections:
+  - [Warp Route Types](/docs/protocol/warp-routes/warp-routes-types)
+  - [Warp Route Example Usage](/docs/protocol/warp-routes/warp-routes-example-usage)
+
+:::
 
 ### Chain Configurations
 
