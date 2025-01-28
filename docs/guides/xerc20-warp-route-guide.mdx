@@ -50,7 +50,8 @@ This deploys the *Hyperlane adapter contracts**, either:
 
 Once the xERC20 warp route contracts are deployed, you must configure minting permissions for the destination token.
 
-Set the mint limit using the [`setLimits` function](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L85) in your xERC20 contract.
+Set the mint limit for the newly deployed warp route using the [`setLimits` function](https://github.com/defi-wonderland/xERC20/blob/main/solidity/contracts/XERC20.sol#L85) in your xERC20 contract.
+By default, these limits are found in the Registry, located at `~/.hyperlane` locally.
 
 ### Step 4: Test Cross-Chain Transfers
 
