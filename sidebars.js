@@ -103,7 +103,7 @@ const sidebars = {
               type: "doc",
               id: "protocol/warp-routes/warp-routes-yield-routes",
               label: "Deploy Yield Routes",
-            },
+            },            
             {
               type: "doc",
               id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
@@ -113,6 +113,11 @@ const sidebars = {
               type: "doc",
               id: "guides/extending-warp-route",
               label: "Extending a Warp Route",
+            },
+            {
+              type: "doc",
+              id: "guides/xerc20-warp-route-guide",
+              label: "Deploy an xERC20 Warp Route",
             },
             {
               type: "doc",
