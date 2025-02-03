@@ -81,7 +81,7 @@ Not supported in configuration files
 
 <Tabs groupId="config-reference">
 <TabItem value="arg" label="As Arg" default>
-```sh
+```bash
 --chains.${CHAIN_NAME}.name $DOMAIN_NAME
 --chains.ethereum.name ethereum
 ```
@@ -131,7 +131,7 @@ Not supported in configuration files
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHAINS_${CHAIN_NAME}_DOMAIN="$DOMAIN_NAME" 
   export HYP_CHAINS_ETHEREUM_DOMAIN=1 
   ```
@@ -172,7 +172,7 @@ Not supported in configuration files
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHAINS_${CHAIN_NAME}_MAILBOX="$MAILBOX_ADDRESS" 
   export HYP_CHAINS_ETHEREUM_MAILBOX="0x35231d4c2D8B8ADcB5617A638A0c4548684c7C70" 
   ```
@@ -217,7 +217,7 @@ Not supported in configuration files
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHAINS_${CHAIN_NAME}_INTERCHAINGASPAYMASTER="$IGP_ADDRESS"
   export HYP_CHAINS_ETHEREUM_INTERCHAINGASPAYMASTER="0x6cA0B6D22da47f091B7613223cD4BB03a2d77918"
   ```
@@ -262,7 +262,7 @@ Not supported in configuration files
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHAINS_${CHAIN_NAME} _VALIDATORANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS" 
   export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
   ```
@@ -307,7 +307,7 @@ Not supported in configuration files
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHAINS_${CHAIN_NAME} _MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS" 
   export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
   ```
@@ -443,7 +443,7 @@ Accepted values for the different VMs are:
 
 <TabItem value="env" label="As Env">
   ```bash 
-  export HYP_CHAINS_${CHAIN_NAME} _SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
+  export HYP_CHAINS_${CHAIN_NAME}_SIGNER_KEY="8166f546bab6da521a8369cab06c5d2b9e46670292d85c875ee9ec20e84ffb61"
   ```
 </TabItem>
 
@@ -488,7 +488,7 @@ Accepted values for the different VMs are:
 
 <TabItem value="env" label="As Env">
   ```bash 
-  export HYP_CHAINS_${CHAIN_NAME} _SIGNER_ID="alias/validator-signer-ethereum" 
+  export HYP_CHAINS_${CHAIN_NAME}_SIGNER_ID="alias/validator-signer-ethereum" 
   ```
 </TabItem>
 
@@ -568,7 +568,7 @@ Accepted values for the different VMs are:
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_PROTOCOL="ethereum" 
   export HYP_CHAINS_ARBITRUM_PROTOCOL="ethereum" 
   ```
@@ -622,7 +622,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_RPCCONSENSUSTYPE="single" 
   export HYP_CHAINS_ETHEREUM_RPCCONSENSUSTYPE="single" 
   ```
@@ -665,7 +665,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_CUSTOMRPCURLS="$CONNECTION_URLS" 
   export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
   ```
@@ -724,7 +724,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_0_HTTPS="$CONNECTION_URL_0"
   export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_1_HTTPS="$CONNECTION_URL_1" 
   export HYP_CHAINS_${CHAIN_NAME}_RPCURLS_2_HTTPS="$CONNECTION_URL_2" 
@@ -785,7 +785,7 @@ Connections to Cosmos chains require **both** RPC and gRPC URLs. There is **no `
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_CUSTOMGRPCURLS="$CONNECTION_URLS" 
   export HYP_CHAINS_COSMOS_GRPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
   ```
@@ -824,7 +824,7 @@ Connections to Cosmos chains require **both** RPC and gRPC URLs. There is **no `
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_INDEX_FROM=0 
   export HYP_CHAINS_ETHEREUM_INDEX_FROM=16271503 
   ```
@@ -869,7 +869,7 @@ Connections to Cosmos chains require **both** RPC and gRPC URLs. There is **no `
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash
   export HYP_CHAINS_${CHAIN_NAME}_INDEX_CHUNK=1999 
   export HYP_CHAINS_ETHEREUM_INDEX_CHUNK=1999 
   ```
@@ -1096,7 +1096,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_METRICSPORT=9090 
   ```
 </TabItem>
@@ -1196,7 +1196,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_ORIGINCHAINNAME="ethereum" 
   ```
 </TabItem>
@@ -1405,7 +1405,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHECKPOINTSYNCER_TYPE="localStorage" 
   ```
 </TabItem>
@@ -1441,7 +1441,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHECKPOINTSYNCER_PATH="/tmp/syncer" 
   ```
 </TabItem>
@@ -1478,7 +1478,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHECKPOINTSYNCER_BUCKET="signatures-ethereum" 
   ```
 </TabItem>
@@ -1515,7 +1515,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHECKPOINTSYNCER_FOLDER="signatures-ethereum" 
   ```
 </TabItem>
@@ -1552,7 +1552,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_CHECKPOINTSYNCER_REGION="us-east-1" 
   ```
 </TabItem>
@@ -1587,7 +1587,7 @@ Because each VM supports a different signer type, the default signer can only su
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_INTERVAL=30 
   ```
 </TabItem>
@@ -1629,7 +1629,7 @@ For the scraper, this is the connection string to a postgresql database.
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
+```bash
 # Validator
 export HYP_DB="/tmp/hyp/validator/ethereum-cache"
 
@@ -1688,7 +1688,7 @@ For the scraper:
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_RELAYCHAINS="arbitrum,ethereum,bsc" 
   ```
 </TabItem>
@@ -1767,7 +1767,7 @@ type GasFraction = string;
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
+```bash
 export HYP_GASPAYMENTENFORCEMENT='[{"type": "none", "matchingList": [{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272"}]}, {"type": "minimum", "payment": 100000}]'
 ```
 </TabItem>
@@ -1825,7 +1825,7 @@ type Wildcard = "*";
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
+```bash
 export HYP_WHITELIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
 ```
 </TabItem>
@@ -1885,7 +1885,7 @@ type Wildcard = "*";
 </TabItem>
 
 <TabItem value="env" label="As Env">
-```sh
+```bash
 export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d041272", "originDomain": [1, 42]}, {"destinationDomain": 1}]'
 ```
 </TabItem>
@@ -1917,7 +1917,7 @@ export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d04
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_TRANSACTIONGASLIMIT="250000000" 
   ```
 </TabItem>
@@ -1949,7 +1949,7 @@ export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d04
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_SKIPTRANSACTIONGASLIMITFOR="43114,10,42220" 
   ```
 </TabItem>
@@ -1981,7 +1981,7 @@ export HYP_BLACKLIST='[{"senderAddress": "0xa441b15fe9a3cf56661190a0b93b9dec7d04
 </TabItem>
 
 <TabItem value="env" label="As Env">
-  ```sh 
+  ```bash 
   export HYP_ALLOWLOCALCHECKPOINTSYNCERS=false 
   ```
 </TabItem>

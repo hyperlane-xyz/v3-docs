@@ -60,7 +60,7 @@ EVM-based chains support configuring multiple RPC endpoints for redundancy and c
 - **Configure multiple RPCs:** Use [`customRpcUrls`](../config-reference.mdx#chainschain_namecustomrpcurls).
 - **RPC Selection Mode ([`rpcConsensusType`](../config-reference.mdx#chainschain_namerpcconsensustype))**:
   - **Fallback**: The agent tries the first URL and switches to the next if needed.
-  - **Quorum**: Requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+  - **Quorum**: Requires a majority of the URLs to agree with the exception of submitting transactions.
 
 </TabItem>
 
@@ -82,7 +82,7 @@ SVM-based chains support configuring multiple RPC endpoints, but **only a single
 
 :::caution
 
-For **SVM chains**, only a **single RPC URL** is used. here is no fallback or quorum-based selection mechanism.
+For **SVM chains**, only a **single RPC URL** is used. There is no fallback or quorum-based selection mechanism.
 
 :::
 
@@ -99,9 +99,6 @@ Like the local setup, there are a few base arguments you should provide when con
 | `--relayChains`                 | Comma separated names of the origin and destination chains to relay messages between. For example: `ethereum,polygon,avalanche`.                                                                                                                                                                                                                          |
 | `--db`                          | The path to where the Relayer should write persistent data to disk. Ensure this path to be persistent when using cloud setups. When using Docker, make sure to mount the persistent path/volume into the container. See [config-reference](../config-reference.mdx#db) for more info.                                                                     |
 | `--allowLocalCheckpointSyncers` | If `true`, this will allow the Relayer to look for Validator signatures on the Relayer's local filesystem. In a production environment, this should be `false`. If you're running a Validator on the same machine by following the Validator local setup instructions, set this to `true` so that your Relayer can access the local Validator signatures. |
-| `--chains.[originChainName].customRpcUrls`      | Override the default RPC URLs used by the Validator for your origin chain.                              |
-| `--chains.[originChainName].customGrpcUrls`     | Configure multiple gRPC endpoints for Cosmos chains, similar to `customRpcUrls`. |
-| `--chains.[originChainName].rpcConsensusType`   | Defines how multiple RPC URLs are used. |
 
 :::info
 
