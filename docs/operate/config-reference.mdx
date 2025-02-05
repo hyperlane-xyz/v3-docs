@@ -667,7 +667,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 <TabItem value="env" label="As Env">
 ```sh
 export HYP_CHAINS_${CHAIN_NAME}_CUSTOMRPCURLS="$CONNECTION_URLS"
-export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+export HYP_CHAINS_ETHEREUM_CUSTOMRPCURLS="http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
 ```
 </TabItem>
 
@@ -676,10 +676,10 @@ export HYP_CHAINS_ETHEREUM_RPCURLS_2_HTTPS="http://127.0.0.1:8545,http://127.0.0
 {
     "chains": {
         "`<chain_name>`": {
-            "rpcUrls": "<connection_urls>"
+            "customRpcUrls": "<connection_urls>"
         },
         "ethereum": {
-            "rpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+            "customRpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
         }
     }
 }
