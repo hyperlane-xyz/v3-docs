@@ -10,7 +10,7 @@ Outgoing messages from L2 cannot provide in-protocol automatic L1 execution beca
 
 :::
 
-The `ArbL2ToL1Hook` sends the encoded function call with the `messageId` to the `ArbSys` precompile on the L2. After waiting for the withdrawal period, you can the `getOutboxProof()` on the L2 to get a merkle proof of the message. From here, you have two options:
+The `ArbL2ToL1Hook` sends the encoded function call with the `messageId` to the `ArbSys` precompile on the L2. After waiting for the withdrawal period, you can use the `getOutboxProof()` on the L2 to get a merkle proof of the message. From here, you have two options:
 
 - **Option A.** You can call the `ArbL2ToL1Ism`'s verify function via the `mailbox.process()` call with the proof and the other encoded data which in turn calls the `outbox.executeTransaction()` checking for the message sender and message data validity.
 - **Option B.** You can directly call the `outbox.executeTransaction()` with the proof and the other encoded data. However, you'll need to make a second call to the `ArbL2ToL1Ism`'s verify function to deliver the message. This option also you delivery of message values to the recipient contract.
@@ -32,7 +32,7 @@ flowchart TB
 
     M_O -. "process (relayer)
     after 7 days" .-> M_D
-    L_2 -. "exeuteTransaction(3rd party relayer)
+    L_2 -. "executeTransaction(3rd party relayer)
     after 7 days" .-> L_1
 
     subgraph Destination L1
