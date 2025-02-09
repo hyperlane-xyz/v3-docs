@@ -263,7 +263,7 @@ Not supported in configuration files
 
 <TabItem value="env" label="As Env">
   ```bash 
-  export HYP_CHAINS_${CHAIN_NAME} _VALIDATORANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS" 
+  export HYP_CHAINS_${CHAIN_NAME}_VALIDATORANNOUNCE="$VALIDATOR_ANNOUNCE_ADDRESS" 
   export HYP_CHAINS_ETHEREUM_VALIDATORANNOUNCE="0x9bBdef63594D5FFc2f370Fe52115DdFFe97Bc524"
   ```
 </TabItem>
@@ -308,7 +308,7 @@ Not supported in configuration files
 
 <TabItem value="env" label="As Env">
   ```bash 
-  export HYP_CHAINS_${CHAIN_NAME} _MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS" 
+  export HYP_CHAINS_${CHAIN_NAME}_MERKLETREEHOOK="$MERKLE_TREE_HOOK_ADDRESS" 
   export HYP_CHAINS_ETHEREUM_MERKLETREEHOOK="0x48e6c30B97748d1e2e03bf3e9FbE3890ca5f8CCA"
   ```
 </TabItem>
@@ -793,8 +793,8 @@ Connections to Cosmos chains require **both** RPC and gRPC URLs. There is **no `
 {
     "chains": {
         "cosmos": {
-            "rpcUrls": "<connection_urls>",
-            "grpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+            "customRpcUrls": "<connection_urls>",
+            "customGrpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
         }
     }
 }
