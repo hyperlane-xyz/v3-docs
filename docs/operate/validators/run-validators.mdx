@@ -337,7 +337,7 @@ We encourage folks to validate on as many chains as they are interested in suppo
 
 Running multiple validators improves security and redundancy. By deploying validators across different chains or regions, you reduce the risk of a single point of failure. If one validator encounters downtime or issues, others can continue to operate, ensuring the integrity and availability of the validation process.
 
-### Running Mulitple Validators: Key Considerations 
+### Running Mulitple Validators: Key Considerations
 
 - **Reusing Keys**: The same key can be used by multiple validators.
 - **Shared AWS Account**: The same AWS account can be used by multiple validators.
@@ -345,9 +345,9 @@ Running multiple validators improves security and redundancy. By deploying valid
 
 ### Additional Steps for Multiple Validators
 
-#### 1. Configure Each Validator
+#### 1. Create an Agent Configuration
 
-- Generate an agent configuration file for each validator, specifying the chains they will validate and the corresponding RPC URLs.
+- Generate an agent [configuration](#configuration) file for each validator, specifying the chains they will validate and the corresponding RPC URLs.
 - Ensure that each configuration file points to the correct signing key and S3 folder.
 
 #### 2. Run Each Validator
