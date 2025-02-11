@@ -50,7 +50,7 @@ There are two types of contributions you can make:
 The documentation content is written in MDX format and is located in the `docs` folder.
 
 - MDX Files: Combine Markdown with React. Learn more in the [Docusaurus docs](https://docusaurus.io/docs/markdown-features/react).
-- Markdown Basics: If you’re new to Markdown, refer to this [guide](https://guides.github.com/features/mastering-markdown/) or this [cheat sheet](https://www.markdownguide.org/cheat-sheet/) to get started.
+- Markdown Basics: If you’re new to Markdown, refer to this [guide](https://docs.github.com/ru/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) or this [cheat sheet](https://www.markdownguide.org/cheat-sheet/) to get started.
 
 #### Existing content
 
