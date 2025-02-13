@@ -1,6 +1,6 @@
 # Quickstart with Docker Compose and AWS
 
-Sometimes it is nice to not rely on long docker commands. Running with Docker compose is very similar to using raw Docker and you can find a full specification of the format in the [Docker docs](https://docs.Docker.com/compose/compose-file/).
+Using Docker Compose provides a structured way to manage validator deployments while maintaining the flexibility of raw Docker. You can find the full specification of the format in the [Docker docs](https://docs.Docker.com/compose/compose-file/).
 
 ## 1. Setup validator key
 
@@ -29,18 +29,18 @@ touch ethereum/config.json optimism/config.json base/config.json docker-compose.
 
 You can read more about Agent Configs [here](./agent-config.mdx).
 
-| Parameter                  | Description                                                                                                                                                                                                 |
-|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `customRpcUrls`            | A comma-separated list of performant RPC endpoints for the chain you wish to support. We recommend using paid providers to avoid rate limiting.                                                             |
-| `chains.ethereum`          | Should be changed to `chains.base` in the base/config.json, and `chains.optimism` in optimism/config.json.                                                                                                   |
-| `signer.region`            | Should be adjusted to your AWS region.                                                                                                                                                                       |
-| `validator.region`         | Should be adjusted to your AWS region.                                                                                                                                                                       |
-| `signer.id`                | Should be adjusted to your AWS KMS id you configured in step 3, prefixed with `alias/`.                                                                                                                      |
-| `validator.id`             | Should be adjusted to your AWS KMS id you configured in step 3, prefixed with `alias/`.                                                                                                                      |
-| `originChainName`          | Should be the chain you are validating.                                                                                                                                                                      |
-| `checkpointSyncer.bucket`  | Should reflect the name of the S3 bucket.                                                                                                                                                                    |
-| `checkpointSyncer.folder`  | The name of the folder the validator will use within the bucket. You may use the same bucket for multiple validators, but ensure each folder name is unique per validator.                                    |
-| `reorgPeriod`              | May be different for each chain. [Find the reorgPeriods](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).                                                                              |
+| Parameter                 | Description                                                                                                                                                                |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `customRpcUrls`           | A comma-separated list of performant RPC endpoints for the chain you wish to support. We recommend using paid providers to avoid rate limiting.                            |
+| `chains.ethereum`         | Should be changed to `chains.base` in the base/config.json, and `chains.optimism` in optimism/config.json.                                                                 |
+| `signer.region`           | Should be adjusted to your AWS region.                                                                                                                                     |
+| `validator.region`        | Should be adjusted to your AWS region.                                                                                                                                     |
+| `signer.id`               | Should be adjusted to your AWS KMS id you configured in step 3, prefixed with `alias/`.                                                                                    |
+| `validator.id`            | Should be adjusted to your AWS KMS id you configured in step 3, prefixed with `alias/`.                                                                                    |
+| `originChainName`         | Should be the chain you are validating.                                                                                                                                    |
+| `checkpointSyncer.bucket` | Should reflect the name of the S3 bucket.                                                                                                                                  |
+| `checkpointSyncer.folder` | The name of the folder the validator will use within the bucket. You may use the same bucket for multiple validators, but ensure each folder name is unique per validator. |
+| `reorgPeriod`             | May be different for each chain. [Find the reorgPeriods](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).                                            |
 
 Here is an example agent config.
 
@@ -76,7 +76,7 @@ Here is an example agent config.
 
 ### Edit each .env file
 
-You should change the service name, aws credentials for each chain
+You should change the service name, AWS credentials for each chain.
 
 ```
 AWS_ACCESS_KEY_ID=<Your AWS access key ID>
@@ -155,3 +155,7 @@ docker logs -f ethereum-validator
 docker logs -f optimism-validator
 docker logs -f base-validator
 ```
+
+:::tip
+**Running Multiple Validators**: Running multiple validators improves reliability and ensures message validation continues even if one fails. Learn more about the setup and requirements [here](./validators/run-validators.mdx#running-multiple-validators).
+:::

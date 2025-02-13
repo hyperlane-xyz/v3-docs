@@ -331,15 +331,34 @@ If your Validator has not yet announced itself, and does not have enough tokens 
 
 The Validator will index the origin Mailbox contract for messages. If a message has been sent, you should see log messages that the Validator has signed them. If everything is configured correctly, you should see json files being written to your S3 bucket (if you followed the AWS setup) or to your local signatures directory if you followed the local setup. New json files get written every time a new outbound message is inserted into the mailbox.
 
-### Next: Running multiple Validators
+## Running Multiple Validators
 
-We encourage folks to validate on as many chains as they are interested in supporting.
+We encourage folks to validate on as many chains as they are interested in supporting. This section provides an overview of the considerations and instructions to set up multiple validators.
 
-Some tips for easily running multiple validators:
+Running multiple validators improves security and redundancy. By deploying validators across different chains or regions, you reduce the risk of a single point of failure. If one validator encounters downtime or issues, others can continue to operate, ensuring the integrity and availability of the validation process.
 
-1. The same key can be used by multiple validators.
-2. The same AWS account can be used by multiple validators.
-3. The same checkpoint syncer S3 bucket can by used by multiple validators, however they **must** use different folders, e.g. using the `--checkpointSyncer.folder` flag.
+### Running Mulitple Validators: Key Considerations
+
+- **Reusing Keys**: The same key can be used by multiple validators.
+- **Shared AWS Account**: The same AWS account can be used by multiple validators.
+- **Using a Shared S3 Bucket**: The same checkpoint syncer S3 bucket can be used by multiple validators, however each **must** use a different folder (e.g., `--checkpointSyncer.folder validator-1`, `--checkpointSyncer.folder validator-2`).
+
+### Additional Steps for Multiple Validators
+
+#### 1. Create an Agent Configuration
+
+- Generate an agent [configuration](#configuration) file for each validator, specifying the chains they will validate and the corresponding RPC URLs.
+- Ensure that each configuration file points to the correct signing key and S3 folder.
+
+#### 2. Run Each Validator
+
+- Ensure each Validator is assigned a unique database path (e.g., `--db /hyperlane_db_validator1`).
+- Configure each validator to expose metrics on a unique port (e.g., `--metrics-port 9090`, `--metrics-port 9091`).
+- If running multiple validators on the same machine, allocate sufficient system resources (CPU, memory, and storage).
+- Ensure logs are directed to separate files or services for easier debugging and monitoring.
+- If using Docker, assign unique container names and network configurations to avoid conflicts.
+
+By following these additional steps, you can efficiently manage multiple Hyperlane Validators.
 
 ## Design reference
 
