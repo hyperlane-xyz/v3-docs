@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TestnetChainDropdown } from "./ChainDropdown";
 
 import { chainAddresses, chainMetadata } from "@hyperlane-xyz/registry";
+import { ProtocolType } from "@hyperlane-xyz/utils";
 import CodeBlock from "@theme/CodeBlock";
 import TabItem from "@theme/TabItem";
 import Tabs from "@theme/Tabs";
@@ -32,7 +33,9 @@ type Props = {
 };
 
 export default function InteractiveExample(props: Props) {
-  const chainNames = useAbacusWorksChainNames(true);
+  const chainNames = useAbacusWorksChainNames(true).filter(
+    (name) => chainMetadata[name].protocol === ProtocolType.Ethereum
+  );
   const [originChain, setOriginChain] = useState<string>(chainNames[0]);
   const [destinationChain, setDestinationChain] = useState<string>(
     chainNames[1]
