@@ -46,8 +46,8 @@ export default function AddressTable<K extends string>({
           const address = chainAddresses[chain]?.[contract];
           if (!address) return null;
           const targetMetadata = chainMetadata[chain];
-          const explorer = targetMetadata.blockExplorers[0].url;
-          const url = new URL(explorer);
+          const explorer = targetMetadata.blockExplorers?.[0]?.url;
+          const url = explorer ? new URL(explorer) : null;
           return (
             <tr key={chain}>
               <td>{targetMetadata.displayName ?? capitalize(chain)}</td>
@@ -57,13 +57,17 @@ export default function AddressTable<K extends string>({
                 <code>{address}</code>
               </td>
               <td>
-                <a
-                  href={`${explorer}/address/${address}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {url.hostname}
-                </a>
+                {explorer ? (
+                  <a
+                    href={`${explorer}/address/${address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {url.hostname}
+                  </a>
+                ) : (
+                  "N/A"
+                )}
               </td>
             </tr>
           );

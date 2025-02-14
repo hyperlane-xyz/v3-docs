@@ -1,4 +1,6 @@
 import { useAbacusWorksChainNames } from "../utils/registry";
+import { ProtocolType } from "@hyperlane-xyz/utils";
+import { chainMetadata } from "@hyperlane-xyz/registry";
 
 type Props = {
   chains: string[];
@@ -40,11 +42,15 @@ export default function ChainDropdown({
 }
 
 export function TestnetChainDropdown(props: Omit<Props, "chains">) {
-  const chains = useAbacusWorksChainNames(true);
+  const chains = useAbacusWorksChainNames(true).filter(
+    (name) => chainMetadata[name].protocol === ProtocolType.Ethereum
+  );
   return ChainDropdown({ chains, ...props });
 }
 
 export function MainnetChainDropdown(props: Omit<Props, "chains">) {
-  const chains = useAbacusWorksChainNames(false);
+  const chains = useAbacusWorksChainNames(true).filter(
+    (name) => chainMetadata[name].protocol === ProtocolType.Ethereum
+  );
   return ChainDropdown({ chains, ...props });
 }
