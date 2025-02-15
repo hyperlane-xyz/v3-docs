@@ -442,6 +442,11 @@ const sidebars = {
           label: "CLI",
         },
         {
+          type: "doc",
+          id: "reference/deploy-app",
+          label: "Deploy App",
+        },
+        {
           type: "category",
           label: "Libraries",
           collapsible: true,
