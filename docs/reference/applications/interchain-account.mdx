@@ -108,7 +108,7 @@ interface IUniswapV3Pool {
 IUniswapV3Pool pool = IUniswapV3Pool(...);
 Call swapCall = Call({
     to: TypeCasts.addressToBytes32(address(pool)),
-    data: abi.encodeCall(pool.swap, (...));
+    data: abi.encodeCall(pool.swap, (...)),
     value: 0,
 });
 uint32 ethereumDomain = 1;
