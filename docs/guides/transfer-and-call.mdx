@@ -22,7 +22,7 @@ Some scenarios include:
 ## How It Works
 
 1. Tokens are transferred from the sender to the contract.
-2. An Interchain Account (ICA) is derived for the contract on the destination chain.
+2. An [Interchain Account (ICA)](/docs/reference/applications/interchain-account) is derived for the contract on the destination chain.
 3. The Warp Route transfer is initiated, sending the tokens cross-chain.
 4. A remote contract call is executed after the tokens arrive.
 
@@ -59,11 +59,13 @@ function transferAndCall(
 }
 ```
 
-## Diagram
-
-[to_do]
-
-## Considerations
+:::note
 
 - The contract must ensure the tokens arrive before executing the follow-up action.
 - If the contract executing the action is not permissioned, anyone could call it (depending on its implementation).
+
+:::
+
+## Diagram
+
+[to_do]
