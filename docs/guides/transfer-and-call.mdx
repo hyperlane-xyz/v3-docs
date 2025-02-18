@@ -1,0 +1,69 @@
+# Transfer and Call Pattern
+
+## Overview
+
+The **Transfer and Call Pattern** enables a contract to both bridge assets via Hyperlane Warp Routes and execute an action on the destination chain after the assets arrive.
+
+This pattern is useful for cases where an action depends on token balances after bridging, such as:
+
+- automated deposits
+- staking
+- contract interactions.
+
+While Warp Routes handle cross-chain token transfers, this pattern extends their capabilities by using Interchain Accounts (ICA) to execute arbitrary logic on the destination chain.
+
+## Use Cases
+
+Some scenarios include:
+
+- A user deposits assets on an L2, mints a derivative, and then needs to bridge the underlying asset to an L1 vault for further use.
+- A protocol facilitates faster withdrawals by using an L1 liquidity pool, allowing users to bypass extended bridge withdrawal delays, while still ensuring final settlement occurs through the rollup bridge.
+
+## How It Works
+
+1. Tokens are transferred from the sender to the contract.
+2. An Interchain Account (ICA) is derived for the contract on the destination chain.
+3. The Warp Route transfer is initiated, sending the tokens cross-chain.
+4. A remote contract call is executed after the tokens arrive.
+
+The Solidity function below demonstrates this pattern:
+
+```solidity
+function transferAndCall(
+    uint32 destination,
+    uint256 amount,
+    IERC20 asset, // Tokens to transfer (not derivable from TokenRouter)
+    TokenRouter warpRoute,
+    CallLib.Call[] calldata calls // Array of calls to execute on the destination chain
+) external payable {
+
+    // Transfer the specified amount of tokens from the sender to this contract
+    asset.transferFrom(msg.sender, address(this), amount);
+
+    // Get the interchain account address for the contract on the destination chain
+    bytes32 self = interchainAccountRouter
+        .getRemoteInterchainAccount(destination, address(this))
+        .addressToBytes32();
+
+    // Quote the gas fee for the warp route payment
+    uint256 warpFee = warpRoute.quoteGasPayment(destination);
+
+    // Initiate the warp route transfer to send tokens cross-chain
+    warpRoute.transferRemote{value: warpFee}(destination, self, amount);
+
+    // Execute the specified interchain calls using the remaining gas funds
+    interchainAccountRouter.callRemote{value: msg.value - warpFee}(
+        destination,
+        calls
+    );
+}
+```
+
+## Diagram
+
+[to_do]
+
+## Considerations
+
+- The contract must ensure the tokens arrive before executing the follow-up action.
+- If the contract executing the action is not permissioned, anyone could call it (depending on its implementation).
