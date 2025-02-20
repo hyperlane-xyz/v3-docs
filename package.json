@@ -23,7 +23,7 @@
     "@easyops-cn/docusaurus-search-local": "^0.48.5",
     "@hyperlane-xyz/core": "5.8.3",
     "@hyperlane-xyz/registry": "10.2.0",
-    "@hyperlane-xyz/sdk": "8.6.1",
+    "@hyperlane-xyz/sdk": "8.7.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "my-loaders": "file:plugins/my-loaders",
