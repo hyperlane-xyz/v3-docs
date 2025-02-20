@@ -13,12 +13,12 @@ flowchart TB
     end
 
     Sender -- "query(destination, recipient, data, callback)" --> Q_O
-    Q_O -- "dispatch(destination, router, \n[sender, recipient, data, callback])" --> M_O
+    Q_O -- "dispatch(destination, router, <br>[sender, recipient, data, callback])" --> M_O
     M_O -. "relay" .- M_D
-    M_D -- "handle(origin, router, \n[sender, recipient, data, callback])" --> Q_D
+    M_D -- "handle(origin, router, <br>[sender, recipient, data, callback])" --> Q_D
     Q_D -- "call(data)" --> Recipient
     Recipient -- "result" --> Q_D
-    M_O -- "handle(destination, router, \n[sender, result, callback])" --> Q_O
-    Q_D -- "dispatch(origin, router, \n[sender, result, callback])" --> M_D
+    M_O -- "handle(destination, router, <br>[sender, result, callback])" --> Q_O
+    Q_D -- "dispatch(origin, router, <br>[sender, result, callback])" --> M_D
     Q_O -- "callback(result)" --> Sender
 ```

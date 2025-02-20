@@ -49,8 +49,8 @@ flowchart LR
       Sender
       M_O[(Mailbox)]
       IGP[InterchainGasPaymaster]
-      Sender -- "dispatch(...)\n{value}" --> M_O
-      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
+      Sender -- "dispatch(...)<br>{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)<br>{value}" --> IGP
     end
 
     Relayer((Relayer))

@@ -56,7 +56,7 @@ flowchart TB
       C_H[AbstractMessageIdAuthorizedIsm]
       Sender -- "dispatch(..., metadata){value}" --> M_O
 
-      M_O -. "postDispatch(metadata, ...)\n{value - fee}" ..-> C_H
+      M_O -. "postDispatch(metadata, ...)<br>{value - fee}" ..-> C_H
       C_H -- "externalCall(metadata, message)" --> E_B_O
 
     end
