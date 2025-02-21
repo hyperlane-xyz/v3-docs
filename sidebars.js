@@ -103,7 +103,7 @@ const sidebars = {
               type: "doc",
               id: "protocol/warp-routes/warp-routes-yield-routes",
               label: "Deploy Yield Routes",
-            },            
+            },
             {
               type: "doc",
               id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
@@ -440,6 +440,11 @@ const sidebars = {
           type: "doc",
           id: "reference/cli",
           label: "CLI",
+        },
+        {
+          type: "doc",
+          id: "reference/cosmos-sdk",
+          label: "Cosmos SDK",
         },
         {
           type: "category",
