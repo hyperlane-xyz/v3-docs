@@ -22,7 +22,7 @@ The Validator agent uses two key types: one for signing transactions on the bloc
 
 For messages using a [Multisig ISM](../../reference/ISM/multisig-ISM-interface.mdx), validators read the current merkle root by calling `MerkleTreeHook.latestCheckpoint()`.
 
-Validators use the `MerkleTreeHook.latestCheckpoint() function to determine when new transactions need to be indexed. This polling mechanism ensures validators can start signing new messages without the need to backfill the entire tree.
+Validators use the `MerkleTreeHook.latestCheckpoint()` function to determine when new transactions need to be indexed. This polling mechanism ensures validators can start signing new messages without the need to backfill the entire tree.
 
 ### Multisig ISM Prerequisites
 
