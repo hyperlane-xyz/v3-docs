@@ -17,7 +17,7 @@ flowchart TB
       Sender -- "1.dispatch(destination,<br>recipient, body)" --> M_O
     end
 
-    M_O -. "2.emit dispatch(sender,<br> destination, recipient, <br>body)" .-> Relayer
+    M_O -. "2.emit dispatch(sender,<br>destination, recipient,<br>body)" .-> Relayer
 
     subgraph Destination
       Recipient
@@ -25,11 +25,11 @@ flowchart TB
       ISM[InterchainSecurityModule]
 
       M_D -. "4.interchainSecurityModule()" .-> Recipient
-      M_D -- "5.verify(metadata, message)" --> ISM
-      M_D -- "6.handle(origin, sender,<br> body)" --> Recipient
+      M_D -- "5.verify(metadata,<br>message)" --> ISM
+      M_D -- "6.handle(origin, sender,<br>body)" --> Recipient
     end
 
-    Relayer((Relayer)) -- "3.process(metadata,<br> message)" --> M_D
+    Relayer((Relayer)) -- "3.process(metadata,<br>message)" --> M_D
 
     style Sender fill:#efab17
     style Recipient fill:#efab17
