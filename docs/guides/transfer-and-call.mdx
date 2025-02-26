@@ -16,15 +16,15 @@ While Warp Routes handle cross-chain token transfers, this pattern extends their
 
 Some scenarios include:
 
-- A user deposits assets on an L2, mints a derivative, and then needs to bridge the underlying asset to an L1 vault for further use.
+- A user deposits assets on an L2, mints a derivative, and then needs to bridge the underlying asset to an L1 vault for collateralization.
 - A protocol facilitates faster withdrawals by using an L1 liquidity pool, allowing users to bypass extended bridge withdrawal delays, while still ensuring final settlement occurs through the rollup bridge.
 
 ## How It Works
 
 1. Tokens are transferred from the sender to the contract.
 2. An [Interchain Account (ICA)](/docs/reference/applications/interchain-account) is derived for the contract on the destination chain.
-3. The Warp Route transfer is initiated, sending the tokens cross-chain.
-4. A remote contract call is executed after the tokens arrive.
+3. The Warp Route transfer is initiated, sending the tokens crosschain to the interchain account.
+4. A remote contract call is executed on the destination chain from the interchain account after the tokens arrive.
 
 The Solidity function below demonstrates this pattern:
 
@@ -61,7 +61,8 @@ function transferAndCall(
 
 :::note
 
-- The contract must ensure the tokens arrive before executing the follow-up action.
+- The contract must ensure the tokens arrive before executing the follow-up action. Most calls requiring a token balance will revert if executed before the tokens arrive. The relayer retries with backoff to ensure successful ICA call execution.
+- The ICA may also need to perform an ERC20 approval call before executing a deposit.
 - If the contract executing the action is not permissioned, anyone could call it (depending on its implementation).
 
 :::
