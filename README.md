@@ -34,7 +34,7 @@ This command generates static content into the `build` directory and can be serv
 
 ### Deployment
 
-Vercel Github Action is used to deploy the website. The action is triggered on every push to the `main` branch.
+Vercel GitHub Action is used to deploy the website. The action is triggered on every push to the `main` branch.
 
 ## Contribution Guidelines
 

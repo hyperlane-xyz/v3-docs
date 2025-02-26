@@ -21,7 +21,11 @@ These agents are implemented in Rust and distributed as Docker images and binari
 
 A Hyperlane [Relayer](docs/protocol/agents/relayer.mdx) delivers interchain messages to their recipients.
 
-Relaying is permissionless, and one honest Relayer running between a chain pair is sufficient for ensuring liveness. Running a Relayer is: 1) much more operationally complex than a Validator; 2) not required for securing the network; and 3) only recommended for permissionless deployments of Hyperlane.
+Relaying is permissionless, and one honest Relayer running between a chain pair is sufficient for ensuring liveness. Running a Relayer is:
+
+1. much more operationally complex than a Validator.
+2. not required for securing the network.
+3. only recommended for permissionless deployments of Hyperlane.
 
 Hyperlane Relayers are configured to relay messages between one or more origin chains and destination chains.
 Every Hyperlane message involves two transactions:
@@ -29,7 +33,7 @@ Every Hyperlane message involves two transactions:
 1. To [`dispatch`](docs/reference/messaging/send.mdx) and send a message on the origin chain.
 2. To [`process`](docs/reference/messaging/receive.mdx) and deliver the message on destination chain.
 
-A Relayer's job is to deliver the message on the destination chain. To fulfil this responsibility:
+A Relayer's job is to deliver the message on the destination chain. To fulfill this responsibility:
 
 - The Relayer keeps track of new messages as they come in on the origin chain.
 - It checks the [Interchain Security Module (ISM)](/docs/protocol/ISM/modular-security.mdx) specified by the recipient to gather the necessary metadata to secure the message. For example, it may retrieve Multisig ISM signatures from Validator checkpoint storage.
@@ -45,8 +49,8 @@ flowchart LR
       Sender
       M_O[(Mailbox)]
       IGP[InterchainGasPaymaster]
-      Sender -- "dispatch(...)\n{value}" --> M_O
-      M_O -- "postDispatch(..., gasLimit)\n{value}" --> IGP
+      Sender -- "dispatch(...)<br>{value}" --> M_O
+      M_O -- "postDispatch(..., gasLimit)<br>{value}" --> IGP
     end
 
     Relayer((Relayer))
