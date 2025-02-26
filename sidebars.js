@@ -116,6 +116,11 @@ const sidebars = {
             },
             {
               type: "doc",
+              id: "guides/transfer-and-call",
+              label: "Transfer and Call Pattern",
+            },
+            {
+              type: "doc",
               id: "guides/xerc20-warp-route-guide",
               label: "Deploy an xERC20 Warp Route",
             },
