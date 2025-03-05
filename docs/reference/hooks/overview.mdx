@@ -14,8 +14,8 @@ flowchart TB
       M_O[(Mailbox)]
       Hook[IPostDispatchHook]
 
-      Sender -- "dispatch(..., metadata, hook)\n{value}" --> M_O
-      M_O -- "postDispatch(message, metadata)\n{value}" --> Hook
+      Sender -- "dispatch(..., metadata, hook)<br>{value}" --> M_O
+      M_O -- "postDispatch(message, metadata)<br>{value}" --> Hook
     end
 ```
 
@@ -118,8 +118,8 @@ flowchart LR
       Sender -- "dispatch(..., metadata){value}" --> M_O
 
       M_O -. "fee = quoteDispatch(...)" .- R_H
-      M_O -- "postDispatch(metadata, ...)\n{fee}" --> R_H
-      M_O -. "postDispatch(metadata, ...)\n{value - fee}" ..-> D_H
+      M_O -- "postDispatch(metadata, ...)<br>{fee}" --> R_H
+      M_O -. "postDispatch(metadata, ...)<br>{value - fee}" ..-> D_H
     end
 ```
 

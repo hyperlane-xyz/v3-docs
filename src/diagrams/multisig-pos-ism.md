@@ -12,7 +12,7 @@ flowchart TB
     end
 
     subgraph Cloud
-      aws[(Metadata\nDatabase)]
+      aws[(Metadata<br>Database)]
     end
 
     M_O -. "indexing" .-> Relayer

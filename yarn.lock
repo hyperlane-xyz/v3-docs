@@ -6380,13 +6380,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/core@npm:5.11.3":
-  version: 5.11.3
-  resolution: "@hyperlane-xyz/core@npm:5.11.3"
+"@hyperlane-xyz/core@npm:5.11.4":
+  version: 5.11.4
+  resolution: "@hyperlane-xyz/core@npm:5.11.4"
   dependencies:
     "@arbitrum/nitro-contracts": "npm:^1.2.1"
     "@eth-optimism/contracts": "npm:^0.6.0"
-    "@hyperlane-xyz/utils": "npm:8.6.1"
+    "@hyperlane-xyz/utils": "npm:8.7.0"
     "@layerzerolabs/lz-evm-oapp-v2": "npm:2.0.2"
     "@openzeppelin/contracts": "npm:^4.9.3"
     "@openzeppelin/contracts-upgradeable": "npm:^4.9.3"
@@ -6395,7 +6395,7 @@ __metadata:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
     "@types/sinon-chai": "*"
-  checksum: 386eb36fcb75972c7c0735b9829c1a4e5a9ebc95ad99cd41e52c31fb6927f9ea9d1ff246f3d648e45612185a5f3cb505da173023dc22be92c875edc3bde06cba
+  checksum: 2a12491b2163e6aa04433865f175ee299a61c9814421e4ebec98d44e7764116f5a9f478e069a97b174a5fadcfbcb93ebee6167807bb5e79dd2f2a97cbadb6f2a
   languageName: node
   linkType: hard
 
@@ -6418,27 +6418,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/registry@npm:9.4.0":
-  version: 9.4.0
-  resolution: "@hyperlane-xyz/registry@npm:9.4.0"
+"@hyperlane-xyz/registry@npm:10.2.0":
+  version: 10.2.0
+  resolution: "@hyperlane-xyz/registry@npm:10.2.0"
   dependencies:
     yaml: "npm:2.4.5"
     zod: "npm:^3.21.2"
-  checksum: d4f9a8572861749ced1b5ec9ef45d32dd8663508a285a9de348d243f47cee581f42cb022dfab38fa40f561328ee625123eae266879da881ca2ad80cf08b05e3a
+  checksum: 669a6737d88980c331222bb347471bfab407e4ed10ea135069ef76b51fcc654e24df5533702a0e05ec53946799caf09d1ee6ed5c2af7c4707eb32070c047cdee
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/sdk@npm:8.6.1":
-  version: 8.6.1
-  resolution: "@hyperlane-xyz/sdk@npm:8.6.1"
+"@hyperlane-xyz/sdk@npm:8.7.0":
+  version: 8.7.0
+  resolution: "@hyperlane-xyz/sdk@npm:8.7.0"
   dependencies:
     "@arbitrum/sdk": "npm:^4.0.0"
     "@aws-sdk/client-s3": "npm:^3.577.0"
     "@chain-registry/types": "npm:^0.50.14"
     "@cosmjs/cosmwasm-stargate": "npm:^0.32.4"
     "@cosmjs/stargate": "npm:^0.32.4"
-    "@hyperlane-xyz/core": "npm:5.11.3"
-    "@hyperlane-xyz/utils": "npm:8.6.1"
+    "@hyperlane-xyz/core": "npm:5.11.4"
+    "@hyperlane-xyz/utils": "npm:8.7.0"
     "@safe-global/api-kit": "npm:1.3.0"
     "@safe-global/protocol-kit": "npm:1.3.0"
     "@safe-global/safe-deployments": "npm:1.37.23"
@@ -6454,7 +6454,7 @@ __metadata:
   peerDependencies:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
-  checksum: 649b460e218eed9895823ec0e637746529d120ef7cac4b9f0e1d7aeec1cd3c83e19b327ec64d0f3adbb6d31b235a89f6a7142eea477cd0493cee4be6468e041a
+  checksum: 6d60fce41ea802771ac26e3cbdab4b5d41274a89cc9bd89f7ed7ab1020b655d2d85e95c62e8df38bc758986a321b046fcd8119d66b7386fba2560ce3fe0fe51e
   languageName: node
   linkType: hard
 
@@ -6473,9 +6473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/utils@npm:8.6.1":
-  version: 8.6.1
-  resolution: "@hyperlane-xyz/utils@npm:8.6.1"
+"@hyperlane-xyz/utils@npm:8.7.0":
+  version: 8.7.0
+  resolution: "@hyperlane-xyz/utils@npm:8.7.0"
   dependencies:
     "@cosmjs/encoding": "npm:^0.32.4"
     "@solana/web3.js": "npm:^1.95.4"
@@ -6484,7 +6484,7 @@ __metadata:
     lodash-es: "npm:^4.17.21"
     pino: "npm:^8.19.0"
     yaml: "npm:2.4.5"
-  checksum: ae1254caaaed34169037d9fefe5b0387eaa9a042ee553f966e9478929d896198d8d13ba2df8aae8b900bf71a413939a2b73bb99013c38bd8a02d296a56a67adb
+  checksum: 0244cec78a988233aa06491679127f7f16fd317ba2739b706224e7dfee492ace967ac7cc84f0195b0015bc6b82c2ad253446650fe1a7d313ce13f70b71625170
   languageName: node
   linkType: hard
 
@@ -17165,8 +17165,8 @@ __metadata:
     "@docusaurus/types": "npm:3.0.1"
     "@easyops-cn/docusaurus-search-local": "npm:^0.48.5"
     "@hyperlane-xyz/core": "npm:5.8.3"
-    "@hyperlane-xyz/registry": "npm:9.4.0"
-    "@hyperlane-xyz/sdk": "npm:8.6.1"
+    "@hyperlane-xyz/registry": "npm:10.2.0"
+    "@hyperlane-xyz/sdk": "npm:8.7.0"
     "@mdx-js/react": "npm:^3.0.0"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"

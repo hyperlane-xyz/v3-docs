@@ -447,6 +447,11 @@ const sidebars = {
           label: "CLI",
         },
         {
+          type: "doc",
+          id: "reference/cosmos-sdk",
+          label: "Cosmos SDK",
+        },
+        {
           type: "category",
           label: "Libraries",
           collapsible: true,
@@ -549,7 +554,7 @@ const sidebars = {
             {
               type: "doc",
               id: "reference/addresses/validator-announce",
-              label: "Validator Announe",
+              label: "Validator Announce",
             },
             {
               type: "doc",

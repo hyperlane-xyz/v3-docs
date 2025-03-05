@@ -14,9 +14,9 @@ flowchart TB
     end
 
     Sender -- "dispatch(destination, recipient, call)" --> A_O
-    A_O -- "dispatch(destination, router, \n[sender, recipient, call])" --> M_O
+    A_O -- "dispatch(destination, router, <br>[sender, recipient, call])" --> M_O
     M_O -. "relay" .- M_D
-    M_D -- "handle(origin, router, \n[sender, recipient, call])" --> A_D
+    M_D -- "handle(origin, router, <br>[sender, recipient, call])" --> A_D
     A_D == "interchainAccount(origin, sender)" ==> SenderAccount
     SenderAccount -- "call(data)" --> Recipient
 ```
