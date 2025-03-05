@@ -1718,7 +1718,7 @@ type GasPaymentEnforcementPolicy =
   ({
       type: "none";
     } & {
-      // Messages that have paid a minimum amount will be processed. This requires a payment to exist, even if the `minimum` is 0.
+      // Messages that have paid a minimum amount will be processed. This requires a payment with the `minimum` amount to exist, even if the `minimum` is 0.
       type: "minimum";
       payment: U256;
     } & { type: "onChainFeeQuoting"; gasfraction?: GasFraction }) // to on-chain fee quoting. `gasfraction` defaults to "1 / 2". // Required amount of gas on the foreign chain has been paid according
