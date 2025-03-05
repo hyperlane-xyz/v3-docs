@@ -4,7 +4,7 @@
 
 Ensure you have the following installed and configured:
 
-- [Hyperlane Monorepo](https://github.com/hyperlane-xyz/hyperlane-monorepo)
+- [Hyperlane CLI](/docs/reference/cli.mdx)
 - Rust (latest stable version)
 - Yarn and Node.js (latest stable version)
 - Solana CLI tools
@@ -57,10 +57,11 @@ Ensure you have the following installed and configured:
 
 7. Deploy the Ethereum Warp Route contract, which will also enroll the SVM router based on the yaml token config.
 
-   1. Check out the monorepo branch from this [PR#4447](https://github.com/hyperlane-xyz/hyperlane-monorepo/pull/4447)
-   2. Build the TS code from project root: `yarn && yarn build`
-   3. Run the CLI from source: `yarn workspace @hyperlane-xyz/cli hyperlane`
-   4. Create a YAML Warp Route configuration file using this template and steps:
+   1. Ensure you have latest version of the [Hyperlane CLI](/docs/reference/cli.mdx).
+   2. Create a Warp Route deployment config file with the CLI's config command: `hyperlane warp init `
+
+      The command provides a walkthrough, prompting you for configuration choices directly in the terminal.
+      Use the following steps for your Warp Route configuration. You can input during the walkthrough or directly in the generated YAML config file:
 
       - Set `interchainSecurityModule: "0x0000000000000000000000000000000000000000"` to use the default ISM set in the destination chain Mailbox
       - Set the `gas` to a ceiling of the compute units you expect the SVM message delivery transaction to take. For instance, Hyperlane Warp Routes have gas set to `300`. It's important for this to be an upper limit - the relayer will not deliver Warp Route transfer messages otherwise, because senders would pay an insufficient amount to have them delivered.
@@ -83,10 +84,8 @@ Ensure you have the following installed and configured:
         gas: 300000
       ```
 
-   5. Deploy using the Hyperlane CLI:
-      - Run the deploy command, pointing to your YAML Warp Route config: `yarn workspace @hyperlane-xyz/cli hyperlane warp deploy --config /path/to/config/warp-route-deployment.yaml`
-      - You’ll have the deployment artifact logged by the command, and also stored in your filesystem registry (currently `~/.hyperlane`).
-   6. Confirm the deployment using the Hyperlane CLI:
+   3. Deploy using the Hyperlane CLI: `hyperlane warp deploy `
+   4. Confirm the deployment:
       ```bash
       $ cast call 0x1D622da2ce4C4D9D4B0611718cb3BcDcAd008DD4 'routers(uint32)(bytes32)' $DESTINATION_DOMAIN --rpc-url $(rpc ethereum) 1399811149
       0xe9792265ec273ffc17731af890d3e9963e9d744e7b99f02491911ce1bb75b8cb
