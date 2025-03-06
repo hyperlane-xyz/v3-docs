@@ -93,16 +93,6 @@ When a message is received, the Mailbox will verify security with an [Interchain
 
 To query the default ISM address, you can call the `defaultIsm` function.
 
-<Tabs groupId="lang">
-<TabItem value="sol" label="Solidity">
-
-```solidity file=<rootDir>/node_modules/@hyperlane-xyz/core/contracts/interfaces/IMailbox.sol#L53
-
-```
-
-</TabItem>
-</Tabs>
-
 ### Modular Security
 
 To leverage Hyperlane's modular security, message recipients can specify a custom Interchain Security Module to **verify anything** about incoming messages. The Mailbox will defer to this ISM when specified.
