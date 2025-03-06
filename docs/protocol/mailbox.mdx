@@ -67,10 +67,6 @@ The `messageId` is a globally unique message identifier, returned from the `disp
 
 The Mailbox maintains a mapping of already delivered `messageId` values to prevent replay attacks. If a message is received with a `messageId` that has already been delivered, the message is rejected.
 
-</TabItem>
-
-</Tabs>
-
 ## Dispatch
 
 To send interchain messages, developers call `Mailbox.dispatch()`.
