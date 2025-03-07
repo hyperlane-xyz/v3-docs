@@ -405,24 +405,27 @@ const config = {
         },
         items: [
           {
-            type: "docSidebar",
-            sidebarId: "getstartedSidebar",
+            type: "dropdown",
+            label: "⏩ Developers",
             position: "left",
-            label: "⏩ Get Started",
+            items: [
+              {
+                type: "docSidebar",
+                sidebarId: "evmSidebar",
+                label: "EVM",
+              },
+              {
+                type: "docSidebar",
+                sidebarId: "solanaSidebar",
+                label: "Solana",
+              },
+              {
+                type: "docSidebar",
+                sidebarId: "cosmosSidebar",
+                label: "Cosmos",
+              },
+            ],
           },
-          /*
-          {
-            type: "docSidebar",
-            sidebarId: "guidesSidebar",
-            position: "left",
-            label: "🧭 Guides",
-          },*/
-          /*{
-            type: "docSidebar",
-            sidebarId: "referenceSidebar",
-            position: "left",
-            label: "📖 Reference",
-          },*/
           {
             type: "docSidebar",
             sidebarId: "protocolSidebar",
@@ -448,7 +451,7 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Get Started",
+                label: "Developers",
                 to: "/docs/intro",
               },
               {
