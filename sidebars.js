@@ -70,6 +70,11 @@ const sidebars = {
           id: "protocol/warp-routes/warp-routes-example-usage",
           label: "Warp Route Example Usage",
         },
+        {
+          type: "doc",
+          id: "guides/transfer-and-call",
+          label: "Transfer and Call Pattern",
+        },
       ],
     },
     {
