@@ -2,22 +2,17 @@
 
 ## Overview
 
-The **Transfer and Call Pattern** enables a contract to both bridge assets via Hyperlane Warp Routes and execute an action on the destination chain after the assets arrive.
+The **Transfer and Call Pattern** enables a contract to both bridge assets via [Hyperlane Warp Routes](/docs/protocol/warp-routes/warp-routes-overview) and execute an action on the destination chain after the assets arrive. This pattern is useful for cases where an action depends on token balances after bridging.
 
-This pattern is useful for cases where an action depends on token balances after bridging, such as:
+While Warp Routes handle cross-chain token transfers, this pattern extends their capabilities by using [Interchain Accounts (ICA)](/docs/reference/applications/interchain-account) to execute arbitrary logic on the destination chain.
 
-- automated deposits
-- staking
-- contract interactions.
-
-While Warp Routes handle cross-chain token transfers, this pattern extends their capabilities by using Interchain Accounts (ICA) to execute arbitrary logic on the destination chain.
-
-## Use Cases
+### Use Cases
 
 Some scenarios include:
 
-- A user deposits assets on an L2, mints a derivative, and then needs to bridge the underlying asset to an L1 vault for collateralization.
-- A protocol facilitates faster withdrawals by using an L1 liquidity pool, allowing users to bypass extended bridge withdrawal delays, while still ensuring final settlement occurs through the rollup bridge.
+- **Cross-chain governance**: A user must hold a specific NFT to vote on a proposal. The system bridges the NFT to the governance chain and ensures the vote call executes after the transfer completes.
+- **Bridging collateral**: A protocol sends assets from an L2 to an L1 vault for collateralization before interacting with the vault.
+- **Faster rollup withdrawals**: A user can claim liquidity instantly while waiting for the final bridge settlement.
 
 ## How It Works
 
@@ -66,3 +61,41 @@ function transferAndCall(
 - If the contract executing the action is not permissioned, anyone could call it (depending on its implementation).
 
 :::
+
+## High-level Diagram
+
+```mermaid
+flowchart TB
+    subgraph Origin chain
+    direction TB
+      Sender
+      Contract
+      ICA_Router_O[Interchain Account Router]
+      Mailbox_O[(Mailbox)]
+    end
+
+    subgraph Destination chain
+    direction TB
+      Mailbox_D[(Mailbox)]
+      ICA_Router_D[Interchain Account Router]
+      ICA[Interchain Account]
+      Recipient
+    end
+
+    Sender -->|Initiates transfer & call| Contract
+    Contract -->|Sends tokens| Mailbox_O
+    Mailbox_O -. "Relay" .- Mailbox_D
+    Mailbox_D -->|Receive tokens| ICA
+    Contract -->|Sends execution request| ICA_Router_O
+    ICA_Router_O -. "Relay" .- ICA_Router_D
+    ICA_Router_D -->|Execute call| ICA
+    ICA -->|Final execution| Recipient
+
+    click ICA_Router_O https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/InterchainAccountRouter.sol
+    click ICA_Router_D https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/InterchainAccountRouter.sol
+
+    style Sender fill:#FF0099
+    style ICA fill:#FF0099
+    style Recipient fill:#FF0099
+
+```
