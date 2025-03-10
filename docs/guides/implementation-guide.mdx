@@ -300,6 +300,12 @@ Implements a security module that checks if the metadata provided to verify sati
 - [Sealevel](https://github.com/hyperlane-xyz/hyperlane-monorepo/tree/main/rust/sealevel/programs/ism/multisig-ism-message-id)
 - Cairo [MerkleRoot](https://github.com/astraly-labs/hyperlane_starknet/blob/main/cairo/crates/contracts/src/isms/multisig/merkleroot_multisig_ism.cairo) and [MessageId](https://github.com/astraly-labs/hyperlane_starknet/blob/main/cairo/crates/contracts/src/isms/multisig/messageid_multisig_ism.cairo)
 
+:::warning
+
+It is a common error when implementing this ISM to allow a single validator's signature to be passed multiple times and errantly achieve quorum. Take care to ensure validators cannot be double counted add a negative test case for this. 
+
+:::
+
 #### Metadata
 
 To be used with the `MESSAGE_ID_MULTISIG` module type implementation in the relayer.
