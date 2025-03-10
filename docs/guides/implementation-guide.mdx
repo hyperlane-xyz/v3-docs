@@ -302,7 +302,7 @@ Implements a security module that checks if the metadata provided to verify sati
 
 :::warning
 
-It is a common error when implementing this ISM to allow a single validator's signature to be passed multiple times and errantly achieve quorum. Take care to ensure validators cannot be double counted add a negative test case for this. 
+It is a common error when implementing this ISM to allow a single validator's signature to be passed multiple times and errantly achieve quorum. Take care to ensure validators cannot be double counted add a negative test case for this. See [solidity `test_verify_revertWhen_duplicateSignatures` for example](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/test/isms/MultisigIsm.t.sol#L194).
 
 :::
 
