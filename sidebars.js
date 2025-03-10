@@ -83,7 +83,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "EVM Guides",
+      label: "Guides",
       collapsible: true,
       collapsed: true,
       items: [
@@ -205,11 +205,6 @@ const sidebars = {
           id: "guides/create-custom-hook-and-ism",
           label: "Create a Hook/ISM",
         },
-        {
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
-        },
       ],
     },
   ],
@@ -229,12 +224,27 @@ const sidebars = {
       id: "guides/deploy-evm-svm-warp-route",
       label: "Deploy an EVM <> SVM Warp Route",
     },
+    {
+      type: "ref",
+      id: "guides/deploy-warp-route-UI",
+      label: "Deploy a Bridge UI",
+    },
   ],
   cosmosSidebar: [
     {
       type: "doc",
       id: "cosmos/intro",
       label: "Overview",
+    },
+    {
+      type: "doc",
+      id: "reference/cosmos-sdk",
+      label: "Cosmos SDK",
+    },
+    {
+      type: "ref",
+      id: "guides/deploy-warp-route-UI",
+      label: "Deploy a Bridge UI",
     },
   ],
 
@@ -459,11 +469,6 @@ const sidebars = {
           type: "doc",
           id: "reference/cli",
           label: "CLI",
-        },
-        {
-          type: "doc",
-          id: "reference/cosmos-sdk",
-          label: "Cosmos SDK",
         },
         {
           type: "category",
@@ -726,6 +731,11 @@ const sidebars = {
       collapsible: true,
       collapsed: true,
       items: [
+        {
+          type: "doc",
+          id: "guides/deploy-hyperlane-local-agents",
+          label: "Deploy Hyperlane with Local Agents",
+        },
         {
           type: "doc",
           id: "operate/docker-quickstart",
