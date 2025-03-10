@@ -43,30 +43,17 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
    cd hyperlane-monorepo/rust/sealevel/programs
    ```
 
-3. Build the Warp Route programs on your machine
+3. Build the Warp Route programs on your machine.
 
-   1. Build the **Token** program:
+   ```bash
+   # run from this directory
+   cd rust/sealevel/programs
+   # build the token programs
+   ./build-programs.sh token
+   ```
 
-      ```bash
-      cd hyperlane-sealevel-token
-      cargo build-sbf
-      ```
+   This [script](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs/build-programs.sh) will **compile the Solana programs**, which is needed for deployment. It will use the `solana-cli 1.14.20` automatically and reset back to the previously used version afterward.
 
-   2. Build the **Token Collateral** program:
-
-      ```bash
-      cd hyperlane-sealevel-token-collateral
-      cargo build-sbf
-      ```
-
-   3. Build the **Token Native** program:
-
-      ```bash
-      cd hyperlane-sealevel-token-native
-      cargo build-sbf
-      ```
-
-   These steps **compile the Solana programs**, which is needed for deployment.
    To verify the build output, check the target/deploy directory for `.so` files in `hyperlane-monorepo/rust/sealevel/target/deploy`
 
 ### Step 2: Prepare for Deployment
