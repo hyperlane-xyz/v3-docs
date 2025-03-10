@@ -417,7 +417,7 @@ const config = {
               {
                 type: "docSidebar",
                 sidebarId: "solanaSidebar",
-                label: "Solana",
+                label: "SVM",
               },
               {
                 type: "docSidebar",
