@@ -61,8 +61,9 @@ Ensure you have the following installed and configured:
    2. Create a Warp Route deployment config file with the CLI's config command: `hyperlane warp init `
 
       The command provides a walkthrough, prompting you for configuration choices directly in the terminal.
-      Use the following steps for your Warp Route configuration. You can input during the walkthrough or directly in the generated YAML config file:
+      Use the following steps for your Warp Route configuration. You can input during the walkthrough or directly in the generated YAML config file.
 
+      - Manually set `foreignDeployment: <SVM address>` for the SVM chain, as shown in the config example below.
       - Set `interchainSecurityModule: "0x0000000000000000000000000000000000000000"` to use the default ISM set in the destination chain Mailbox
       - Set the `gas` to a ceiling of the compute units you expect the SVM message delivery transaction to take. For instance, Hyperlane Warp Routes have gas set to `300`. It's important for this to be an upper limit - the relayer will not deliver Warp Route transfer messages otherwise, because senders would pay an insufficient amount to have them delivered.
 
@@ -95,7 +96,9 @@ Ensure you have the following installed and configured:
 
 8. Back to Solana tooling now, update the `token-config.json` with the foreign deployment:
 
-   The fields for `ethereum` should be set to values from the Warp Route contract artifact. `token` should be set to `collateralAddressOrDenom` (the address of the token being bridge), and `foreignDeployment` should be set to `addressOrDenom` (the address of the Warp Route contract, like `HypERC20Collateral`).
+   - The fields for `ethereum` should be set to values from the Warp Route contract artifact.
+   - `token` should be set to `collateralAddressOrDenom` (the address of the token being bridge)
+   - `foreignDeployment` should be set to `addressOrDenom` (the address of the Warp Route contract, like `HypERC20Collateral`).
 
    ```bash
    {
