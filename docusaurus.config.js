@@ -373,6 +373,7 @@ const config = {
           rehypePlugins: [[rehypeKatex, { strict: false }]],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/hyperlane-xyz/v3-docs/tree/main/",
+          routeBasePath: '/',
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -406,34 +407,9 @@ const config = {
         items: [
           {
             type: "docSidebar",
-            sidebarId: "getstartedSidebar",
+            sidebarId: "mainSidebar",
             position: "left",
-            label: "⏩ Get Started",
-          },
-          /*
-          {
-            type: "docSidebar",
-            sidebarId: "guidesSidebar",
-            position: "left",
-            label: "🧭 Guides",
-          },*/
-          /*{
-            type: "docSidebar",
-            sidebarId: "referenceSidebar",
-            position: "left",
-            label: "📖 Reference",
-          },*/
-          {
-            type: "docSidebar",
-            sidebarId: "protocolSidebar",
-            position: "left",
-            label: "📖 Learn",
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "operateSidebar",
-            position: "left",
-            label: "⚙️ Agent Operators",
+            label: "📖 Documentation",
           },
           {
             href: "https://github.com/hyperlane-xyz",
@@ -449,11 +425,15 @@ const config = {
             items: [
               {
                 label: "Get Started",
-                to: "/docs/intro",
+                to: "/intro",
               },
               {
-                label: "Contract Interfaces",
-                to: "/docs/protocol/mailbox",
+                label: "Core Protocol",
+                to: "/protocol/protocol-overview",
+              },
+              {
+                label: "Warp Routes",
+                to: "/protocol/warp-routes/warp-routes-overview",
               },
             ],
           },
