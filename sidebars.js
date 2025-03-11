@@ -70,6 +70,11 @@ const sidebars = {
           id: "protocol/warp-routes/warp-routes-example-usage",
           label: "Warp Route Example Usage",
         },
+        {
+          type: "doc",
+          id: "guides/manage-warp-route-limits",
+          label: "Mangaging Warp Route Limits",
+        },
       ],
     },
     {
@@ -84,57 +89,68 @@ const sidebars = {
       collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Bridge UI",
-        },
-        {
-          type: "doc",
-          id: "guides/local-testnet-setup",
-          label: "Local Setup: Sending Messages between Anvil Nodes",
-        },
-        {
           type: "category",
-          label: "Warp Routes",
+          label: "Choose your VM",
           collapsible: true,
           collapsed: true,
           items: [
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Deploy Yield Routes",
+              type: "category",
+              label: "EVM",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/local-testnet-setup",
+                  label: "Local Setup: Sending Messages between Anvil Nodes",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-yield-routes",
+                  label: "Deploy Yield Routes",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+                  label: "Fast Native Transfer via Custom Gas Tokens",
+                },
+                {
+                  type: "doc",
+                  id: "guides/extending-warp-route",
+                  label: "Extending a Warp Route",
+                },
+                {
+                  type: "doc",
+                  id: "guides/xerc20-warp-route-guide",
+                  label: "Deploy an xERC20 Warp Route",
+                },
+              ],
             },
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label: "Fast Native Transfer via Custom Gas Tokens",
-            },
-            {
-              type: "doc",
-              id: "guides/extending-warp-route",
-              label: "Extending a Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/xerc20-warp-route-guide",
-              label: "Deploy an xERC20 Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/deploy-svm-warp-route",
-              label: "Deploy an SVM Warp Route",
+              type: "category",
+              label: "SVM",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/deploy-svm-warp-route",
+                  label: "Deploy an SVM Warp Route",
+                },
+              ],
             },
             {
               type: "doc",
               id: "guides/deploy-evm-svm-warp-route",
               label: "Deploy an EVM <> SVM Warp Route",
             },
-            {
-              type: "doc",
-              id: "guides/manage-warp-route-limits",
-              label: "Mangaging Warp Route Limits",
-            },
           ],
+        },
+        {
+          type: "doc",
+          id: "guides/deploy-warp-route-UI",
+          label: "Deploy a Bridge UI",
         },
         {
           type: "category",
