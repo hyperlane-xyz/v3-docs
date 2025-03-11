@@ -40,13 +40,14 @@ flowchart TB
     style Recipient fill:#FF0099
 ```
 
-Interchain Accounts allow you to make a remote call from **Chain A** to **Chain B** using the router (`InterchainAccountRouter`). Here's how it works:
+Interchain Accounts allow you to make a remote call from **Chain A** to **Chain B** using the router (`InterchainAccountRouter`). We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you, which serves as a proxy for your cross-chain calls. You can explore this [here](#example-usage).
 
-1. We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you, which serves as a proxy for your cross-chain calls. You can explore this [here](#example-usage).
-2. You can encode your call which includes the to address, call data, and the `msg.value` for each call, batched together in an array.
-3. You send the encoded call to the **Chain A** router which gets relayed to the **Chain B** router.
-4. After decoding the calls, the **Chain B** router checks if the computed address is already deployed or not. If not, we deploy the _OwnableMulticall_ contract.
-5. The router then performs a multicall on the ICA address, which in turn makes the desired arbitrary call on **Chain B**.
+Here's how it works:
+
+- You can encode your call which includes the to address, call data, and the `msg.value` for each call, batched together in an array.
+- You send the encoded call to the **Chain A** router which gets relayed to the **Chain B** router.
+- After decoding the calls, the **Chain B** router checks if the computed address is already deployed or not. If not, we deploy the _OwnableMulticall_ contract.
+- The router then performs a multicall on the ICA address, which in turn makes the desired arbitrary call on **Chain B**.
 
 The Interchain Account interface assigns every `(uint32 origin, address owner, address remoteRouter, address remoteISM)` tuple a unique ICA address. The sender owns that ICA on the destination chain, and can direct it to make arbitrary function calls via the `InterchainAccountRouter.callRemote()` endpoint.
 
@@ -153,7 +154,9 @@ await localRouter.callRemote(localChain, remoteChain, [call], config);
 
 ### Determine addresses
 
-In some cases, you may need to compute the ICA address on a remote chain before making a call. For example, if your ICA needs funding before executing transactions, you can retrieve its address and transfer assets to it in advance.
+In some cases, you may need to compute the ICA address on a remote chain before making a call. For example, if your ICA needs funding before executing transactions, you can retrieve its address and transfer assets to it in advance. See the [Transfer and Call Pattern](docs/guides/transfer-and-call) section for more information.
+
+````typescript
 
 The `getRemoteInterchainAccount` function can be used to get the address of an ICA given the destination chain and owner address.
 
@@ -164,7 +167,7 @@ address myInterchainAccount = IInterchainAccountRouter(...).getRemoteInterchainA
     destination,
     address(this)
 );
-```
+````
 
 If you are using [#overrides](#overrides) to specify remote chains, pass those overrides when computing the remote ICA address.
 
