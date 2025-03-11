@@ -134,6 +134,11 @@ const sidebars = {
               id: "guides/manage-warp-route-limits",
               label: "Mangaging Warp Route Limits",
             },
+            {
+              type: "doc",
+              id: "guides/transfer-and-call",
+              label: "Transfer and Call Pattern",
+            },
           ],
         },
         {
