@@ -23,21 +23,25 @@ flowchart TB
       Sender
       Contract
       ICA_Router_O[Interchain Account Router]
+      Warp_Route_O[Warp Route]
       Mailbox_O[(Mailbox)]
     end
 
     subgraph Destination chain
     direction TB
       Mailbox_D[(Mailbox)]
+      Warp_Route_D[Warp Route]
       ICA_Router_D[Interchain Account Router]
       ICA[Interchain Account]
       Recipient
     end
 
     Sender -->|Initiates transfer & call| Contract
-    Contract -->|Sends tokens| Mailbox_O
+    Contract -->|Sends tokens| Warp_Route_O
+    Warp_Route_O -->|Receive tokens| Mailbox_O
     Mailbox_O -. "Relay" .- Mailbox_D
-    Mailbox_D -->|Receive tokens| ICA
+    Mailbox_D -->|Receive tokens| Warp_Route_D
+    Warp_Route_D -->|Send tokens| ICA
     Contract -->|Sends execution request| ICA_Router_O
     ICA_Router_O -. "Relay" .- ICA_Router_D
     ICA_Router_D -->|Execute call| ICA
