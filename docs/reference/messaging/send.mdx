@@ -65,7 +65,7 @@ bytes32 messageId = mailbox.dispatch{value: msg.value}(
 
 ## Quote Dispatch
 
-Fees are often configured to cover IGP payments as well as protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function.
+Fees are often configured to cover Interchain Gas Payments (IGP) as well as protocol costs. These include transaction submission on the destination chain, security provisioning, and maintenance. To receive a quote for a corresponding `dispatch` call, you can query the `quoteDispatch` function.
 
 ```mermaid
 flowchart TB
@@ -132,7 +132,7 @@ flowchart LR
       Sender -- "dispatch(...){value}" --> M_O
 
       M_O -. "fee = quoteDispatch(...)" .- R_H
-      M_O -- "postDispatch(...)<br>{fee}" --> R_H
+      M_O -- "postDispatch(...)<br>{value}" --> R_H
       M_O -- "postDispatch(...)<br>{value - fee}" --> D_H
     end
 ```
