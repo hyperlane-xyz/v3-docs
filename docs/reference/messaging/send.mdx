@@ -132,7 +132,7 @@ flowchart LR
       Sender -- "dispatch(...){value}" --> M_O
 
       M_O -. "fee = quoteDispatch(...)" .- R_H
-      M_O -- "postDispatch(...)<br>{value}" --> R_H
+      M_O -- "postDispatch(...)<br>{fee}" --> R_H
       M_O -- "postDispatch(...)<br>{value - fee}" --> D_H
     end
 ```
