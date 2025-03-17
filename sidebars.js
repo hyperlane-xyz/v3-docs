@@ -89,8 +89,13 @@ const sidebars = {
       collapsed: true,
       items: [
         {
+          type: "doc",
+          id: "guides/local-testnet-setup",
+          label: "Local Setup: Sending Messages between Anvil Nodes",
+        },
+        {
           type: "category",
-          label: "Choose your VM",
+          label: "Warp Routes",
           collapsible: true,
           collapsed: true,
           items: [
@@ -100,11 +105,6 @@ const sidebars = {
               collapsible: true,
               collapsed: true,
               items: [
-                {
-                  type: "doc",
-                  id: "guides/local-testnet-setup",
-                  label: "Local Setup: Sending Messages between Anvil Nodes",
-                },
                 {
                   type: "doc",
                   id: "protocol/warp-routes/warp-routes-yield-routes",
