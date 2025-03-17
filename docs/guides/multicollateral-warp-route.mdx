@@ -32,9 +32,7 @@ flowchart
 
 ### Collateral Imbalances
 
-If more funds flow in one direction, one of the chains in the route can run out of collateral. This _imbalanced flow_ prevents withdrawals until liquidity is restored.
-
-To fix this and mantain a good user experience we must perform _collateral rebalancing_,collateral must be moved between chains to restore balance. Liquidity providers (LPs) can supply liquidity to address these imbalances.
+If more funds flow in one direction, one of the chains in the route can run out of collateral. This _imbalanced flow_ prevents withdrawals until the collateral is covered.
 
 ```mermaid
 flowchart
@@ -55,31 +53,33 @@ flowchart
 	NWR -. "{recipient, 2 * amount}" .-> AWR
 ```
 
+To fix this and mantain a good user experience we must perform _collateral rebalancing_, collateral must be moved between chains to restore balance. An aligned actor may assue a traditional Liquidity Provider (LP) role and provide collateral to address these imbalances using their own inventory.
+
 ## Liquidity Provider
 
 Currently, Warp Routes don’t have an explicit liquidity provider interface that enables local deposits/withdrawals. However, LPs can manually manage liquidity using the [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli) to interact with the Warp Routes in the [Hyperlane registry](https://github.com/hyperlane-xyz/hyperlane-registry).
 
 :::warning
-The stopgap procedure defined before requires at least one synthetic chain to exist within the warp route topology.
+The stopgap procedure defined below requires at least one synthetic chain to exist within the warp route topology.
 :::
 
-- To inspect a warp route’s topology, use the `warp read` command
+- To inspect a Warp Route’s topology, use the `warp read` command:
 
 ```
 hyperlane warp read --symbol ETH
 
 ethereum:
-  type: native
-  ...
+    type: native
+    ...
 base:
-	type: native
-	...
+    type: native
+    ...
 bsc:
-  type: synthetic
-  ...
+    type: synthetic
+    ...
 ```
 
-- To send a transfer (`transferRemote`) on a warp route, use the `warp send` command
+- To send a transfer (`transferRemote`) on a Warp Route, use the `warp send` command:
 
 ```
 hyperlane warp send \
@@ -94,9 +94,9 @@ hyperlane warp send \
 
 LPs can deposit collateral via a `transferRemote` where:
 
-- the `destination` domain is a chain where the warp route has a `synthetic` type
-- the `recipient` address is controlled by the LP
-- the `amount` is liquidity denominated in the `origin` chains `collateral` token
+- `destination` domain is a chain where the warp route has a `synthetic` type
+- `recipient` address is controlled by the LP
+- `amount` is liquidity denominated in the `origin` chains `collateral` token
 
 ```mermaid
 flowchart
@@ -107,7 +107,7 @@ flowchart
 		AUSDC[USDC]
 	end
 
-	subgraph newchain
+	subgraph mychain
 		MWR[USDC Synthetic Warp Route]
 	end
 
@@ -119,13 +119,15 @@ flowchart
 	MWR -. "amount" .-> LP
 ```
 
+This can be done for providing liquidity on many collateral chains and representing a claim on each collateral with a single synthetic asset balance.
+
 ### Withdrawing Liquidity
 
 LPs can withdraw via a `transferRemote` where
 
-- the `destination` domain is a chain where the warp route is a `collateral` type
-- the `recipient` address is controlled by the LP
-- the `amount` is denominated in the `destination` chains `collateral` token
+- `destination` domain is a chain where the warp route is a `collateral` type
+- `recipient` address is controlled by the LP
+- `amount` is denominated in the `destination` chains `collateral` token
 
 ```mermaid
 flowchart
@@ -136,11 +138,11 @@ flowchart
 		AUSDC[USDC]
 	end
 
-	subgraph newchain
+	subgraph mychain
 		MWR[USDC Synthetic Warp Route]
 	end
 
-	LP -- "transferRemote(arbitrum, LP, amount)" --> MWR
+	LP -- "transferRemote(arbitrum,<br>LP, amount)" --> MWR
 	LP -. "amount" .-> MWR
 
 	MWR -. "{LP, amount}" .-> AWR
@@ -148,9 +150,9 @@ flowchart
 	AWR -. "amount" .-> LP
 ```
 
-## Admin-Controlled Liquidity Rebalancing
+## Future: Admin-Controlled Liquidity Rebalancing
 
-Instead of relying on individual LPs, an admin can rebalance liquidity by moving collateral between warp route contracts. For example, CCTP (Circle’s Cross-Chain Transfer Protocol) can efficiently move USDC between Base and Arbitrum.
+Depending on the collateral asset and the pair of chains, several different rebalancing paths may be available. For example, CCTP (Circle’s Cross-Chain Transfer Protocol) can efficiently move USDC between Base and Arbitrum. Other assets and pairs may require more complex rebalancing paths (eg L2 withdrawals+deposits). This approach requires a permissioned rebalancer to move the collateral over trusted paths.
 
 ```mermaid
 flowchart
