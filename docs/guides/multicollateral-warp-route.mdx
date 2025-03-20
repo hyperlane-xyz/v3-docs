@@ -149,30 +149,3 @@ flowchart
 	AWR -- "transfer(LP, amount)" --> AUSDC
 	AWR -. "amount" .-> LP
 ```
-
-## Future: Admin-Controlled Liquidity Rebalancing
-
-Depending on the collateral asset and the pair of chains, several different rebalancing paths may be available. For example, CCTP (Circle’s Cross-Chain Transfer Protocol) can efficiently move USDC between Base and Arbitrum. Other assets and pairs may require more complex rebalancing paths (e.g.: L2 withdrawals+deposits). This approach requires a permissioned rebalancer to move the collateral over trusted paths.
-
-```mermaid
-flowchart
-	subgraph base
-		BR((Rebalancer))
-		BWR[USDC Collateral Warp Route]
-		BCCTP[CCTP]
-		BUSDC[USDC]
-	end
-
-	subgraph arbitrum
-		AWR[USDC Collateral Warp Route]
-		ACCTP[CCTP]
-		AUSDC[USDC]
-	end
-
-	BR -- "transferCollateral(arbitrum,<br>amount)" --> BWR
-	BWR -- "send(arbitrum, amount, router)" --> BCCTP
-	BCCTP -- "burn(amount)" --> BUSDC
-	BCCTP -. "{amount, router}" .-> ACCTP
-	ACCTP -- "mint(amount, router}" --> AUSDC
-	AUSDC -. "amount" .-> AWR
-```
