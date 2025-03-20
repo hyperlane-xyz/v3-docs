@@ -4,15 +4,22 @@
 
 Hyperlane is a permissionless interoperability protocol for cross-chain communication across different blockchain environments. It enables message passing and asset transfers across different chains without relying on centralized intermediaries or requiring any permissions.
 
-Hyperlane's permissionless design means that anyone can [deploy hyperlane](https://docs.hyperlane.xyz/docs/deploy-hyperlane) to any blockchain environment, whether it is a layer 1, rollup, or app-chain, and start building cross-chain applications right away—no approvals, no intermediaries. This gives developers full control over how their dApp operates in a multi-chain environment, removing bottlenecks and enabling scalability.
+### Key Features
 
-Designed with modularity in mind, Hyperlane's [Interchain Security Modules (ISM)](https://docs.hyperlane.xyz/docs/protocol/ISM/modular-security) allow developers to configure, compose, and customize their security model according to their application's needs.
+- **Permissionless**: Anyone can [deploy hyperlane](https://docs.hyperlane.xyz/docs/deploy-hyperlane), whether it is a layer 1, rollup, or app-chain, and start building cross-chain applications right away—no approvals, no intermediaries.
+- **Modular Security**: Hyperlane's [Interchain Security Modules (ISM)](https://docs.hyperlane.xyz/docs/protocol/ISM/modular-security) allow developers to configure, compose, and customize their security model according to their application's needs.
+- **Multi-VM Support**: Hyperlane enables cross-chain communication for multiple virtual machines (VMs), including EVM, SVM and CosmWasm. It also supports **cross-VM interactions**, such as EVM ↔ SVM asset transfers.
 
 ## Start Building with Hyperlane
 
 Get started with Hyperlane by exploring deployment guides & key features:
 
-- **[Bridge a token with Hyperlane Warp Routes](/guides/deploy-warp-route.mdx)**: Warp Routes enable seamless cross-chain transfers for native and `ERC20` tokens.
+- **[Bridge any token with Hyperlane Warp Routes](/guides/deploy-warp-route.mdx)**: Warp Routes let you deploy a custom token bridge, enabling any native or `ERC20` token to be transferred across chains.
+
+  - For **EVM-based chains**, use the **[EVM Warp Route Guide](/guides/deploy-warp-route.mdx)**.
+  - For **Solana Virtual Machine (SVM) chains**, see the **[SVM Warp Route Guide](/docs/guides/deploy-svm-warp-route.mdx)**.
+  - For **cross-chain transfers between EVM and SVM**, check out the **[EVM-SVM Warp Route Guide](/docs/guides/deploy-evm-svm-warp-route.mdx)**.
+
 - **[Learn about General Message Passing](./reference/messaging/send.mdx)**: Send arbitrary messages between chains.
 - **Use [Interchain Accounts](https://docs.hyperlane.xyz/docs/reference/applications/interchain-account)**: Execute smart contract calls on remote chains from a single account.
 - **[Deploy Hyperlane to your chain](/deploy-hyperlane.mdx)**: Set up Hyperlane on a new chain.

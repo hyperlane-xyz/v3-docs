@@ -37,35 +37,43 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Warp Routes",
-      link: {
-        type: "doc",
-        id: "protocol/warp-routes/warp-routes-overview",
-      },
+      label: "Applications",
+      collapsed: false,
       collapsible: true,
-      collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "reference/applications/warp-routes",
-          label: "Warp Route Interface",
+          type: "category",
+          label: "Warp Routes",
+          link: {
+            type: "doc",
+            id: "protocol/warp-routes/warp-routes-overview",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/applications/warp-routes",
+              label: "Warp Route Interface",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-types",
+              label: "Warp Route Types",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-example-usage",
+              label: "Warp Route Example Usage",
+            },
+          ],
         },
         {
           type: "doc",
-          id: "protocol/warp-routes/warp-routes-types",
-          label: "Warp Route Types",
-        },
-        {
-          type: "doc",
-          id: "protocol/warp-routes/warp-routes-example-usage",
-          label: "Warp Route Example Usage",
+          id: "reference/applications/interchain-account",
+          label: "Interchain Accounts",
         },
       ],
-    },
-    {
-      type: "doc",
-      id: "reference/applications/interchain-account",
-      label: "Interchain Accounts",
     },
     {
       type: "category",
@@ -239,6 +247,73 @@ const sidebars = {
           type: "doc",
           id: "deploy-hyperlane-troubleshooting",
           label: "Troubleshooting",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deployments",
+      items: [
+        {
+          type: "category",
+          label: "Contract Addresses",
+          items: [
+            {
+              type: "doc",
+              id: "reference/addresses/mailbox-addresses",
+              label: "Mailbox",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-gas-paymaster",
+              label: "Interchain Gas Paymaster (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/storage-gas-oracle",
+              label: "Storage Gas Oracle",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/merkle-tree",
+              label: "Merkle Tree (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/validator-announce",
+              label: "Validator Announce",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/proxy-admin",
+              label: "Proxy Admin",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/test-recipient",
+              label: "Test Recipient",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-account-router",
+              label: "Interchain Account Router",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "reference/default-ism-validators",
+          label: "Default ISM Validators",
+        },
+        {
+          type: "doc",
+          id: "reference/domains",
+          label: "Domains",
+        },
+        {
+          type: "doc",
+          id: "reference/registries",
+          label: "Registries",
         },
       ],
     },
@@ -539,73 +614,6 @@ const sidebars = {
           type: "doc",
           id: "guides/implementation-guide",
           label: "Implementation Guide",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Deployments",
-      items: [
-        {
-          type: "category",
-          label: "Contract Addresses",
-          items: [
-            {
-              type: "doc",
-              id: "reference/addresses/mailbox-addresses",
-              label: "Mailbox",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/interchain-gas-paymaster",
-              label: "Interchain Gas Paymaster (Hook)",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/storage-gas-oracle",
-              label: "Storage Gas Oracle",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/merkle-tree",
-              label: "Merkle Tree (Hook)",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/validator-announce",
-              label: "Validator Announce",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/proxy-admin",
-              label: "Proxy Admin",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/test-recipient",
-              label: "Test Recipient",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/interchain-account-router",
-              label: "Interchain Account Router",
-            },
-          ],
-        },
-        {
-          type: "doc",
-          id: "reference/default-ism-validators",
-          label: "Default ISM Validators",
-        },
-        {
-          type: "doc",
-          id: "reference/domains",
-          label: "Domains",
-        },
-        {
-          type: "doc",
-          id: "reference/registries",
-          label: "Registries",
         },
       ],
     },
