@@ -30,11 +30,6 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "deploy-hyperlane",
-          label: "Deploy to a New Chain",
-        },
-        {
-          type: "doc",
           id: "guides/deploy-warp-route",
           label: "Bridge a Token",
         },
@@ -58,7 +53,7 @@ const sidebars = {
         {
           type: "doc",
           id: "reference/applications/warp-routes",
-          label: "Warp Routes Interface",
+          label: "Warp Route Interface",
         },
         {
           type: "doc",
@@ -84,15 +79,29 @@ const sidebars = {
       collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Bridge UI",
+          type: "category",
+          label: "Set Up Hyperlane on your Chain",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy-hyperlane",
+              label: "Deploy to a New Chain",
+            },
+            {
+              type: "doc",
+              id: "guides/deploy-hyperlane-local-agents",
+              label: "Deploy Hyperlane with Local Agents",
+            },
+          ],
         },
         {
           type: "doc",
           id: "guides/local-testnet-setup",
           label: "Local Setup: Sending Messages between Anvil Nodes",
         },
+
         {
           type: "category",
           label: "Warp Routes",
@@ -100,29 +109,50 @@ const sidebars = {
           collapsed: true,
           items: [
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Deploy Yield Routes",
+              type: "category",
+              label: "EVM Warp Routes",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-yield-routes",
+                  label: "Deploy Yield Routes",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+                  label: "Fast Native Transfer via Custom Gas Tokens",
+                },
+                {
+                  type: "doc",
+                  id: "guides/extending-warp-route",
+                  label: "Extending a Warp Route",
+                },
+                {
+                  type: "doc",
+                  id: "guides/xerc20-warp-route-guide",
+                  label: "Deploy an xERC20 Warp Route",
+                },
+                {
+                  type: "doc",
+                  id: "guides/manage-warp-route-limits",
+                  label: "Mangaging Warp Route Limits",
+                },
+              ],
             },
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label: "Fast Native Transfer via Custom Gas Tokens",
-            },
-            {
-              type: "doc",
-              id: "guides/extending-warp-route",
-              label: "Extending a Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/xerc20-warp-route-guide",
-              label: "Deploy an xERC20 Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/deploy-svm-warp-route",
-              label: "Deploy an SVM Warp Route",
+              type: "category",
+              label: "SVM Warp Routes",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/deploy-svm-warp-route",
+                  label: "Deploy an SVM Warp Route",
+                },
+              ],
             },
             {
               type: "doc",
@@ -131,8 +161,8 @@ const sidebars = {
             },
             {
               type: "doc",
-              id: "guides/manage-warp-route-limits",
-              label: "Mangaging Warp Route Limits",
+              id: "guides/deploy-warp-route-UI",
+              label: "Deploy a Bridge UI for Hyperlane Warp Routes",
             },
           ],
         },
@@ -210,11 +240,6 @@ const sidebars = {
           type: "doc",
           id: "guides/create-custom-hook-and-ism",
           label: "Create a Hook/ISM",
-        },
-        {
-          type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
         },
       ],
     },
