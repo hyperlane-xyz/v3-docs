@@ -30,52 +30,50 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "deploy-hyperlane",
-          label: "Deploy to a New Chain",
-        },
-        {
-          type: "doc",
           id: "guides/deploy-warp-route",
           label: "Bridge a Token",
-        },
-        {
-          type: "doc",
-          id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshooting",
         },
       ],
     },
     {
       type: "category",
-      label: "Warp Routes",
-      link: {
-        type: "doc",
-        id: "protocol/warp-routes/warp-routes-overview",
-      },
+      label: "Applications",
+      collapsed: false,
       collapsible: true,
-      collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "reference/applications/warp-routes",
-          label: "Warp Routes Interface",
+          type: "category",
+          label: "Warp Routes",
+          link: {
+            type: "doc",
+            id: "protocol/warp-routes/warp-routes-overview",
+          },
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/applications/warp-routes",
+              label: "Warp Route Interface",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-types",
+              label: "Warp Route Types",
+            },
+            {
+              type: "doc",
+              id: "protocol/warp-routes/warp-routes-example-usage",
+              label: "Warp Route Example Usage",
+            },
+          ],
         },
         {
           type: "doc",
-          id: "protocol/warp-routes/warp-routes-types",
-          label: "Warp Route Types",
-        },
-        {
-          type: "doc",
-          id: "protocol/warp-routes/warp-routes-example-usage",
-          label: "Warp Route Example Usage",
+          id: "reference/applications/interchain-account",
+          label: "Interchain Accounts",
         },
       ],
-    },
-    {
-      type: "doc",
-      id: "reference/applications/interchain-account",
-      label: "Interchain Accounts",
     },
     {
       type: "category",
@@ -84,9 +82,22 @@ const sidebars = {
       collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "guides/deploy-warp-route-UI",
-          label: "Deploy a Bridge UI",
+          type: "category",
+          label: "Set Up Hyperlane on your Chain",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "deploy-hyperlane",
+              label: "Deploy to a New Chain",
+            },
+            {
+              type: "doc",
+              id: "guides/deploy-hyperlane-local-agents",
+              label: "Deploy Hyperlane with Local Agents",
+            },
+          ],
         },
         {
           type: "doc",
@@ -100,29 +111,50 @@ const sidebars = {
           collapsed: true,
           items: [
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-yield-routes",
-              label: "Deploy Yield Routes",
+              type: "category",
+              label: "EVM Warp Routes",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-yield-routes",
+                  label: "Deploy Yield Routes",
+                },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
+                  label: "Fast Native Transfer via Custom Gas Tokens",
+                },
+                {
+                  type: "doc",
+                  id: "guides/extending-warp-route",
+                  label: "Extending a Warp Route",
+                },
+                {
+                  type: "doc",
+                  id: "guides/xerc20-warp-route-guide",
+                  label: "Deploy an xERC20 Warp Route",
+                },
+                {
+                  type: "doc",
+                  id: "guides/manage-warp-route-limits",
+                  label: "Mangaging Warp Route Limits",
+                },
+              ],
             },
             {
-              type: "doc",
-              id: "protocol/warp-routes/warp-routes-custom-gas-fast-native",
-              label: "Fast Native Transfer via Custom Gas Tokens",
-            },
-            {
-              type: "doc",
-              id: "guides/extending-warp-route",
-              label: "Extending a Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/xerc20-warp-route-guide",
-              label: "Deploy an xERC20 Warp Route",
-            },
-            {
-              type: "doc",
-              id: "guides/deploy-svm-warp-route",
-              label: "Deploy an SVM Warp Route",
+              type: "category",
+              label: "SVM Warp Routes",
+              collapsible: true,
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "guides/deploy-svm-warp-route",
+                  label: "Deploy an SVM Warp Route",
+                },
+              ],
             },
             {
               type: "doc",
@@ -131,8 +163,8 @@ const sidebars = {
             },
             {
               type: "doc",
-              id: "guides/manage-warp-route-limits",
-              label: "Mangaging Warp Route Limits",
+              id: "guides/deploy-warp-route-UI",
+              label: "Deploy a Bridge UI for Hyperlane Warp Routes",
             },
             {
               type: "doc",
@@ -218,8 +250,75 @@ const sidebars = {
         },
         {
           type: "doc",
-          id: "guides/deploy-hyperlane-local-agents",
-          label: "Deploy Hyperlane with Local Agents",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshooting",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deployments",
+      items: [
+        {
+          type: "category",
+          label: "Contract Addresses",
+          items: [
+            {
+              type: "doc",
+              id: "reference/addresses/mailbox-addresses",
+              label: "Mailbox",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-gas-paymaster",
+              label: "Interchain Gas Paymaster (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/storage-gas-oracle",
+              label: "Storage Gas Oracle",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/merkle-tree",
+              label: "Merkle Tree (Hook)",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/validator-announce",
+              label: "Validator Announce",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/proxy-admin",
+              label: "Proxy Admin",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/test-recipient",
+              label: "Test Recipient",
+            },
+            {
+              type: "doc",
+              id: "reference/addresses/interchain-account-router",
+              label: "Interchain Account Router",
+            },
+          ],
+        },
+        {
+          type: "doc",
+          id: "reference/default-ism-validators",
+          label: "Default ISM Validators",
+        },
+        {
+          type: "doc",
+          id: "reference/domains",
+          label: "Domains",
+        },
+        {
+          type: "doc",
+          id: "reference/registries",
+          label: "Registries",
         },
       ],
     },
@@ -520,73 +619,6 @@ const sidebars = {
           type: "doc",
           id: "guides/implementation-guide",
           label: "Implementation Guide",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Deployments",
-      items: [
-        {
-          type: "category",
-          label: "Contract Addresses",
-          items: [
-            {
-              type: "doc",
-              id: "reference/addresses/mailbox-addresses",
-              label: "Mailbox",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/interchain-gas-paymaster",
-              label: "Interchain Gas Paymaster (Hook)",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/storage-gas-oracle",
-              label: "Storage Gas Oracle",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/merkle-tree",
-              label: "Merkle Tree (Hook)",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/validator-announce",
-              label: "Validator Announce",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/proxy-admin",
-              label: "Proxy Admin",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/test-recipient",
-              label: "Test Recipient",
-            },
-            {
-              type: "doc",
-              id: "reference/addresses/interchain-account-router",
-              label: "Interchain Account Router",
-            },
-          ],
-        },
-        {
-          type: "doc",
-          id: "reference/default-ism-validators",
-          label: "Default ISM Validators",
-        },
-        {
-          type: "doc",
-          id: "reference/domains",
-          label: "Domains",
-        },
-        {
-          type: "doc",
-          id: "reference/registries",
-          label: "Registries",
         },
       ],
     },

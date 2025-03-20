@@ -408,7 +408,7 @@ const config = {
             type: "docSidebar",
             sidebarId: "getstartedSidebar",
             position: "left",
-            label: "⏩ Get Started",
+            label: "⏩ Home",
           },
           /*
           {

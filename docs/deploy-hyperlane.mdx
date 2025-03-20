@@ -2,7 +2,8 @@
 
 :::info
 
-- This guide will help you deploy Hyperlane to your new chain as quickly as possible for testing, not production. This includes the core mailbox and ISM contracts as well as warp route contracts for assets you’re bridging.
+- This guide is for **EVM-compatible** chains only.
+- It will walk you through deploying Hyperlane to your new chain as quickly as possible for testing, not production. This includes the core Mailbox and ISM contracts as well as Warp Route contracts for asset bridging.
 - To see which chains are already supported, visit the [Registry](https://github.com/hyperlane-xyz/hyperlane-registry/tree/main/chains).
 - If you need any help, reach out on #developers on Discord or [get in touch](https://forms.gle/KyRTaWvo4XNmNvrq6).
 
@@ -149,7 +150,7 @@ testRecipient: "0xa58462b1943Be1469Ed58db690C78583BA34Fd2E"
 
 :::warning
 
-`eth_getStorageAt()` Compatibility: Some chains may not utilize the [`eth_getStorageAt()`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getstorageat) API. If your deployment encounters related issues, refer to the [Troubleshooting Guide](./deploy-hyperlane-troubleshooting#eth_getstorageat-compatibility).
+- `eth_getStorageAt()` Compatibility: Some chains may not utilize the [`eth_getStorageAt()`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getstorageat) API. If your deployment encounters related issues, refer to the [Troubleshooting Guide](./deploy-hyperlane-troubleshooting#eth_getstorageat-compatibility).
 
 :::
 
@@ -175,7 +176,7 @@ hyperlane relayer --chains yourchain,sepolia
 
 ## 3. Warp Route
 
-Now that you have a Hyperlane mailbox and core contracts on your chain, it’s time to set up token bridging between your chain and any other Hyperlane chain.
+Now that you have a Hyperlane Mailbox and core contracts on your chain, it’s time to set up token bridging between your chain and any other Hyperlane chain.
 
 Continue on to the [Deploy a Warp Route](/docs/guides/deploy-warp-route.mdx) docs for more details.
 
