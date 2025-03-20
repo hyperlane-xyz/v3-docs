@@ -53,11 +53,11 @@ flowchart
 	NWR -. "{recipient, 2 * amount}" .-> AWR
 ```
 
-To fix this and mantain a good user experience we must perform _collateral rebalancing_, collateral must be moved between chains to restore balance. An aligned actor may assue a traditional Liquidity Provider (LP) role and provide collateral to address these imbalances using their own inventory.
+To fix this and maintain a good user experience, we must perform _collateral rebalancing_; collateral may need to be moved between chains or sourced from local inventory to restore balance. An aligned actor may assume a traditional Liquidity Provider (LP) role and provide collateral to address these imbalances using their inventory.
 
 ## Liquidity Provider
 
-Currently, Warp Routes don’t have an explicit liquidity provider interface that enables local deposits/withdrawals. However, LPs can manually manage liquidity using the [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli) to interact with the Warp Routes in the [Hyperlane registry](https://github.com/hyperlane-xyz/hyperlane-registry).
+Currently, Warp Routes don’t have an explicit liquidity provider interface that enables local deposits/withdrawals. However, LPs can manually manage liquidity using the [Hyperlane CLI](https://www.npmjs.com/package/@hyperlane-xyz/cli) or the UI to interact with the Warp Routes in the [Hyperlane registry](https://github.com/hyperlane-xyz/hyperlane-registry).
 
 :::warning
 The stopgap procedure defined below requires at least one synthetic chain to exist within the warp route topology.
@@ -119,7 +119,7 @@ flowchart
 	MWR -. "amount" .-> LP
 ```
 
-This can be done for providing liquidity on many collateral chains and representing a claim on each collateral with a single synthetic asset balance.
+This can be done by providing liquidity on many collateral chains and representing a claim on each collateral with a single synthetic asset balance.
 
 ### Withdrawing Liquidity
 
@@ -152,7 +152,7 @@ flowchart
 
 ## Future: Admin-Controlled Liquidity Rebalancing
 
-Depending on the collateral asset and the pair of chains, several different rebalancing paths may be available. For example, CCTP (Circle’s Cross-Chain Transfer Protocol) can efficiently move USDC between Base and Arbitrum. Other assets and pairs may require more complex rebalancing paths (eg L2 withdrawals+deposits). This approach requires a permissioned rebalancer to move the collateral over trusted paths.
+Depending on the collateral asset and the pair of chains, several different rebalancing paths may be available. For example, CCTP (Circle’s Cross-Chain Transfer Protocol) can efficiently move USDC between Base and Arbitrum. Other assets and pairs may require more complex rebalancing paths (e.g.: L2 withdrawals+deposits). This approach requires a permissioned rebalancer to move the collateral over trusted paths.
 
 ```mermaid
 flowchart
