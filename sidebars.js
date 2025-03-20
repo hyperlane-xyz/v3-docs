@@ -166,6 +166,11 @@ const sidebars = {
               id: "guides/deploy-warp-route-UI",
               label: "Deploy a Bridge UI for Hyperlane Warp Routes",
             },
+            {
+              type: "doc",
+              id: "guides/multicollateral-warp-route",
+              label: "Multicollateral Warp Route Rebalancing",
+            },
           ],
         },
         {
