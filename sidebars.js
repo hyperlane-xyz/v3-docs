@@ -33,11 +33,6 @@ const sidebars = {
           id: "guides/deploy-warp-route",
           label: "Bridge a Token",
         },
-        {
-          type: "doc",
-          id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshooting",
-        },
       ],
     },
     {
@@ -101,7 +96,6 @@ const sidebars = {
           id: "guides/local-testnet-setup",
           label: "Local Setup: Sending Messages between Anvil Nodes",
         },
-
         {
           type: "category",
           label: "Warp Routes",
@@ -240,6 +234,11 @@ const sidebars = {
           type: "doc",
           id: "guides/create-custom-hook-and-ism",
           label: "Create a Hook/ISM",
+        },
+        {
+          type: "doc",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshooting",
         },
       ],
     },
