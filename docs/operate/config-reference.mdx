@@ -608,7 +608,7 @@ Connections to non-EVM chains only support a single RPC url. If more than one RP
 
 **Requires:** `chains.<chain_name>.protocol = "ethereum" | undefined`
 
-**Optional:** Defaults to `"fallback"`
+**Optional:** Yes (Will use `defaultRpcConsensusType` if not specified)
 
 **Agents:** All
 
@@ -1070,6 +1070,50 @@ Because each VM supports a different signer type, the default signer can only su
         "type": "aws",
         "region": "us-east-1"
     }
+}
+```
+</TabItem>
+</Tabs>
+
+## defaultRpcConsensusType
+
+:::info
+
+**The consensus type currently only applies to EVM chains.**
+
+Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
+
+:::
+
+**Description:** How to communicate with the provider
+
+- `"single"` uses a basic http connection
+- `"fallback"` will try the first URL and then automatically "fall back" on a connection or other provider failure to the next provider; this should only retry calls which fail due to the provider and not the call itself such; an insufficient gas error for instance would not fall back.
+- `"quorum"` requires a majority of the URLs to agree with the exception of submitting transactions; it will automatically coordinate the "latest" block if not specified to reduce sync errors.
+
+**Optional:** Defaults to `"fallback"`
+
+**Agents:** All
+
+**Type:** `Enum ("fallback", "single", "quorum")`
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--defaultRpcConsensusType single
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+  ```bash
+  export HYP_DEFAULT_RPCCONSENSUSTYPE="single"
+  ```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "defaultRpcConsensusType": "single",
 }
 ```
 </TabItem>
