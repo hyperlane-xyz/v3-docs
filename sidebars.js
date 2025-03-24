@@ -141,6 +141,11 @@ const sidebars = {
                   id: "guides/manage-warp-route-limits",
                   label: "Mangaging Warp Route Limits",
                 },
+                {
+                  type: "doc",
+                  id: "protocol/warp-routes/deploy-multicollateral-warp-routes",
+                  label: "Deploy Multi-Collateral Warp Routes",
+                },
               ],
             },
             {
