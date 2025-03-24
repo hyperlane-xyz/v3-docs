@@ -96,6 +96,12 @@ The CLI will prompt you to:
 - Select a matching Warp Route
 - Choose the origin and destination chains
 
+:::note
+When sending between two `collateral` chains (e.g., Base → Arbitrum), make sure there’s sufficient collateral available on the destination chain to complete the transfer.
+
+Synthetic tokens are minted on the destination. In collateral routes, tokens must already exist on the destination chain in order to be released.
+:::
+
 It’ll run checks and send the message. You’ll get:
 
 - A transaction link (e.g., BaseScan)
