@@ -146,6 +146,11 @@ const sidebars = {
                   id: "protocol/warp-routes/deploy-multicollateral-warp-routes",
                   label: "Deploy Multi-Collateral Warp Routes",
                 },
+                {
+                  type: "doc",
+                  id: "guides/transfer-and-call",
+                  label: "Transfer and Call Pattern",
+                },
               ],
             },
             {
@@ -170,11 +175,6 @@ const sidebars = {
               type: "doc",
               id: "guides/deploy-warp-route-UI",
               label: "Deploy a Bridge UI for Hyperlane Warp Routes",
-            },
-            {
-              type: "doc",
-              id: "guides/transfer-and-call",
-              label: "Transfer and Call Pattern",
             },
           ],
         },
