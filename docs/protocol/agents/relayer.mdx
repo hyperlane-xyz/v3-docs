@@ -95,3 +95,23 @@ Messages go through four stages as part of the Submitter, which are spawned as i
 Messages are delivered to their recipient by calling `Mailbox.process()` on the destination chain with the aforementioned metadata.
 
 The retry count of a message determines its next delivery attempt according to an exponential backoff strategy. Currently, there is no fixed maximum number of retries after which the relayer will cease to attempt processing a message. However, this is not a guarantee of indefinite retries, and operators should not rely on this as a service level agreement (SLA).
+
+#### Retry Strategy
+
+If a delivery attempt is unsuccessful, the relayer retries the delivery using an adaptive backoff strategy. This strategy is optimized to support ISMs with longer finality or processing times and ensures retries continue over a long enough period to recover from temporary issues.
+
+| Retry # Range | Delay Between Retries                                        |
+| ------------- | ------------------------------------------------------------ |
+| 1             | 5 seconds                                                    |
+| 2             | 10 seconds                                                   |
+| 3             | 30 seconds                                                   |
+| 4             | 1 minute                                                     |
+| 5–24          | 3 minutes                                                    |
+| 25–39         | Starts at 5 min, increases linearly (adds 1.5 min per retry) |
+| 40–44         | 30 minutes                                                   |
+| 45–49         | 1 hour                                                       |
+| 50+           | Gradually increases to several hours and eventually days     |
+
+You can view the implemantation [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/1d8ada64736b09d9878d2a11568c04d522f515b8/rust/main/agents/relayer/src/msg/pending_message.rs#L733).
+
+_Note: These values are approximate and subject to change._
