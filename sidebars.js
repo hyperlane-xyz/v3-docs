@@ -141,6 +141,11 @@ const sidebars = {
                   id: "guides/manage-warp-route-limits",
                   label: "Mangaging Warp Route Limits",
                 },
+                {
+                  type: "doc",
+                  id: "guides/multicollateral-warp-route",
+                  label: "Multicollateral Warp Route Rebalancing",
+                },
               ],
             },
             {
@@ -165,11 +170,6 @@ const sidebars = {
               type: "doc",
               id: "guides/deploy-warp-route-UI",
               label: "Deploy a Bridge UI for Hyperlane Warp Routes",
-            },
-            {
-              type: "doc",
-              id: "guides/multicollateral-warp-route",
-              label: "Multicollateral Warp Route Rebalancing",
             },
           ],
         },
