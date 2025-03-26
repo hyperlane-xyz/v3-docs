@@ -1,18 +1,32 @@
 # Warp Routes
 
-## Overview
+Warp Routes are modular cross-chain asset bridges that enable the transfer of tokens between chains using Hyperlane. Developers can use Hyperlane to permissionlessly deploy Warp Routes to move assets between chains.
 
-Developers can use Hyperlane to permissionlessly deploy Warp Routes - contracts that allow any ERC20, ERC721, or native tokens to move effortlessly between chains.
+They support various asset types, including:
 
-You can combine Warp Routes with a Hyperlane deployment to create economic trade routes between any chain and others already connected through Hyperlane.
+- ERC20 & ERC721 tokens (for EVM-compatible chains)
+- SVM-based assets (for SVM-compatible chains)
+- Native tokens (such as ETH, or other gas tokens)
+
+You can combine Warp Routes with a Hyperlane deployment to create economic routes between any chain and others already connected through Hyperlane.
+
+### Deploy a Warp Route
+
+Warp Routes can be deployed between any set of chains that have Hyperlane deployments.
+
+To deploy a Warp Route head over to the following guides:
+
+- [EVM-based Warp Route](/docs/guides/deploy-warp-route)
+- [SVM-based Warp Route](/docs/guides/deploy-svm-warp-route)
+- [EVM-SVM Warp Route](/docs/guides/deploy-evm-svm-warp-route)
+
+:::tip
+If you would like to create a Warp Route that includes a chain that Hyperlane is not currently deployed on, feel free to [deploy Hyperlane](../../deploy-hyperlane.mdx) yourself!
+:::
 
 ### Modular Security
 
 Like all applications built on top of Hyperlane, Warp Routes have customizable security via [Interchain Security Modules](../../protocol/ISM/modular-security.mdx). This allows Warp Route deployers to configure and enforce custom rules and constraints that the interchain token must follow.
-
-### Deploy a Warp Route
-
-Warp Routes can be deployed between any set of chains that have Hyperlane deployments. If you would like to create a Warp Route that includes a chain that Hyperlane is not currently deployed on, feel free to [deploy hyperlane](../../deploy-hyperlane.mdx) yourself!
 
 ### Warp Route Architecture
 
@@ -22,10 +36,10 @@ The diagram below provides a simplified outline of the process for creating your
 
 ![Warp Route diagram/doodle](/img/warpcontractdiagram.png)
 
-Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
+- Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
 
-When a user transfers from the _canonical_ origin chain to a _non-canonical_ destination chain, their tokens are locked in a `HypERC20Collateral` contract, which sends a message to the destination chain to mint wrapped tokens.
+- When a user transfers from the _canonical_ origin chain to a _non-canonical_ destination chain, their tokens are locked in a `HypERC20Collateral` contract, which sends a message to the destination chain to mint wrapped tokens.
 
-When a user transfers between non-canonical chains, their wrapped tokens are burned on the origin chain, which sends a message to the destination chain to mint wrapped tokens.
+- When a user transfers between non-canonical chains, their wrapped tokens are burned on the origin chain, which sends a message to the destination chain to mint wrapped tokens.
 
-Finally, if a user transfers from a non-canonical origin chain back to the canonical destination chain, their wrapped tokens are burned on the origin chain, which sends a message to the destination chain to release the tokens locked in the`HypERC20Collateral` contract.
+- Finally, if a user transfers from a non-canonical origin chain back to the canonical destination chain, their wrapped tokens are burned on the origin chain, which sends a message to the destination chain to release the tokens locked in the`HypERC20Collateral` contract.
