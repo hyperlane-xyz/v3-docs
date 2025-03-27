@@ -1,13 +1,129 @@
-# Cosmos SDK
+# Hyperlane - Cosmos SDK Module
 
-## Overview
-
-The [Hyperlane Cosmos](https://github.com/bcp-innovations/hyperlane-cosmos) SDK Module allows Cosmos SDK-based chains to integrate Hyperlane for cross-chain messaging. It provides a permissionless way for Cosmos chains to communicate with external ecosystems, including EVM and other ecosystems where [Hyperlane is deployed on](https://docs.hyperlane.xyz/docs/reference/addresses/mailbox-addresses).
+The [Hyperlane Cosmos](https://github.com/bcp-innovations/hyperlane-cosmos) SDK module enables seamless interchain communication by integrating Hyperlane directly into Cosmos SDK-based chains. This module provides a permissionless way for Cosmos chains to communicate with external ecosystems, including EVM and other blockchains where Hyperlane is deployed.
 
 While Hyperlane already supports Cosmos chains via [CosmWasm](https://github.com/many-things/cw-hyperlane?tab=readme-ov-file), this module expands accessibility by enabling Cosmos SDK chains—regardless of CosmWasm support—to leverage Hyperlane’s interoperability capabilities.
 
-## Key Features
+# Key Features
 
+- **Hyperlane Compatibility:** This module fully implements the Hyperlane messaging protocol, enabling seamless cross-chain functionality across all Hyperlane-compatible chains.
+- **Warp Routes:** Leveraging the core functionality, tokens can be created and transferred across all Hyperlane-compatible chains.
 - **End-to-End Interop Solution**: Implements messaging, transport, and security modules of the Hyperlane cross-chain interoperability framework for Cosmos SDK-based chains.
 - **Permissionless & Open-Source**: Anyone can deploy and configure the module to fit their needs without relying on intermediaries.
 - **Built by KYVE**: Developed by the [KYVE](https://www.kyve.network/) team to extend Cosmos interoperability beyond IBC.
+
+# Module Overview
+
+![/img/cosmos-sdk-implementation/hyperlane-cosmos (8).svg](/img/cosmos-sdk-implementation/hyperlane-cosmos_8.svg)
+
+## `x/core`
+
+The `core` module is intended to implement the fundamental functionalities of the Hyperlane protocol to dispatch and process messages, which can then be used by applications like `warp`. It includes mailboxes and registers hooks that are implemented in the submodules.
+
+### Mailbox
+
+- Responsible for dispatching and processing messages
+- Ensures replay protection
+- Specifies `default` or `required` hooks like `IGP` or `MerkleTreeHook`
+- Calls registered `PostDispatch` hooks
+- Important methods:
+  - `dispatch()`
+  - `process()`
+
+![/img/cosmos-sdk-implementation/hyperlane-cosmos (2).svg](/img/cosmos-sdk-implementation/hyperlane-cosmos_2.svg)
+
+### Submodules
+
+Interchain Security and Post Dispatch are submodules with dedicated keepers and restricted access to the core keeper. This architecture was designed to facilitate extensibility, allowing developers to integrate their own implementations seamlessly.
+
+### `01_interchain_security`
+
+This submodule implements the ISM logic and is responsible for verifying that interchain messages being delivered on the destination chain were *actually sent* on the origin chain. The modular design allows developers to easily add custom ISM implementations. Currently, three ISM types are available: `MessageIdMultisig`, `MerkleRootMultisig`, and `Noop`.
+
+```go
+type InterchainSecurityModule interface {
+	Verify(ctx context.Context, ismId HexAddress, metadata []byte, message HyperlaneMessage) (bool, error)
+}
+```
+
+**`MultisigIsm`**
+
+- Verifies that `m` of `n` validators have signed the validity of a message
+- `MessageIdMultisig` → censorship-friendly, minimizes gas
+- `MerkleRootMultisig` → censorship resistance guarantee
+- Important methods:
+  - `verify()`
+
+![/img/cosmos-sdk-implementation/hyperlane-cosmos (3).svg](/img/cosmos-sdk-implementation/hyperlane-cosmos_3.svg)
+
+### `02_post_dispatch`
+
+This submodule implements the PostDispatch interface and the hook instances like the `InterchainGasPaymaster` or `MerkleTreeHook`. The modular design allows developers to easily add custom PostDispatch hook implementations.
+
+```go
+type PostDispatchHook interface {
+	HookType() uint8
+	SupportsMetadata(metadata any) bool
+	PostDispatch(ctx sdk.Context, metadata util.StandardHookMetadata, message util.HyperlaneMessage, maxFee sdk.Coins) (sdk.Coins, error)
+	QuoteDispatch(ctx context.Context, hookId HexAddress, metadata util.StandardHookMetadata, message HyperlaneMessage) (sdk.Coins, error)
+}
+```
+
+**`InterchainGasPaymaster`**
+
+- Allows message sender to pay fees to the relayer to deliver a message on the destination chain
+- `DestinationGasConfig` is used to determine the correct `InterchainGasPayment`
+- Important methods:
+  - `postDispatch()`
+  - `payForGas()`
+  - `claim()`
+
+![/img/cosmos-sdk-implementation/hyperlane-cosmos (9).svg](/img/cosmos-sdk-implementation/hyperlane-cosmos_9.svg)
+
+![/img/cosmos-sdk-implementation/hyperlane-cosmos (10).svg](/img/cosmos-sdk-implementation/hyperlane-cosmos_10.svg)
+
+**`MerkleTreeHook`**
+
+- Inserts dispatched messages into an on-chain Merkle tree
+- Required for `MessageIdMultisig` and `MerkleRootMultisig` ISMs
+- Important methods:
+  - `postDispatch()`
+  - `InsertedIntoTree()`  *(event)*
+
+
+## `x/warp`
+
+`warp` builds on-top of the core functionality by enabling token creation and cross-chain transfers between chains already connected via Hyperlane. These tokens leverage modular security through specific ISMs.
+
+- Currently, two token types are available:
+  1. **Collateral:** Locks tokens as collateral on the source chain for cross-chain transfers.
+  2. **Synthetic:** Mints new tokens on the destination chain to represent the original tokens.
+- Important methods:
+  - `createToken()`
+  - `remoteTransfer()`
+  - `enrollRemoteRouter()`
+
+![/img/cosmos-sdk-implementation/hyperlane-cosmos (5).svg](/img/cosmos-sdk-implementation/hyperlane-cosmos_5.svg)
+
+# Warp Route - Remote Transfer Lifecycle
+
+### `Dispatch()`
+
+![/img/cosmos-sdk-implementation/image.png](/img/cosmos-sdk-implementation/image.png)
+
+### `Process()`
+
+![/img/cosmos-sdk-implementation/image_1.png](/img/cosmos-sdk-implementation/image_1.png)
+
+# EVM / Cosmos SDK Differences
+
+### EVM ≠ Cosmos SDK
+
+1. Instances instead of Contracts
+2. IDs instead of Contract addresses
+3. Tokens
+ 1. There are no native tokens, this has implications to the IGP where a `denom` for gas payments has to be specified. Similarly, there there is no `NativeCollateralToken`.
+
+### Tool integration
+
+Although it’s in development, Hyperlane agents and CLI do not yet support the native Cosmos SDK module. Deploying a Warp Route requires manually setting up all necessary components (Mailbox, ISM, IGP, Token, etc.) with the correct transactions.
