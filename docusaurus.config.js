@@ -458,19 +458,6 @@ const config = {
             ],
           },
           {
-            title: "Read",
-            items: [
-              {
-                label: "Blog",
-                to: "https://medium.com/hyperlane",
-              },
-              {
-                label: "GitHub",
-                href: "https://github.com/hyperlane-xyz",
-              },
-            ],
-          },
-          {
             title: "Community",
             items: [
               {
@@ -481,10 +468,14 @@ const config = {
                 label: "Twitter",
                 href: "https://x.com/hyperlane",
               },
+              {
+                label: "Blog",
+                href: "https://medium.com/hyperlane",
+              },
             ],
           },
           {
-            title: "Contribute",
+            title: "Developers",
             items: [
               {
                 label: "Bounties",
@@ -493,6 +484,19 @@ const config = {
               {
                 label: "Careers",
                 href: "https://jobs.lever.co/Hyperlane",
+              },
+            ],
+          },
+          {
+            title: "Resources",
+            items: [
+              {
+                label: "Privacy Policy",
+                href: "https://hyperlane.xyz/privacy-policy",
+              },
+              {
+                label: "Terms of Service",
+                href: "https://hyperlane.xyz/terms-of-service",
               },
             ],
           },
