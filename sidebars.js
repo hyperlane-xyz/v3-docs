@@ -551,11 +551,6 @@ const sidebars = {
           label: "CLI",
         },
         {
-          type: "doc",
-          id: "reference/cosmos-sdk",
-          label: "Cosmos SDK",
-        },
-        {
           type: "category",
           label: "Libraries",
           collapsible: true,
@@ -617,13 +612,18 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "protocol/non-evm-implementations",
+          id: "reference/alt-vm-implementations/index",
           label: "Alt-VM implementations",
         },
         {
           type: "doc",
           id: "guides/implementation-guide",
           label: "Implementation Guide",
+        },
+        {
+          type: "doc",
+          id: "reference/alt-vm-implementations/cosmos-sdk",
+          label: "Cosmos SDK",
         },
       ],
     },
