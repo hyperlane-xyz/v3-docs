@@ -144,8 +144,12 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
    --built-so-dir ../target/deploy \
    --token-config-file ../environments/mainnet3/warp-routes/<YOUR-WARP-ROUTE-NAME>/token-config.json \
    --chain-config-file ../environments/mainnet3/chain-config.json \
-   --ata-payer-funding-amount 10000000
+   --ata-payer-funding-amount <REASNOABLE-FUNDING-AMOUNT>
    ```
+
+    :::warning
+    Please choose a reasonable amount to fund the Warp Route ATA payer accounts. The recommended initial funding amount is `alert_threshold * 2`, with the threshold value found [here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/typescript/infra/src/warp/helm.ts).
+    :::
 
    - Overview of CLI flags:
      - `--warp-route-name`: should match the directory name picked for the Warp Route earlier
@@ -154,7 +158,7 @@ Deploying a Warp Route requires there to be a core Hyperlane deployment that is 
      - `--built-so-dir`: keep as `../../target/deploy`, as it points to the compilation output directory of Warp Route programs
      - `--token-config-file`: point this to the `token-config.json` file created earlier
      - `--chain-config-file`: keep as `../environments/mainnet3/chain-config.json`, as this file has been pre-populated with chain settings for all Hyperlane-supported chains
-     - `--ata-payer-funding-amount`: this flag specifies by how much to fund the Warp Route [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts on both chains the deployment happens on. It's expressed in the lowest currency denomination, which means that it's interpreted as Lamports on Solana and Gwei on Eclipse (since it uses ETH as its native currency). In the command below, the value `10000000` works out to `0.001` ETH and `0.001` SOL, which is enough for an initial deployment. ATA payers can always be topped up later, so it’s fine to pick a small value. For reference, every Warp Route transfer costs the ATA payer `0.000000001 SOL` (on Solana) and `0.000021 ETH` (on Eclipse) on the destination chain.
+     - `--ata-payer-funding-amount`: this flag specifies by how much to fund the Warp Route [ATA](https://www.alchemy.com/overviews/associated-token-account) payer accounts on both chains the deployment happens on. It's expressed in the lowest currency denomination, which means that it's interpreted as Lamports on Solana and Gwei on Eclipse (since it uses ETH as its native currency). In the command below, the value `10000000` works out to `0.001` ETH and `0.001` SOL, which is enough for an initial deployment, but not for production usage. ATA payers can always be topped up later. For reference, every Warp Route transfer costs the ATA payer `0.000000001 SOL` (on Solana) and `0.000021 ETH` (on Eclipse) on the destination chain.
 
    <br />
 
