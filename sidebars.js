@@ -227,6 +227,24 @@ const sidebars = {
           ],
         },
         {
+          type: "doc",
+          id: "guides/create-custom-hook-and-ism",
+          label: "Create a Hook/ISM",
+        },
+        {
+          type: "doc",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshooting",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Tools",
+      collapsed: false,
+      collapsible: true,
+      items: [
+        {
           type: "category",
           label: "Hyperlane Explorer",
           link: {
@@ -247,16 +265,6 @@ const sidebars = {
               label: "GraphQL API",
             },
           ],
-        },
-        {
-          type: "doc",
-          id: "guides/create-custom-hook-and-ism",
-          label: "Create a Hook/ISM",
-        },
-        {
-          type: "doc",
-          id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshooting",
         },
       ],
     },
