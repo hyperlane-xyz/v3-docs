@@ -294,6 +294,7 @@ const config = {
             from: [
               "/docs/build-with-hyperlane/explorer",
               "/docs/build-with-hyperlane/guides/finding-my-messages",
+              "/docs/explorer",
             ],
           },
           {
