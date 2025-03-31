@@ -240,7 +240,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Tools",
+      label: "Resources",
       collapsed: false,
       collapsible: true,
       items: [
