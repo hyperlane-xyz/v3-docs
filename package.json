@@ -18,6 +18,7 @@
     "@cookbookdev/docsbot": "^4.21.15",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/plugin-client-redirects": "3.7.0",
+    "@docusaurus/plugin-vercel-analytics": "^3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-mermaid": "3.7.0",
     "@easyops-cn/docusaurus-search-local": "^0.48.5",

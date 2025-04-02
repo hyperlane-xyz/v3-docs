@@ -5723,6 +5723,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@docusaurus/plugin-vercel-analytics@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@docusaurus/plugin-vercel-analytics@npm:3.7.0"
+  dependencies:
+    "@docusaurus/core": "npm:3.7.0"
+    "@docusaurus/logger": "npm:3.7.0"
+    "@docusaurus/types": "npm:3.7.0"
+    "@docusaurus/utils": "npm:3.7.0"
+    "@docusaurus/utils-validation": "npm:3.7.0"
+    "@vercel/analytics": "npm:^1.1.1"
+    tslib: "npm:^2.6.0"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  checksum: b6e0a05658e819a07ce4a8950bfdf1b2e262c09520e432e2f22755486c9afaea448c2ed1eba509a0bcdf37f43fb5a48d466a45a0d56209c882c0018dca88155a
+  languageName: node
+  linkType: hard
+
 "@docusaurus/preset-classic@npm:3.7.0":
   version: 3.7.0
   resolution: "@docusaurus/preset-classic@npm:3.7.0"
@@ -12279,6 +12297,36 @@ __metadata:
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
   checksum: 8209c937cb39119f44eb63cf90c0b73e7c754209a6411c707be08e50e29ee81356dca1a848a405c8bdeebfe2f5e4f831ad310ae1689eeef65e7445c090c6657d
+  languageName: node
+  linkType: hard
+
+"@vercel/analytics@npm:^1.1.1":
+  version: 1.5.0
+  resolution: "@vercel/analytics@npm:1.5.0"
+  peerDependencies:
+    "@remix-run/react": ^2
+    "@sveltejs/kit": ^1 || ^2
+    next: ">= 13"
+    react: ^18 || ^19 || ^19.0.0-rc
+    svelte: ">= 4"
+    vue: ^3
+    vue-router: ^4
+  peerDependenciesMeta:
+    "@remix-run/react":
+      optional: true
+    "@sveltejs/kit":
+      optional: true
+    next:
+      optional: true
+    react:
+      optional: true
+    svelte:
+      optional: true
+    vue:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 43d33ea83b32f5203fec21b7f43c399e398f0c37d2dd341d522969e0e6ee23fd652a2766a4203a3ce573f711beee5ee1ab7d36316f767a4901160e3e96ee31e5
   languageName: node
   linkType: hard
 
@@ -19065,6 +19113,7 @@ __metadata:
     "@docusaurus/core": "npm:3.7.0"
     "@docusaurus/module-type-aliases": "npm:3.0.1"
     "@docusaurus/plugin-client-redirects": "npm:3.7.0"
+    "@docusaurus/plugin-vercel-analytics": "npm:^3.7.0"
     "@docusaurus/preset-classic": "npm:3.7.0"
     "@docusaurus/theme-mermaid": "npm:3.7.0"
     "@docusaurus/tsconfig": "npm:3.0.1"
