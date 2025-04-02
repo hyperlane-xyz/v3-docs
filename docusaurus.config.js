@@ -355,6 +355,13 @@ const config = {
         ],
       },
     ],
+    [
+      "vercel-analytics",
+      {
+        debug: true,
+        mode: "auto",
+      },
+    ],
   ],
 
   markdown: {
