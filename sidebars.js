@@ -346,7 +346,7 @@ const sidebars = {
       type: "category",
       label: "Protocol",
       collapsible: true,
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "category",
@@ -546,6 +546,11 @@ const sidebars = {
           ],
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "protocol-economics/intro",
+      label: "Protocol Economics",
     },
     {
       type: "category",
