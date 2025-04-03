@@ -346,7 +346,7 @@ const sidebars = {
       type: "category",
       label: "Protocol",
       collapsible: true,
-      collapsed: true,
+      collapsed: false,
       items: [
         {
           type: "category",
