@@ -548,6 +548,11 @@ const sidebars = {
       ],
     },
     {
+      type: "doc",
+      id: "protocol-economics/intro",
+      label: "Protocol Economics",
+    },
+    {
       type: "category",
       label: "Developer Tools",
       collapsible: true,
