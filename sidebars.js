@@ -550,7 +550,7 @@ const sidebars = {
     {
       type: "doc",
       id: "protocol-economics/intro",
-      label: "Protocol Economics",
+      label: "HYPER and Protocol Economics",
     },
     {
       type: "category",
