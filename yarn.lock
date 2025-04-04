@@ -6976,15 +6976,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/core@npm:6.0.3":
-  version: 6.0.3
-  resolution: "@hyperlane-xyz/core@npm:6.0.3"
+"@hyperlane-xyz/core@npm:6.1.0":
+  version: 6.1.0
+  resolution: "@hyperlane-xyz/core@npm:6.1.0"
   dependencies:
     "@arbitrum/nitro-contracts": "npm:^1.2.1"
     "@chainlink/contracts-ccip": "npm:^1.5.0"
     "@eth-optimism/contracts": "npm:^0.6.0"
-    "@hyperlane-xyz/utils": "npm:9.2.1"
+    "@hyperlane-xyz/utils": "npm:11.0.0"
     "@layerzerolabs/lz-evm-oapp-v2": "npm:2.0.2"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
+    "@matterlabs/hardhat-zksync-verify": "npm:1.7.1"
     "@openzeppelin/contracts": "npm:^4.9.3"
     "@openzeppelin/contracts-upgradeable": "npm:^4.9.3"
     fx-portal: "npm:^1.0.3"
@@ -6992,31 +6994,31 @@ __metadata:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
     "@types/sinon-chai": "*"
-  checksum: 561442abca4b7392724774644a2cac3e2b4cfe2e65282c6307dd1a69ea22ca9db7c75f17c99d34f4b7bccad53ad52f7cc701283179276ef9488dfa392b3b05bd
+  checksum: 15d55409e7cf262fa9391d80eae38832a9a0f2a3e11e806a90ecc5ff3ea45cdc717959b84ad8acbcebd7fd642cf89ee867346d284de1cdcffa2bb1bd22f15bcd
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/registry@npm:11.3.0":
-  version: 11.3.0
-  resolution: "@hyperlane-xyz/registry@npm:11.3.0"
+"@hyperlane-xyz/registry@npm:13.1.0":
+  version: 13.1.0
+  resolution: "@hyperlane-xyz/registry@npm:13.1.0"
   dependencies:
     yaml: "npm:2.4.5"
     zod: "npm:^3.21.2"
-  checksum: adcc20f2c8fbaaded323933c6f33b39bb7c271846e739d8a875915a813d930e48f7e478ac0d83813af2ec4389940136c6a863aad0b8fd09a9e65e856d2a5e58b
+  checksum: 4769d5c9850d88b063893f12285e211c4fc1510b9d134a70f47e5defd6e9a3ea8bbb1b4cc6f3ff4c76a857f8406d67d29f57a3bed1ec01f53ebe70b2b653fe1e
   languageName: node
   linkType: hard
 
-"@hyperlane-xyz/sdk@npm:9.2.1":
-  version: 9.2.1
-  resolution: "@hyperlane-xyz/sdk@npm:9.2.1"
+"@hyperlane-xyz/sdk@npm:11.0.0":
+  version: 11.0.0
+  resolution: "@hyperlane-xyz/sdk@npm:11.0.0"
   dependencies:
     "@arbitrum/sdk": "npm:^4.0.0"
     "@aws-sdk/client-s3": "npm:^3.577.0"
     "@chain-registry/types": "npm:^0.50.14"
     "@cosmjs/cosmwasm-stargate": "npm:^0.32.4"
     "@cosmjs/stargate": "npm:^0.32.4"
-    "@hyperlane-xyz/core": "npm:6.0.3"
-    "@hyperlane-xyz/utils": "npm:9.2.1"
+    "@hyperlane-xyz/core": "npm:6.1.0"
+    "@hyperlane-xyz/utils": "npm:11.0.0"
     "@safe-global/api-kit": "npm:1.3.0"
     "@safe-global/protocol-kit": "npm:1.3.0"
     "@safe-global/safe-deployments": "npm:1.37.23"
@@ -7033,7 +7035,22 @@ __metadata:
   peerDependencies:
     "@ethersproject/abi": "*"
     "@ethersproject/providers": "*"
-  checksum: 67e1b7b4f7c93f4e35e5e41733cf607aba206c9fc77fee690238308dfd2a0568c424c9005ce042b3500b9f1564448278cacec03c8e5bf37c32804b2444611e9a
+  checksum: 472257fb24b48986d0d1b8dba4c8306e4557ff30b0fc64eb53d92a4a0d240c371223fe0ab21ece26ae8a072b47b27fe7db93a11aab6292f3476870a5eb13e241
+  languageName: node
+  linkType: hard
+
+"@hyperlane-xyz/utils@npm:11.0.0":
+  version: 11.0.0
+  resolution: "@hyperlane-xyz/utils@npm:11.0.0"
+  dependencies:
+    "@cosmjs/encoding": "npm:^0.32.4"
+    "@solana/web3.js": "npm:^1.95.4"
+    bignumber.js: "npm:^9.1.1"
+    ethers: "npm:^5.7.2"
+    lodash-es: "npm:^4.17.21"
+    pino: "npm:^8.19.0"
+    yaml: "npm:2.4.5"
+  checksum: fe1758f4ffff9aebd67ba12e495fa8f689b8fb323e77a6eb7f68aeca9c0dbb7c4ebb8ae02cdd8f485d5da893d2ba54375a691f34351afa492e41a1ebdbd31901
   languageName: node
   linkType: hard
 
@@ -7049,21 +7066,6 @@ __metadata:
     pino: "npm:^8.19.0"
     yaml: "npm:2.4.5"
   checksum: 46f251ad097b9f66ffdbfbaf2c9aa680afee884fe67c2e4b3ae08079a815551867778a88c23246f5ce6d3b613266476df3e01d71d9f91705c985b4f4306c6828
-  languageName: node
-  linkType: hard
-
-"@hyperlane-xyz/utils@npm:9.2.1":
-  version: 9.2.1
-  resolution: "@hyperlane-xyz/utils@npm:9.2.1"
-  dependencies:
-    "@cosmjs/encoding": "npm:^0.32.4"
-    "@solana/web3.js": "npm:^1.95.4"
-    bignumber.js: "npm:^9.1.1"
-    ethers: "npm:^5.7.2"
-    lodash-es: "npm:^4.17.21"
-    pino: "npm:^8.19.0"
-    yaml: "npm:2.4.5"
-  checksum: 34019f0aefe6163c05bc89933e1e7a89fd928c4d0b32a9ffb38289cae5a03ccd1cba7d0d590b954b58382386cecee862a097b8ab1dbfd0683ad0a1fa9cfcb762
   languageName: node
   linkType: hard
 
@@ -7347,7 +7349,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:^1.3.0":
+"@matterlabs/hardhat-zksync-solc@npm:1.2.5":
+  version: 1.2.5
+  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.2.5"
+  dependencies:
+    "@nomiclabs/hardhat-docker": "npm:^2.0.2"
+    chai: "npm:^4.3.4"
+    chalk: "npm:^4.1.2"
+    debug: "npm:^4.3.5"
+    dockerode: "npm:^4.0.2"
+    fs-extra: "npm:^11.2.0"
+    proper-lockfile: "npm:^4.1.2"
+    semver: "npm:^7.6.2"
+    sinon: "npm:^18.0.0"
+    sinon-chai: "npm:^3.7.0"
+    undici: "npm:^6.18.2"
+  peerDependencies:
+    hardhat: ^2.22.5
+  checksum: 0fdffedd104e0b631a9a730233383cc55d4ecf0557400e4b264487f0fb29341d11b2442215662345cda073341e6d22fdf8c5bc5e2fdf3a9de22dbac2d31e63e0
+  languageName: node
+  linkType: hard
+
+"@matterlabs/hardhat-zksync-solc@npm:^1.2.5, @matterlabs/hardhat-zksync-solc@npm:^1.3.0":
   version: 1.3.0
   resolution: "@matterlabs/hardhat-zksync-solc@npm:1.3.0"
   dependencies:
@@ -7377,6 +7400,29 @@ __metadata:
   peerDependencies:
     hardhat: ^2.22.5
   checksum: 2c303dcf63382033e9ab0e93ac2c42e670a25b5ad45cf9b4de01e393d764caa4e0ca949fed8abd3de2681676ffb8443a1492099a0f2308d318c175e7f92e4d1e
+  languageName: node
+  linkType: hard
+
+"@matterlabs/hardhat-zksync-verify@npm:1.7.1":
+  version: 1.7.1
+  resolution: "@matterlabs/hardhat-zksync-verify@npm:1.7.1"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.7.0"
+    "@ethersproject/address": "npm:5.7.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:^1.2.5"
+    "@nomicfoundation/hardhat-verify": "npm:^2.0.8"
+    axios: "npm:^1.7.2"
+    cbor: "npm:^9.0.2"
+    chai: "npm:^4.3.4"
+    chalk: "npm:^4.1.2"
+    debug: "npm:^4.3.5"
+    semver: "npm:^7.6.2"
+    sinon: "npm:^18.0.0"
+    sinon-chai: "npm:^3.7.0"
+  peerDependencies:
+    "@nomicfoundation/hardhat-verify": ^2.0.8
+    hardhat: ^2.22.5
+  checksum: 8c26bbe67a59dadd3596482d3dde2c34518dde985d79dfce2f8e440d257c953455e4def4900fec7c8812be37d92f9579df7758f77e2b0f20abf605395dc15850
   languageName: node
   linkType: hard
 
@@ -19120,8 +19166,8 @@ __metadata:
     "@docusaurus/types": "npm:3.0.1"
     "@easyops-cn/docusaurus-search-local": "npm:^0.48.5"
     "@hyperlane-xyz/core": "npm:5.8.3"
-    "@hyperlane-xyz/registry": "npm:11.3.0"
-    "@hyperlane-xyz/sdk": "npm:9.2.1"
+    "@hyperlane-xyz/registry": "npm:13.1.0"
+    "@hyperlane-xyz/sdk": "npm:11.0.0"
     "@mdx-js/react": "npm:^3.0.0"
     "@types/react": "npm:^18.2.37"
     "@types/react-dom": "npm:^18.2.15"
