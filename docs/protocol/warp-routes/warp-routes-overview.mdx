@@ -30,7 +30,7 @@ For example:
 2. **Synthetic → Synthetic**: Tokens are burned on the origin chain, a message is sent, and new wrapped tokens are minted on the destination chain.
 3. **Synthetic → Collateral**: Tokens are burned on the origin chain, a message is sent, and the original tokens are released from the collateral contract on the destination chain.
 
-Each Warp Route requires a contract deployed on every chain that acts as an entry/exists point. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
+Each Warp Route requires a contract deployed on every chain its on that acts as an entry/exists point. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
 
 ### Warp Route Types
 
@@ -41,7 +41,7 @@ This table gives a high-level overview of Warp Route types. For detailed explana
 | Native Token Warp Routes     | Enables direct transfers of native gas tokens (e.g., ETH) across chains without wrapping.        |
 | Collateral-Backed ERC20      | Locks ERC20 tokens as collateral on the source chain for cross-chain transfers.                  |
 | Synthetic ERC20              | Mints new ERC20 tokens on the destination chain to represent the original tokens.                |
-| Multi-Collateral Warp Routes | Allows liquidity to be sourced from multiple collateral chains.                                  |
+| Multi-Collateral Warp Routes | Allows liquidity to be sourced from multiple collateral tokens.                                  |
 | Specialized Warp Routes      | Adds advanced features or integrates with specific use cases (e.g., vaults, fiat-backed tokens.) |
 
 ### Example Architecture
