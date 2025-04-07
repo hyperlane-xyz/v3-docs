@@ -14,7 +14,7 @@ You can combine Warp Routes with a Hyperlane deployment to create economic route
 
 Warp Routes can be deployed between any set of chains that have Hyperlane deployments.
 
-To deploy a Warp Route head over to the following guides:
+To deploy a Warp Route, head over to the following guides:
 
 - [EVM-based Warp Route](/docs/guides/deploy-warp-route)
 - [SVM-based Warp Route](/docs/guides/deploy-svm-warp-route)
@@ -28,18 +28,39 @@ If you would like to create a Warp Route that includes a chain that Hyperlane is
 
 Like all applications built on top of Hyperlane, Warp Routes have customizable security via [Interchain Security Modules](../../protocol/ISM/modular-security.mdx). This allows Warp Route deployers to configure and enforce custom rules and constraints that the interchain token must follow.
 
+The deployer of a Warp Route can specify the ISMs that are used to verify interchain transfer messages. This means that each Warp Route may have a unique security configuration. Users transferring interchain tokens should understand the trust assumptions of a Route before using it.
+
+:::note
+Similarly, Warp frontends should manually curate their warp routes to avoid supporting insecure ones. See the [Warp UI deployment docs](../../guides/deploy-warp-route-UI.mdx) details.
+:::
+
 ### Warp Route Architecture
 
-Warp Route contracts transfer value between chains by locking collateral tokens on the origin chain (aka the collateral chain) and then minting wrapped tokens on the destination chain (the synthetic chain).
+Warp Routes transfer value between chains using a lock-and-mint model:
 
-The diagram below provides a simplified outline of the process for creating your Warp Route, and the resulting asset.
+1. Lock tokens on the source chain (the collateral chain)
+2. Mint wrapped tokens on the destination chain (the synthetic chain)
 
-![Warp Route diagram/doodle](/img/warpcontractdiagram.png)
+Each Warp Route requires a contract deployed on every chain that acts as an entry/exists point. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
 
-- Each Warp Route consists of one contract deployed on every chain that the token can move between. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
+The diagram below provides a simplified outline of the process of a Warp Route flow:
 
-- When a user transfers from the _canonical_ origin chain to a _non-canonical_ destination chain, their tokens are locked in a `HypERC20Collateral` contract, which sends a message to the destination chain to mint wrapped tokens.
+![Warp Route diagram/doodle](/img/warp-route-flow.png)
 
-- When a user transfers between non-canonical chains, their wrapped tokens are burned on the origin chain, which sends a message to the destination chain to mint wrapped tokens.
+Depending on the type of Warp Route, the contract will lock, mint, burn, or release tokens:
 
-- Finally, if a user transfers from a non-canonical origin chain back to the canonical destination chain, their wrapped tokens are burned on the origin chain, which sends a message to the destination chain to release the tokens locked in the`HypERC20Collateral` contract.
+1. **Canonical → Non-canonical**: Lock tokens on the origin chain in the `HypERC20Collateral` contract → send message → mint wrapped tokens on the destination.
+2. **Non-canonical → Non-canonical**: Burn wrapped tokens → send message → mint wrapped tokens on the new chain.
+3. **Non-canonical → Canonical**: Burn wrapped tokens → send message → release original tokens from the `HypERC20Collateral` contract
+
+### Warp Route Types
+
+This table gives a high-level overview of Warp Route types. For detailed explanations, see: [Warp Route Types](warp-routes-types.mdx)
+
+| **Warp Route Type**          | **Description**                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| Native Token Warp Routes     | Enables direct transfers of native gas tokens (e.g., ETH) across chains without wrapping.        |
+| Collateral-Backed ERC20      | Locks ERC20 tokens as collateral on the source chain for cross-chain transfers.                  |
+| Synthetic ERC20              | Mints new ERC20 tokens on the destination chain to represent the original tokens.                |
+| Multi-Collateral Warp Routes | Allows liquidity to be sourced from multiple collateral chains.                                  |
+| Specialized Warp Routes      | Adds advanced features or integrates with specific use cases (e.g., vaults, fiat-backed tokens.) |

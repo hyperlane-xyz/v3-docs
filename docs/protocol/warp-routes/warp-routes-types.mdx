@@ -2,12 +2,13 @@
 
 Warp routes are Hyperlane's implementation of token bridging, allowing for permissionless transfer of native, ERC20, and synthetic (newly deployed ERC20) assets across any chain via Hyperlane. This document provides details on all warp route types.
 
-| **Warp Route Type**      | **Description**                                                                                  |
-| ------------------------ | ------------------------------------------------------------------------------------------------ |
-| Native Token Warp Routes | Enables direct transfers of native gas tokens (e.g., ETH) across chains without wrapping.        |
-| Collateral-Backed ERC20  | Locks ERC20 tokens as collateral on the source chain for cross-chain transfers.                  |
-| Synthetic ERC20          | Mints new ERC20 tokens on the destination chain to represent the original tokens.                |
-| Specialized Warp Routes  | Adds advanced features or integrates with specific use cases (e.g., vaults, fiat-backed tokens.) |
+| **Warp Route Type**          | **Description**                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| Native Token Warp Routes     | Enables direct transfers of native gas tokens (e.g., ETH) across chains without wrapping.        |
+| Collateral-Backed ERC20      | Locks ERC20 tokens as collateral on the source chain for cross-chain transfers.                  |
+| Synthetic ERC20              | Mints new ERC20 tokens on the destination chain to represent the original tokens.                |
+| Multi-Collateral Warp Routes | Allows liquidity to be sourced from multiple collateral chains.                                  |
+| Specialized Warp Routes      | Adds advanced features or integrates with specific use cases (e.g., vaults, fiat-backed tokens.) |
 
 _Please note that this document does not include ERC721 warp routes._
 
