@@ -27,8 +27,8 @@ Warp Routes let deployers choose how tokens are transferred between chains. Depe
 For example:
 
 1. **Collateral → Synthetic**: Tokens are locked on the origin (collateral) chain, a message is sent, and wrapped tokens are minted on the destination (synthetic) chain.
-2. **Synthetic → Synthetic**: Tokens are burned on the origin chain, a message is sent, and new wrapped tokens are minted on the destination chain.
-3. **Synthetic → Collateral**: Tokens are burned on the origin chain, a message is sent, and the original tokens are released from the collateral contract on the destination chain.
+2. **Native → Synthetic**: Native gas tokens (e.g., ETH) are locked on the origin chain, a message is sent, and synthetic tokens are minted on the destination chain.
+3. **Native → Collateral**: Native tokens are locked on the origin chain, a message is sent, and collateral tokens are released on the destination chain.
 
 Each Warp Route requires a contract deployed on every chain its on that acts as an entry/exists point. These contracts use the [Mailbox](../mailbox.mdx) to send interchain messages to one another.
 
