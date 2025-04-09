@@ -48,9 +48,9 @@ This table gives a high-level overview of Warp Route types. For detailed explana
 
 Let’s walk through a **Collateral** to **Synthetic** Warp Route using the lock-and-mint model to transfer ERC20 tokens between two chains:
 
-1. The user locks their tokens on the collateral chain (e.g., Ethereum) in the `HypERC20Collateral` contract.
+1. The user locks their tokens on the collateral chain (e.g., Ethereum) in the Warp Route contract.
 2. A message is sent through Hyperlane’s Mailbox and relayed to the synthetic chain (e.g., Base).
-3. On the destination chain, the `HypERC20` contract mints wrapped tokens to the user.
+3. On the destination chain, the Warp Route contract mints wrapped tokens to the user.
 
 In the diagram below, the ISM is a [Multisig ISM](/docs/protocol/ISM/multisig-ISM), which uses a set of validators to approve messages. (Note: Not all ISMs require validators, this depends on the chosen security model.)
 
