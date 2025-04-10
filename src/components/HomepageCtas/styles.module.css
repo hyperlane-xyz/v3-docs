@@ -31,7 +31,7 @@
 }
 
 .primaryButton {
-  background-color: #1e40af;
+  background-color: #3665c1;
   color: white;
   padding: 0.8rem 1.4rem;
   border-radius: 0.6rem;
@@ -145,7 +145,7 @@
   margin: 0;
   font-weight: 600;
   font-size: 1rem;
-  color: #1e40af;
+  color: #3665c1;
   display: flex;
   align-items: center;
   gap: 0.5rem;
