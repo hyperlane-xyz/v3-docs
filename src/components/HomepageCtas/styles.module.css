@@ -1,68 +1,161 @@
-.features {
+.main {
+  background-color: #fefefe;
+}
+
+.hero {
+  text-align: center;
+  padding-top: 5rem;
+  margin-bottom: 4rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.heroCta {
   display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
-.featureSvg {
-  height: 200px;
-  width: 200px;
+.primaryButton {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.6rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+.primaryButton:hover {
+  background-color: #1e3a8a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(14, 38, 219, 0.25);
+  color: white;
 }
 
-.cardContainer {
+.secondaryButton {
+  border: 1px solid #cbd5e1;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0.6rem;
+  color: #334155;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.sectionTitle,
+.why h2,
+.quickStart h2,
+.architecture h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  color: #111827;
+}
+
+.why {
+  margin-bottom: 2rem;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.why ul {
+  padding-left: 1.2rem;
+}
+
+.why li {
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+
+.sectionAlt {
+  background-color: #f9fafb;
+  padding: 2.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.quickStart {
+  margin-bottom: 3rem;
+}
+
+.cardContainer,
+.cardGrid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+  padding: 0;
 }
 
-.card {
+.card,
+.cardLink {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 7px;
   padding: 15px;
   width: 40%;
-  box-shadow: 0 1px 4px 0 var(--ifm-color-emphasis-100);
   margin-bottom: 10px;
-  transition: all 0.3s ease;
-  background: var(--ifm-card-background-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-}
-
-@media (max-width: 768px) {
-  .cardContainer {
-    display: flex;
-    flex-direction: column;
-  }
-  .card {
-    width: 100%;
-  }
-}
-
-.card:hover {
-  transform: scale(1.02);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
   text-decoration: none;
-  box-shadow: 0 2px 6px 0 var(--ifm-color-emphasis-200);
-  border-color: var(--ifm-color-emphasis-300);
+  color: inherit;
+  transition: all 0.2s ease;
+  display: block;
 }
 
-.card h3 {
+.card:hover,
+.cardLink:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border-color: #d1d5db;
+}
+
+.card h3,
+.cardLink h3 {
   padding-top: 5px;
   margin: 0;
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: var(--ifm-heading-color);
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.card p {
+.card p,
+.cardLink p {
   margin-top: 5px;
-  color: var(--ifm-color-emphasis-600);
   font-size: 0.9rem;
+  color: #4b5563;
 }
 
 .icon {
@@ -71,7 +164,100 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  margin-right: 8px;
   display: inline-block;
-  vertical-align: middle;
+}
+
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .cardLink {
+  background-color: #1a1b1f;
+  border-color: #2d2f36;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .card:hover,
+html[data-theme="dark"] .cardLink:hover {
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.06);
+  border-color: #3b3d45;
+}
+
+html[data-theme="dark"] .card h3,
+html[data-theme="dark"] .cardLink h3 {
+  color: #b7bfe9; /* soft blue */
+}
+
+html[data-theme="dark"] .sectionAlt,
+html[data-theme="dark"] .main {
+  background-color: var(--ifm-background-color);
+}
+
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark"] .sectionTitle,
+html[data-theme="dark"] .why h2,
+html[data-theme="dark"] .primaryButton {
+  color: white;
+}
+
+html[data-theme="dark"] .secondaryButton {
+  background-color: transparent;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+html[data-theme="dark"] .secondaryButton:hover {
+  background-color: #1e293b;
+  color: white;
+  border-color: #64748b;
+}
+
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .why li,
+html[data-theme="dark"] .card p,
+html[data-theme="dark"] .cardLink p {
+  color: #d1d5db;
+}
+
+html[data-theme="dark"] .why li strong {
+  color: #f1f5f9; /* Stronger emphasis on keywords */
+}
+
+.sectionAlt .cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.sectionAlt .card {
+  width: 30%;
+  min-width: 280px;
+  flex-grow: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+html,
+body,
+.main,
+.card,
+.cardLink,
+.hero,
+.sectionAlt,
+.quickStart {
+  transition: background-color 0.2s ease, color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .cardContainer,
+  .cardGrid {
+    flex-direction: column;
+  }
+
+  .card,
+  .cardLink {
+    width: 100%;
+  }
 }
