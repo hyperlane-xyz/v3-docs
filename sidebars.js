@@ -143,8 +143,18 @@ const sidebars = {
                 },
                 {
                   type: "doc",
+                  id: "protocol/warp-routes/deploy-multicollateral-warp-routes",
+                  label: "Deploy Multi-Collateral Warp Routes",
+                },
+                {
+                  type: "doc",
                   id: "guides/multicollateral-warp-route",
                   label: "Multicollateral Warp Route Rebalancing",
+                },
+                {
+                  type: "doc",
+                  id: "guides/transfer-and-call",
+                  label: "Transfer and Call Pattern",
                 },
               ],
             },
@@ -222,6 +232,24 @@ const sidebars = {
           ],
         },
         {
+          type: "doc",
+          id: "guides/create-custom-hook-and-ism",
+          label: "Create a Hook/ISM",
+        },
+        {
+          type: "doc",
+          id: "deploy-hyperlane-troubleshooting",
+          label: "Troubleshooting",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Resources",
+      collapsed: false,
+      collapsible: true,
+      items: [
+        {
           type: "category",
           label: "Hyperlane Explorer",
           link: {
@@ -242,16 +270,6 @@ const sidebars = {
               label: "GraphQL API",
             },
           ],
-        },
-        {
-          type: "doc",
-          id: "guides/create-custom-hook-and-ism",
-          label: "Create a Hook/ISM",
-        },
-        {
-          type: "doc",
-          id: "deploy-hyperlane-troubleshooting",
-          label: "Troubleshooting",
         },
       ],
     },
@@ -535,6 +553,11 @@ const sidebars = {
       ],
     },
     {
+      type: "doc",
+      id: "protocol-economics/intro",
+      label: "HYPER and Protocol Economics",
+    },
+    {
       type: "category",
       label: "Developer Tools",
       collapsible: true,
@@ -544,11 +567,6 @@ const sidebars = {
           type: "doc",
           id: "reference/cli",
           label: "CLI",
-        },
-        {
-          type: "doc",
-          id: "reference/cosmos-sdk",
-          label: "Cosmos SDK",
         },
         {
           type: "category",
@@ -612,13 +630,18 @@ const sidebars = {
       items: [
         {
           type: "doc",
-          id: "protocol/non-evm-implementations",
+          id: "reference/alt-vm-implementations/index",
           label: "Alt-VM implementations",
         },
         {
           type: "doc",
           id: "guides/implementation-guide",
           label: "Implementation Guide",
+        },
+        {
+          type: "doc",
+          id: "reference/alt-vm-implementations/cosmos-sdk",
+          label: "Cosmos SDK",
         },
       ],
     },
