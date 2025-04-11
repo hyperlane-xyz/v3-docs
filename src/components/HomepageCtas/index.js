@@ -82,7 +82,7 @@ export default function Home() {
             </h3>
             <p>Step-by-step instructions to run a Hyperlane Validator</p>
           </Link>
-          <Link to={links.intro} className={styles.cardLink}>
+          <Link to={links.protocolOverview} className={styles.cardLink}>
             <h3>
               <div
                 className={styles.icon}
