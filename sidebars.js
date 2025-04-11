@@ -148,6 +148,11 @@ const sidebars = {
                 },
                 {
                   type: "doc",
+                  id: "guides/multicollateral-warp-route",
+                  label: "Multi-Collateral Warp Route Rebalancing",
+                },
+                {
+                  type: "doc",
                   id: "guides/transfer-and-call",
                   label: "Transfer and Call Pattern",
                 },
