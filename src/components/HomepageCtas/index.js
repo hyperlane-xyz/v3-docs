@@ -24,26 +24,6 @@ export default function Home() {
             Where is Hyperlane deployed?
           </Link>
         </div>
-      </section>
-      {/* Why Section */}
-      <section className={styles.why}>
-        <h2>Why Hyperlane?</h2>
-        <ul>
-          <li>
-            <strong>Permissionless:</strong> Anyone can deploy hyperlane,
-            whether it is a layer 1, rollup, or app-chain, and start building
-            cross-chain applications right away.
-          </li>
-          <li>
-            <strong>Modular Security:</strong> Customize your security model
-            using Interchain Security Modules (ISMs).
-          </li>
-          <li>
-            <strong>Multi-VM Support:</strong> Supports EVM, SVM, and CosmWasm.
-            Enables cross-VM messaging (e.g., EVM ↔ SVM).
-          </li>
-        </ul>
-      </section>
 
       {/* Use Cases Section */}
       <section className={styles.sectionAlt}>
