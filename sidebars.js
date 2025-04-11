@@ -149,7 +149,7 @@ const sidebars = {
                 {
                   type: "doc",
                   id: "guides/multicollateral-warp-route",
-                  label: "Multicollateral Warp Route Rebalancing",
+                  label: "Multi-Collateral Warp Route Rebalancing",
                 },
                 {
                   type: "doc",
