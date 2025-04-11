@@ -24,6 +24,7 @@ export default function Home() {
             Where is Hyperlane deployed?
           </Link>
         </div>
+      </section>
 
       {/* Use Cases Section */}
       <section className={styles.sectionAlt}>
