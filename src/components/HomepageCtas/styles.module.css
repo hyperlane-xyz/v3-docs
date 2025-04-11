@@ -48,10 +48,11 @@
 }
 
 .secondaryButton {
-  border: 1px solid #cbd5e1;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #1f2937;
   padding: 0.8rem 1.4rem;
   border-radius: 0.6rem;
-  color: #334155;
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -62,45 +63,17 @@
   transform: translateY(-1px);
 }
 
-.sectionTitle,
-.why h2,
-.quickStart h2,
-.architecture h2 {
-  font-size: 1.8rem;
+.sectionTitle {
   text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
   color: #111827;
-}
-
-.why {
-  margin-bottom: 2rem;
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #4b5563;
-}
-
-.why ul {
-  padding-left: 1.2rem;
-}
-
-.why li {
-  margin-bottom: 0.6rem;
-  line-height: 1.5;
-}
-
-.sectionAlt {
-  background-color: #f9fafb;
-  padding: 2.5rem 1rem;
   margin-bottom: 1.5rem;
 }
 
-.sectionTitle {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #111827;
+.sectionAlt {
+  background: linear-gradient(180deg, #f9fafb 0%, #f0f4f8 100%);
+  padding: 2.5rem 1rem;
   margin-bottom: 1.5rem;
 }
 
@@ -185,14 +158,16 @@ html[data-theme="dark"] .cardLink h3 {
   color: #b7bfe9; /* soft blue */
 }
 
-html[data-theme="dark"] .sectionAlt,
 html[data-theme="dark"] .main {
   background-color: var(--ifm-background-color);
 }
 
+html[data-theme="dark"] .sectionAlt {
+  background: var(--ifm-background-color);
+}
+
 html[data-theme="dark"] .hero h1,
 html[data-theme="dark"] .sectionTitle,
-html[data-theme="dark"] .why h2,
 html[data-theme="dark"] .primaryButton {
   color: white;
 }
@@ -210,14 +185,9 @@ html[data-theme="dark"] .secondaryButton:hover {
 }
 
 html[data-theme="dark"] .hero p,
-html[data-theme="dark"] .why li,
 html[data-theme="dark"] .card p,
 html[data-theme="dark"] .cardLink p {
   color: #d1d5db;
-}
-
-html[data-theme="dark"] .why li strong {
-  color: #f1f5f9; /* Stronger emphasis on keywords */
 }
 
 .sectionAlt .cardGrid {
