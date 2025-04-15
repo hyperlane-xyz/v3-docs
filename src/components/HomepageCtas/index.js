@@ -52,7 +52,7 @@ export default function Home() {
                   className={styles.icon}
                   style={{ backgroundImage: 'url("icons/icon-2.svg")' }}
                 />
-                Bridge with Warp Routes
+                Bridge Tokens with Warp Routes
               </h3>
               <p>Transfer assets across chains</p>
             </Link>
