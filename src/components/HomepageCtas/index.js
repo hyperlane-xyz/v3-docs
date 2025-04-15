@@ -6,7 +6,6 @@ import links from "@site/src/links/links";
 export default function Home() {
   return (
     <main className={styles.main}>
-      {/* Hero Section */}
       <section className={styles.hero}>
         <h1>Hyperlane Documentation</h1>
         <p>
@@ -22,28 +21,6 @@ export default function Home() {
             to={links.hyperlaneDeployments}
           >
             Where is Hyperlane deployed?
-          </Link>
-        </div>
-      </section>
-
-      {/* Use Cases Section */}
-      <section className={styles.sectionAlt}>
-        <h2 className={styles.sectionTitle}>What Can You Build?</h2>
-        <div className={styles.cardGrid}>
-          <Link to={links.deployWarpRoute} className={styles.card}>
-            <h3>Bridge Tokens</h3>
-            <p>Use Hyperlane Warp Routes to bridge assets between chains.</p>
-          </Link>
-          <Link to={links.genealMessagePassing} className={styles.card}>
-            <h3>General Message Passing</h3>
-            <p>Send arbitrary data and function calls across chains.</p>
-          </Link>
-          <Link to={links.interchainAccounts} className={styles.card}>
-            <h3>Interchain Accounts</h3>
-            <p>
-              Enable a single account on the origin chain to make authenticated
-              calls to contracts on a remote chain.
-            </p>
           </Link>
         </div>
       </section>
@@ -93,6 +70,30 @@ export default function Home() {
             <p>Explore the core components & architecture</p>
           </Link>
         </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className={styles.useCases}>
+        <section className={styles.sectionAlt}>
+          <h2 className={styles.sectionTitle}>What Can You Build?</h2>
+          <div className={styles.cardGrid}>
+            <Link to={links.deployWarpRoute} className={styles.card}>
+              <h3>Bridge Tokens</h3>
+              <p>Use Hyperlane Warp Routes to bridge assets between chains.</p>
+            </Link>
+            <Link to={links.genealMessagePassing} className={styles.card}>
+              <h3>General Message Passing</h3>
+              <p>Send arbitrary data and function calls across chains.</p>
+            </Link>
+            <Link to={links.interchainAccounts} className={styles.card}>
+              <h3>Interchain Accounts</h3>
+              <p>
+                Enable a single account on the origin chain to make
+                authenticated calls to contracts on a remote chain.
+              </p>
+            </Link>
+          </div>
+        </section>
       </section>
     </main>
   );

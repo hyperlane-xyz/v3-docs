@@ -2,9 +2,17 @@
   background-color: #fefefe;
 }
 
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
 .hero {
-  text-align: center;
+  text-align: left;
   padding-top: 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
   margin-bottom: 4rem;
 }
 
@@ -16,16 +24,16 @@
 }
 
 .hero p {
+  text-align: left;
   font-size: 1.1rem;
   color: #666;
   max-width: 700px;
-  margin: 0 auto 1.5rem auto;
 }
 
 .heroCta {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: left;
   margin-top: 1rem;
   flex-wrap: wrap;
 }
@@ -63,29 +71,49 @@
   transform: translateY(-1px);
 }
 
+.quickStart {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
 .sectionTitle {
-  text-align: center;
+  text-align: left;
   font-size: 1.6rem;
   font-weight: 700;
   color: #111827;
   margin-bottom: 1.5rem;
 }
 
-.sectionAlt {
+.useCases {
   background: linear-gradient(180deg, #f9fafb 0%, #f0f4f8 100%);
-  padding: 2.5rem 1rem;
-  margin-bottom: 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
-.quickStart {
-  margin-bottom: 3rem;
+.sectionAlt {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionAlt .cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+}
+
+.sectionAlt .card {
+  width: 30%;
+  min-width: 250px;
+  text-align: left;
+  flex-direction: column;
 }
 
 .cardContainer,
 .cardGrid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: left;
   gap: 20px;
   padding: 0;
 }
@@ -115,12 +143,11 @@
 .card h3,
 .cardLink h3 {
   padding-top: 5px;
-  margin: 0;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #3665c1;
   display: flex;
-  align-items: center;
+  align-items: left;
   gap: 0.5rem;
 }
 
@@ -132,8 +159,8 @@
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -188,25 +215,6 @@ html[data-theme="dark"] .hero p,
 html[data-theme="dark"] .card p,
 html[data-theme="dark"] .cardLink p {
   color: #d1d5db;
-}
-
-.sectionAlt .cardGrid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 0 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.sectionAlt .card {
-  width: 30%;
-  min-width: 280px;
-  flex-grow: 1;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 html,
