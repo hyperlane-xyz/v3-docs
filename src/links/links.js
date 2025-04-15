@@ -5,7 +5,7 @@ export default {
   runValidators: "/docs/operate/validators/run-validators",
   contractAddresses: "/docs/reference/contract-addresses",
   intro: "/docs/intro",
-  genealMessagePassing: "docs/reference/messaging/send",
+  generalMessagePassing: "docs/reference/messaging/send",
   interchainAccounts: "/docs/reference/applications/interchain-account",
   hyperlaneDeployments: "docs/reference/addresses/mailbox-addresses",
 };
