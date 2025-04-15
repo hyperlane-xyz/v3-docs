@@ -113,17 +113,19 @@
 }
 
 .cardLink h3 {
-  margin-top: 5px;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #3665c1;
   display: flex;
   gap: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .cardLink p {
-  font-size: 0.9rem;
-  color: #4b5563;
+  font-size: 1rem; /* was 0.9rem */
+  line-height: 1.6; /* add if missing */
+  color: #4c5662bd;
+  margin-top: 0;
 }
 
 .icon {
