@@ -3,15 +3,19 @@
 }
 
 .contentWrapper {
-  text-align: left;
   max-width: 1200px;
   margin: 0 auto;
-  margin-bottom: 3rem;
-  padding: 0 3rem;
+  padding: 0 2rem; /* Slightly more standard spacing */
+}
+
+@media (min-width: 1024px) {
+  .contentWrapper {
+    padding: 0 3rem;
+  }
 }
 
 .hero {
-  padding-top: 4rem;
+  padding-block: 4rem 2rem;
 }
 
 .hero h1 {
@@ -21,7 +25,6 @@
 }
 
 .hero p {
-  font-size: 1.1rem;
   color: #666;
 }
 
@@ -66,11 +69,15 @@
   background: linear-gradient(
     180deg,
     #ffffff 0%,
-    #f3f6fc 15%,
-    #f3f6fc 85%,
+    #f3f6fcc7 15%,
+    #f3f6fcc7 85%,
     #ffffff 100%
   );
-  padding: 2rem 0;
+  padding-block: 2rem;
+}
+
+.useCases {
+  padding-block: 2rem;
 }
 
 .sectionTitle {
@@ -78,23 +85,26 @@
   margin-bottom: 1.5rem;
 }
 
-.cardGridThree {
+.cardGrid {
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .cardGridTwo {
-  display: grid;
-  gap: 1.25rem;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.cardGridThree {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .cardLink {
   border: 1.2px solid #e5e7eb;
   border-radius: 7px;
   padding: 1rem;
+  line-height: 1.6;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: all 0.1s ease;
 }
 
 .cardLink:hover {
@@ -123,7 +133,7 @@
 }
 
 html[data-theme="dark"] .cardLink {
-  border-color: #464954;
+  border-color: #4a4d58;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
@@ -133,7 +143,7 @@ html[data-theme="dark"] .cardLink:hover {
 }
 
 html[data-theme="dark"] .cardLink h3 {
-  color: #c5cbee; /* soft blue */
+  color: #c5cbee;
 }
 
 html[data-theme="dark"] .main {

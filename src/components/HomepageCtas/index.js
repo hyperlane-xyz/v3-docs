@@ -32,7 +32,7 @@ export default function Home() {
       <section className={styles.quickStartBg}>
         <div className={styles.contentWrapper}>
           <h2 className={styles.sectionTitle}>Quick Start</h2>
-          <div className={styles.cardGridTwo}>
+          <div className={`${styles.cardGrid} ${styles.cardGridTwo}`}>
             <Link to={links.deployHyperlane} className={styles.cardLink}>
               <h3>
                 <div
@@ -61,7 +61,7 @@ export default function Home() {
                 />
                 Run a Validator
               </h3>
-              <p>Step-by-step instructions to run a Hyperlane Validator</p>
+              <p>Step-by-step guide to running a Hyperlane Validator</p>
             </Link>
             <Link to={links.protocolOverview} className={styles.cardLink}>
               <h3>
@@ -78,10 +78,10 @@ export default function Home() {
       </section>
 
       {/* Use Cases Section */}
-      <section>
+      <section className={styles.useCases}>
         <div className={styles.contentWrapper}>
           <h2 className={styles.sectionTitle}>What Can You Build?</h2>
-          <div className={styles.cardGridThree}>
+          <div className={`${styles.cardGrid} ${styles.cardGridThree}`}>
             <Link to={links.deployWarpRoute} className={styles.cardLink}>
               <h3>Bridge Tokens</h3>
               <p>Use Hyperlane Warp Routes to bridge assets between chains.</p>
