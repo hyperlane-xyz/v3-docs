@@ -5,7 +5,7 @@
 .contentWrapper {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem; /* Slightly more standard spacing */
+  padding: 0 2rem;
 }
 
 @media (min-width: 1024px) {
@@ -25,7 +25,7 @@
 }
 
 .hero p {
-  color: #666;
+  color: #666666e9;
 }
 
 .heroCta {
@@ -34,35 +34,48 @@
   margin-top: 1rem;
 }
 
-.primaryButton {
-  background-color: #3665c1;
-  color: white;
-  padding: 0.8rem 1.4rem;
-  border-radius: 0.6rem;
-  font-weight: 700;
+@media (max-width: 600px) {
+  .heroCta {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    text-align: center;
+  }
 }
 
-.secondaryButton {
-  background-color: #f3f4f6;
-  border: 1.2px solid #d5d9df;
-  color: #1f2937d7;
+.button {
   padding: 0.8rem 1.4rem;
   border-radius: 0.6rem;
   font-weight: 700;
   transition: all 0.2s ease;
 }
 
+.primaryButton {
+  background-color: #3665c1;
+  color: white;
+}
+
+.secondaryButton {
+  background-color: #f3f4f6;
+  border: 1.2px solid #d5d9df;
+  color: #1f2937d7;
+}
+
+.button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
 .primaryButton:hover {
   background-color: #1e3a8a;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(14, 38, 219, 0.25);
   color: white;
 }
 
 .secondaryButton:hover {
   background-color: #f1f5f9;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(14, 38, 219, 0.25);
 }
 
 .quickStartBg {
@@ -124,7 +137,7 @@
 .cardLink p {
   font-size: 1rem; /* was 0.9rem */
   line-height: 1.6; /* add if missing */
-  color: #4c5662bd;
+  color: #666666e9;
   margin-top: 0;
 }
 

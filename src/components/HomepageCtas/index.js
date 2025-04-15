@@ -15,11 +15,14 @@ export default function Home() {
             applications.
           </p>
           <div className={styles.heroCta}>
-            <Link className={styles.primaryButton} to={links.intro}>
+            <Link
+              className={`${styles.button} ${styles.primaryButton}`}
+              to={links.intro}
+            >
               What is Hyperlane?
             </Link>
             <Link
-              className={styles.secondaryButton}
+              className={`${styles.button} ${styles.secondaryButton}`}
               to={links.hyperlaneDeployments}
             >
               Where is Hyperlane deployed?
