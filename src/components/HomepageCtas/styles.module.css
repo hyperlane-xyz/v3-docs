@@ -15,7 +15,7 @@
 }
 
 .hero {
-  padding-block: 4rem 2rem;
+  padding-block: 4rem 3rem;
 }
 
 .hero h1 {
@@ -25,7 +25,7 @@
 }
 
 .hero p {
-  color: #666666e9;
+  color: #666666df;
 }
 
 .heroCta {
@@ -137,7 +137,7 @@
 .cardLink p {
   font-size: 1rem; /* was 0.9rem */
   line-height: 1.6; /* add if missing */
-  color: #666666e9;
+  color: #666666df;
   margin-top: 0;
 }
 
