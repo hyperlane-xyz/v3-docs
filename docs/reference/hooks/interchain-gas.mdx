@@ -140,6 +140,9 @@ The `quoteGasPayment` function calculates fees for the relayer's anticipated cos
 
 ```
 
+</TabItem>
+</Tabs>
+
 **Parameters**
 
 - `destinationDomain`: The message's destination domain
@@ -149,8 +152,13 @@ The `quoteGasPayment` function calculates fees for the relayer's anticipated cos
 
 - `fee`: The payment required for the `postDispatch` to succeed
 
-</TabItem>
-</Tabs>
+:::info
+The `quoteGasPayment` gives an estimated fee based on the `destinationDomain` and `gasLimit`. However, it does **not** include extra gas costs (`destinationGasOverhead`) added by the Interchain Gas Paymaster (IGP) for the Default ISM payment.
+
+To get the full fee, use `quoteDispatch()` from the Mailbox contract. It provides a complete quote that includes these additional costs.
+
+👉 See [Quote Dispatch](/docs/reference/messaging/send#quote-dispatch) for more details.
+:::
 
 ## Retrying
 
