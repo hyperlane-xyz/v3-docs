@@ -44,9 +44,13 @@ Staking is how participants contribute to the economic security of the Hyperlane
 
 To stake, users lock HYPER tokens into the Symbiotic vault on Ethereum. This generates stHYPER, a liquid staking token representing the user’s staked position.
 
+:::note
+**HYPER Vault on Symbiotic**: The HYPER Vault does not restake to other protocols or networks. It only delegates to the Hyperlane network on Symbiotic, reducing external slashing risk.
+:::
+
 ### How Staking Works
 
-- **HYPER Vault on Symbiotic**: The HYPER Vault does not restake to other protocols or networks. It only delegates to the Hyperlane network on Symbiotic, reducing external slashing risk.
+- **Staking Flow**: HYPER holders can stake their tokens on the Symbiotic app by selecting the HYPER Vault, and locking their HYPER tokens.
 - **Epoch Length**: Rewards are calculated algorithmically and automatically distributed per epoch, which is currently set to ~1 month. This duration reflects the maximum settlement delay on default [ Interchain Security Modules (ISMs)](/docs/protocol/ISM/modular-security) validator set chains.
 - **Unstaking Flow**: Unstaking requires user action on the steps outlined below. To withdraw HYPER you must:
   1. Initiate the unstake action on the Symbiotic user interface.
@@ -63,15 +67,17 @@ These validator sets are responsible for securing the default Interchain Securit
 
 The allocation algorithm outputs an allocation percentage per domain, which is used to distribute the total staked HYPER across validator sets on each domain. _More details on this process will follow._
 
-### Hyperlane Validator Selection
+## Hyperlane Validator Selection and Registration
 
 While Hyperlane's ISM model enables full customization of security, there is a default ISM on each provided Mailbox. Validators selected into this ISM (and only those validators) will receive Validator Rewards.
 
-#### Selection process:
+### Selection process
 
-Validators (referred to as Operators in the Symbiotic network) of the Hyperlane Protocol are responsible for attesting to messages of a certain origin chain.
+Prospective validators (referred to as Operators in the Symbiotic network) must complete the [Hyperlane Validator Survey](https://docs.google.com/forms/d/e/1FAIpQLSfLo8D5GcrQVtR_ug3QcgVrXDgfdGPpz30ZLq7J9t2tHnB5xQ/viewform).
 
-Validators will be selected based on a set of weighted criteria. This includes, but is not limited to:
+Validators of the Hyperlane Protocol are responsible for attesting to messages of a certain origin chain. Thus, entities will be evaluated based on a set of weighted criteria around operational practices and uptime.
+
+This includes, but is not limited to:
 
 - **Operating Best Practices**
   - Chain Node Operations (e.g., RPC set-up, management, etc.)
@@ -83,13 +89,81 @@ Validators will be selected based on a set of weighted criteria. This includes, 
 - **Economic Security**
   - HYPER self-stake in Hyperlane Symbiotic Vault
 
+Validators are evaluated continuously based on operating history and performance, which determines their ability to maintain a position in the default ISM set.
+
 _Note: Validators will only earn rewards if they are selected to be a part of Hyperlane's default ISMs._
+
+### Registering as a Symbiotic Operator and Opting In
+
+Once selected for the default ISM, Validators must register as Operators on Symbiotic to receive delegation (stake) and rewards.
+
+#### Operator Registration
+
+Please refer to the Symbiotic docs on the steps to register as an operator through the [Symbiotic CLI](https://github.com/symbioticfi/cli):
+
+- [Operator Registration](https://docs.symbiotic.fi/handbooks/operators-handbook#through-cli)
+- [CLI Write Command Guide for Operators](https://docs.symbiotic.fi/guides/cli/#write-commands---for-operators)
+
+#### Metadata Submission
+
+After completing registration, submit a pull request to the [Symbiotic mainnet metadata repo](https://github.com/symbioticfi/metadata-mainnet) with your operator/network details and an icon. Use the same address you used for registration in the previous step.
+
+:::warning
+The metadata must meet several requirements as outlined in the Symbiotic documentation. Please note that pull requests that do not meet these requirements cannot be accepted.
+:::
+
+:::note
+Metadata can be adjusted later, but any changes will require review by the Symbiotic team before being applied.
+:::
+
+#### Opting into Hyperlane’s Network and Vault
+
+Before operators can start receiving delegations and rewards, they must complete two opt-in steps:
+
+1. Opt-in to the Hyperlane Network on Symbiotic:
+   1. Use the [CLI opt-in command](https://docs.symbiotic.fi/guides/cli/#opt-in-network).
+   2. Verify the opt-in using the [CLI check command](https://docs.symbiotic.fi/guides/cli#check-opt-in-network).
+2. Opt-in to the HYPER vault on Symbiotic:
+   1. Use the [CLI opt-in command](https://docs.symbiotic.fi/guides/cli/#opt-in-vault).
+   2. Verify the opt-in using the [CLI check command](https://docs.symbiotic.fi/guides/cli/#check-opt-in-vault).
+
+### Joining Hyperlane's default ISM
+
+Once the validator has submitted the Hyperlane Validator Survey, and completed the Symbiotic Operator registration/opt-ins, the Validator can be selected when a default ISM validator position becomes available.
+
+Default ISM positions open when:
+
+- Hyperlane expands to new chains.
+- Validator positions on existing chains become available due to:
+  1. Validators being rotated out.
+  2. Validator position expansion due to security requirements.
+
+Once mutual interest is established via a shared communication channel, Validators can proceed with deployment (they may also deploy earlier if they choose). See [Run Validators](/docs/operate/validators/run-validators).
 
 ## Slashing
 
 Slashing is a mechanism designed to encourage honest participation in the Hyperlane protocol.
 
-Participants who stake HYPER to secure the Hyperlane protocol take on slashing risk in case of a safety violation. If a quorum of validators signs messages that leads to safety violation (for example, if a quorum signs a message that is not included in the canonical chain state), a portion of the HYPER delegated to the chain can be slashed. The slashed HYPER would go to the impacted parties of the safety violation, meaning that the stakers’ staked HYPER would be slashed.
+Participants who stake HYPER to secure the Hyperlane protocol take on slashing risk in case of a safety violation. If a quorum of validators signs messages that leads to safety violation (for example, if a quorum signs a message that is not included in the canonical chain state), a portion of the HYPER delegated to the chain can be slashed. This means that the stakers’ staked HYPER would be slashed.
+
+Slashing occurs when there is proven fraud by validators.
+
+### Fraud and Onchain Fraud Attribution
+
+Fraud is proven on all chains in the default ISM set via smart contracts. These contracts implement a fraud attribution system via the [`AttributeCheckpointFraud` contract](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/AttributeCheckpointFraud.sol). The contract defines specific types of fraudulent behavior.
+
+The `AttributeCheckpointFraud` contract attributes fraud to validators using specific `attribute` functions, depending on the type of violation. These attributions are then used to trigger slashing logic in the HYPER vault.
+
+**Fraud Types**
+
+There are four types of fraud as defined in the `AttributeCheckpointFraud` contract:
+
+1. **Whitelist:** The validator used a Merkle tree implementation that wasn’t valid.
+2. **Premature:** The validator signed and submitted a checkpoint too early.
+3. **Message ID:** The checkpoint commits to a wrong message ID that doesn't match the actual message.
+4. **Root:** The Merkle root in the checkpoint is invalid.
+
+### Slashing Penalties and Process
 
 Slashing penalties are socialized across all HYPER stakers. For example, if 5% of HYPER is slashed due to a fault, then all HYPER stakers would lose 5% of their staked HYPER.
 
@@ -138,7 +212,7 @@ The protocol distributes rewards to users who drive protocol activity by sending
 
 This reward stream helps incentivize real usage and adoption of the protocol.
 
-### Streak Multipler: HyperStreak
+### Streak Multiplier: HyperStreak
 
 With Hyperlane rewards, Hyperlane introduces a new incentive model designed to reward long-term alignment with the protocol. A core part of this model is the **HyperStreak** mechanism.
 
@@ -181,5 +255,5 @@ The HyperStreak mechanism encourages users to engage consistently with the proto
 
 ## Additional Resources
 
-- [Preclaim FAQ](https://hyperlanexyz.notion.site/Frequently-Asked-Questions-FAQs-1c86d35200d6809683a4c49849f046b9)
+- [Pre-claim FAQ](https://hyperlanexyz.notion.site/Frequently-Asked-Questions-FAQs-1c86d35200d6809683a4c49849f046b9)
 - [Hyperlane Foundation Blog post](https://medium.com/@hyperlane_fdn/introducing-hyper-f3846883f1f5)
