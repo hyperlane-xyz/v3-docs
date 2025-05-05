@@ -594,9 +594,10 @@ Accepted values for the different VMs are:
 
 :::info
 
-**The consensus type currently only applies to EVM chains.**
+**The `quorum` consensus type currently only applies to EVM chains.**
 
-Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
+`single` and `fallback` mode is supported on EVM, CosmWasm and Sealevel providers. 
+Connections to other Alt-VM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
 
 :::
 
@@ -1079,9 +1080,10 @@ Because each VM supports a different signer type, the default signer can only su
 
 :::info
 
-**The consensus type currently only applies to EVM chains.**
+**`defaultRpcConsensusType` is only used for EVM providers.**
 
-Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
+The `quorum` consensus type currently only applies to EVM chains. `single` and `fallback` mode is supported on EVM, CosmWasm and Sealevel providers. 
+Connections to other Alt-VM chains only support a single RPC url. If more than one RPC url is specified in [rpcUrls](#chainschain_namerpcurls), only the first one will be used.
 
 :::
 
