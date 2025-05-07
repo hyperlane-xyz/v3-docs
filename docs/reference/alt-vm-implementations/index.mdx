@@ -6,13 +6,34 @@ While our public documentation currently focuses on EVM compatibility, we offer 
 If you're excited about building on top of these or bringing Hyperlane to other new ecosystems, reach out on [our Discord](https://discord.gg/hyperlane)!
 :::
 
-## CosmWasm
+## Cosmos
+
+### CosmosSDK
+
+The Hyperlane Cosmos SDK module, enables direct integration with Cosmos SDK-based blockchains. See [Hyperlane - Cosmos SDK Module](./cosmos-sdk).
+
+### CosmWasm
 
 See the CosmWasm implementation of Hyperlane [here,](https://github.com/many-things/cw-hyperlane) implemented and maintained by the [Mitosis team](https://mitosis.org/). Follow [this guide](https://github.com/many-things/cw-hyperlane/blob/main/DEPLOYMENT.md) on how to deploy to a Cosmos appchain here. We're live on Celestia, Stride and Neutron as of July 2024.
 
 ## Sealevel
 
 Hyperlane v3 for Solana Virtual Machine is live now on Solana and Eclipse, with more Solana rollups coming soon. You can find the Sealevel contract [implementation here](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/rust/sealevel/programs).
+
+:::info
+
+**Does Hyperlane use Anchor for Solana programs?**
+
+- No, Hyperlane’s core Solana programs do not use Anchor.
+
+**Can I use Anchor for building on Hyperlane’s Solana integration?**
+
+- Yes. Although Hyperlane itself doesn’t use Anchor, it’s possible to build with it. For example: [Everclear’s Solana spoke](https://github.com/everclearorg/monorepo/tree/dev/packages/contracts/solana-spoke/programs/everclear_spoke/src) - uses Anchor with Hyperlane’s SVM mailbox.
+
+**What testing frameworks can I use for Solana programs?**
+
+Hyperlane uses the `solana-program-test` crate for unit and integration testing. This is a native Rust tool. If you're using Anchor, you might find Anchor's built-in testing utilities or general Rust test frameworks helpful.
+:::
 
 ## Cairo
 
