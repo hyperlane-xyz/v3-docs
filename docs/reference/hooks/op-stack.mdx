@@ -12,7 +12,7 @@ See the [addresses](../contract-addresses.mdx) page for Hook and ISM addresses.
 ## How It Works
 
 The OPStackHook sends the messageId to the L1CrossDomainMessenger which registers it as an Optimism `TransactionDeposited` event with ETH deposit and message data which gets picked up by the rollup node.
-The rollup node calls the precompiled contract `L2CrossDomainMessenger`'s relayMessage function which in turn makes calls configured OptimismISM contract, setting the messageId in the verifiedMessageId's mapping to the original L1 sender (ie. the user). The relayer carries just the message with no metadata, waiting for the Optimism node to pick and make a storage write to Optimism and the message delivery is then verified.
+The rollup node calls the precompiled contract `L2CrossDomainMessenger`'s relayMessage function which in turn makes calls configured OptimismISM contract, setting the messageId in the verifiedMessageId's mapping to the original L1 sender (i.e. the user). The relayer carries just the message with no metadata, waiting for the Optimism node to pick and make a storage write to Optimism and the message delivery is then verified.
 
 ```mermaid
 flowchart TB
