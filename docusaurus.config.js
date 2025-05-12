@@ -189,7 +189,7 @@ const config = {
             ],
           },
           {
-            to: "/docs/protocol/ISM/third-party-ISMs/optimistic-ISM",
+            to: "/docs/protocol/ISM/third-party-ISMs/community-ISMs",
             from: ["/docs/protocol/sovereign-consensus/optimistic-ism"],
           },
           {
@@ -263,7 +263,7 @@ const config = {
             from: ["/docs/protocol/sovereign-consensus/routing-ism"],
           },
           {
-            to: "/docs/protocol/ISM/third-party-ISMs/wormhole-ISM",
+            to: "/docs/protocol/ISM/third-party-ISMs/community-ISMs",
             from: ["/docs/protocol/sovereign-consensus/wormhole-ism"],
           },
           {
