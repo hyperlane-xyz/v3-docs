@@ -18,7 +18,8 @@ The Relayer is just a messenger - it doesn't verify anything itself, it only hel
 
 - If the recipient does not implement `ISpecifiesInterchainSecurityModule` or `recipient.interchainSecurityModule()` returns `address(0)`, the default ISM configured on the [Mailbox](../mailbox.mdx) will be used to verify the message.
 - This is omitted from the sequence diagram for clarity.
-  :::
+
+:::
 
 ```mermaid
 sequenceDiagram

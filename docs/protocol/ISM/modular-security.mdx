@@ -12,6 +12,8 @@ Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart c
 
 ### Standard ISMs
 
+Standard ISMs are pre-built modules developed by the AW team.
+
 | ISM Type            | Description                                                                    | Type     |
 | ------------------- | ------------------------------------------------------------------------------ | -------- |
 | **Multisig ISM**    | Verifies messages through validator consensus                                  | Standard |
@@ -20,6 +22,8 @@ Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart c
 | **CCIP-Read ISM**   | Verifies messages using off-chain data via EIP-3668                            | Standard |
 
 ### Community ISMs
+
+Community ISMs are developed and maintained by the community to extend ISM capabilities.
 
 | ISM Type              | Description                                                                                                        | Type      |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------ | --------- |
@@ -33,21 +37,27 @@ Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart c
 
 ### Default vs Custom ISM
 
-Developers can either use the [Mailbox's](../mailbox.mdx) default ISM or specify their own application-specific ISM. Application-specific ISM can be:
+Developers can either use the [Mailbox's](../mailbox.mdx) default ISM or specify their own application-specific ISM.
+
+Application-specific ISM can be:
 
 - **Configured**: Use pre-built ISMs with custom parameters
 - **Composed**: Combine multiple ISMs together like security "legos"
 - **Customized**: Create entirely new ISMs tailored to specific needs
 
+:::info
+The "default ISM" refers to the pre-configured security module on the Mailbox contract (the Multisig ISM) that's used when applications don't specify their own custom ISM.
+:::
+
 #### Configure
 
-Hyperlane defines a set of pre-built ISMs. Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
+Hyperlane defines a set of [pre-built ISMs](#standard-isms). Developers can deploy any of these contracts "off-the-shelf" and configure them with their own parameters.
 
 For example, application developers that want increased sovereignty over interchain security could deploy a [Multisig ISM](multisig-ISM.mdx) configured with validators sourced from their own community.
 
 #### Compose
 
-ISMs act as "security [legos](https://en.wikipedia.org/wiki/Lego)". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
+ISMs act as "security legos". Developers can mix and match different ISMs together to encode a security model that best fits their needs.
 
 For example, application developers that want additional security could deploy an [Aggregation ISM](aggregation-ISM.mdx) that requires verification by both a [Multisig ISM](multisig-ISM.mdx) configured with validators from the Hyperlane community, **and** a Wormhole ISM that verifies that a quorum of the [Wormhole](https://wormhole.com/) validator set verified the message.
 
@@ -59,6 +69,6 @@ For example, application developers can build ISMs that adjust security models b
 
 :::tip
 
-- Learn how to [Create your own ISM](./custom-ISM.mdx)
+Learn how to [Create your own ISM](./custom-ISM.mdx)
 
 :::
