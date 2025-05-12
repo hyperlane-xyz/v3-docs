@@ -8,6 +8,27 @@ Hyperlane is secured by **Interchain Security Modules** (ISMs). ISMs are smart c
 
 <IsmDiagram />
 
+## Available ISMs
+
+### Standard ISMs
+
+| ISM Type            | Description                                                                    | Type     |
+| ------------------- | ------------------------------------------------------------------------------ | -------- |
+| **Multisig ISM**    | Verifies messages through validator consensus                                  | Standard |
+| **Routing ISM**     | Routes verification to different ISMs based on origin chain or message content | Standard |
+| **Aggregation ISM** | Combines multiple ISMs to require verification from several sources            | Standard |
+| **CCIP-Read ISM**   | Verifies messages using off-chain data via EIP-3668                            | Standard |
+
+### Community ISMs
+
+| ISM Type              | Description                                                                                                        | Type      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------ | --------- |
+| Wormhole ISM          | Verifies messages using attestations from Wormhole's guardian network, requiring 13 of 19 guardians for validation | Community |
+| Polygon PoS ISM       | Uses Polygon's state sync mechanism for secure message passing between Ethereum ↔ Polygon PoS                      | Community |
+| Optimistic ISM        | Implements an optimistic verification model with a fraud window where watchers can flag fraudulent messages        | Community |
+| OP Stack ISM          | Uses OP Stack rollup's settlement layer security for messages between Ethereum ↔ OP Stack rollups                  | Community |
+| Arbitrum L2 to L1 ISM | Uses Arbitrum rollup's security properties for messages sent from Arbitrum L2 ↔ Ethereum                           | Community |
+
 ## Core Concepts
 
 ### Default vs Custom ISM
@@ -38,6 +59,6 @@ For example, application developers can build ISMs that adjust security models b
 
 :::tip
 
-- Learn how to [Override the Default ISM](./custom-ISM.mdx)
+- Learn how to [Create your own ISM](./custom-ISM.mdx)
 
 :::
