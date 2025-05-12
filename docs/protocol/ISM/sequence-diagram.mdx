@@ -8,9 +8,7 @@ The verification process involves three key components:
 
 1. The **Mailbox contract** - The main entry point for message processing
 2. The **ISM (Interchain Security Module)** - The security verification contract
-3. The **Recipient contract** - Your application that receives the message
-
-The Relayer is just a messenger - it doesn't verify anything itself, it only helps by providing the necessary metadata for verification.
+3. The **Recipient contract** - The application that receives the message
 
 ## Sequence Diagram
 
@@ -64,7 +62,3 @@ sequenceDiagram
 
    - Upon successful verification (when `verify()` returns `true`), Mailbox calls `recipient.handle()`
    - If verification fails, the transaction reverts and the message is rejected
-
-:::note
-The "default ISM" is the pre-configured security module on the Mailbox contract (the Multisig ISM) that's used when applications don't specify their own custom ISM.
-:::
