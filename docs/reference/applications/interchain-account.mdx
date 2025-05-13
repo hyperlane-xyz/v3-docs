@@ -349,3 +349,91 @@ uint gasLimitForReveal = 200000; // Estimated gas for the reveal and execution
 **Note on Commitment Calculation:** The exact structure of the `_commitment` depends on what the `InterchainAccountRouter`'s `handle` function and the chosen ISM (especially a `CCIP_READ_ISM`) expect. The `InterchainAccountMessage.encodeCommitment` function in `InterchainAccountMessage.sol` library provides the structure for the commitment message body: `abi.encode(_owner, _ism, _commitment, _userSalt)`. The `_commitment` argument within this structure is the actual hash of the secret data (e.g., `keccak256(abi.encodePacked(calls))`).
 
 When the `handle` function on the destination chain processes a message of type `COMMITMENT`, it calls `ica.setCommitment(_commitment)` where `_commitment` is extracted from the message. The reveal process must then provide data that, when processed by the ISM, ultimately validates against this stored commitment.
+
+#### Partitioning ICAs by User with `_userSalt`
+
+In scenarios where a single contract on the origin chain manages operations for multiple users, using the `_userSalt` parameter can create distinct Interchain Accounts for each user on the destination chain. This is crucial for isolating user funds and enabling user-specific recovery mechanisms.
+
+For example, if a contract facilitates bridging and staking for users, and a staking operation fails (e.g., due to slippage), the assets might become stuck in the ICA. If a shared ICA is used for all users, returning these assets to the correct user is complex and potentially insecure. By using a salt derived from each user's address, the origin contract can ensure that each user interacts with their own unique ICA on the destination chain.
+
+To determine the address of a user-specific ICA:
+```solidity
+// Assume 'userAddress' is the address of the end-user on whose behalf the contract is acting.
+// It's important to ensure the salt is unique per user.
+// Casting the user's address to bytes32 is a common way to generate a user-specific salt.
+bytes32 userSpecificSalt = bytes32(uint256(uint160(userAddress)));
+
+// 'destinationDomain' is the domain ID of the target chain.
+// 'icaRouterAddress' is the address of the InterchainAccountRouter contract instance.
+// 'thisContractAddress' is address(this) if the contract itself is the owner.
+address userIcaOnDestination = IInterchainAccountRouter(icaRouterAddress).getRemoteInterchainAccount(
+    destinationDomain,
+    thisContractAddress, // The contract itself is the owner of these ICAs
+    userSpecificSalt
+);
+
+// Now, 'userIcaOnDestination' is an ICA unique to 'userAddress'.
+// If funds get stuck in this ICA, the origin contract can initiate
+// a transaction via this ICA to return funds specifically to 'userAddress'.
+```
+This approach allows the origin contract (owner `thisContractAddress`) to manage multiple, distinct ICAs on the destination chain, one for each user. If funds for a particular user need to be recovered, the origin contract can make calls via that user's specific ICA to send the funds back to the user's address, solving the problem of commingled funds and complex recovery logic.
+
+When dispatching calls that should be executed by such a user-specific ICA, especially when using overrides, you must pass the same `userSpecificSalt` to the relevant `callRemoteWithOverrides` function. The `InterchainAccountRouter` offers overloaded versions of `callRemoteWithOverrides` that accept a `_userSalt` (or `_salt`) parameter. Using this ensures the message is routed to and executed by the correct user-partitioned ICA.
+
+For instance, if using overrides:
+```solidity
+// When calling getRemoteInterchainAccount with overrides for a user-specific ICA:
+// 'remoteRouterOverrideAddress' and 'remoteIsmOverrideAddress' are the addresses of the override router and ISM.
+address userIcaWithOverrides = IInterchainAccountRouter(icaRouterAddress).getRemoteInterchainAccount(
+    thisContractAddress,              // _owner
+    remoteRouterOverrideAddress,      // _router (address)
+    remoteIsmOverrideAddress,         // _ism (address)
+    userSpecificSalt                  // _userSalt
+);
+
+// When calling callRemoteWithOverrides for this user-specific ICA:
+// Ensure to use a callRemoteWithOverrides version that takes a salt.
+// Note that _router and _ism parameters for callRemoteWithOverrides are typically bytes32.
+// Example (signature may vary based on which overload you use):
+// IInterchainAccountRouter(icaRouterAddress).callRemoteWithOverrides(
+//     destinationDomain,
+//     TypeCasts.addressToBytes32(remoteRouterOverrideAddress), // _router (bytes32)
+//     TypeCasts.addressToBytes32(remoteIsmOverrideAddress),   // _ism (bytes32)
+//     calls,
+//     hookMetadata,
+//     userSpecificSalt // Pass the same user-specific salt
+// );
+```
+Refer to the `InterchainAccountRouter.sol` contract for the exact signatures of `callRemoteWithOverrides` that include a salt parameter.
+
+If you are using [#overrides](#overrides)
+
+```solidity
+    /**
+     * @notice Dispatches a sequence of remote calls to be made by an owner's
+     * interchain account on the destination domain, allowing for a user-specific salt.
+     * @dev Similar to the above, but includes a _userSalt for ICA derivation.
+     * @param _destination The remote domain of the chain to make calls on
+     * @param _router The remote router address
+     * @param _ism The remote ISM address
+     * @param _calls The sequence of calls to make
+     * @param _hookMetadata The hook metadata to override with for the hook set by the owner
+     * @param _userSalt Salt provided by the user, allows control over account derivation.
+     * @return The Hyperlane message ID
+     */
+    function callRemoteWithOverrides(
+        uint32 _destination,
+        bytes32 _router,
+        bytes32 _ism,
+        CallLib.Call[] calldata _calls,
+        bytes memory _hookMetadata,
+        bytes32 _userSalt
+    ) public payable returns (bytes32);
+
+    function getRemoteInterchainAccount(
+        address _owner,
+        address _router,
+        address _ism,
+        bytes32 _userSalt
+    ) public view returns (address);
+```
