@@ -1,10 +1,6 @@
 # Interchain Account Interface
 
-Interchain Accounts (ICAs) enable a contract on the origin chain to make authenticated calls to contracts on a remote chain. Unlike general message passing, which requires the recipient to implement a specific interface, ICAs allow interaction with _any_ contract on the destination chain.
-
-Developers can use ICAs for cross-chain execution, enabling contracts to trigger function calls on remote chains. Each ICA on a destination chain corresponds to a unique sender on the origin chain, and the account is deterministic based on `(origin, sender, router, ISM)`. This means that for every contract making interchain calls, there is a corresponding account on the destination chain that executes those calls.
-
-ICA is currently supported only on EVM chains.
+Interchain Accounts (ICAs) allow a contract on an origin chain to make authenticated calls to any contract on a remote chain. Unlike general message passing, ICAs interact with arbitrary contracts without requiring a specific recipient interface. Each ICA address is deterministic, based on `(origin, sender, router, ISM)`, giving each originating contract a unique corresponding account on the destination chain for executing calls. ICAs are currently supported on EVM chains.
 
 ## Overview
 
@@ -40,18 +36,17 @@ flowchart TB
     style Recipient fill:#FF0099
 ```
 
-Interchain Accounts allow you to make a remote call from **Chain A** to **Chain B** using the router (`InterchainAccountRouter`). We use [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) to compute the deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address for you, which serves as a proxy for your cross-chain calls. You can explore this [here](#example-usage).
+ICAs use the `InterchainAccountRouter` to make remote calls. [CREATE2](https://docs.openzeppelin.com/cli/2.8/deploying-with-create2) computes a deterministic [OwnableMulticall](https://github.com/hyperlane-xyz/hyperlane-monorepo/blob/main/solidity/contracts/middleware/libs/OwnableMulticall.sol) contract address, which acts as a proxy for cross-chain calls.
 
-Here's how it works:
+How it works:
+- Encode your calls (target address, call data, `msg.value`) into an array.
+- Send this to the origin chain's router, which relays it to the destination chain's router.
+- The destination router decodes the calls. If the computed `OwnableMulticall` ICA is not yet deployed, it deploys it.
+- The router then multicalls the ICA, which executes the desired calls on the destination chain.
 
-- You can encode your call which includes the to address, call data, and the `msg.value` for each call, batched together in an array.
-- You send the encoded call to the **Chain A** router which gets relayed to the **Chain B** router.
-- After decoding the calls, the **Chain B** router checks if the computed address is already deployed or not. If not, we deploy the _OwnableMulticall_ contract.
-- The router then performs a multicall on the ICA address, which in turn makes the desired arbitrary call on **Chain B**.
+The interface assigns every `(uint32 origin, address owner, address remoteRouter, address remoteISM)` tuple a unique ICA address. The sender owns this ICA and directs it via `InterchainAccountRouter.callRemote()`.
 
-The Interchain Account interface assigns every `(uint32 origin, address owner, address remoteRouter, address remoteISM)` tuple a unique ICA address. The sender owns that ICA on the destination chain, and can direct it to make arbitrary function calls via the `InterchainAccountRouter.callRemote()` endpoint.
-
-For core chains supported by Hyperlane, you are able to use the defaults that are set by the owner of the router contract. See the [#overrides](#overrides) section to see how to make calls to _any_ chain.
+For Hyperlane-supported core chains, defaults are set by the router owner. See [#overrides](#overrides) to call any chain.
 
 ### Interface
 
@@ -71,29 +66,25 @@ interface IInterchainAccountRouter {
         external
         view
         returns (address);
-}
 
+    // For creating namespaced/user-specific ICAs
+    function getRemoteInterchainAccount(
+        uint32 _destination,
+        address _owner,
+        bytes32 _userSalt
+    ) external view returns (address);
+}
 ```
 
 :::tip
-
-- Use `InterchainAccountRouter` out of the box - ICA routers have already been deployed to core chains. Please refer to [addresses](../contract-addresses.mdx#interchainaccountrouter). Try using the `callRemote` method to do a call via your wallet's interchain account.
-
+Use `InterchainAccountRouter` out-of-the-box; routers are deployed on core chains. See [addresses](../contract-addresses.mdx#interchainaccountrouter). Try `callRemote` via your wallet's ICA.
 :::
 
 ## Example Usage
 
 ### Encoding
 
-When calling remote contracts using `callRemote`, the function parameters must be encoded into an array of `Call` structs.
-
-Each `Call` struct contains:
-
-- `to`: The target contract address (converted to bytes32).
-- `value`: The ETH or native token amount to send with the call.
-- `data`: The function call data, which can be encoded using abi.encodeCall.
-
-`Call.data` can be easily encoded with the `abi.encodeCall` function.
+`callRemote` requires `Call` structs: `to` (target address as `bytes32`), `value` (native tokens), and `data` (encoded function call via `abi.encodeCall`).
 
 ```solidity
 struct Call {
@@ -113,10 +104,10 @@ interface IUniswapV3Pool {
 }
 
 IUniswapV3Pool pool = IUniswapV3Pool(...);
-Call swapCall = Call({
+CallLib.Call memory swapCall = CallLib.Call({
     to: TypeCasts.addressToBytes32(address(pool)),
-    data: abi.encodeCall(pool.swap, (...));
-    value: 0,
+    data: abi.encodeCall(pool.swap, (...)),
+    value: 0
 });
 uint32 ethereumDomain = 1;
 IInterchainAccountRouter(0xabc...).callRemote(ethereumDomain, [swapCall]);
@@ -124,7 +115,7 @@ IInterchainAccountRouter(0xabc...).callRemote(ethereumDomain, [swapCall]);
 
 ### Typescript Usage
 
-We also have Typescript tooling to easily deploy ICA accounts and call `callRemote` on the origin chain:
+Use Typescript tooling to deploy ICAs and call `callRemote`:
 
 ```typescript
 const localChain = 'ethereum';
@@ -152,108 +143,141 @@ const config: AccountConfig = {
 await localRouter.callRemote(localChain, remoteChain, [call], config);
 ```
 
-### Determine addresses
+### Determine ICA Addresses
 
-In some cases, you may need to compute the ICA address on a remote chain before making a call. For example, if your ICA needs funding before executing transactions, you can retrieve its address and transfer assets to it in advance. See the [Transfer and Call Pattern](/docs/guides/transfer-and-call) section for more information.
+You might need an ICA's address beforehand (e.g., for pre-funding). See [Transfer and Call Pattern](/docs/guides/transfer-and-call).
 
-The `getRemoteInterchainAccount` function can be used to get the address of an ICA given the destination chain and owner address. You can optionally provide a `_userSalt` to influence the derived address, allowing for namespacing or creating multiple distinct ICAs for the same owner. If no salt is provided, a default empty salt is used.
+Use `getRemoteInterchainAccount(destination, owner)` for the basic ICA address. For user-specific or namespaced ICAs, see the next section.
 
-An example is included below of a contract precomputing its own Interchain Account address.
-
+A contract precomputing its own default ICA:
 ```solidity
 address myInterchainAccount = IInterchainAccountRouter(...).getRemoteInterchainAccount(
     destination,
     address(this)
 );
-
-// Using a custom salt for namespacing
-bytes32 myCustomSalt = keccak256(abi.encodePacked("my-unique-namespace"));
-address myNamespacedInterchainAccount = IInterchainAccountRouter(...).getRemoteInterchainAccount(
-    destination,
-    address(this),
-    myCustomSalt
-);
 ```
 
-If you are using [#overrides](#overrides) to specify remote chains and ISMs, pass those overrides when computing the remote ICA address. You can also provide a `_userSalt` in this scenario:
+### Using `_userSalt` for Namespaced ICAs
 
-```solidity
-address myRemoteIcaWithSalt = IInterchainAccountRouter(...).getRemoteInterchainAccount(
-    address(this),
-    remoteRouterOverride,
-    remoteIsmOverride,
-    myCustomSalt
-);
-```
+For contracts managing operations for multiple users, a `_userSalt` with `getRemoteInterchainAccount` creates a unique ICA on the destination chain per user. This is vital for isolating funds and simplifying recovery if operations fail (e.g., stuck assets from a failed stake). Without it, all users' funds share one ICA, complicating returns.
+
+1.  **Derive User-Specific ICA Address:**
+    Create a unique salt from the user's address to get their ICA address.
+
+    ```solidity
+    // Assume 'userAddress' is the end-user's address.
+    bytes32 userSpecificSalt = bytes32(uint256(uint160(userAddress)));
+    // 'destinationDomain', 'icaRouterAddress', 'thisContractAddress' (owner) as defined before.
+    address userIcaOnDestination = IInterchainAccountRouter(icaRouterAddress).getRemoteInterchainAccount(
+        destinationDomain,
+        thisContractAddress,
+        userSpecificSalt
+    );
+    // 'userIcaOnDestination' is unique to 'userAddress'.
+    ```
+    If using router/ISM overrides with `getRemoteInterchainAccount`, pass them with the `_userSalt`.
+
+2.  **Dispatch Calls to the User-Specific ICA:**
+    When calling this ICA, provide the same `_userSalt` using an overload of `callRemoteWithOverrides`.
+    You'll need `destinationDomain`, `userSpecificSalt`, `CallLib.Call[] memory calls`, and optionally `bytes32 _router` and `bytes32 _ism` overrides, and `bytes memory _hookMetadata`.
+
+    ```solidity
+    import {TypeCasts} from "../libs/TypeCasts.sol";
+    import {CallLib} from "../contracts/libs/Call.sol";
+
+    // ... Inside contract, after preparing variables ...
+    // IInterchainAccountRouter icaRouter = IInterchainAccountRouter(icaRouterAddress);
+    // Example: bytes32 remoteRouterBytes = TypeCasts.addressToBytes32(remoteRouterAddress);
+
+    icaRouter.callRemoteWithOverrides{value: msg.value}(
+        destinationDomain,
+        remoteRouterBytes, // Or your bytes32 router override
+        remoteIsmBytes,    // Or your bytes32 ISM override
+        calls,
+        hookMetadata,
+        userSpecificSalt
+    );
+    ```
+    **Notes:** `_router`/`_ism` in `callRemoteWithOverrides` are `bytes32`. Cast addresses with `TypeCasts.addressToBytes32()`. Check `InterchainAccountRouter.sol` for exact signatures, as overloads exist.
 
 ## Overrides
 
-Interchain Accounts allow developers to override the default chains and security models configured in the `InterchainAccountRouter`.
-
-These are useful for:
-
-- Calling an ICA on chains not configured in `InterchainAccountRouter`.
-- Using different ISM than the defaults configured in the `InterchainAccountRouter`
-- Adjusting the gas limit for IGP payments or setting other parameters.
+Override default chains and security models in `InterchainAccountRouter` for:
+- Calling ICAs on chains not configured in the local router.
+- Using different ISMs.
+- Adjusting gas limits for IGP payments, etc.
 
 ### Interface
 
-The `callRemoteWithOverrides` function looks similar to the `callRemote` function, but takes three additional arguments.
-
-First, developers can override `_router`, the address of the `InterchainAccountRouter` on the remote chain. This allows developers to control an ICA on remote chains that have not been configured on the local `InterchainAccountRouter`.
-
-Second, developers can override `_ism`, the address of the remote interchain security module (ISM) used to secure their ICA. This ISM will be used to verify the interchain messages passed between the local and remote `InterchainAccountRouters`. This allows developers to use a custom security model that best suits their needs.
-
-Third, developers can override `_hookMetadata`, the [StandardHookMetadata](../libraries/hookmetadata.mdx) metadata passed to the message hooks for each ICA call (for example, overriding the gas limit for the IGP payment).
+The `callRemoteWithOverrides` function is similar to `callRemote` but adds `_router` (remote `InterchainAccountRouter` address), `_ism` (remote ISM address), and `_hookMetadata` ([StandardHookMetadata](../libraries/hookmetadata.mdx)). You can also include a `_userSalt` if calling a namespaced ICA.
 
 ```solidity
-    /**
-     * @notice Dispatches a sequence of remote calls to be made by an owner's
-     * interchain account on the destination domain
-     * @dev Recommend using CallLib.build to format the interchain calls
-     * @param _destination The remote domain of the chain to make calls on
-     * @param _router The remote router address
-     * @param _ism The remote ISM address
-     * @param _calls The sequence of calls to make
-     * @param _hookMetadata The hook metadata to override with for the hook set by the owner
-     * @return The Hyperlane message ID
-     */
-    function callRemoteWithOverrides(
-        uint32 _destination,
-        bytes32 _router,
-        bytes32 _ism,
-        CallLib.Call[] calldata _calls,
-        bytes memory _hookMetadata
-    ) public payable returns (bytes32)
+    // SPDX-License-Identifier: MIT OR Apache-2.0
+    pragma solidity >=0.6.11;
 
-    function getRemoteInterchainAccount(
-        address _owner,
-        address _router,
-        address _ism
-    ) public view returns (address)
+    import {CallLib} from "../contracts/libs/Call.sol";
+    import {IPostDispatchHook} from "../interfaces/hooks/IPostDispatchHook.sol";
+
+    interface IInterchainAccountRouterWithOverrides {
+        function callRemoteWithOverrides(
+            uint32 _destination,
+            bytes32 _router,
+            bytes32 _ism,
+            CallLib.Call[] calldata _calls,
+            bytes memory _hookMetadata
+        ) public payable returns (bytes32);
+
+        function callRemoteWithOverrides(
+            uint32 _destination,
+            bytes32 _router,
+            bytes32 _ism,
+            CallLib.Call[] calldata _calls,
+            bytes memory _hookMetadata,
+            bytes32 _userSalt // For namespaced ICAs
+        ) public payable returns (bytes32);
+
+        // Get ICA address when using overrides for derivation
+        function getRemoteInterchainAccount(
+            address _owner,
+            address _router, // address type for getRemoteInterchainAccount
+            address _ism,    // address type for getRemoteInterchainAccount
+            bytes32 _userSalt
+        ) public view returns (address);
+    }
+```
+
+If you are using overrides to specify remote chains and ISMs when *deriving* an ICA address, pass those override addresses (as `address` type) along with any `_userSalt` to `getRemoteInterchainAccount`:
+```solidity
+// Note: _router and _ism here are 'address' type for getRemoteInterchainAccount.
+address myRemoteIcaWithSalt = IInterchainAccountRouter(...).getRemoteInterchainAccount(
+    address(this),          // _owner
+    remoteRouterOverrideAddress,   // _router (address)
+    remoteIsmOverrideAddress,      // _ism (address)
+    myCustomSalt            // _userSalt
+);
 ```
 
 ## Commit-Reveal Calls
 
-The Interchain Account Router supports a commit-reveal scheme for dispatching calls. This mechanism allows you to first send a commitment (a hash) of your intended transaction(s) and then, in a separate message, reveal the actual transaction data. This two-step process can be beneficial for use cases requiring privacy or seeking to mitigate front-running, as the transaction details are not publicly visible until the reveal phase.
+The Interchain Account Router supports a commit-reveal scheme. First, send a commitment (hash of intended transactions), then reveal the actual transaction data. This can enhance privacy or mitigate front-running.
 
 ### Overview
 
 1.  **Commit Phase:**
-    *   You dispatch a *commitment* message using `callRemoteCommitReveal`. This message contains a hash of the calls you intend to make, along with other necessary parameters like the destination, router, ISM, and an optional salt.
-    *   The `InterchainAccountRouter` on the origin chain sends this commitment to the destination chain.
-    *   On the destination chain, the `InterchainAccountRouter` receives this commitment and stores it within the target Interchain Account (ICA).
+    *   Dispatch a *commitment* using `callRemoteCommitReveal` with a hash of calls, destination, router, ISM, and optional salt.
+    *   The origin router sends this to the destination chain router.
+    *   The destination router stores the commitment in the target ICA.
 
 2.  **Reveal Phase:**
-    *   You dispatch a *reveal* message, also using `callRemoteCommitReveal` (or it's triggered by an ISM like `CCIP_READ_ISM`). This message contains the actual call data that corresponds to the previously sent commitment.
-    *   The `InterchainAccountRouter` on the destination chain, often in conjunction with a specialized ISM (like `CCIP_READ_ISM` for off-chain data retrieval), verifies that the revealed data matches the stored commitment.
-    *   If the verification is successful, the ICA executes the revealed calls.
+    *   Dispatch a *reveal* message (also via `callRemoteCommitReveal` or an ISM like `CCIP_READ_ISM`) with the actual call data.
+    *   The destination router (often with an ISM like `CCIP_READ_ISM` for off-chain data) verifies revealed data against the stored commitment.
+    *   If successful, the ICA executes the calls.
 
-The `callRemoteCommitReveal` function facilitates this by sending two distinct Hyperlane messages: one for the commitment and one for the reveal. It also handles the division of `msg.value` between these two messages, considering the `COMMIT_TX_GAS_USAGE` constant defined in the router for the gas cost of processing the commitment message.
+`callRemoteCommitReveal` sends two Hyperlane messages (commit and reveal) and splits `msg.value` considering `COMMIT_TX_GAS_USAGE` for the commitment message gas cost.
 
 ### Interface and Usage
 
-The `InterchainAccountRouter` provides several overloaded versions of `callRemoteCommitReveal` to accommodate different scenarios, including overrides for the remote router, ISM, hook metadata, and the user-provided salt.
+`InterchainAccountRouter` offers overloaded `callRemoteCommitReveal` versions for different scenarios (overrides for remote router, ISM, hook metadata, user salt).
 
 ```solidity
 // SPDX-License-Identifier: MIT OR Apache-2.0
@@ -301,25 +325,16 @@ calls[0] = CallLib.Call({
     data: myCallData
 });
 
-// The commitment is a hash of the owner, local ISM, calls, and user salt.
-// This needs to be computed off-chain or carefully on-chain.
+// The commitment is a hash of various elements, see contract source for exact details.
 // For simplicity, let's represent it as a pre-computed hash.
-// In a real scenario, you'd use InterchainAccountMessage.encode to get the message
-// body that would be sent IF it were a direct call, and then hash that.
-// Or, more accurately, the commitment is defined by how the ICA's setCommitment
-// and the ISM's verification logic expect it.
 // The contract's `InterchainAccountMessage.encodeCommitment` shows the structure.
-// For the ICA itself, `ica.setCommitment(_commitment)` takes a `bytes32`.
-// The `_commitment` in `callRemoteCommitReveal` is this `bytes32` value.
-
-// Example: let's say this is the commitment we derived
 bytes32 callCommitment = keccak256(abi.encodePacked(calls[0].to, calls[0].value, calls[0].data)); // Simplified commitment
 
 uint32 destinationDomain = 123; // Example destination domain
 uint gasLimitForReveal = 200000; // Estimated gas for the reveal and execution
 
 // 2. Dispatch the commit and reveal messages
-// Using the simpler version that uses default router, ISM, hook, and empty salt
+// Using a simpler version (uses default router, ISM, hook, and empty salt)
 (bytes32 commitmentMsgId, bytes32 revealMsgId) = icaRouter.callRemoteCommitReveal{value: igp.quoteGasPayment(...).total}(
     destinationDomain,
     callCommitment,
@@ -346,94 +361,6 @@ uint gasLimitForReveal = 200000; // Estimated gas for the reveal and execution
 // );
 
 ```
-**Note on Commitment Calculation:** The exact structure of the `_commitment` depends on what the `InterchainAccountRouter`'s `handle` function and the chosen ISM (especially a `CCIP_READ_ISM`) expect. The `InterchainAccountMessage.encodeCommitment` function in `InterchainAccountMessage.sol` library provides the structure for the commitment message body: `abi.encode(_owner, _ism, _commitment, _userSalt)`. The `_commitment` argument within this structure is the actual hash of the secret data (e.g., `keccak256(abi.encodePacked(calls))`).
+**Note on Commitment Calculation:** The exact structure of `_commitment` depends on the `InterchainAccountRouter`'s `handle` function and the chosen ISM. The `InterchainAccountMessage.encodeCommitment` function in `InterchainAccountMessage.sol` library shows: `abi.encode(_owner, _ism, _commitment, _userSalt)`. The `_commitment` argument within this is the hash of the secret data (e.g., `keccak256(abi.encodePacked(calls))`).
 
-When the `handle` function on the destination chain processes a message of type `COMMITMENT`, it calls `ica.setCommitment(_commitment)` where `_commitment` is extracted from the message. The reveal process must then provide data that, when processed by the ISM, ultimately validates against this stored commitment.
-
-#### Partitioning ICAs by User with `_userSalt`
-
-In scenarios where a single contract on the origin chain manages operations for multiple users, using the `_userSalt` parameter can create distinct Interchain Accounts for each user on the destination chain. This is crucial for isolating user funds and enabling user-specific recovery mechanisms.
-
-For example, if a contract facilitates bridging and staking for users, and a staking operation fails (e.g., due to slippage), the assets might become stuck in the ICA. If a shared ICA is used for all users, returning these assets to the correct user is complex and potentially insecure. By using a salt derived from each user's address, the origin contract can ensure that each user interacts with their own unique ICA on the destination chain.
-
-To determine the address of a user-specific ICA:
-```solidity
-// Assume 'userAddress' is the address of the end-user on whose behalf the contract is acting.
-// It's important to ensure the salt is unique per user.
-// Casting the user's address to bytes32 is a common way to generate a user-specific salt.
-bytes32 userSpecificSalt = bytes32(uint256(uint160(userAddress)));
-
-// 'destinationDomain' is the domain ID of the target chain.
-// 'icaRouterAddress' is the address of the InterchainAccountRouter contract instance.
-// 'thisContractAddress' is address(this) if the contract itself is the owner.
-address userIcaOnDestination = IInterchainAccountRouter(icaRouterAddress).getRemoteInterchainAccount(
-    destinationDomain,
-    thisContractAddress, // The contract itself is the owner of these ICAs
-    userSpecificSalt
-);
-
-// Now, 'userIcaOnDestination' is an ICA unique to 'userAddress'.
-// If funds get stuck in this ICA, the origin contract can initiate
-// a transaction via this ICA to return funds specifically to 'userAddress'.
-```
-This approach allows the origin contract (owner `thisContractAddress`) to manage multiple, distinct ICAs on the destination chain, one for each user. If funds for a particular user need to be recovered, the origin contract can make calls via that user's specific ICA to send the funds back to the user's address, solving the problem of commingled funds and complex recovery logic.
-
-When dispatching calls that should be executed by such a user-specific ICA, especially when using overrides, you must pass the same `userSpecificSalt` to the relevant `callRemoteWithOverrides` function. The `InterchainAccountRouter` offers overloaded versions of `callRemoteWithOverrides` that accept a `_userSalt` (or `_salt`) parameter. Using this ensures the message is routed to and executed by the correct user-partitioned ICA.
-
-For instance, if using overrides:
-```solidity
-// When calling getRemoteInterchainAccount with overrides for a user-specific ICA:
-// 'remoteRouterOverrideAddress' and 'remoteIsmOverrideAddress' are the addresses of the override router and ISM.
-address userIcaWithOverrides = IInterchainAccountRouter(icaRouterAddress).getRemoteInterchainAccount(
-    thisContractAddress,              // _owner
-    remoteRouterOverrideAddress,      // _router (address)
-    remoteIsmOverrideAddress,         // _ism (address)
-    userSpecificSalt                  // _userSalt
-);
-
-// When calling callRemoteWithOverrides for this user-specific ICA:
-// Ensure to use a callRemoteWithOverrides version that takes a salt.
-// Note that _router and _ism parameters for callRemoteWithOverrides are typically bytes32.
-// Example (signature may vary based on which overload you use):
-// IInterchainAccountRouter(icaRouterAddress).callRemoteWithOverrides(
-//     destinationDomain,
-//     TypeCasts.addressToBytes32(remoteRouterOverrideAddress), // _router (bytes32)
-//     TypeCasts.addressToBytes32(remoteIsmOverrideAddress),   // _ism (bytes32)
-//     calls,
-//     hookMetadata,
-//     userSpecificSalt // Pass the same user-specific salt
-// );
-```
-Refer to the `InterchainAccountRouter.sol` contract for the exact signatures of `callRemoteWithOverrides` that include a salt parameter.
-
-If you are using [#overrides](#overrides)
-
-```solidity
-    /**
-     * @notice Dispatches a sequence of remote calls to be made by an owner's
-     * interchain account on the destination domain, allowing for a user-specific salt.
-     * @dev Similar to the above, but includes a _userSalt for ICA derivation.
-     * @param _destination The remote domain of the chain to make calls on
-     * @param _router The remote router address
-     * @param _ism The remote ISM address
-     * @param _calls The sequence of calls to make
-     * @param _hookMetadata The hook metadata to override with for the hook set by the owner
-     * @param _userSalt Salt provided by the user, allows control over account derivation.
-     * @return The Hyperlane message ID
-     */
-    function callRemoteWithOverrides(
-        uint32 _destination,
-        bytes32 _router,
-        bytes32 _ism,
-        CallLib.Call[] calldata _calls,
-        bytes memory _hookMetadata,
-        bytes32 _userSalt
-    ) public payable returns (bytes32);
-
-    function getRemoteInterchainAccount(
-        address _owner,
-        address _router,
-        address _ism,
-        bytes32 _userSalt
-    ) public view returns (address);
-```
+When `handle` on the destination processes a `COMMITMENT` message, it calls `ica.setCommitment(_commitment)`. The reveal must then provide data that validates against this stored commitment via the ISM.
