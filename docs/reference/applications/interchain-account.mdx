@@ -156,9 +156,7 @@ await localRouter.callRemote(localChain, remoteChain, [call], config);
 
 In some cases, you may need to compute the ICA address on a remote chain before making a call. For example, if your ICA needs funding before executing transactions, you can retrieve its address and transfer assets to it in advance. See the [Transfer and Call Pattern](/docs/guides/transfer-and-call) section for more information.
 
-````typescript
-
-The `getRemoteInterchainAccount` function can be used to get the address of an ICA given the destination chain and owner address.
+The `getRemoteInterchainAccount` function can be used to get the address of an ICA given the destination chain and owner address. You can optionally provide a `_userSalt` to influence the derived address, allowing for namespacing or creating multiple distinct ICAs for the same owner. If no salt is provided, a default empty salt is used.
 
 An example is included below of a contract precomputing its own Interchain Account address.
 
@@ -167,15 +165,24 @@ address myInterchainAccount = IInterchainAccountRouter(...).getRemoteInterchainA
     destination,
     address(this)
 );
-````
 
-If you are using [#overrides](#overrides) to specify remote chains, pass those overrides when computing the remote ICA address.
+// Using a custom salt for namespacing
+bytes32 myCustomSalt = keccak256(abi.encodePacked("my-unique-namespace"));
+address myNamespacedInterchainAccount = IInterchainAccountRouter(...).getRemoteInterchainAccount(
+    destination,
+    address(this),
+    myCustomSalt
+);
+```
+
+If you are using [#overrides](#overrides) to specify remote chains and ISMs, pass those overrides when computing the remote ICA address. You can also provide a `_userSalt` in this scenario:
 
 ```solidity
-address myRemoteIca = IInterchainAccountRouter(...).getRemoteInterchainAccount(
+address myRemoteIcaWithSalt = IInterchainAccountRouter(...).getRemoteInterchainAccount(
     address(this),
     remoteRouterOverride,
-    remoteIsmOverride
+    remoteIsmOverride,
+    myCustomSalt
 );
 ```
 
@@ -225,3 +232,120 @@ Third, developers can override `_hookMetadata`, the [StandardHookMetadata](../li
         address _ism
     ) public view returns (address)
 ```
+
+## Commit-Reveal Calls
+
+The Interchain Account Router supports a commit-reveal scheme for dispatching calls. This mechanism allows you to first send a commitment (a hash) of your intended transaction(s) and then, in a separate message, reveal the actual transaction data. This two-step process can be beneficial for use cases requiring privacy or seeking to mitigate front-running, as the transaction details are not publicly visible until the reveal phase.
+
+### Overview
+
+1.  **Commit Phase:**
+    *   You dispatch a *commitment* message using `callRemoteCommitReveal`. This message contains a hash of the calls you intend to make, along with other necessary parameters like the destination, router, ISM, and an optional salt.
+    *   The `InterchainAccountRouter` on the origin chain sends this commitment to the destination chain.
+    *   On the destination chain, the `InterchainAccountRouter` receives this commitment and stores it within the target Interchain Account (ICA).
+
+2.  **Reveal Phase:**
+    *   You dispatch a *reveal* message, also using `callRemoteCommitReveal` (or it's triggered by an ISM like `CCIP_READ_ISM`). This message contains the actual call data that corresponds to the previously sent commitment.
+    *   The `InterchainAccountRouter` on the destination chain, often in conjunction with a specialized ISM (like `CCIP_READ_ISM` for off-chain data retrieval), verifies that the revealed data matches the stored commitment.
+    *   If the verification is successful, the ICA executes the revealed calls.
+
+The `callRemoteCommitReveal` function facilitates this by sending two distinct Hyperlane messages: one for the commitment and one for the reveal. It also handles the division of `msg.value` between these two messages, considering the `COMMIT_TX_GAS_USAGE` constant defined in the router for the gas cost of processing the commitment message.
+
+### Interface and Usage
+
+The `InterchainAccountRouter` provides several overloaded versions of `callRemoteCommitReveal` to accommodate different scenarios, including overrides for the remote router, ISM, hook metadata, and the user-provided salt.
+
+```solidity
+// SPDX-License-Identifier: MIT OR Apache-2.0
+pragma solidity >=0.8.13;
+
+import {IPostDispatchHook} from "../interfaces/hooks/IPostDispatchHook.sol";
+
+interface IInterchainAccountRouterCommitReveal {
+    // Simplified example of one of the callRemoteCommitReveal signatures
+    function callRemoteCommitReveal(
+        uint32 _destination,
+        bytes32 _router, // Remote router address (or default if zero)
+        bytes32 _ism,    // Remote ISM address (or default if zero)
+        bytes32 _ccipReadIsm, // Optional: ISM for CCIP read during reveal
+        bytes memory _hookMetadata,
+        IPostDispatchHook _hook,
+        bytes32 _salt,         // User-provided salt for ICA derivation
+        bytes32 _commitment    // The commitment hash of the calls
+    ) external payable returns (bytes32 _commitmentMsgId, bytes32 _revealMsgId);
+
+    function callRemoteCommitReveal(
+        uint32 _destination,
+        bytes32 _commitment,
+        uint _gasLimit // Gas limit for the hook metadata of the reveal message
+    ) external payable returns (bytes32 _commitmentMsgId, bytes32 _revealMsgId);
+}
+```
+
+### Example: Sending a Commit-Reveal Call
+
+```solidity
+import {InterchainAccountMessage} from "./libs/InterchainAccountMessage.sol";
+import {CallLib} from "./libs/Call.sol";
+import {StandardHookMetadata} from "../hooks/libs/StandardHookMetadata.sol";
+
+// Assume 'icaRouter' is an instance of IInterchainAccountRouter
+// Assume 'destinationDomain' and 'targetContract' are defined
+// Assume 'myCallData' is the abi.encodeCall(...) for the desired remote call
+
+// 1. Prepare the calls and the commitment
+CallLib.Call[] memory calls = new CallLib.Call[](1);
+calls[0] = CallLib.Call({
+    to: TypeCasts.addressToBytes32(targetContract),
+    value: 0,
+    data: myCallData
+});
+
+// The commitment is a hash of the owner, local ISM, calls, and user salt.
+// This needs to be computed off-chain or carefully on-chain.
+// For simplicity, let's represent it as a pre-computed hash.
+// In a real scenario, you'd use InterchainAccountMessage.encode to get the message
+// body that would be sent IF it were a direct call, and then hash that.
+// Or, more accurately, the commitment is defined by how the ICA's setCommitment
+// and the ISM's verification logic expect it.
+// The contract's `InterchainAccountMessage.encodeCommitment` shows the structure.
+// For the ICA itself, `ica.setCommitment(_commitment)` takes a `bytes32`.
+// The `_commitment` in `callRemoteCommitReveal` is this `bytes32` value.
+
+// Example: let's say this is the commitment we derived
+bytes32 callCommitment = keccak256(abi.encodePacked(calls[0].to, calls[0].value, calls[0].data)); // Simplified commitment
+
+uint32 destinationDomain = 123; // Example destination domain
+uint gasLimitForReveal = 200000; // Estimated gas for the reveal and execution
+
+// 2. Dispatch the commit and reveal messages
+// Using the simpler version that uses default router, ISM, hook, and empty salt
+(bytes32 commitmentMsgId, bytes32 revealMsgId) = icaRouter.callRemoteCommitReveal{value: igp.quoteGasPayment(...).total}(
+    destinationDomain,
+    callCommitment,
+    gasLimitForReveal
+);
+
+// To use overrides:
+// bytes32 remoteRouterOverride = ...;
+// bytes32 remoteIsmOverride = ...;
+// bytes32 ccipIsmForReveal = addressToBytes32(address(myCcipReadIsm)); // If using CCIP Read for reveal
+// bytes memory hookMetadata = StandardHookMetadata.overrideGasLimit(gasLimitForReveal);
+// IPostDispatchHook customHook = myHook;
+// bytes32 userSalt = keccak256("my-app-salt");
+
+// (bytes32 commitmentMsgId, bytes32 revealMsgId) = icaRouter.callRemoteCommitReveal{value: payment}(
+//     destinationDomain,
+//     remoteRouterOverride,
+//     remoteIsmOverride,
+//     ccipIsmForReveal, // Can be bytes32(0) if not using a specific CCIP Read ISM for reveal
+//     hookMetadata,
+//     customHook,
+//     userSalt,
+//     callCommitment
+// );
+
+```
+**Note on Commitment Calculation:** The exact structure of the `_commitment` depends on what the `InterchainAccountRouter`'s `handle` function and the chosen ISM (especially a `CCIP_READ_ISM`) expect. The `InterchainAccountMessage.encodeCommitment` function in `InterchainAccountMessage.sol` library provides the structure for the commitment message body: `abi.encode(_owner, _ism, _commitment, _userSalt)`. The `_commitment` argument within this structure is the actual hash of the secret data (e.g., `keccak256(abi.encodePacked(calls))`).
+
+When the `handle` function on the destination chain processes a message of type `COMMITMENT`, it calls `ica.setCommitment(_commitment)` where `_commitment` is extracted from the message. The reveal process must then provide data that, when processed by the ISM, ultimately validates against this stored commitment.
