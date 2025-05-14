@@ -55,7 +55,7 @@ Each is returned as a TokenAmount which includes:
 
 ## Using the Fee in Transfers
 
-You can pass the `interchainQuote` to avoid recomputing it:
+When making a transfer, you can provide the pre-computed fee quote:
 
 ```ts
 const txs = await warpCore.getTransferRemoteTxs({
