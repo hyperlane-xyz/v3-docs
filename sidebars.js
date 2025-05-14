@@ -603,6 +603,25 @@ const sidebars = {
         },
         {
           type: "category",
+          label: "Typescript SDK",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/typescript-sdk/overview",
+              label: "Overview",
+            },
+            {
+              type: "doc",
+              id: "reference/typescript-sdk/transfers",
+              label: "Message Transfer Fee Calculations",
+            },
+          ],
+        },
+
+        {
+          type: "category",
           label: "Developer Tips",
           collapsible: true,
           collapsed: true,
