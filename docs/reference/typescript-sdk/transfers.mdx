@@ -1,0 +1,81 @@
+# Tranfers
+
+## Fee Estimation
+
+When sending a cross-chain transfer with Hyperlane GMP, two fees are required:
+
+1. **Local Fee** – gas to submit the transaction on the origin chain
+2. **Interchain Fee** – gas to deliver and execute the message on the destination chain
+
+Both are paid upfront to the origin chain.
+
+This fee structure ensures that:
+
+1. The user has enough funds to pay for the local transaction
+2. The cross-chain message will have enough gas to execute on the destination chain and pay for the message delivery
+3. The total cost of the transfer is transparent to the user before execution
+
+#### Fee Token Considerations
+
+When sending cross-chain transfers, the fee tokens vary by chain type:
+
+1. **EVM Chains**
+
+   - Uses native token (e.g., ETH) for both local and interchain fees
+
+2. **Sealevel (Solana) Chains**
+
+   - Uses native SOL for transaction fees
+
+3. **Cosmos Chains**
+
+   - Supports custom fee tokens
+   - Fees are specified using the `denom` parameter
+
+### Estimating Fees
+
+To estimate both fees, use `estimateTransferRemoteFees`:
+
+```ts
+const { interchainQuote, localQuote } =
+  await warpCore.estimateTransferRemoteFees({
+    originToken,
+    destination,
+    sender,
+  });
+```
+
+- `interchainQuote`: Fee to route the message to the destination chain (via IGP)
+- `localQuote`: Gas cost to send the tx on the origin chain
+
+Each is returned as a TokenAmount which includes:
+
+- `amount`: The quantity of tokens required
+- `token`: The token metadata (including chain, decimals, and symbol)
+
+## Using the Fee in Transfers
+
+You can pass the `interchainQuote` to avoid recomputing it:
+
+```ts
+const txs = await warpCore.getTransferRemoteTxs({
+  originTokenAmount,
+  destination,
+  sender,
+  recipient,
+});
+```
+
+:::warning
+Important Considerations:
+
+- Fees may vary between different chain types
+- Some chains require additional parameters
+- Missing or underpaying fees will cause the transaction to revert
+- Fee tokens may differ from the transfer token
+
+:::
+
+## How It Works
+
+Under the hood, the SDK uses [`Mailbox.quoteDispatch()`](/docs/reference/messaging/send#quote-dispatch) to compute the interchain fee. This is the same value that must be passed to `dispatch`.
