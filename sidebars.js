@@ -379,6 +379,11 @@ const sidebars = {
                   id: "reference/messaging/receive",
                   label: "Receive a message",
                 },
+                {
+                  type: "doc",
+                  id: "reference/messaging/fees",
+                  label: "Transfer Fees",
+                },
               ],
             },
             {
