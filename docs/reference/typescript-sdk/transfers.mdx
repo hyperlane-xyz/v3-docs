@@ -7,21 +7,23 @@ When sending a cross-chain transfer with Hyperlane GMP, two fees are required:
 1. **Origin Fee** – gas to submit the transaction on the origin chain
 2. **Interchain Fee** – gas to deliver and execute the message on the destination chain
 
-Both are paid upfront to the origin chain.
+Both are paid upfront on the origin chain to the specified IGP.
 
 This fee structure ensures that:
 
-1. The user has enough funds to pay for the local transaction
+1. The user has enough funds to pay for the origin transaction
+2. The message will have enough gas to execute on the destination chain and pay for the message delivery
+3. The total cost of the transfer is transparent to the user before execution
 2. The cross-chain message will have enough gas to execute on the destination chain and pay for the message delivery
 3. The total cost of the transfer is transparent to the user before execution
 
 #### Fee Token Considerations
 
-When sending cross-chain transfers, the fee tokens vary by chain type:
+When sending cross-chain transfers, the fee tokens vary by origin chain type and IGP:
 
 1. **EVM Chains**
 
-   - Uses native token (e.g., ETH) for both local and interchain fees
+   - Uses native gas token (e.g., ETH) for both origin and interchain fees
 
 2. **Sealevel (Solana) Chains**
 
@@ -29,7 +31,7 @@ When sending cross-chain transfers, the fee tokens vary by chain type:
 
 3. **Cosmos Chains**
 
-   - Supports custom fee tokens
+   - Supports custom tokens; fees are specified using the `denom` parameter on an IGP
    - Fees are specified using the `denom` parameter
 
 ### Estimating Fees
