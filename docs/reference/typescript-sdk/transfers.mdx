@@ -1,0 +1,53 @@
+# Message Transfer Fee Calculations
+
+:::info
+For an overview of transfer fees head over to: [GMP Transfer Fees](/docs/reference/messaging/fees)
+:::
+
+## Estimating Fees
+
+To estimate both fees, use `estimateTransferRemoteFees`:
+
+```ts
+const { interchainQuote, localQuote } =
+  await warpCore.estimateTransferRemoteFees({
+    originToken,
+    destination,
+    sender,
+  });
+```
+
+- `interchainQuote`: Fee to route the message to the destination chain (via IGP)
+- `localQuote`: Gas cost to send the tx on the origin chain
+
+Each is returned as a TokenAmount which includes:
+
+- `amount`: The quantity of tokens required
+- `token`: The token metadata (including chain, decimals, and symbol)
+
+## Using the Fee in Transfers
+
+When making a transfer, you can provide the pre-computed fee quote:
+
+```ts
+const txs = await warpCore.getTransferRemoteTxs({
+  originTokenAmount,
+  destination,
+  sender,
+  recipient,
+});
+```
+
+:::warning
+Important Considerations:
+
+- Fees may vary between different chain types
+- Some chains require additional parameters
+- Missing or underpaying fees will cause the transaction to revert
+- Fee tokens may differ from the transfer token
+
+:::
+
+## How It Works
+
+Under the hood, the SDK uses [`Mailbox.quoteDispatch()`](/docs/reference/messaging/send#quote-dispatch) to compute the interchain fee. This is the same value that must be passed to `dispatch`.

@@ -379,6 +379,11 @@ const sidebars = {
                   id: "reference/messaging/receive",
                   label: "Receive a message",
                 },
+                {
+                  type: "doc",
+                  id: "reference/messaging/fees",
+                  label: "Transfer Fees",
+                },
               ],
             },
             {
@@ -601,6 +606,25 @@ const sidebars = {
             },
           ],
         },
+        {
+          type: "category",
+          label: "Typescript SDK",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "reference/typescript-sdk/overview",
+              label: "Overview",
+            },
+            {
+              type: "doc",
+              id: "reference/typescript-sdk/transfers",
+              label: "Message Transfer Fee Calculations",
+            },
+          ],
+        },
+
         {
           type: "category",
           label: "Developer Tips",
