@@ -1,6 +1,16 @@
-# Sequence diagram
+# Message Verification Flow
 
-The following shows a simplified sequence diagram of an interchain message being verified and delivered on the destination chain.
+When a message is sent between chains, it goes through a verification process to ensure its authenticity. This page explains how that process works.
+
+## Overview
+
+The verification process involves three key components:
+
+1. The **Mailbox contract** - The main entry point for message processing
+2. The **ISM (Interchain Security Module)** - The security verification contract
+3. The **Recipient contract** - The application that receives the message
+
+## Sequence Diagram
 
 :::info
 
@@ -26,3 +36,29 @@ sequenceDiagram
     Mailbox->>Recipient: handle(origin, sender, body)
 
 ```
+
+## How It Works
+
+1. **Type Identification**
+
+   - The Relayer calls `moduleType()` on the ISM to determine its category
+   - Based on this type (e.g., `MULTISIG`, `ROUTING`, `AGGREGATION`), the Relayer knows what verification proof to collect
+   - For Multisig ISMs, this means gathering cryptographic signatures from validators
+
+2. **Message Submission**
+
+   - The Relayer calls `Mailbox.process()` providing both:
+     - The original message
+     - The collected verification metadata
+
+3. **Verification Process**
+
+   - Mailbox queries the recipient contract via `interchainSecurityModule()`
+   - If no ISM is specified, Mailbox uses the default ISM
+   - Mailbox then forwards the message and metadata to the ISM's `verify()` function
+   - The ISM executes its security logic (e.g., signature verification, threshold checking)
+
+4. **Message Delivery**
+
+   - Upon successful verification (when `verify()` returns `true`), Mailbox calls `recipient.handle()`
+   - If verification fails, the transaction reverts and the message is rejected

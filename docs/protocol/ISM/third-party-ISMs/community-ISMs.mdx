@@ -1,0 +1,55 @@
+# Community ISMs
+
+## Overview
+
+Community ISMs are developed and maintained by the community. These ISMs extend Hyperlane's security capabilities with specialized verification logic, alternative trust models, or integration with external infrastructure. By using community ISMs, developers can implement custom security requirements while still benefiting from Hyperlane's messaging infrastructure.
+
+When using a community ISM, developers should review the implementation and security properties to ensure they match their application's requirements.
+
+## Available Community ISMs
+
+| Name                  | Description                                                                                                        | Type      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------ | --------- |
+| Wormhole ISM          | Verifies messages using attestations from Wormhole's guardian network, requiring 13 of 19 guardians for validation | Community |
+| Polygon PoS ISM       | Uses Polygon's state sync mechanism for secure message passing between Ethereum ↔ Polygon PoS                      | Community |
+| Optimistic ISM        | Implements an optimistic verification model with a fraud window where watchers can flag fraudulent messages        | Community |
+| OP Stack ISM          | Uses OP Stack rollup's settlement layer security for messages between Ethereum ↔ OP Stack rollups                  | Community |
+| Arbitrum L2 to L1 ISM | Uses Arbitrum rollup's security properties for messages sent from Arbitrum L2 ↔ Ethereum                           | Community |
+
+## Wormhole ISM
+
+:::warning
+`WormholeISM` is coming soon and is not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
+:::
+
+The `WormholeISM` encodes the security model used by [Wormhole's](https://wormhole.com/) interchain communication protocol.
+
+This ISM requires that 13 of the 19 [Wormhole guardians](https://wormhole.com/network/#guardians) attest to the validity of a Hyperlane message.
+
+Developers can compose a Wormhole ISM with a [Multisig ISM](../multisig-ISM.mdx) using an [Aggregation ISM](../aggregation-ISM.mdx) to require that m of n Hyperlane validators **and** 13-of-19 Wormhole guardians verify a message.
+
+## Polygon PoS ISM
+
+The Polygon PoS ISM is used along with the Polygon PoS hook to leverage the security of the Polygon [state sync mechanism](https://docs.polygon.technology/pos/architecture/bor/state-sync/) for messages passed between Ethereum and Polygon PoS chain. See the [Polygon PoS Hook](/docs/reference/hooks/polygon-pos.mdx) for more information.
+
+## Optimistic ISM
+
+Prioritizing safety over liveness
+
+:::warning
+`OptimisticISM` is coming soon and is not yet implemented. This page is shown for informational purposes only. Details may change as the design matures.
+:::
+
+The `OptimisticISM` encodes the optimistic verification security model pioneered by [Optics](https://docs.celo.org/protocol/bridge/optics) and adopted by [Synapse](https://docs.synapseprotocol.com/docs/RFQ/Security/#proofs), [Nomad](https://docs.nomad.xyz/the-nomad-protocol/verification-mechanisms/optimistic-verification), and [Connext](https://blog.connext.network/optimistic-bridges-fb800dc7b0e0).
+
+`OptimisticISMs` rely on a fraud window after message verification, during which `m` of `n` **watchers** configured on the `OptimisticISM` have an opportunity to flag messages as fraudulent, preventing them from being delivered to their recipient.
+
+**This security model prioritizes safety over liveness;** the increased message latency allows for the addition of a second layer of security, the watchers, without significant increases in gas costs.
+
+## OP Stack ISM
+
+The OP Stack ISM is used along with the OP Stack hook to leverage the security of an OP Stack rollup's [settlement layer](https://stack.optimism.io/docs/understand/landscape/#execution) for messages passed between Ethereum and the rollup. See the [OP Stack Hook](/docs/reference/hooks/op-stack.mdx) for more information.
+
+## Arbitrum L2 to L1 ISM
+
+The Arbitrum L2 to L1 ISM is used along with the Arbitrum L2 to L1 hook to leverage the security of the Arbitrum rollup for messages passed from the Arbitrum L2 to Ethereum. See the [Arbitrum L2 to L1 Hook](/docs/reference/hooks/arbitrum-L2-to-L1.mdx) for more information.

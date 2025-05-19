@@ -33,6 +33,11 @@ const sidebars = {
           id: "guides/deploy-warp-route",
           label: "Bridge a Token",
         },
+        {
+          type: "doc",
+          id: "guides/local-testnet-setup",
+          label: "Local Setup: Sending Messages between Anvil Nodes",
+        },
       ],
     },
     {
@@ -98,11 +103,6 @@ const sidebars = {
               label: "Deploy Hyperlane with Local Agents",
             },
           ],
-        },
-        {
-          type: "doc",
-          id: "guides/local-testnet-setup",
-          label: "Local Setup: Sending Messages between Anvil Nodes",
         },
         {
           type: "category",
@@ -443,7 +443,7 @@ const sidebars = {
             {
               type: "doc",
               id: "protocol/ISM/custom-ISM",
-              label: "Override the Default ISM",
+              label: "Create your own ISM",
             },
             {
               type: "category",
@@ -484,37 +484,9 @@ const sidebars = {
               ],
             },
             {
-              type: "category",
+              type: "doc",
+              id: "protocol/ISM/third-party-ISMs/community-ISMs",
               label: "Community ISMs",
-              collapsible: true,
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "protocol/ISM/third-party-ISMs/wormhole-ISM",
-                  label: "Wormhole ISM",
-                },
-                {
-                  type: "doc",
-                  id: "protocol/ISM/third-party-ISMs/optimistic-ISM",
-                  label: "Optimistic ISM",
-                },
-                {
-                  type: "doc",
-                  id: "protocol/ISM/third-party-ISMs/OPStack-ISM",
-                  label: "OP Stack ISM",
-                },
-                {
-                  type: "doc",
-                  id: "protocol/ISM/third-party-ISMs/polygon-POS-ISM",
-                  label: "Polygon PoS ISM",
-                },
-                {
-                  type: "doc",
-                  id: "protocol/ISM/third-party-ISMs/arbitrum-L2-to-L1-ISM",
-                  label: "Arbitrum L2 to L1 ISM",
-                },
-              ],
             },
             {
               type: "category",
