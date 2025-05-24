@@ -1,5 +1,5 @@
-import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
 
 # Configuration Reference
 
@@ -887,6 +887,45 @@ Connections to Cosmos chains require **both** RPC and gRPC URLs. There is **no `
             }
         }
     }
+}
+```
+</TabItem>
+</Tabs>
+
+## rpcUrls
+
+:::info
+
+Connections to non-EVM chains only support a single RPC url. If more than one RPC url is specified, only the first one will be used.
+
+:::
+
+**Description:** Comma-separated URLs to connect the providers to. This field accepts RPC URLs from all chains for easy configuration. 
+
+Each RPC URL will be queried for chain ID and used for related chain. RPC URLs will be in the order of their configuration and this field
+
+is preceeding the per-chain [rpcUrls](#chainschain_namerpcurls) configuration.
+
+**Type:** `string` (comma separated list of urls without spaces)
+
+<Tabs groupId="config-reference">
+<TabItem value="arg" label="As Arg" default>
+```bash
+--rpcurls "$CONNECTION_URLS"
+--rpcurls "http://127.0.0.1:8545,http://127.0.0.1:8546,http://127.0.0.1:8547"
+```
+</TabItem>
+
+<TabItem value="env" label="As Env">
+  ```bash
+  export HYP_RPCURLS="$CONNECTION_URLS"
+  ```
+</TabItem>
+
+<TabItem value="config" label="As Config">
+```json
+{
+    "rpcUrls": "http://127.0.0.1:8545,http://127.0.0.1:8546"
 }
 ```
 </TabItem>
