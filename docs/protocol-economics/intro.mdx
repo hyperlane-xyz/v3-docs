@@ -140,6 +140,10 @@ Default ISM positions open when:
 
 Once mutual interest is established via a shared communication channel, Validators can proceed with deployment (they may also deploy earlier if they choose). See [Run Validators](/docs/operate/validators/run-validators).
 
+:::note
+For Validator Rewards claiming, head over to the [Validator Rewards Section](#validator-rewards).
+:::
+
 ## Slashing
 
 Slashing is a mechanism designed to encourage honest participation in the Hyperlane protocol.
@@ -197,7 +201,8 @@ The protocol distributes rewards to participants who are part of the default Int
 
 - **Eligibility**: Validators in the default ISM Validator set.
 - **Distribution**: Rewards are allocated through Symbiotic UI.
-- **Becoming part of the Hyperlane default ISM Validator set**: Validators are assessed based on criteria that includes operational security practices, historic performance and amount of HYPER staked. More details on this are provided in the Validator Selection section.
+  - Validators can claim the rewards via the ['claimRewards()'](https://github.com/symbioticfi/rewards/blob/7844a6ceaf4d740c7083a37e410194c1ef7867d3/src/contracts/defaultOperatorRewards/DefaultOperatorRewards.sol#L75) function with a Merkle proof that can be obtained via the [Symbiotic CLI](https://github.com/symbioticfi/rewards/blob/main/specs/OperatorRewards.md#cli). For details please refer to: [Symbiotic Operator Rewards](https://docs.symbiotic.fi/modules/extensions/rewards/#default-operator-rewards).
+- **Becoming part of the Hyperlane default ISM Validator set**: Validators are assessed based on criteria that includes operational security practices, historic performance and amount of HYPER staked. More details on this are provided in the Validator Selection section. _Please note that validators who are a part of other ISMs, such as application-specific ISMs, will not rewarded by the Hyperlane Protocol directly._
 
 This reward stream helps incentivize operating Hyperlane Validators.
 
