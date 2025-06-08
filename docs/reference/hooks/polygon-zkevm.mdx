@@ -1,0 +1,52 @@
+
+#  PolygonZkevm ISM and hook
+Polygon Zkevm have their own bridging interface to transfer assets and messages across the parent and child chain -  [zkEVM Bridge](https://docs.polygon.technology/zkEVM/architecture/protocol/zkevm-bridge/). Message ID is passed via this interface to verify the integrity of the message sent across chain using hyperlane messenger.
+
+To provide this security option in Hyperlane we created the hook and ISM combo that can be transparently configured to use the zkEVM bridge.
+
+See the [addresses](../contract-addresses.mdx) page for Hook and ISM addresses. 
+
+## How It Works
+
+here's the flow for how the system works (this applies to `L1 <-> L2` and `L2<->L1`) : 
+
+the ism verifies if the message has been sent by the hook
+
+
+```mermaid
+flowchart TB
+    subgraph Origin Ethereum
+      Sender
+      M_O[(Mailbox)]
+      Hook[PolygonZkEvmHook]
+      Eth[(zkEVM Bridge)]
+
+      Sender -- "dispatch(...)" --> M_O
+      M_O -- "postDispatch(message)" --> Hook
+      Hook -- "sendMessage(messageId)" --> Eth
+    end
+
+    M_O -. "relay" .-> M_D
+
+    subgraph Destination Polygon zkEvm chain
+    Eth -. "Rollup sync" .-> Polygon
+
+      Recipient
+      M_D[(Mailbox)]
+      ISM{PolygonZkEvmISM}
+      Polygon[(zkEVM Bridge)]
+
+      M_D -- "verify(..., message)" --> ISM
+      M_D -- "handle(...)" --> Recipient
+      ISM -. "interchainSecurityModule()" .- Recipient
+
+
+      ISM -- "claimMessage(messageId)" --> Polygon
+      Polygon -- "onMessageRecieved(messageId)" --> ISM
+    end
+
+    style Eth fill: #ff0402
+    style Polygon fill: #ff0402
+```
+
+
